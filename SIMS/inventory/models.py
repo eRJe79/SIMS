@@ -113,7 +113,7 @@ class Item(models.Model):
     # IsConsumable        = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.cae_partname
     #def __init__(self, manufacturer, manufacturer_date, website, contractor):
     #    self.manufacturer = manufacturer
     #    self.manufacturer_date = manufacturer_date

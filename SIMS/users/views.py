@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_protect
 
 from .forms import LoginForm
 
+from django.template import RequestContext
 
+@csrf_protect
 def login_page(request):
     forms = LoginForm()
     if request.method == 'POST':
@@ -16,7 +19,7 @@ def login_page(request):
                 login(request, user)
                 return redirect('dashboard')
     context = {'form': forms}
-    return render(request, 'users/login.html', context)
+    return render('users/login.html', context, RequestContext(request))
 
 
 def logout_page(request):
