@@ -131,7 +131,7 @@ class ItemForm(forms.ModelForm):
                   #'characteristic',
                   ]
         widgets = {
-            'article_related': forms.TextInput(attrs={
+            'article_related': forms.Select(attrs={
                 'class': 'form-control', 'id':'article_related'
             }),
             'cae_partname': forms.TextInput(attrs={
