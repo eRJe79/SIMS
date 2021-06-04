@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Item, Spare
+from .models import Article, Item, Spare
 
 class MainUserForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={
@@ -81,29 +81,31 @@ class LambdaUserForm(forms.Form):
 
 
 # Article form
-#class ArticleForm(forms.ModelForm):
-#    class Meta:
-#        model = Article
-#        fields = ['manufacturer',
-                  #'manufacturer_partnumber',
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['manufacturer',
+                  'manufacturer_partnumber',
                   #'manufacturer_serienumber',
                   #'website',
-                  #'contractor',
-                  #'contractor_partnumber',
+                  'contractor',
+                  'contractor_partnumber',
                   #'contractor_serienumber',
-                  #'part_number',
-                  #]
-        #widgets = {
-            #'manufacturer': forms.TextInput(attrs={
-            #    'class': 'form-control', 'id':'manufacturer'
-            #}),
-            # 'website': forms.URLInput(attrs={
-            #    'class': 'form-control', 'id': 'website'
-            #}),
-            # 'contractor': forms.TextInput(attrs={
-            #    'class': 'form-control', 'id': 'contractor'
-            #})
-        #}
+                  ]
+        widgets = {
+            'manufacturer': forms.TextInput(attrs={
+                'class': 'form-control', 'id':'manufacturer'
+            }),
+             'manufacturer_partnumber': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'manufacturer_partnumber'
+            }),
+             'contractor': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'contractor'
+            }),
+             'contractor_partnumber': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'contractor_partnumber'
+            })
+        }
 
 # Item form
 class ItemForm(forms.ModelForm):
@@ -117,14 +119,7 @@ class ItemForm(forms.ModelForm):
             ('Building', 'building'),
         )
         model = Item
-        fields = ['manufacturer',
-                  #'manufacturer_partnumber',
-                  #'manufacturer_serienumber',
-                  'website',
-                  'contractor',
-                  #'contractor_partnumber',
-                  #'contractor_serienumber',
-                  #'part_number',
+        fields = ['article_related',
                   'cae_partname',
                   #'CAEPartNumber',
                   #'CAESerialNumber',
@@ -136,14 +131,8 @@ class ItemForm(forms.ModelForm):
                   #'characteristic',
                   ]
         widgets = {
-            'manufacturer': forms.TextInput(attrs={
-                'class': 'form-control', 'id':'manufacturer'
-            }),
-             'website': forms.URLInput(attrs={
-                'class': 'form-control', 'id': 'website'
-            }),
-             'contractor': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'contractor'
+            'article_related': forms.TextInput(attrs={
+                'class': 'form-control', 'id':'article_related'
             }),
             'cae_partname': forms.TextInput(attrs={
                 'class': 'form-control', 'id':'cae_partname'

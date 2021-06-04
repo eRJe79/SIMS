@@ -45,8 +45,8 @@
 
     <div class="clearfix"></div>
 
-    <!-- Items -->
-    <div class="items">
+<!-- Articles -->
+    <div class="articles">
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">
@@ -61,8 +61,51 @@
                                         <th class="serial">#</th>
                                         <th>Manufacturer</th>
                                         <th>Date</th>
-                                        <th>Manufacturer Website</th>
+                                        <th>Manufacturer PartNumber</th>
                                         <th>Contractor</th>
+                                        <th>Contractor PartNumber</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if articles %}
+                                    {% for article in articles %}
+                                    <tr>
+                                        <td class="serial">{{ forloop.counter }}</td>
+                                        <td>{{ article.manufacturer }}</td>
+                                        <td>{{ article.manufacturer_date }}</td>
+                                        <td>{{ article.manufacturer_partnumber }}</td>
+                                        <td>{{ article.contractor }}</td>
+                                        <td>{{ article.contractor_partnumber }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                        <tr><td>No Article Data</td></tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div> <!-- /.table-stats -->
+                    </div>
+                </div> <!-- /.card -->
+            </div>  <!-- /.col-lg-8 -->
+        </div>
+    </div>
+    <!-- /.articles -->
+
+    <!-- Items -->
+    <div class="items">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">Item </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats order-table ov-h">
+                            <table class="table ">
+                                <thead>
+                                    <tr>
+                                        <th class="serial">#</th>
+                                        <th>Article</th>
                                         <th>CAE Part name</th>
                                         <th>Model</th>
                                         <th>Date</th>
@@ -73,10 +116,7 @@
                                     {% for item in items %}
                                     <tr>
                                         <td class="serial">{{ forloop.counter }}</td>
-                                        <td>{{ item.manufacturer }}</td>
-                                        <td>{{ item.manufacturer_date }}</td>
-                                        <td>{{ item.website }}</td>
-                                        <td>{{ item.contractor }}</td>
+                                        <td>{{ item.article_related }}</td>
                                         <td>{{ item.cae_partname }}</td>
                                         <td>{{ item.item_model }}</td>
                                         <td>{{ item.record_date }}</td>
@@ -91,8 +131,6 @@
                     </div>
                 </div> <!-- /.card -->
             </div>  <!-- /.col-lg-8 -->
-
-
         </div>
     </div>
     <!-- /.items -->

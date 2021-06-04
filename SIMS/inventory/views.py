@@ -7,6 +7,7 @@ from users.models import User
 from .models import (
     MainUser,
     LambdaUser,
+    Article,
     Item,
     Spare
 )
@@ -14,7 +15,7 @@ from .models import (
 from .forms import (
     MainUserForm,
     LambdaUserForm,
-    # ArticleForm,
+    ArticleForm,
     ItemForm
 )
 
@@ -80,24 +81,24 @@ class LambdaUserListView(ListView):
     context_object_name = 'lambdauser'
 
 # Article views
-#@login_required(login_url='login')
-#def create_article(request):
-#    forms = ArticleForm()
-#    if request.method == 'POST':
-#        forms = ArticleForm(request.POST)
-#        if forms.is_valid():
-#            forms.save()
-#            return redirect('article-list')
-#    context = {
-#        'form': forms
-#    }
-#    return render(request, 'inventory/create_article.html', context)
+@login_required(login_url='login')
+def create_article(request):
+    forms = ArticleForm()
+    if request.method == 'POST':
+        forms = ArticleForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return redirect('article-list')
+    context = {
+        'form': forms
+    }
+    return render(request, 'inventory/create_article.html', context)
 
 
-#class ArticleListView(ListView):
-#    model = Article
-#    template_name = 'inventory/article_list.html'
-#    context_object_name = 'article'
+class ArticleListView(ListView):
+    model = Article
+    template_name = 'inventory/article_list.html'
+    context_object_name = 'article'
 
 # Item views
 @login_required(login_url='login')
