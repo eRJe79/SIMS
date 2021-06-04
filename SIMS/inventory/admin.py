@@ -1,23 +1,26 @@
 from django.contrib import admin
 
 from .models import (
+    Article,
     Item
 )
 
-class ItemAdmin(admin.ModelAdmin):
+class ArticleAdmin(admin.ModelAdmin):
     list_display = ['manufacturer',
-                  #'manufacturer_partnumber',
+                  'manufacturer_partnumber',
                   #'manufacturer_serienumber',
-                  'manufacturer_date',
-                  'website',
+                  #'website',
                   'contractor',
-                  #'contractor_partnumber',
+                  'contractor_partnumber',
                   #'contractor_serienumber',
-                  #'part_number',
+                  ]
+
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ['article_related',
                   'cae_partname',
                   #'CAEPartNumber',
                   #'CAESerialNumber',
                   'item_model']
 
-
+admin.site.register(Article, ArticleAdmin)
 admin.site.register(Item, ItemAdmin)
