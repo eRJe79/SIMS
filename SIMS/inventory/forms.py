@@ -86,11 +86,9 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = ['manufacturer',
                   'manufacturer_partnumber',
-                  #'manufacturer_serienumber',
-                  #'website',
+                  'website',
                   'contractor',
                   'contractor_partnumber',
-                  #'contractor_serienumber',
                   ]
         widgets = {
             'manufacturer': forms.TextInput(attrs={
@@ -98,6 +96,9 @@ class ArticleForm(forms.ModelForm):
             }),
              'manufacturer_partnumber': forms.TextInput(attrs={
                 'class': 'form-control', 'id': 'manufacturer_partnumber'
+            }),
+             'website': forms.URLInput(attrs={
+                'class': 'form-control', 'id': 'website'
             }),
              'contractor': forms.TextInput(attrs={
                 'class': 'form-control', 'id': 'contractor'
@@ -110,25 +111,18 @@ class ArticleForm(forms.ModelForm):
 # Item form
 class ItemForm(forms.ModelForm):
     class Meta:
-        CHARACTERISTIC_CHOICE = (
-            ('Sim Part', 'Sim part', 'sim part'),
-            ('Consumable', 'consumable'),
-            ('Tool', 'tool'),
-            ('PPE', 'ppe'),
-            ('Office', 'office'),
-            ('Building', 'building'),
-        )
         model = Item
         fields = ['article_related',
                   'cae_partname',
-                  #'CAEPartNumber',
+                  'cae_partnumber',
                   #'CAESerialNumber',
                   'item_model',
-                  #'Description',
+                  'description',
                   #'Comment',
-                  #'Documentation',
-                  #'Type',
-                  #'characteristic',
+                  'documentation',
+                  'item_type',
+                  'item_characteristic',
+                  'principal_location',
                   ]
         widgets = {
             'article_related': forms.Select(attrs={
@@ -137,8 +131,26 @@ class ItemForm(forms.ModelForm):
             'cae_partname': forms.TextInput(attrs={
                 'class': 'form-control', 'id':'cae_partname'
             }),
+            'cae_partnumber': forms.TextInput(attrs={
+                'class': 'form-control', 'id':'cae_partnumber'
+            }),
              'item_model': forms.TextInput(attrs={
                 'class': 'form-control', 'id': 'item_model'
+            }),
+             'description': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'description'
+            }),
+             'documentation': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'documentation'
+            }),
+            'item_type': forms.Select(attrs={
+                'class': 'form-control', 'id':'item_type'
+            }),
+            'item_characteristic': forms.Select(attrs={
+                'class': 'form-control', 'id':'item_characteristic'
+            }),
+            'principal_location': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'principal_location'
             })
         }
 

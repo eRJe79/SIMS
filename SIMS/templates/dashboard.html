@@ -51,7 +51,7 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="box-title">Item </h4>
+                        <h4 class="box-title">Article </h4>
                     </div>
                     <div class="card-body--">
                         <div class="table-stats order-table ov-h">
@@ -62,6 +62,7 @@
                                         <th>Manufacturer</th>
                                         <th>Date</th>
                                         <th>Manufacturer PartNumber</th>
+                                        <th>Manufacturer Website</th>
                                         <th>Contractor</th>
                                         <th>Contractor PartNumber</th>
                                     </tr>
@@ -74,6 +75,7 @@
                                         <td>{{ article.manufacturer }}</td>
                                         <td>{{ article.manufacturer_date }}</td>
                                         <td>{{ article.manufacturer_partnumber }}</td>
+                                        <td>{{ article.website }}</td>
                                         <td>{{ article.contractor }}</td>
                                         <td>{{ article.contractor_partnumber }}</td>
                                     </tr>
@@ -107,8 +109,14 @@
                                         <th class="serial">#</th>
                                         <th>Article</th>
                                         <th>CAE Part name</th>
+                                        <th>CAE Part Number</th>
                                         <th>Model</th>
                                         <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Documentation</th>
+                                        <th>Type</th>
+                                        <th>Characteristic</th>
+                                        <th>Location</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -118,8 +126,14 @@
                                         <td class="serial">{{ forloop.counter }}</td>
                                         <td>{{ item.article_related }}</td>
                                         <td>{{ item.cae_partname }}</td>
+                                        <td>{{ item.cae_partnumber }}</td>
                                         <td>{{ item.item_model }}</td>
                                         <td>{{ item.record_date }}</td>
+                                        <td>{{ item.description }}</td>
+                                        <td>{{ item.documentation }}</td>
+                                        <td>{{ item.item_type }}</td>
+                                        <td>{{ item.item_characteristic }}</td>
+                                        <td>{{ item.principal_location }}</td>
                                     </tr>
                                     {% endfor %}
                                     {% else %}

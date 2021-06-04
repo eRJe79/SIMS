@@ -40,7 +40,7 @@ class Article(models.Model):
     manufacturer_partnumber = models.SlugField()
     #manufacturer_serienumber = models.SlugField()
     manufacturer_date = models.DateField(auto_now_add=True)
-    #website = models.URLField(max_length=254)
+    website = models.URLField(max_length=254)
 
     ### CONTRACTOR SPECIFICATION ###
     contractor = models.CharField(max_length=120)
@@ -58,9 +58,9 @@ class Article(models.Model):
 # This class describes an item
 class Item(models.Model):
     ### LOCATION SPECIFICATION ###
-    # principal_location = models.CharField(max_length=100)
+    principal_location = models.CharField(max_length=100)
     ### HISTORY SPECIFICATION ###
-    # record      = models.TextField(blank=True, null=True)
+    #record      = models.TextField(blank=True, null=True)
     # username    = models.OneToOneField(User, on_delete=models.CASCADE)
     record_date = models.DateField(
         auto_now_add=True)  # Automatically set the field to now when the object is first created
@@ -84,16 +84,16 @@ class Item(models.Model):
     ### ITEM SPECIFICATION ###
     article_related = models.ForeignKey(Article, on_delete=models.CASCADE)
     cae_partname = models.CharField(max_length=120)
-    # cae_partnumber      = models.SlugField()
+    cae_partnumber = models.SlugField()
     # cae_serienumber     = models.SlugField()
     item_model = models.CharField(max_length=120)
 
-    # description         = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     # comment             = models.TextField(blank=True, null=True)
-    # documentation       = models.TextField(blank=True, null=True)
+    documentation = models.TextField(blank=True, null=True)
     # item_image          = models.ImageField(upload_to=user_image_path)
-    # item_type           = models.CharField(max_length=20, choices=TYPE_CHOICE)
-    # item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
+    item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
+    item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
     # IsConsumable        = models.BooleanField(default=False)
 
     def __str__(self):
