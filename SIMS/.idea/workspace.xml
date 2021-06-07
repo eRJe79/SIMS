@@ -19,6 +19,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/SIMS/views.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SIMS/urls.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/inventory/urls.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/base/sidebar.html" root0="FORCE_HIGHLIGHTING" />
@@ -30,7 +31,6 @@
     <setting file="file://$PROJECT_DIR$/inventory/forms.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/inventory/create_item.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/inventory/models.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SIMS/views.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1tL8FfPk3UIE5XJUIyFu1hwMrCQ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

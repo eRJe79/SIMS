@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Local Inventory Home</h1>
+  <p>Welcome to the Inventory, a website developed by <em>CAE Cazaux</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The inventory has the following record counts:</p>
+  <ul>
+    <li><strong>Pieces:</strong> {{ num_pieces }}</li>
+    <li><strong>Copies:</strong> {{ num_instances }}</li>
+    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+    <li><strong>Categories:</strong> {{ num_categories }}</li>
+  </ul>
+{% endblock %}

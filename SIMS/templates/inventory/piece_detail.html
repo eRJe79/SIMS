@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Model: {{ piece.piece_model }}</h1>
+
+  <p><strong>Serial Number:</strong> <a href="">{{ piece.cae-serialnumber }}</a></p> <!-- piece detail link not yet defined -->
+  <p><strong>Description:</strong> {{ piece.description }}</p>
+  <p><strong>Documentation:</strong> {{ piece.documentation }}</p>
+  <p><strong>Type:</strong> {{ piece.item_type }}</p>
+  <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
+  <p><strong>Category:</strong> {{ piece.category.all|join:", " }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Copies</h4>
+
+    {% for copy in piece.pieceinstance_set.all %}
+      <hr>
+      <p class="{% if copy.status == 'S' %}text-success{% elif copy.status == 'Reparation' %}text-danger{% else %}text-warning{% endif %}">
+        {{ copy.get_status_display }}
+      <strong>Status:</strong> {{ copy.status }}</p>
+      <p><strong>Location:</strong> {{ copy.location }}</p>
+      <p><strong>Restriction:</strong> {{ copy.restriction }}</p>
+      <p><strong>Owner:</strong> {{ copy.owner }}</p>
+      <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
+    {% endfor %}
+  </div>
+{% endblock %}
