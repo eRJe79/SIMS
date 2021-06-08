@@ -34,36 +34,13 @@ class LambdaUser(models.Model):
     def __str__(self):
         return self.name
 
-# Category of the piece
-class Category(models.Model):
-    """Model representing a piece category."""
+class Piece(models.Model):
+    ### ITEM SPECIFICATIONS ###
+
     part_number = models.CharField(max_length=200, help_text='Enter the part_number')
     website = models.URLField(max_length=254, help_text='Enter the part manufacturer website')
     manufacturer = models.CharField(max_length=120, help_text='Enter the manufacturer name')
 
-    class Meta:
-        ordering = ['manufacturer', 'part_number']
-
-    def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('category-detail', args=[str(self.part_number)])
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return f'{self.part_number}, {self.manufacturer}, {self.website}'
-
-
-class Location(models.Model):
-    """Model representing a piece category."""
-    location = models.CharField(max_length=200, help_text='Enter the part_number')
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return self.location
-
-
-class Piece(models.Model):
-    ### ITEM SPECIFICATIONS ###
     # Choices for the item type
     TYPE_CHOICE = (
         ('Original', 'original'),
@@ -86,7 +63,7 @@ class Piece(models.Model):
 
     # Foreign Key used because piece can only have one category, but categories can have multiple pieces
     # Category as a string rather than object because it hasn't been declared yet in the file
-    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
+    #category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
 
     description = models.TextField(max_length=1000, help_text='Enter a brief description of the piece')
     documentation = models.CharField(max_length=120, help_text='Enter the piece documentation')
@@ -96,7 +73,7 @@ class Piece(models.Model):
 
     def display_category(self):
         """Create a string for the Category. This is required to display category in Admin."""
-        return ', '.join(category.part_number for category in self.category.all()[:3])
+        return ', '.join(category.part_number for category in self.category.all()[:1])
 
     display_category.short_description = 'Category'
 
@@ -105,8 +82,8 @@ class Piece(models.Model):
         return self.cae_serialnumber
 
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this book."""
-        return reverse('piece-detail', args=[str(self.cae_serialnumber)])
+        """Returns the url to access a detail record for this piece."""
+        return reverse('piece-detail', args=[str(self.id)])
 
 
 class PieceInstance(models.Model):
@@ -176,11 +153,11 @@ class PieceInstance(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.id} ({self.category.part_number})'
+        return f'{self.id} ({self.piece.cae_serialnumber})'
 
     def display_piece(self):
         """Create a string for the Piece. This is required to display piece in Admin."""
-        return ', '.join(piece.cae_serialnumber for piece in self.piece.all()[:3])
+        return ', '.join(piece.cae_serialnumber for piece in self.piece.all()[:1])
 
     display_piece.short_description = 'Piece'
 

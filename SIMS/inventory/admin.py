@@ -1,21 +1,16 @@
 from django.contrib import admin
 
 from .models import (
-    Category, Location, Piece, PieceInstance
+    Piece, PieceInstance
 )
 
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('part_number', 'website', 'manufacturer')
-    fields = ['part_number', 'website', 'manufacturer']
 
 class PieceInstanceInline(admin.TabularInline):
     model = PieceInstance
 
 @admin.register(Piece)
 class PieceAdmin(admin.ModelAdmin):
-    list_display = ('piece_model', 'cae_serialnumber', 'display_category', 'description', 'documentation', 'item_type', 'item_characteristic')
+    list_display = ('part_number', 'website', 'manufacturer', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic')
     inlines = [PieceInstanceInline]
 
 @admin.register(PieceInstance)

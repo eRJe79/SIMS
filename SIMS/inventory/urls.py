@@ -3,13 +3,18 @@ from django.urls import path
 from .views import (
     PieceListView,
     PieceDetailView,
-    CategoryListView,
-    CategoryDetailView,
+    PieceCreate,
+    PieceDelete,
+    PieceUpdate,
+    create_piece,
 )
 
 urlpatterns = [
-    path('inventory/', PieceListView.as_view(), name='piece'),
-    path('inventory/<int:pk>', PieceDetailView.as_view(), name='piece-detail'),
-    path('inventory/', CategoryListView.as_view(), name='category'),
-    path('inventory/<int:pk>', CategoryDetailView.as_view(), name='category-detail'),
+    path('piece_list/', PieceListView.as_view(), name='piece'),
+    path('piece_detail/<int:pk>', PieceDetailView.as_view(), name='piece-detail'),
+    path('create-piece/', create_piece, name='create-piece'),
+
+    path('inventory/create/', PieceCreate.as_view(), name='piece-create'),
+    path('inventory/<int:pk>/update/', PieceUpdate.as_view(), name='piece-update'),
+    path('inventory/<int:pk>/delete/', PieceDelete.as_view(), name='piece-delete'),
 ]

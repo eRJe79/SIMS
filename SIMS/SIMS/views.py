@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from inventory.models import MainUser, LambdaUser, Category, Location, Piece, PieceInstance
+from inventory.models import MainUser, LambdaUser, Piece, PieceInstance
 
 
 def index(request):
@@ -14,14 +14,10 @@ def index(request):
     # Available books (status = 'a')
     num_instances_available = PieceInstance.objects.filter(status__exact='S').count()
 
-    # The 'all()' is implied by default.
-    num_categories = Category.objects.count()
-
     context = {
         'num_pieces': num_pieces,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
-        'num_categories': num_categories,
     }
 
     # Render the HTML template index.html with the data in the context variable
