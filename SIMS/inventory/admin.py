@@ -4,6 +4,7 @@ from .models import (
     Category, Location, Piece, PieceInstance
 )
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('part_number', 'website', 'manufacturer')
@@ -19,7 +20,8 @@ class PieceAdmin(admin.ModelAdmin):
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(admin.ModelAdmin):
-    list_filter = ('location', 'status', 'display_piece')
+    list_display = ('piece', 'id', 'location', 'status', 'display_piece', 'owner', 'restriction')
+    list_filter = ('location', 'status')
     fieldsets = (
         (None, {
             'fields': ('piece', 'id')

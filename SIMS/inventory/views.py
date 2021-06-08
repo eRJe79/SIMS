@@ -84,7 +84,7 @@ class PieceListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Piece.objects.filter(owner__icontains='CAE')[:5] # Get 5 pieces containing the owner CAE
+        return Piece.objects.filter(piece_model__icontains='carte')[:1] # Get 5 pieces containing the model 'carte'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context

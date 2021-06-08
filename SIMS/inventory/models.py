@@ -52,13 +52,6 @@ class Category(models.Model):
         """String for representing the Model object."""
         return f'{self.part_number}, {self.manufacturer}, {self.website}'
 
-    def display_category(self):
-        """Create a string for the Category. This is required to display category in Admin."""
-        return ', '.join(category.part_number for category in self.category.all()[:3])
-
-    display_category.short_description = 'Category'
-
-
 
 class Location(models.Model):
     """Model representing a piece category."""
@@ -101,11 +94,11 @@ class Piece(models.Model):
     item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
     item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
 
-    def display_piece(self):
-        """Create a string for the Piece. This is required to display piece in Admin."""
-        return ', '.join(piece.cae_serialnumber for piece in self.piece.all()[:3])
+    def display_category(self):
+        """Create a string for the Category. This is required to display category in Admin."""
+        return ', '.join(category.part_number for category in self.category.all()[:3])
 
-    display_piece.short_description = 'Piece'
+    display_category.short_description = 'Category'
 
     def __str__(self):
         """String for representing the Model object."""
@@ -177,12 +170,19 @@ class PieceInstance(models.Model):
         default='CAE',
         help_text='Piece owner',
     )
+
     class Meta:
         ordering = ['location']
 
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.category.part_number})'
+
+    def display_piece(self):
+        """Create a string for the Piece. This is required to display piece in Admin."""
+        return ', '.join(piece.cae_serialnumber for piece in self.piece.all()[:3])
+
+    display_piece.short_description = 'Piece'
 
 # Class to have details about spares
 # Item class will be used to count them
