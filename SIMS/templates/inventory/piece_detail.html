@@ -10,18 +10,35 @@
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
   <p><strong>Category:</strong> {{ piece.category.all|join:", " }}</p>
 
+  <li><a href="{% url 'piece-instance-detail' %}">Instances detail</a></li>
+{% endblock %}
+
+{% block copies %}
   <div style="margin-left:20px;margin-top:20px">
     <h4>Copies</h4>
-
+<table>
+	    <thead>
+		<tr>
+		<td><p>Instance Number</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
+		</tr>
+		</thead>
     {% for copy in piece.pieceinstance_set.all %}
-      <hr>
-      <p class="{% if copy.status == 'S' %}text-success{% elif copy.status == 'Reparation' %}text-danger{% else %}text-warning{% endif %}">
-        {{ copy.get_status_display }}
-      <strong>Status:</strong> {{ copy.status }}</p>
-      <p><strong>Location:</strong> {{ copy.location }}</p>
-      <p><strong>Restriction:</strong> {{ copy.restriction }}</p>
-      <p><strong>Owner:</strong> {{ copy.owner }}</p>
-      <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
+      <tr class="datarow">
+				<td>{{copy.instance_number}}</td>
+				<td>{{copy.location}}</td>
+				<td>{{copy.status}}</td>
+				<td>
+				<td>
+		              <form action="{% url 'delete-instance' %}" method="post">
+		           {% csrf_token %}
+				<input type="hidden" name="piece_instance_id" value="{{copy.id}}" />
+			       <input type="submit" value="delete instance">
+			</form>
+	         </td>
+        </tr>
     {% endfor %}
+	</table>
   </div>
 {% endblock %}

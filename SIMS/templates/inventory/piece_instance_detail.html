@@ -1,0 +1,35 @@
+<table>
+	{% csrf_token %}
+	<tr>
+	   <form action="" method="post">
+	  {% csrf_token %}
+		<td>{{form.instance_number}}</td>
+		<td>{{form.location}}</td>
+		<td>{{form.status}}</td>
+		<td> <input class="table_button" type="submit" value="Add Instance" /></td>
+	</form>
+	</td></tr>
+	    <thead>
+		<tr>
+		<td><p>Instance Number</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
+		</tr>
+		</thead>
+		{% for item in inventory %}
+			<tr class="datarow">
+				<td>{{item.instance_number}}</td>
+				<td>{{item.location}}</td>
+				<td>{{item.status}}</td>
+				<td>
+				<td>
+		              <form action="{% url 'delete-instance' %}" method="post">
+		           {% csrf_token %}
+				<input type="hidden" name="piece_instance_id" value="{{item.id}}" />
+			       <input type="submit" value="delete instance">
+			</form>
+	         </td>
+              </td>
+        </tr>
+{% endfor %}
+</table>

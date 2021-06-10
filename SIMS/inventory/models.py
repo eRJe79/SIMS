@@ -1,4 +1,7 @@
 from django.db import models
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+
 from users.models import User
 from django.urls import reverse
 import uuid
@@ -88,7 +91,8 @@ class Piece(models.Model):
 
 class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this particular piece across whole inventory')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, help_text='Unique ID for this particular piece across whole inventory')
+    instance_number = models.IntegerField(blank=False, null= False, help_text='Enter the part specific id')
     piece = models.ForeignKey('Piece', on_delete=models.RESTRICT, null=True)
 
     LOCATION = (
@@ -153,7 +157,7 @@ class PieceInstance(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.id} ({self.piece.cae_serialnumber})'
+        return f'{self.id},{self.instance_number}, {self.piece.cae_serialnumber}, {self.location}, {self.owner}, {self.restriction}, {self.status}'
 
     def display_piece(self):
         """Create a string for the Piece. This is required to display piece in Admin."""

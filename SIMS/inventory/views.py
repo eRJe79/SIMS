@@ -1,8 +1,11 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
+from django.utils.translation import ugettext as _
 
 from users.models import User
 
@@ -16,7 +19,7 @@ from .models import (
 from .forms import (
     MainUserForm,
     LambdaUserForm,
-    PieceForm,
+    PieceInstanceForm,
 )
 
 # Main User views
@@ -80,40 +83,10 @@ class LambdaUserListView(ListView):
     context_object_name = 'lambdauser'
 
 
-def create_piece(request):
-    forms = PieceForm()
-    if request.method == 'POST':
-        forms = PieceForm(request.POST)
-        if forms.is_valid():
-            part_number = forms.cleaned_data['part_number']
-            manufacturer = forms.cleaned_data['manufacturer']
-            website = forms.cleaned_data['website']
-            piece_model = forms.cleaned_data['piece_model']
-            cae_serialnumber = forms.cleaned_data['cae_serialnumber']
-            description = forms.cleaned_data['description']
-            documentation = forms.cleaned_data['documentation']
-            item_type = forms.cleaned_data['item_type']
-            item_characteristic = forms.cleaned_data['item_characteristic']
-            Piece.objects.create(
-                part_number=part_number,
-                manufacturer=manufacturer,
-                website=website,
-                piece_model=piece_model,
-                cae_serialnumber=cae_serialnumber,
-                description=description,
-                documentation=documentation,
-                item_type=item_type,
-                item_characteristic=item_characteristic,
-            )
-            return redirect('piece-list')
-    context = {
-        'form': forms
-    }
-    return render(request, 'inventory/create_piece.html', context)
-
 class PieceCreate(CreateView):
     model = Piece
     fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic']
+
 
 class PieceUpdate(UpdateView):
     model = Piece
@@ -122,6 +95,54 @@ class PieceUpdate(UpdateView):
 class PieceDelete(DeleteView):
     model = Piece
     success_url = reverse_lazy('piece')
+
+class PieceInstanceDelete(DeleteView):
+    model = PieceInstance
+    success_url = "/"
+
+
+# def delete_view(request, *args, **kwargs):
+#     # dictionary for initial data with
+#     # field names as keys
+#     context = {}
+#
+#     # fetch the object related to passed id
+#     obj = get_object_or_404(PieceInstance, pk=kwargs.__str__())
+#
+#     if request.method == "POST":
+#         # delete object
+#         obj.delete()
+#         # after deleting redirect to
+#         # home page
+#         return HttpResponseRedirect("/")
+#
+#     return render(request, "inventory/delete_view.html", context)
+
+def show_instance_form(request):
+    model = PieceInstance
+    inventory = PieceInstance.objects.all()
+    if request.method == "POST":
+        form = PieceInstanceForm(data = request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = PieceInstanceForm()
+        context = {
+            'form': form, 'inventory': inventory,
+        }
+    return render(request, 'inventory/piece_instance_detail.html', context)
+
+def delete_instance(request):
+    if request.method == 'POST':
+        form = PieceInstanceForm()
+        inventory = PieceInstance.objects.all()
+        piece_instance_id = str(request.POST.get('piece_instance_id'))
+        piece_instance = PieceInstance.objects.get(id=piece_instance_id)
+        piece_instance.delete()
+        context = {
+            'form': form, 'inventory': inventory,
+        }
+        return render(request, 'inventory/piece_instance_detail.html', context)
 
 class PieceListView(ListView):
     model = Piece
@@ -141,8 +162,42 @@ class PieceListView(ListView):
 
 class PieceDetailView(DetailView):
     model = Piece
-
+    extra_context = {
+        'object_name': _(u'Piece'),
+    }
     # Protection to verify we indeed have an existing piece
     def piece_detail_view(request, primary_key):
         piece = get_object_or_404(Piece, pk=primary_key)
         return render(request, 'inventory/piece_detail.html', context={'piece': piece})
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(PieceDetailView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['piece_instance'] = PieceInstance.objects.all().order_by('-id')
+        return context
+
+
+class PieceInstanceInline(InlineFormSetFactory):
+    model = PieceInstance
+    fields = ['piece', 'instance_number', 'location', 'status', 'owner', 'restriction']
+
+class PieceInline(InlineFormSetFactory):
+    model = Piece
+    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic']
+
+class CreatePieceView(CreateWithInlinesView):
+    model = Piece
+    inlines = [PieceInstanceInline]
+    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic']
+    template_name = 'inventory/create_instance_piece.html'  # Template location
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+class UpdateCreatePieceView(UpdateView):
+    model = Piece
+
+    def piece_update_view(request, primary_key):
+        piece = get_object_or_404(Piece, pk=primary_key)
+        return render(request, 'inventory/update_piece.html', context={'piece': piece})

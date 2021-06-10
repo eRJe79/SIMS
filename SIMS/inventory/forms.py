@@ -1,6 +1,8 @@
 import datetime
 
 from django import forms
+from django.forms import ModelForm
+
 from .models import Piece, PieceInstance
 
 class MainUserForm(forms.Form):
@@ -115,7 +117,9 @@ class PieceForm(forms.Form):
     }
 
 
-
-
+class PieceInstanceForm(ModelForm):
+    class Meta:
+        model = PieceInstance
+        fields = '__all__'
 
 

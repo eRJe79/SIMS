@@ -15,11 +15,11 @@ class PieceAdmin(admin.ModelAdmin):
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(admin.ModelAdmin):
-    list_display = ('piece', 'id', 'location', 'status', 'display_piece', 'owner', 'restriction')
+    list_display = ('piece', 'instance_number', 'location', 'status', 'display_piece', 'owner', 'restriction')
     list_filter = ('location', 'status')
     fieldsets = (
         (None, {
-            'fields': ('piece', 'id')
+            'fields': ('piece', 'instance_number')
         }),
         ('Specification', {
             'fields': ('status', 'location', 'owner', 'restriction')
