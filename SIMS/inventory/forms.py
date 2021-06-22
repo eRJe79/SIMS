@@ -122,4 +122,10 @@ class PieceInstanceForm(ModelForm):
         model = PieceInstance
         fields = '__all__'
 
+class PieceInstanceUpdateForm(forms.ModelForm):
+    class Meta:
+        model = PieceInstance
+        fields = ['piece', 'instance_number', 'location', 'status', 'owner', 'restriction']
+
+
 

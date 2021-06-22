@@ -8,6 +8,7 @@ def index(request):
     """View function for home page of site."""
 
     # Generate counts of some of the main objects
+
     num_pieces = Piece.objects.all().count()
     num_instances = PieceInstance.objects.all().count()
 

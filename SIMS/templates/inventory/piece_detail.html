@@ -31,12 +31,12 @@
 				<td>{{copy.status}}</td>
 				<td>
 				<td>
-		              <form action="{% url 'delete-instance' %}" method="post">
+		  		<form action="{% url 'delete-instance' %}" method="post">
 		           {% csrf_token %}
-				<input type="hidden" name="piece_instance_id" value="{{copy.id}}" />
-			       <input type="submit" value="delete instance">
-			</form>
-	         </td>
+					<input type="hidden" name="piece_instance_id" value="{{copy.id}}" />
+					<input type="submit" value="delete instance">
+				</form>
+	         	</td>
         </tr>
     {% endfor %}
 	</table>

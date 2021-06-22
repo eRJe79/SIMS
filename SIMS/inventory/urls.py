@@ -7,12 +7,14 @@ from .views import (
     PieceDetailView,
     CreatePieceView,
     UpdateCreatePieceView,
+    PieceInstanceUpdate,
     PieceCreate,
     PieceDelete,
     PieceUpdate,
     PieceInstanceDelete,
     show_instance_form,
     delete_instance,
+    update_instance,
 )
 
 urlpatterns = [
@@ -21,6 +23,7 @@ urlpatterns = [
 
     path('inventory/piece-instance-detail/', show_instance_form, name='piece-instance-detail'),
     path('delete-instance/', delete_instance, name="delete-instance"),
+    path('update-instance/', update_instance, name="update-instance"),
 
     path('create_instance_piece/', CreatePieceView.as_view(), name='piece-instance-create'),
     path('inventory/update_piece/<int:pk>', UpdateCreatePieceView.as_view(), name='only-piece-update'),

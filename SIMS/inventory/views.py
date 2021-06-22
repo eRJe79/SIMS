@@ -20,6 +20,7 @@ from .forms import (
     MainUserForm,
     LambdaUserForm,
     PieceInstanceForm,
+    PieceInstanceUpdateForm,
 )
 
 # Main User views
@@ -92,6 +93,10 @@ class PieceUpdate(UpdateView):
     model = Piece
     fields = '__all__' # Not recommended (potential security issue if more fields added)
 
+class PieceInstanceUpdate(UpdateView):
+    model = PieceInstance
+    fields = '__all__' # Not recommended (potential security issue if more fields added)
+
 class PieceDelete(DeleteView):
     model = Piece
     success_url = reverse_lazy('piece')
@@ -99,24 +104,6 @@ class PieceDelete(DeleteView):
 class PieceInstanceDelete(DeleteView):
     model = PieceInstance
     success_url = "/"
-
-
-# def delete_view(request, *args, **kwargs):
-#     # dictionary for initial data with
-#     # field names as keys
-#     context = {}
-#
-#     # fetch the object related to passed id
-#     obj = get_object_or_404(PieceInstance, pk=kwargs.__str__())
-#
-#     if request.method == "POST":
-#         # delete object
-#         obj.delete()
-#         # after deleting redirect to
-#         # home page
-#         return HttpResponseRedirect("/")
-#
-#     return render(request, "inventory/delete_view.html", context)
 
 def show_instance_form(request):
     model = PieceInstance
@@ -139,6 +126,23 @@ def delete_instance(request):
         piece_instance_id = str(request.POST.get('piece_instance_id'))
         piece_instance = PieceInstance.objects.get(id=piece_instance_id)
         piece_instance.delete()
+        context = {
+            'form': form, 'inventory': inventory,
+        }
+        return render(request, 'inventory/piece_instance_detail.html', context)
+
+def update_instance(request):
+    if request.method == 'POST':
+        inventory = PieceInstance.objects.all()
+        piece_instance_id = str(request.POST.get('piece_instance_id'))
+        piece_instance = PieceInstance.objects.get(id=piece_instance_id)
+        form = PieceInstanceUpdateForm(instance=piece_instance, data=request.POST)
+        if form.is_valid():
+            form.save()
+            print('valid form')
+        else:
+            print('unvalid form')
+
         context = {
             'form': form, 'inventory': inventory,
         }
