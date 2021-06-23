@@ -92,7 +92,8 @@ class Piece(models.Model):
 class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, help_text='Unique ID for this particular piece across whole inventory')
-    instance_number = models.IntegerField(blank=False, null= False, help_text='Enter the part specific id')
+
+    instance_number = models.CharField(max_length=120, help_text='Enter the piece serial number')
     piece = models.ForeignKey('Piece', on_delete=models.RESTRICT, null=True)
 
     LOCATION = (

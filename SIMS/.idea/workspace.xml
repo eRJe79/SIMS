@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="572fb891-c972-4959-8087-901444d60319" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SIMS/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/SIMS/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/inventory/piece_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inventory/piece_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/inventory/piece_instance_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inventory/piece_instance_detail.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

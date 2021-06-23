@@ -5,16 +5,18 @@
 	<tr>
 	   <form action="" method="post">
 	  {% csrf_token %}
+		<td>{{form.piece}}</td>
 		<td>{{form.instance_number}}</td>
 		<td>{{form.location}}</td>
 		<td>{{form.status}}</td>
 		<td>{{form.owner}}</td>
 		<td>{{form.restriction}}</td>
-		<td> <input class="table_button" type="submit" value="Add Instance" /></td>
+		<td> <input class="table_button" type="submit" value="Add" /></td>
 	</form>
 	</td></tr>
 	    <thead>
 		<tr>
+		<td><p>Piece</p></td>
 		<td><p>Instance Number</p></td>
 		<td><p>Location</p></td>
 		<td><p>Status</p></td>
@@ -24,6 +26,7 @@
 		</thead>
 		{% for item in inventory %}
 			<tr class="datarow">
+				<td>{{item.piece}}</td>
 				<td>{{item.instance_number}}</td>
 				<td>{{item.location}}</td>
 				<td>{{item.status}}</td>
@@ -33,14 +36,14 @@
 				<form action="{% url 'delete-instance' %}" method="post">
 		           {% csrf_token %}
 					<input type="hidden" name="piece_instance_id" value="{{item.id}}" />
-					<input type="submit" value="delete instance">
+					<input type="submit" value="delete">
 				</form>
 	         	</td>
 		  		<td>
 		  		<form action="{% url 'update-instance' %}" method="post">
 		           {% csrf_token %}
 					<input type="hidden" name="piece_instance_id" value="{{item.id}}" />
-					<input type="submit" value="update instance">
+					<input type="submit" value="update">
 				</form>
 	         	</td>
               </td>
