@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 
 from .forms import LoginForm
 
+from django.template import RequestContext
 
+@csrf_protect
 def login_page(request):
     forms = LoginForm()
     if request.method == 'POST':
@@ -18,7 +22,7 @@ def login_page(request):
     context = {'form': forms}
     return render(request, 'users/login.html', context)
 
-
+@csrf_exempt
 def logout_page(request):
     logout(request)
     return redirect('login')

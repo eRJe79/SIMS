@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Piece List</h1>
+  {% if piece_list %}
+  <p>There are pieces in the inventory.</p>
+  <ul>
+    {% for piece in piece_list %}
+      <li>
+        <a href="{{ piece.get_absolute_url }}">{{ piece.cae_serialnumber }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no pieces in the inventory.</p>
+  {% endif %} 
+{% endblock %}

@@ -1,19 +1,25 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from inventory.models import MainUser, LambdaUser, Item
+from inventory.models import MainUser, LambdaUser, Piece, PieceInstance
 
 
-@login_required(login_url='login')
-def dashboard(request):
-    total_mainuser = MainUser.objects.count()
-    total_lambdauser = LambdaUser.objects.count()
-    #articles = Article.objects.all().order_by('-id')
-    items = Item.objects.all().order_by('-id')
+def index(request):
+    """View function for home page of site."""
+
+    # Generate counts of some of the main objects
+
+    num_pieces = Piece.objects.all().count()
+    num_instances = PieceInstance.objects.all().count()
+
+    # Available books (status = 'a')
+    num_instances_available = PieceInstance.objects.filter(status__exact='S').count()
+
     context = {
-        'mainusers': total_mainuser,
-        'lambdausers': total_lambdauser,
-        #'articles': articles,
-        'items': items
+        'num_pieces': num_pieces,
+        'num_instances': num_instances,
+        'num_instances_available': num_instances_available,
     }
-    return render(request, 'dashboard.html', context)
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'index.html', context=context)

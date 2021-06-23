@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Model: {{ piece.piece_model }}</h1>
+
+  <p><strong>Serial Number:</strong> <a href="">{{ piece.cae_serialnumber }}</a></p> <!-- piece detail link not yet defined -->
+  <p><strong>Description:</strong> {{ piece.description }}</p>
+  <p><strong>Documentation:</strong> {{ piece.documentation }}</p>
+  <p><strong>Type:</strong> {{ piece.item_type }}</p>
+  <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
+  <p><strong>Category:</strong> {{ piece.category.all|join:", " }}</p>
+
+  <li><a href="{% url 'piece-instance-detail' %}">Instances detail</a></li>
+{% endblock %}
+
+{% block copies %}
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Copies</h4>
+<table>
+	    <thead>
+		<tr>
+		<td><p>Instance Number</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
+		</tr>
+		</thead>
+    {% for copy in piece.pieceinstance_set.all %}
+      <tr class="datarow">
+				<td>{{copy.instance_number}}</td>
+				<td>{{copy.location}}</td>
+				<td>{{copy.status}}</td>
+				<td>
+				<td>
+		  		<form action="{% url 'delete-instance' %}" method="post">
+		           {% csrf_token %}
+					<input type="hidden" name="piece_instance_id" value="{{copy.id}}" />
+					<input type="submit" value="delete instance">
+				</form>
+	         	</td>
+        </tr>
+    {% endfor %}
+	</table>
+  </div>
+{% endblock %}

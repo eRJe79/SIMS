@@ -1,6 +1,11 @@
 # venv
 .venv/
 
+.SIMS/inventory/__pycache__/
+.SIMS/SIMS/__pycache__/
+.SIMS/db.sqlite3
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

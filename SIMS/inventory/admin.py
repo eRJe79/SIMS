@@ -1,3 +1,27 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import (
+    Piece, PieceInstance
+)
+
+
+class PieceInstanceInline(admin.TabularInline):
+    model = PieceInstance
+
+@admin.register(Piece)
+class PieceAdmin(admin.ModelAdmin):
+    list_display = ('part_number', 'website', 'manufacturer', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic')
+    inlines = [PieceInstanceInline]
+
+@admin.register(PieceInstance)
+class PieceInstanceAdmin(admin.ModelAdmin):
+    list_display = ('piece', 'instance_number', 'location', 'status', 'display_piece', 'owner', 'restriction')
+    list_filter = ('location', 'status')
+    fieldsets = (
+        (None, {
+            'fields': ('piece', 'instance_number')
+        }),
+        ('Specification', {
+            'fields': ('status', 'location', 'owner', 'restriction')
+        }),
+    )
