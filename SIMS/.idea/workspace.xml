@@ -2,20 +2,96 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="572fb891-c972-4959-8087-901444d60319" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/inventory/create_piece.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/inventory/thispiece_instance_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/inventory/piece_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inventory/piece_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/inventory/piece_instance_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inventory/piece_instance_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/inventory/piece_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inventory/piece_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/.idea/SIMS.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/SIMS/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/SIMS/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/SIMS/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/SIMS/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/SIMS/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/SIMS/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/inventory/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/inventory/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/inventory/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/inventory/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/inventory/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/inventory/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/inventory/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/inventory/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/css/cs-skin-elastic.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/css/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/css/style.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/fonts/icomoon/icomoon.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/fonts/icomoon/icomoon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/fonts/icomoon/icomoon.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/fonts/icomoon/icomoon.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/fonts/icomoon/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/dashboard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/init/chartjs-init.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/init/datatables-init.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/init/flot-chart-init.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/init/fullcalendar-init.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/init/gmap-init.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/init/peitychart-init.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/init/vector-init.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/init/weather-init.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/vmap.sampledata.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/js/widgets.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/scss/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/scss/style.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/assets/scss/style.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/css/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/admin.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/avatar/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/avatar/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/avatar/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/avatar/4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/avatar/5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/avatar/6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/avatar/64-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/avatar/64-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/logo.psd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/logo2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/static/images/logo_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/base/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/base/footer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/base/navbar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/base/sidebar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/create_instance_piece.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/create_lambdauser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/create_mainuser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/delete_view.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/lambdauser_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/mainuser_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/piece_confirm_delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/piece_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/piece_form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/piece_instance_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/piece_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/inventory/update_piece.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/templates/users/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SIMS/users/views.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,17 +107,23 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/templates/inventory/create_mainuser.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/index.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SIMS/views.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SIMS/urls.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/inventory/urls.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/base/sidebar.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/piece_instance_detail.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/dashboard.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/create_piece.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/inventory/views.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/inventory/forms.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/piece_detail.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/inventory/models.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SIMS/views.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/piece_list.html" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1tL8FfPk3UIE5XJUIyFu1hwMrCQ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -53,7 +135,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

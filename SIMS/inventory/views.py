@@ -225,7 +225,7 @@ class CreatePieceView(CreateWithInlinesView):
     model = Piece
     inlines = [PieceInstanceInline]
     fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction', 'location', 'status']
-    template_name = 'inventory/create_instance_piece.html'  # Template location
+    #template_name = 'inventory/create_instance_piece.html'  # Template location
 
     def get_success_url(self):
         return self.object.get_absolute_url()
