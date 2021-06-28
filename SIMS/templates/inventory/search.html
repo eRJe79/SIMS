@@ -1,0 +1,14 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<center>
+    {% if searched %}
+        <h1> You searched for {{ searched }} </h1>
+        {% for piece in pieces %}
+            <td>{{piece}}</td>
+        {% endfor %}
+    {% else %}
+    <h1> You forgot to search a specific term </h1>
+    {% endif %}
+</center>
+{% endblock %}
