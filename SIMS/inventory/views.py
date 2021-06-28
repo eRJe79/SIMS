@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.decorators import login_required
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
 from django.utils.translation import ugettext as _
+from django.db.models import Q
 
 
 from .models import (
@@ -27,7 +28,13 @@ from .forms import (
 def search_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        pieces = Piece.objects.filter(piece_model__contains=searched)
+        pieces = Piece.objects.filter(Q(piece_model__contains=searched)
+                                    | Q(part_number__contains=searched)
+                                    | Q(cae_serialnumber__contains=searched)
+                                    | Q(manufacturer__contains=searched)
+                                    | Q(item_type__contains=searched)
+                                    | Q(item_characteristic__contains=searched)
+                                    | Q(status__contains=searched))
         context = {'searched':searched, 'pieces':pieces,
                  }
         return render(request, 'inventory/search.html', context)
