@@ -1,6 +1,9 @@
-from django import forms
+import datetime
 
-from .models import Article, Item, Spare
+from django import forms
+from django.forms import ModelForm
+
+from .models import Piece, PieceInstance
 
 class MainUserForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={
@@ -80,81 +83,62 @@ class LambdaUserForm(forms.Form):
     }))
 
 
-# Article form
-class ArticleForm(forms.ModelForm):
+class PieceForm(forms.ModelForm):
     class Meta:
-        model = Article
-        fields = ['manufacturer',
-                  'manufacturer_partnumber',
-                  'website',
-                  'contractor',
-                  'contractor_partnumber',
-                  ]
+        model = Piece
+        fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic','owner', 'restriction', 'location', 'status']
         widgets = {
-            'manufacturer': forms.TextInput(attrs={
-                'class': 'form-control', 'id':'manufacturer'
-            }),
-             'manufacturer_partnumber': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'manufacturer_partnumber'
-            }),
-             'website': forms.URLInput(attrs={
-                'class': 'form-control', 'id': 'website'
-            }),
-             'contractor': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'contractor'
-            }),
-             'contractor_partnumber': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'contractor_partnumber'
-            })
-        }
-
-# Item form
-class ItemForm(forms.ModelForm):
-    class Meta:
-        model = Item
-        fields = ['article_related',
-                  'cae_partname',
-                  'cae_partnumber',
-                  #'CAESerialNumber',
-                  'item_model',
-                  'description',
-                  #'Comment',
-                  'documentation',
-                  'item_type',
-                  'item_characteristic',
-                  'principal_location',
-                  ]
-        widgets = {
-            'article_related': forms.Select(attrs={
-                'class': 'form-control', 'id':'article_related'
-            }),
-            'cae_partname': forms.TextInput(attrs={
-                'class': 'form-control', 'id':'cae_partname'
-            }),
-            'cae_partnumber': forms.TextInput(attrs={
-                'class': 'form-control', 'id':'cae_partnumber'
-            }),
-             'item_model': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'item_model'
-            }),
-             'description': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'description'
-            }),
-             'documentation': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'documentation'
-            }),
-            'item_type': forms.Select(attrs={
-                'class': 'form-control', 'id':'item_type'
-            }),
-            'item_characteristic': forms.Select(attrs={
-                'class': 'form-control', 'id':'item_characteristic'
-            }),
-            'principal_location': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'principal_location'
-            })
+        'part_number': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'part_number'
+        }),
+        'manufacturer': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'manufacturer'
+        }),
+        'website': forms.URLInput(attrs={
+            'class': 'form-control', 'id': 'website'
+        }),
+        'piece_model': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'piece_model'
+        }),
+        'cae_serialnumber': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'cae_serialnumber'
+        }),
+        'description': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'description'
+        }),
+        'documentation': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'documentation'
+        }),
+        'item_type': forms.Select(attrs={
+            'class': 'form-control', 'id': 'item_type'
+        }),
+        'item_characteristic': forms.Select(attrs={
+            'class': 'form-control', 'id': 'item_characteristic'
+        }),
+        'owner': forms.Select(attrs={
+            'class': 'form-control', 'id': 'owner'
+        }),
+        'restriction': forms.Select(attrs={
+            'class': 'form-control', 'id': 'restriction'
+        }),
+        'location': forms.Select(attrs={
+            'class': 'form-control', 'id': 'location'
+        }),
+        'status': forms.Select(attrs={
+            'class': 'form-control', 'id': 'status'
+        })
         }
 
 
+class PieceInstanceForm(ModelForm):
+    class Meta:
+        model = PieceInstance
+        fields = '__all__'
+
+class PieceInstanceUpdateForm(forms.ModelForm):
+    class Meta:
+        model = PieceInstance
+        fields = ['piece', 'instance_number', 'location', 'status']
 
 
 

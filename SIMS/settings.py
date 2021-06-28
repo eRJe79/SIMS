@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # My apps
-    'extra_views',
     'qr_code',
     'inventory.apps.InventoryConfig',
     'users.apps.UsersConfig',

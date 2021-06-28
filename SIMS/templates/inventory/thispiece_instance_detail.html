@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+
+{% block copies %}
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Copies</h4>
+<table>
+	    <thead>
+		<tr>
+		<td><p>Instance Number</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
+		</tr>
+		</thead>
+
+      <tr class="datarow">
+				<td>{{copy.get_context_data.instance_number}}</td>
+				<td>{{copy.location}}</td>
+				<td>{{copy.status}}</td>
+				<td>
+				<td>
+		  		<form action="{% url 'delete-instance' %}" method="post">
+		           {% csrf_token %}
+					<input type="hidden" name="piece_instance_id" value="{{copy.id}}" />
+					<input type="submit" value="delete instance">
+				</form>
+	         	</td>
+        </tr>
+
+	</table>
+  </div>
+{% endblock %}

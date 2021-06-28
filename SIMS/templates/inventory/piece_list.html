@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Piece List</h1>
+  {% if piece_list %}
+  <p>There are pieces in the inventory.</p>
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Part Number</th>
+	<th>Manufacturer</th>
+	<th>Piece Model</th>
+	<th>CAE Serial Number</th>
+	<th>Documentation</th>
+	<th>Type</th>
+	<th>Characteristic</th>
+	<th>Owner</th>
+	<th>Restriction</th>
+	<th>Location</th>
+	<th>Status</th>
+	</tr>
+  </thead>
+    {% for piece in piece_list %}
+<!--      <li>-->
+<!--        <a href="{{ piece.get_absolute_url }}">{{ piece.cae_serialnumber }}</a>-->
+    <tr class="datarow">
+      <td><a href="{{ piece.get_absolute_url }}">{{ piece.part_number }}</a></td>
+      <td>{{ piece.manufacturer }}</td>
+      <td>{{ piece.piece_model }}</td>
+      <td>{{ piece.cae_serialnumber }}</td>
+      <td>{{ piece.documentation }}</td>
+      <td>{{ piece.item_type }}</td>
+      <td>{{ piece.item_characteristic }}</td>
+      <td>{{ piece.owner }}</td>
+      <td>{{ piece.restriction }}</td>
+      <td>{{ piece.location }}</td>
+      <td>{{ piece.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>There are no pieces in the inventory.</p>
+  {% endif %} 
+{% endblock %}

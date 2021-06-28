@@ -1,26 +1,27 @@
 from django.contrib import admin
 
 from .models import (
-    Article,
-    Item
+    Piece, PieceInstance
 )
 
-class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['manufacturer',
-                  'manufacturer_partnumber',
-                  #'manufacturer_serienumber',
-                  #'website',
-                  'contractor',
-                  'contractor_partnumber',
-                  #'contractor_serienumber',
-                  ]
 
-class ItemAdmin(admin.ModelAdmin):
-    list_display = ['article_related',
-                  'cae_partname',
-                  #'CAEPartNumber',
-                  #'CAESerialNumber',
-                  'item_model']
+class PieceInstanceInline(admin.TabularInline):
+    model = PieceInstance
 
-admin.site.register(Article, ArticleAdmin)
-admin.site.register(Item, ItemAdmin)
+@admin.register(Piece)
+class PieceAdmin(admin.ModelAdmin):
+    list_display = ('part_number', 'website', 'manufacturer', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction')
+    inlines = [PieceInstanceInline]
+
+@admin.register(PieceInstance)
+class PieceInstanceAdmin(admin.ModelAdmin):
+    list_display = ('piece', 'instance_number', 'location', 'status', 'display_piece')
+    list_filter = ('location', 'status')
+    fieldsets = (
+        (None, {
+            'fields': ('piece', 'instance_number')
+        }),
+        ('Specification', {
+            'fields': ('status', 'location')
+        }),
+    )
