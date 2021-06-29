@@ -18,11 +18,13 @@ from .views import (
     create_piece,
     create_piece_instance,
     all_piece_instance,
-    search_database,
+    search_piece_database,
+    search_instance_database,
 )
 
 urlpatterns = [
-    path('search/', search_database, name='search-database'),
+    path('search/', search_piece_database, name='search-piece-database'),
+    path('search_instance/', search_instance_database, name='search-instance-database'),
 
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<int:pk>', PieceDetailView.as_view(), name='piece-detail'),

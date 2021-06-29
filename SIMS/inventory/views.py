@@ -20,7 +20,8 @@ from .forms import (
 )
 
 # Search feature
-def search_database(request):
+# Specific to piece
+def search_piece_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
         results = Piece.objects.filter(Q(piece_model__contains=searched)
@@ -38,6 +39,22 @@ def search_database(request):
                     'inventory/search.html',
                     {})
 
+# Specific to instances
+def search_instance_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        results = PieceInstance.objects.filter(Q(location__contains=searched)
+                                    | Q(status__contains=searched)
+                                    )
+        context = {'searched':searched, 'results':results,
+                 }
+        return render(request, 'inventory/search_instance.html', context)
+    else:
+        return render(request,
+                    'inventory/search_instance.html',
+                    {})
+
+# Create new piece
 def create_piece(request):
     forms = PieceForm()
     if request.method == 'POST':

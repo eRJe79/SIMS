@@ -7,6 +7,14 @@
 
 {% if piece_instance_list %}
 
+<form class="d-flex" method="POST"
+action="{%url 'search-instance-database' %}">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search"
+           placeholder="Search Location or Status" aria-label="Search" name="searched">
+    <button class="btn btn-outline-secondary" type="submit"> Search </button>
+</form>
+
 <table class="table table-light table-striped">
   <thead>
     <tr>

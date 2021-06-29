@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<center>
+    {% if searched %}
+    <h1> You searched for {{ searched }} </h1>
+    <br/>
+    <table class="table table-light table-striped">
+    <thead>
+    <tr>
+	<th>Part Number</th>
+	<th>Manufacturer</th>
+	<th>Piece Model</th>
+	<th>CAE Serial Number</th>
+	<th>Documentation</th>
+	<th>Type</th>
+	<th>Characteristic</th>
+	<th>Owner</th>
+	<th>Restriction</th>
+	<th>Location</th>
+	<th>Status</th>
+	</tr>
+    </thead>
+    <tr class="datarow">
+      {% for result in results %}
+      <td><a href="{{ result.piece.get_absolute_url }}">{{ result.piece.part_number }}</a></td>
+      <td>{{ result.piece.manufacturer }}</td>
+      <td>{{ result.piece.piece_model }}</td>
+      <td>{{ result.piece.cae_serialnumber }}</td>
+      <td>{{ result.piece.documentation }}</td>
+      <td>{{ result.piece.item_type }}</td>
+      <td>{{ result.piece.item_characteristic }}</td>
+      <td>{{ result.piece.owner }}</td>
+      <td>{{ result.piece.restriction }}</td>
+      <td>{{ result.location }}</td>
+      <td>{{ result.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+    {% else %}
+    <h1> You forgot to search a specific term </h1>
+    {% endif %}
+</center>
+{% endblock %}

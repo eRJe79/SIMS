@@ -5,7 +5,7 @@
   {% if piece_list %}
   <p>There are pieces in the inventory.</p>
 <form class="d-flex" method="POST"
-action="{%url 'search-database' %}">
+action="{%url 'search-piece-database' %}">
     {% csrf_token %}
     <input class="form-control me-2" type="search"
            placeholder="Search Database" aria-label="Search" name="searched">
