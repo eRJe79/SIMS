@@ -66,8 +66,9 @@ def create_piece_instance(request):
     return render(request, 'inventory/create_instance_piece.html', context)
 
 def all_piece_instance(request):
-	piece_instance_list = PieceInstance.objects.all().order_by('piece')
-	return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
+    piece_instance_list = PieceInstance.objects.all().order_by('piece')
+
+    return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
 
 class PieceCreate(CreateView):
     model = Piece
@@ -168,7 +169,7 @@ class PieceDetailView(DetailView):
         # Call the base implementation first to get the context
         context = super(PieceDetailView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
-        context['piece_instance'] = Piece.objects.all().order_by('-id')
+        context['piece_instance'] = PieceInstance.objects.all().order_by('-id')
         return context
 
 

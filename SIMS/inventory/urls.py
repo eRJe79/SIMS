@@ -23,7 +23,7 @@ from .views import (
 
 urlpatterns = [
     path('search/', search_database, name='search-database'),
-    
+
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<int:pk>', PieceDetailView.as_view(), name='piece-detail'),
     path('inventory/update_piece/<int:pk>', UpdateCreatePieceView.as_view(), name='only-piece-update'),
