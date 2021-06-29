@@ -28,14 +28,14 @@ from .forms import (
 def search_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        pieces = Piece.objects.filter(Q(piece_model__contains=searched)
+        results = Piece.objects.filter(Q(piece_model__contains=searched)
                                     | Q(part_number__contains=searched)
                                     | Q(cae_serialnumber__contains=searched)
                                     | Q(manufacturer__contains=searched)
                                     | Q(item_type__contains=searched)
                                     | Q(item_characteristic__contains=searched)
                                     | Q(status__contains=searched))
-        context = {'searched':searched, 'pieces':pieces,
+        context = {'searched':searched, 'results':results,
                  }
         return render(request, 'inventory/search.html', context)
     else:
