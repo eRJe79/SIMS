@@ -3,11 +3,40 @@
 {% block content %}
 <center>
     {% if searched %}
-        <h1> You searched for {{ searched }} </h1>
-        <br/>
-        {% for result in results %}
-            <td>{{result.part_number}}</td><br/>
-        {% endfor %}
+    <h1> You searched for {{ searched }} </h1>
+    <br/>
+    <table class="table table-light table-striped">
+    <thead>
+    <tr>
+	<th>Part Number</th>
+	<th>Manufacturer</th>
+	<th>Piece Model</th>
+	<th>CAE Serial Number</th>
+	<th>Documentation</th>
+	<th>Type</th>
+	<th>Characteristic</th>
+	<th>Owner</th>
+	<th>Restriction</th>
+	<th>Location</th>
+	<th>Status</th>
+	</tr>
+    </thead>
+    <tr class="datarow">
+      {% for result in results %}
+      <td><a href="{{ piece.get_absolute_url }}">{{ result.part_number }}</a></td>
+      <td>{{ result.manufacturer }}</td>
+      <td>{{ result.piece_model }}</td>
+      <td>{{ result.cae_serialnumber }}</td>
+      <td>{{ result.documentation }}</td>
+      <td>{{ result.item_type }}</td>
+      <td>{{ result.item_characteristic }}</td>
+      <td>{{ result.owner }}</td>
+      <td>{{ result.restriction }}</td>
+      <td>{{ result.location }}</td>
+      <td>{{ result.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
     {% else %}
     <h1> You forgot to search a specific term </h1>
     {% endif %}
