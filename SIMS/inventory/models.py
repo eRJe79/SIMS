@@ -95,6 +95,8 @@ class Piece(models.Model):
 class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
     piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True)
+    # Instance specific serial number, setting blank=True as it might be required
+    serial_number = models.CharField(max_length=200, blank=True, help_text='Enter the part_number')
     LOCATION = (
         ('A1', 'Armoire 1'),
         ('A2', 'Armoire 2'),

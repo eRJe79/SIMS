@@ -19,7 +19,7 @@ action="{%url 'search-instance-database' %}">
   <thead>
     <tr>
 	<th>Part Number</th>
-	<th>CAE Serial Number</th>
+	<th>Serial Number</th>
 	<th>Location</th>
 	<th>Status</th>
 	</tr>
@@ -29,7 +29,7 @@ action="{%url 'search-instance-database' %}">
 <!--        <a href="{{ piece.get_absolute_url }}">{{ piece.cae_serialnumber }}</a>-->
     <tr class="datarow">
       <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
-      <td>{{ piece_instance.piece.cae_serialnumber }}</td>
+      <td>{{ piece_instance.serial_number }}</td>
       <td>{{ piece_instance.location }}</td>
       <td>{{ piece_instance.status }}</td>
     </tr>

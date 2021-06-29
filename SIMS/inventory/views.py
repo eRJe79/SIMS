@@ -187,7 +187,11 @@ class PieceDetailView(DetailView):
         # Call the base implementation first to get the context
         context = super(PieceDetailView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
-        context['piece_instance'] = PieceInstance.objects.all().order_by('-id')
+        context['piece_instance'] = PieceInstance.objects.all().order_by('status')
+        instance_in_use = PieceInstance.objects.filter(status='U').count()
+        instance_in_stock = PieceInstance.objects.filter(status='S').count()
+        instance_in_refurbishing = PieceInstance.objects.filter(status='Refurbishing').count()
+        instance_in_reparation = PieceInstance.objects.filter(status='Reparation').count()
         return context
 
 
