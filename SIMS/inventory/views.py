@@ -15,11 +15,8 @@ from .models import (
 )
 
 from .forms import (
-    MainUserForm,
-    LambdaUserForm,
     PieceForm,
     PieceInstanceForm,
-    PieceInstanceUpdateForm,
 )
 
 # Search feature
@@ -52,6 +49,23 @@ def create_piece(request):
         'form': forms
     }
     return render(request, 'inventory/create_piece.html', context)
+
+def create_piece_instance(request):
+    submitted = False
+    form_class = PieceInstanceForm
+    forms = form_class(request.POST or None)
+    if request.method == "POST":
+        forms = PieceInstanceForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return HttpResponseRedirect('inventory/create_instance_piece?submitted=True')
+        else:
+            forms = PieceInstanceForm
+            if 'submitted' in request.GET:
+                submitted = True
+    context = {'form': forms,
+               'submitted': submitted}
+    return render(request, 'inventory/create_instance_piece.html', context)
 
 
 class PieceCreate(CreateView):
@@ -102,22 +116,6 @@ def delete_instance(request):
         }
         return render(request, 'inventory/piece_instance_detail.html', context)
 
-def update_instance(request):
-    if request.method == 'POST':
-        inventory = PieceInstance.objects.all()
-        piece_instance_id = str(request.POST.get('piece_instance_id'))
-        piece_instance = PieceInstance.objects.get(id=piece_instance_id)
-        form = PieceInstanceUpdateForm(instance=piece_instance, data=request.POST)
-        if form.is_valid():
-            form.save()
-            print('valid form')
-        else:
-            print('unvalid form')
-
-        context = {
-            'form': form, 'inventory': inventory,
-        }
-        return render(request, 'inventory/piece_instance_detail.html', context)
 
 class PieceListView(ListView):
     model = Piece

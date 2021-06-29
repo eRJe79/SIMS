@@ -10,18 +10,9 @@ class PieceInstanceInline(admin.TabularInline):
 
 @admin.register(Piece)
 class PieceAdmin(admin.ModelAdmin):
-    list_display = ('part_number', 'website', 'manufacturer', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction')
+    list_display = ('part_number', 'website', 'manufacturer', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction', 'location', 'status')
     inlines = [PieceInstanceInline]
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(admin.ModelAdmin):
-    list_display = ('piece', 'instance_number', 'location', 'status', 'display_piece')
-    list_filter = ('location', 'status')
-    fieldsets = (
-        (None, {
-            'fields': ('piece', 'instance_number')
-        }),
-        ('Specification', {
-            'fields': ('status', 'location')
-        }),
-    )
+    list_display = ('piece', 'instance_number', 'color')
