@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from inventory.models import MainUser, LambdaUser, Piece, PieceInstance
+from inventory.models import Piece, PieceInstance
 
 
 def index(request):

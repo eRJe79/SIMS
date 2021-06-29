@@ -2,7 +2,6 @@ from django.db import models
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
-from users.models import User
 from django.urls import reverse
 import uuid
 
@@ -13,29 +12,6 @@ import uuid
 def user_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
-
-
-# Create your models here.
-# Franck's account
-class MainUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=120, unique=True)
-    address = models.CharField(max_length=220)
-    created_date = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
-
-
-# Account with read-only rights
-class LambdaUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=120, unique=True)
-    address = models.CharField(max_length=220)
-    created_date = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
 
 
 class Piece(models.Model):
@@ -75,6 +51,63 @@ class Piece(models.Model):
     item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
     item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
 
+    RESTRICTION_CHOICE = (
+        ('ITAR', 'ITAR'),
+        ('Controlled', 'Controlled'),
+        ('None', 'Not Application')
+    )
+    restriction = models.CharField(
+        max_length=20,
+        choices=RESTRICTION_CHOICE,
+        blank=True,
+        default='None',
+        help_text='Piece restriction access',
+    )
+    # Choices for the item owner
+    OWNER_CHOICE = (
+        ('CAE', 'CAE'),
+        ('Customer', 'RSAF'),
+        ('Other', 'other'),
+    )
+    owner = models.CharField(
+        max_length=20,
+        choices=OWNER_CHOICE,
+        blank=True,
+        default='CAE',
+        help_text='Piece owner',
+    )
+
+    LOCATION = (
+        ('A1', 'Armoire 1'),
+        ('A2', 'Armoire 2'),
+        ('A3', 'Armoire 3'),
+        ('A4', 'Armoire 4'),
+    )
+
+    location = models.CharField(
+        max_length=20,
+        choices=LOCATION,
+        blank=True,
+        default='A1',
+        help_text='Piece location',
+    )
+
+    # Choices for the piece status
+    STATUS_CHOICE = (
+        ('Reparation', 'Reparation'),
+        ('New', 'New'),
+        ('Refurbishing', 'Refurbishing'),
+        ('U', 'In Use'),
+        ('S', 'In Stock')
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICE,
+        blank=True,
+        default='New',
+        help_text='Piece current status',
+    )
+
     def display_category(self):
         """Create a string for the Category. This is required to display category in Admin."""
         return ', '.join(category.part_number for category in self.category.all()[:1])
@@ -88,6 +121,7 @@ class Piece(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this piece."""
         return reverse('piece-detail', args=[str(self.id)])
+
 
 
 class PieceInstance(models.Model):

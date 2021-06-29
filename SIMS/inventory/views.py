@@ -10,8 +10,6 @@ from django.db.models import Q
 
 
 from .models import (
-    MainUser,
-    LambdaUser,
     Piece,
     PieceInstance
 )
@@ -54,12 +52,6 @@ def create_piece(request):
         'form': forms
     }
     return render(request, 'inventory/create_piece.html', context)
-
-
-class LambdaUserListView(ListView):
-    model = LambdaUser
-    template_name = 'inventory/lambdauser_list.html'
-    context_object_name = 'lambdauser'
 
 
 class PieceCreate(CreateView):
