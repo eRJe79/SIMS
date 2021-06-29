@@ -11,8 +11,7 @@
   <thead>
     <tr>
 	<th>Part Number</th>
-	<th>Instance Number</th>
-	<th>Color</th>
+	<th>CAE Serial Number</th>
 	<th>Location</th>
 	<th>Status</th>
 	</tr>
@@ -22,10 +21,9 @@
 <!--        <a href="{{ piece.get_absolute_url }}">{{ piece.cae_serialnumber }}</a>-->
     <tr class="datarow">
       <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
-      <td>{{ piece_instance.instance_number }}</td>
-      <td>{{ piece_instance.color }}</td>
-      <td>{{ piece_instance.piece.location }}</td>
-      <td>{{ piece_instance.piece.status }}</td>
+      <td>{{ piece_instance.piece.cae_serialnumber }}</td>
+      <td>{{ piece_instance.location }}</td>
+      <td>{{ piece_instance.status }}</td>
     </tr>
     {% endfor %}
 </table>

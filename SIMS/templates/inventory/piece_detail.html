@@ -30,23 +30,22 @@
     <table class="table table-light table-striped">
 	    <thead>
 		<tr>
-		<td><p>Instance Number</p></td>
-		<td><p>Color</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
 		</tr>
 		</thead>
       {% for copy in piece_instance %}
       {% if copy.piece.part_number == piece.part_number %}
       <tr class="datarow">
-				<td>{{copy.instance_number}}</td>
-				<td>{{copy.color}}</td>
-				<td>
-				<td>
+				<td>{{ copy.location }}</td>
+                <td>{{ copy.status }}</td>
+<!--				<td>-->
 <!--		  		<form action="{% url 'delete-instance' %}" method="post">-->
 <!--		           {% csrf_token %}-->
 <!--					<input type="hidden" name="piece_instance_id" value="{{copy.id}}" />-->
 <!--					<input type="submit" value="delete instance">-->
 <!--				</form>-->
-	         	</td>
+<!--	         	</td>-->
         </tr>
 	{% endif %}
 	{% endfor %}

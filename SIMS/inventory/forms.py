@@ -8,7 +8,7 @@ from .models import Piece, PieceInstance
 class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
-        fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic','owner', 'restriction', 'location', 'status']
+        fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic','owner', 'restriction']
         widgets = {
         'part_number': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'part_number'
@@ -43,12 +43,6 @@ class PieceForm(forms.ModelForm):
         'restriction': forms.Select(attrs={
             'class': 'form-control', 'id': 'restriction'
         }),
-        'location': forms.Select(attrs={
-            'class': 'form-control', 'id': 'location'
-        }),
-        'status': forms.Select(attrs={
-            'class': 'form-control', 'id': 'status'
-        })
         }
 
 
@@ -56,16 +50,16 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['instance_number', 'piece', 'color']
+        fields = ['piece', 'location', 'status']
         labels = {
-            'instance_number':'Instance Number',
-            'piece':'Piece',
-            'color':'Color',
+            'piece': 'Piece',
+            'location': 'Location',
+            'status': 'Status'
         }
         widgets = {
-            'instance_number': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Piece Instance Number'}),
-            'piece': forms.Select(attrs={'class':'form-select', 'placeholder':'Piece'}),
-            'color': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Color'}),
+            'piece': forms.Select(attrs={'class':'form-select', 'placeholder': 'Piece'}),
+            'location': forms.Select(attrs={'class':'form-select', 'placeholder': 'Location'}),
+            'status': forms.Select(attrs={'class':'form-select', 'placeholder': 'Status'}),
         }
 
 

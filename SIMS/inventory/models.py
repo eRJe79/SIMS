@@ -77,6 +77,24 @@ class Piece(models.Model):
         help_text='Piece owner',
     )
 
+    def display_category(self):
+        """Create a string for the Category. This is required to display category in Admin."""
+        return ', '.join(category.part_number for category in self.category.all()[:1])
+
+    display_category.short_description = 'Category'
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.cae_serialnumber
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this piece."""
+        return reverse('piece-detail', args=[str(self.id)])
+
+
+class PieceInstance(models.Model):
+    """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
+    piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True)
     LOCATION = (
         ('A1', 'Armoire 1'),
         ('A2', 'Armoire 2'),
@@ -107,27 +125,6 @@ class Piece(models.Model):
         default='New',
         help_text='Piece current status',
     )
-
-    def display_category(self):
-        """Create a string for the Category. This is required to display category in Admin."""
-        return ', '.join(category.part_number for category in self.category.all()[:1])
-
-    display_category.short_description = 'Category'
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return self.cae_serialnumber
-
-    def get_absolute_url(self):
-        """Returns the url to access a detail record for this piece."""
-        return reverse('piece-detail', args=[str(self.id)])
-
-
-class PieceInstance(models.Model):
-    """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
-    instance_number = models.CharField(max_length=120)
-    piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True)
-    color = models.CharField(max_length=120)
 
     def __str__(self):
         return self.instance_number
