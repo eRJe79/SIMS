@@ -1,35 +1,44 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-  <h1>Model: {{ piece.piece_partnumber }}</h1>
-  <p><strong>Description:</strong> {{ piece.piece_model }}</p>
+<div class="card">
+  <div class="card-header">
+    Piece Detail
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"> {{ piece.part_number }}</h5>
+    <p class="card-text">
+    	<ul>
+  <p><strong>Piece Model:</strong> {{ piece.piece_model }}</p>
   <p><strong>Description:</strong> {{ piece.description }}</p>
   <p><strong>Documentation:</strong> {{ piece.documentation }}</p>
   <p><strong>Type:</strong> {{ piece.item_type }}</p>
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
-  <p><strong>Category:</strong> {{ piece.category.all|join:", " }}</p>
+	<li><a href="{{ piece.website }}">{{ piece.website }}</a></li>
+
+	</ul>
+    </p>
+  </div>
+</div>
 
 <!--  <li><a href="{% url 'piece-instance-detail' %}">Instances detail</a></li>-->
-
-{% endblock %}
-
-{% block copies %}
-  <div style="margin-left:20px;margin-top:20px">
-    <h4>Copies</h4>
-<table>
+<div class="card-2">
+  <div class="card-header">
+    Available Instances
+  </div>
+    {% if piece_instance %}
+    <table class="table table-light table-striped">
 	    <thead>
 		<tr>
-		<td><p>CAE Serial Number</p></td>
-		<td><p>Location</p></td>
-		<td><p>Status</p></td>
+		<td><p>Instance Number</p></td>
+		<td><p>Color</p></td>
 		</tr>
 		</thead>
-	  {% for copy in piece_instance %}
-	  {% if copy.part_number == piece.part_number %}
+      {% for copy in piece_instance %}
+      {% if copy.piece.part_number == piece.part_number %}
       <tr class="datarow">
-				<td>{{copy.cae_serialnumber}}</td>
-				<td>{{copy.location}}</td>
-				<td>{{copy.status}}</td>
+				<td>{{copy.instance_number}}</td>
+				<td>{{copy.color}}</td>
 				<td>
 				<td>
 <!--		  		<form action="{% url 'delete-instance' %}" method="post">-->
@@ -41,7 +50,7 @@
         </tr>
 	{% endif %}
 	{% endfor %}
-
 	</table>
-  </div>
+    {% endif %}
+</div>
 {% endblock %}
