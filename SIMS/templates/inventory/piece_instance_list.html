@@ -21,7 +21,7 @@
 <!--      <li>-->
 <!--        <a href="{{ piece.get_absolute_url }}">{{ piece.cae_serialnumber }}</a>-->
     <tr class="datarow">
-      <td><a href="{{ piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
+      <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
       <td>{{ piece_instance.instance_number }}</td>
       <td>{{ piece_instance.color }}</td>
       <td>{{ piece_instance.piece.location }}</td>
