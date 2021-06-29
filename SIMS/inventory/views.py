@@ -58,6 +58,7 @@ def create_piece_instance(request):
         forms = PieceInstanceForm(request.POST)
         if forms.is_valid():
             forms.save()
+            return redirect('piece-instance-list')
         else:
             forms = PieceInstanceForm
             if 'submitted' in request.GET:
