@@ -130,6 +130,7 @@ class PieceForm(forms.ModelForm):
         }
 
 
+
 class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
@@ -139,6 +140,7 @@ class PieceInstanceUpdateForm(forms.ModelForm):
     class Meta:
         model = PieceInstance
         fields = ['piece', 'instance_number', 'location', 'status']
+
 
 
 

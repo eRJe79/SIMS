@@ -55,6 +55,7 @@ def create_piece(request):
     }
     return render(request, 'inventory/create_piece.html', context)
 
+
 class LambdaUserListView(ListView):
     model = LambdaUser
     template_name = 'inventory/lambdauser_list.html'
@@ -64,7 +65,6 @@ class LambdaUserListView(ListView):
 class PieceCreate(CreateView):
     model = Piece
     fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction']
-
 
 class PieceUpdate(UpdateView):
     model = Piece

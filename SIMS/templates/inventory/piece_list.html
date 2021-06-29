@@ -4,7 +4,6 @@
   <h1>Piece List</h1>
   {% if piece_list %}
   <p>There are pieces in the inventory.</p>
-
 <form class="d-flex" method="POST"
 action="{%url 'search-database' %}">
     {% csrf_token %}

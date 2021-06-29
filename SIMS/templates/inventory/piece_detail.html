@@ -11,6 +11,9 @@
 
 <!--  <li><a href="{% url 'piece-instance-detail' %}">Instances detail</a></li>-->
 
+{% endblock %}
+
+{% block copies %}
   <div style="margin-left:20px;margin-top:20px">
     <h4>Copies</h4>
 <table>
@@ -38,6 +41,7 @@
         </tr>
 	{% endif %}
 	{% endfor %}
+
 	</table>
   </div>
 {% endblock %}

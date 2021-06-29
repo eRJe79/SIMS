@@ -32,6 +32,7 @@ urlpatterns = [
     path('create_instance_piece/', CreatePieceView.as_view(), name='piece-instance-create'),
     path('inventory/update_piece/<int:pk>', UpdateCreatePieceView.as_view(), name='only-piece-update'),
     path('inventory/create/', create_piece, name='piece-create'),
+
     path('inventory/<int:pk>/update/', PieceUpdate.as_view(), name='piece-update'),
     path('inventory/<int:pk>/delete/', PieceDelete.as_view(), name='piece-delete'),
     path('inventory/delete/', PieceInstanceDelete.as_view(), name='piece-instance-delete'),

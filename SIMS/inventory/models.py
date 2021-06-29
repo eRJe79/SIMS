@@ -37,23 +37,6 @@ class LambdaUser(models.Model):
     def __str__(self):
         return self.name
 
-class PieceManager(models.Manager):
-    def create_piece(self, part_number, website, manufacturer, piece_model, cae_serialnumber, description, documentation, item_type, item_characteristic, restriction, location, owner, status):
-        piece = self.create(part_number=part_number,
-                            website=website,
-                            piece_model=piece_model,
-                            cae_serialnumber=cae_serialnumber,
-                            description=description,
-                            documentation=documentation,
-                            item_type=item_type,
-                            item_characteristic=item_characteristic,
-                            restriction=restriction,
-                            location=location,
-                            owner=owner,
-                            status=status)
-        return piece
-
-
 
 class Piece(models.Model):
     ### ITEM SPECIFICATIONS ###
@@ -92,6 +75,27 @@ class Piece(models.Model):
     item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
     item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
 
+    def display_category(self):
+        """Create a string for the Category. This is required to display category in Admin."""
+        return ', '.join(category.part_number for category in self.category.all()[:1])
+
+    display_category.short_description = 'Category'
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.cae_serialnumber
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this piece."""
+        return reverse('piece-detail', args=[str(self.id)])
+
+
+class PieceInstance(models.Model):
+    """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, help_text='Unique ID for this particular piece across whole inventory')
+
+    instance_number = models.CharField(max_length=120, help_text='Enter the piece serial number')
+    piece = models.ForeignKey('Piece', on_delete=models.RESTRICT, null=True)
 
     # Choices for the item restriction norm
     RESTRICTION_CHOICE = (
@@ -204,6 +208,7 @@ class PieceInstance(models.Model):
         help_text='Piece current status',
     )
 
+
     class Meta:
         ordering = ['location']
 
@@ -261,4 +266,6 @@ class PieceInstance(models.Model):
 #     rec_last_date = models.DateField()
 #     rec_next_date = models.DateField()
 #     warranty_end = models.DateField()
+
+
 
