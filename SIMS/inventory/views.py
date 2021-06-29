@@ -58,15 +58,16 @@ def create_piece_instance(request):
         forms = PieceInstanceForm(request.POST)
         if forms.is_valid():
             forms.save()
-            return HttpResponseRedirect('inventory/create_instance_piece?submitted=True')
         else:
             forms = PieceInstanceForm
             if 'submitted' in request.GET:
                 submitted = True
-    context = {'form': forms,
-               'submitted': submitted}
+    context = {'form': forms}
     return render(request, 'inventory/create_instance_piece.html', context)
 
+def all_piece_instance(request):
+	piece_instance_list = PieceInstance.objects.all().order_by('piece')
+	return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
 
 class PieceCreate(CreateView):
     model = Piece

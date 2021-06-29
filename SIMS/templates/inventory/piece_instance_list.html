@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	
+	<h1>Piece Instances</h1>
+	<br/>
+	
+{% for piece_instance in piece_instance_list %}
+
+<div class="card">
+  <div class="card-header">
+    {{ piece_instance }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Piece: {{ piece_instance.piece }}</h5>
+    <p class="card-text">
+    	<ul>
+<li>Piece Instance Model: {{ piece_instance.piece.piece_model }}</li>
+<li>Color: {{ piece_instance.color }}</li>
+<li>Instance Number: {{ piece_instance.instance_number }}</li>
+	</li>
+	</ul>
+    </p>
+ </div>
+ </div>
+
+	<br/><br/>
+{% endfor %}
+{% endblock %}

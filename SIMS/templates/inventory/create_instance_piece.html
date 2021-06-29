@@ -3,14 +3,10 @@
 {% block content %}
   <h1>Create New Piece</h1>
   <br/><br/>
-{% if submitted %}
-  Your Instance Was Created!
-{% else %}
   <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" class="btn btn-secondary">
   </form>
-{% endif %}
 <br/><br/>
 {% endblock %}
