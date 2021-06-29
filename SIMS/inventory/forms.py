@@ -83,10 +83,11 @@ class LambdaUserForm(forms.Form):
     }))
 
 
-class PieceForm(forms.Form):
-    Model = Piece
-    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic']
-    widgets = {
+class PieceForm(forms.ModelForm):
+    class Meta:
+        model = Piece
+        fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic','owner', 'restriction', 'location', 'status']
+        widgets = {
         'part_number': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'part_number'
         }),
@@ -114,7 +115,20 @@ class PieceForm(forms.Form):
         'item_characteristic': forms.Select(attrs={
             'class': 'form-control', 'id': 'item_characteristic'
         }),
-    }
+        'owner': forms.Select(attrs={
+            'class': 'form-control', 'id': 'owner'
+        }),
+        'restriction': forms.Select(attrs={
+            'class': 'form-control', 'id': 'restriction'
+        }),
+        'location': forms.Select(attrs={
+            'class': 'form-control', 'id': 'location'
+        }),
+        'status': forms.Select(attrs={
+            'class': 'form-control', 'id': 'status'
+        })
+        }
+
 
 
 class PieceInstanceForm(ModelForm):
@@ -125,7 +139,8 @@ class PieceInstanceForm(ModelForm):
 class PieceInstanceUpdateForm(forms.ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'instance_number', 'location', 'status', 'owner', 'restriction']
+        fields = ['piece', 'instance_number', 'location', 'status']
+
 
 
 

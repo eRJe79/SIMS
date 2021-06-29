@@ -9,8 +9,6 @@
 		<td>{{form.instance_number}}</td>
 		<td>{{form.location}}</td>
 		<td>{{form.status}}</td>
-		<td>{{form.owner}}</td>
-		<td>{{form.restriction}}</td>
 		<td> <input class="table_button" type="submit" value="Add" /></td>
 	</form>
 	</td></tr>
@@ -20,8 +18,6 @@
 		<td><p>Instance Number</p></td>
 		<td><p>Location</p></td>
 		<td><p>Status</p></td>
-		<td><p>Owner</p></td>
-		<td><p>Restriction</p></td>
 		</tr>
 		</thead>
 		{% for item in inventory %}
@@ -30,8 +26,6 @@
 				<td>{{item.instance_number}}</td>
 				<td>{{item.location}}</td>
 				<td>{{item.status}}</td>
-				<td>{{item.owner}}</td>
-				<td>{{item.restriction}}</td>
 				<td>
 				<form action="{% url 'delete-instance' %}" method="post">
 		           {% csrf_token %}
@@ -48,6 +42,6 @@
 	         	</td>
               </td>
         </tr>
-{% endfor %}
+		{% endfor %}
 </table>
 {% endblock %}

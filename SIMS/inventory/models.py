@@ -37,6 +37,7 @@ class LambdaUser(models.Model):
     def __str__(self):
         return self.name
 
+
 class Piece(models.Model):
     ### ITEM SPECIFICATIONS ###
 
@@ -96,6 +97,33 @@ class PieceInstance(models.Model):
     instance_number = models.CharField(max_length=120, help_text='Enter the piece serial number')
     piece = models.ForeignKey('Piece', on_delete=models.RESTRICT, null=True)
 
+    # Choices for the item restriction norm
+    RESTRICTION_CHOICE = (
+        ('ITAR', 'ITAR'),
+        ('Controlled', 'Controlled'),
+        ('None', 'Not Application')
+    )
+    restriction = models.CharField(
+        max_length=20,
+        choices=RESTRICTION_CHOICE,
+        blank=True,
+        default='None',
+        help_text='Piece restriction access',
+    )
+    # Choices for the item owner
+    OWNER_CHOICE = (
+        ('CAE', 'CAE'),
+        ('Customer', 'RSAF'),
+        ('Other', 'other'),
+    )
+    owner = models.CharField(
+        max_length=20,
+        choices=OWNER_CHOICE,
+        blank=True,
+        default='CAE',
+        help_text='Piece owner',
+    )
+
     LOCATION = (
         ('A1', 'Armoire 1'),
         ('A2', 'Armoire 2'),
@@ -126,39 +154,71 @@ class PieceInstance(models.Model):
         default='New',
         help_text='Piece current status',
     )
-    # Choices for the item restriction norm
-    RESTRICTION_CHOICE = (
-        ('ITAR', 'ITAR'),
-        ('Controlled', 'Controlled'),
-        ('None', 'Not Application')
+
+    def display_category(self):
+        """Create a string for the Category. This is required to display category in Admin."""
+        return ', '.join(category.part_number for category in self.category.all()[:1])
+
+    display_category.short_description = 'Category'
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return {self.cae_serialnumber}
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this piece."""
+        return reverse('piece-detail', args=[str(self.id)])
+
+
+class PieceInstance(models.Model):
+    """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, help_text='Unique ID for this particular piece across whole inventory')
+
+    instance_number = models.CharField(max_length=120, help_text='Enter the piece serial number')
+    piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True)
+
+    LOCATION = (
+        ('A1', 'Armoire 1'),
+        ('A2', 'Armoire 2'),
+        ('A3', 'Armoire 3'),
+        ('A4', 'Armoire 4'),
     )
-    restriction = models.CharField(
+
+    location = models.CharField(
         max_length=20,
-        choices=RESTRICTION_CHOICE,
+        choices=LOCATION,
         blank=True,
-        default='None',
-        help_text='Piece restriction access',
+        default='A1',
+        help_text='Piece location',
     )
-    # Choices for the item owner
-    OWNER_CHOICE = (
-        ('CAE', 'CAE'),
-        ('Customer', 'RSAF'),
-        ('Other', 'other'),
+
+    # Choices for the piece status
+    STATUS_CHOICE = (
+        ('Reparation', 'Reparation'),
+        ('New', 'New'),
+        ('Refurbishing', 'Refurbishing'),
+        ('U', 'In Use'),
+        ('S', 'In Stock')
     )
-    owner = models.CharField(
+    status = models.CharField(
         max_length=20,
-        choices=OWNER_CHOICE,
+        choices=STATUS_CHOICE,
         blank=True,
-        default='CAE',
-        help_text='Piece owner',
+        default='New',
+        help_text='Piece current status',
     )
+
 
     class Meta:
         ordering = ['location']
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.id},{self.instance_number}, {self.piece.cae_serialnumber}, {self.location}, {self.owner}, {self.restriction}, {self.status}'
+        return f'{self.id},{self.instance_number}, {self.piece.cae_serialnumber}, {self.location}, {self.status}'
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this piece."""
+        return reverse('thispiece-instance-detail', args=[str(self.id)])
 
     def display_piece(self):
         """Create a string for the Piece. This is required to display piece in Admin."""
@@ -206,3 +266,6 @@ class PieceInstance(models.Model):
 #     rec_last_date = models.DateField()
 #     rec_next_date = models.DateField()
 #     warranty_end = models.DateField()
+
+
+

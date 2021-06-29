@@ -6,8 +6,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.decorators import login_required
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
 from django.utils.translation import ugettext as _
+from django.db.models import Q
 
-from users.models import User
 
 from .models import (
     MainUser,
@@ -19,64 +19,42 @@ from .models import (
 from .forms import (
     MainUserForm,
     LambdaUserForm,
+    PieceForm,
     PieceInstanceForm,
     PieceInstanceUpdateForm,
 )
 
-# Main User views
-@login_required(login_url='login')
-def create_mainuser(request):
-    forms = MainUserForm()
+# Search feature
+def search_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        results = Piece.objects.filter(Q(piece_model__contains=searched)
+                                    | Q(part_number__contains=searched)
+                                    | Q(cae_serialnumber__contains=searched)
+                                    | Q(manufacturer__contains=searched)
+                                    | Q(item_type__contains=searched)
+                                    | Q(item_characteristic__contains=searched)
+                                    | Q(status__contains=searched))
+        context = {'searched':searched, 'results':results,
+                 }
+        return render(request, 'inventory/search.html', context)
+    else:
+        return render(request,
+                    'inventory/search.html',
+                    {})
+
+def create_piece(request):
+    forms = PieceForm()
     if request.method == 'POST':
-        forms = MainUserForm(request.POST)
+        forms = PieceForm(request.POST)
         if forms.is_valid():
-            name = forms.cleaned_data['name']
-            address = forms.cleaned_data['address']
-            email = forms.cleaned_data['email']
-            username = forms.cleaned_data['username']
-            password = forms.cleaned_data['password']
-            retype_password = forms.cleaned_data['retype_password']
-            if password == retype_password:
-                user = User.objects.create_user(
-                    username=username, password=password,
-                    email=email, is_main_user=True
-                )
-                MainUser.objects.create(user=user, name=name, address=address)
-                return redirect('mainuser-list')
+             forms.save()
+        return redirect('piece')
     context = {
         'form': forms
     }
-    return render(request, 'inventory/create_mainuser.html', context)
+    return render(request, 'inventory/create_piece.html', context)
 
-class MainUserListView(ListView):
-    model = MainUser
-    template_name = 'inventory/mainuser_list.html'
-    context_object_name = 'mainuser'
-
-# Read-only account views
-@login_required(login_url='login')
-def create_lambdauser(request):
-    forms = LambdaUserForm()
-    if request.method == 'POST':
-        forms = LambdaUserForm(request.POST)
-        if forms.is_valid():
-            name = forms.cleaned_data['name']
-            address = forms.cleaned_data['address']
-            email = forms.cleaned_data['email']
-            username = forms.cleaned_data['username']
-            password = forms.cleaned_data['password']
-            retype_password = forms.cleaned_data['retype_password']
-            if password == retype_password:
-                user = User.objects.create_user(
-                    username=username, password=password,
-                    email=email, is_lambda=True
-                )
-                LambdaUser.objects.create(user=user, name=name, address=address)
-                return redirect('lambdauser-list')
-    context = {
-        'form': forms
-    }
-    return render(request, 'inventory/create_lambdauser.html', context)
 
 class LambdaUserListView(ListView):
     model = LambdaUser
@@ -86,8 +64,7 @@ class LambdaUserListView(ListView):
 
 class PieceCreate(CreateView):
     model = Piece
-    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic']
-
+    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction']
 
 class PieceUpdate(UpdateView):
     model = Piece
@@ -109,10 +86,12 @@ def show_instance_form(request):
     model = PieceInstance
     inventory = PieceInstance.objects.all()
     if request.method == "POST":
-        form = PieceInstanceForm(data = request.POST)
+        form = PieceInstanceForm(data=request.POST)
         if form.is_valid():
             form.save()
+            print('valid form')
     else:
+        print('unvalid form')
         form = PieceInstanceForm()
         context = {
             'form': form, 'inventory': inventory,
@@ -163,12 +142,32 @@ class PieceListView(ListView):
         context['piece'] = Piece.objects.all().order_by('-id')
         return context
 
+class SearchView(ListView):
+    model = Piece
+    template_name = 'search.html'
+    context_object_name = 'all_search_results'
+
+    def get_queryset(self):
+       result = super(SearchView, self).get_queryset()
+       query = self.request.GET.get('search')
+       if query:
+          postresult = Piece.objects.filter(title__contains=query)
+          result = postresult
+       else:
+           result = None
+       return result
+
+class PieceInstanceInline(InlineFormSetFactory):
+    model = PieceInstance
+    fields = ['piece', 'instance_number', 'location', 'status']
+
 
 class PieceDetailView(DetailView):
     model = Piece
     extra_context = {
         'object_name': _(u'Piece'),
     }
+
     # Protection to verify we indeed have an existing piece
     def piece_detail_view(request, primary_key):
         piece = get_object_or_404(Piece, pk=primary_key)
@@ -178,23 +177,20 @@ class PieceDetailView(DetailView):
         # Call the base implementation first to get the context
         context = super(PieceDetailView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
-        context['piece_instance'] = PieceInstance.objects.all().order_by('-id')
+        context['piece_instance'] = Piece.objects.all().order_by('-id')
         return context
 
 
-class PieceInstanceInline(InlineFormSetFactory):
-    model = PieceInstance
-    fields = ['piece', 'instance_number', 'location', 'status', 'owner', 'restriction']
-
 class PieceInline(InlineFormSetFactory):
     model = Piece
-    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic']
+    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction']
+
 
 class CreatePieceView(CreateWithInlinesView):
     model = Piece
     inlines = [PieceInstanceInline]
-    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic']
-    template_name = 'inventory/create_instance_piece.html'  # Template location
+    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction', 'location', 'status']
+    #template_name = 'inventory/create_instance_piece.html'  # Template location
 
     def get_success_url(self):
         return self.object.get_absolute_url()
