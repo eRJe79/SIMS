@@ -7,12 +7,19 @@
 
 {% if piece_instance_list %}
 
+<form class="d-flex" method="POST"
+action="{%url 'search-instance-database' %}">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search"
+           placeholder="Search Location or Status" aria-label="Search" name="searched">
+    <button class="btn btn-outline-secondary" type="submit"> Search </button>
+</form>
+
 <table class="table table-light table-striped">
   <thead>
     <tr>
 	<th>Part Number</th>
-	<th>Instance Number</th>
-	<th>Color</th>
+	<th>Serial Number</th>
 	<th>Location</th>
 	<th>Status</th>
 	</tr>
@@ -21,11 +28,10 @@
 <!--      <li>-->
 <!--        <a href="{{ piece.get_absolute_url }}">{{ piece.cae_serialnumber }}</a>-->
     <tr class="datarow">
-      <td><a href="{{ piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
-      <td>{{ piece_instance.instance_number }}</td>
-      <td>{{ piece_instance.color }}</td>
-      <td>{{ piece_instance.piece.location }}</td>
-      <td>{{ piece_instance.piece.status }}</td>
+      <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
+      <td>{{ piece_instance.serial_number }}</td>
+      <td>{{ piece_instance.location }}</td>
+      <td>{{ piece_instance.status }}</td>
     </tr>
     {% endfor %}
 </table>

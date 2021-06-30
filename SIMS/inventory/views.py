@@ -20,7 +20,8 @@ from .forms import (
 )
 
 # Search feature
-def search_database(request):
+# Specific to piece
+def search_piece_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
         results = Piece.objects.filter(Q(piece_model__contains=searched)
@@ -29,7 +30,7 @@ def search_database(request):
                                     | Q(manufacturer__contains=searched)
                                     | Q(item_type__contains=searched)
                                     | Q(item_characteristic__contains=searched)
-                                    | Q(status__contains=searched))
+                                    )
         context = {'searched':searched, 'results':results,
                  }
         return render(request, 'inventory/search.html', context)
@@ -38,6 +39,22 @@ def search_database(request):
                     'inventory/search.html',
                     {})
 
+# Specific to instances
+def search_instance_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        results = PieceInstance.objects.filter(Q(location__contains=searched)
+                                    | Q(status__contains=searched)
+                                    )
+        context = {'searched':searched, 'results':results,
+                 }
+        return render(request, 'inventory/search_instance.html', context)
+    else:
+        return render(request,
+                    'inventory/search_instance.html',
+                    {})
+
+# Create new piece
 def create_piece(request):
     forms = PieceForm()
     if request.method == 'POST':
@@ -49,6 +66,19 @@ def create_piece(request):
         'form': forms
     }
     return render(request, 'inventory/create_piece.html', context)
+
+def show_piece(request, primary_key):
+    piece = Piece.objects.get(pk=primary_key)
+    piece_instance = PieceInstance.objects.all().order_by('status')
+    instance_in_use = PieceInstance.objects.filter(status='U', piece=piece).count()
+    instance_in_stock = PieceInstance.objects.filter(status='S', piece=piece).count()
+    instance_in_refurbished = PieceInstance.objects.filter(status='Refurbishing', piece=piece).count()
+    instance_in_reparation = PieceInstance.objects.filter(status='Reparation', piece=piece).count()
+    context = {'piece': piece, 'piece_instance': piece_instance, 'instance_in_use': instance_in_use,
+               'instance_in_stock': instance_in_stock, 'instance_in_refurbished': instance_in_refurbished,
+               'instance_in_reparation': instance_in_reparation}
+    return render(request, 'inventory/piece_detail.html',
+                  context)
 
 def create_piece_instance(request):
     submitted = False
@@ -163,14 +193,15 @@ class PieceDetailView(DetailView):
 
     # Protection to verify we indeed have an existing piece
     def piece_detail_view(request, primary_key):
-        piece = get_object_or_404(Piece, pk=primary_key)
-        return render(request, 'inventory/piece_detail.html', context={'piece': piece})
+        mypiece = get_object_or_404(Piece, pk=primary_key)
+        context = {'piece': mypiece}
+        return render(request, 'inventory/piece_detail.html', context)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
         context = super(PieceDetailView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
-        context['piece_instance'] = PieceInstance.objects.all().order_by('-id')
+        context['piece_instance'] = PieceInstance.objects.all().order_by('status')
         return context
 
 
@@ -182,7 +213,7 @@ class PieceInline(InlineFormSetFactory):
 class CreatePieceView(CreateWithInlinesView):
     model = Piece
     inlines = [PieceInstanceInline]
-    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction', 'location', 'status']
+    fields = ['part_number', 'manufacturer', 'website', 'piece_model', 'cae_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction']
     #template_name = 'inventory/create_instance_piece.html'  # Template location
 
     def get_success_url(self):

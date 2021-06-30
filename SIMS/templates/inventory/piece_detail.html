@@ -6,7 +6,7 @@
     Piece Detail
   </div>
   <div class="card-body">
-    <h5 class="card-title"> {{ piece.part_number }}</h5>
+    <h5 class="card-title"> Manufacturer part number : {{ piece.part_number }}</h5>
     <p class="card-text">
     	<ul>
   <p><strong>Piece Model:</strong> {{ piece.piece_model }}</p>
@@ -14,7 +14,8 @@
   <p><strong>Documentation:</strong> {{ piece.documentation }}</p>
   <p><strong>Type:</strong> {{ piece.item_type }}</p>
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
-	<li><a href="{{ piece.website }}">{{ piece.website }}</a></li>
+  <p><strong>Manufacturer:</strong> {{ piece.manufacturer }}</p>
+  <a href="{{ piece.website }}">{{ piece.website }}</a>
 
 	</ul>
     </p>
@@ -30,23 +31,48 @@
     <table class="table table-light table-striped">
 	    <thead>
 		<tr>
-		<td><p>Instance Number</p></td>
-		<td><p>Color</p></td>
+		<td><p>In Use</p></td>
+		<td><p>In Stock</p></td>
+		<td><p>Refurbishing</p></td>
+		<td><p>Reparation</p></td>
 		</tr>
 		</thead>
-      {% for copy in piece_instance %}
-      {% if copy.piece.part_number == piece.part_number %}
       <tr class="datarow">
-				<td>{{copy.instance_number}}</td>
-				<td>{{copy.color}}</td>
-				<td>
-				<td>
+				<td>{{ instance_in_use }}</td>
+                <td>{{ instance_in_stock }}</td>
+				<td>{{ instance_in_refurbished }}</td>
+                <td>{{ instance_in_reparation }}</td>
+<!--				<td>-->
 <!--		  		<form action="{% url 'delete-instance' %}" method="post">-->
 <!--		           {% csrf_token %}-->
 <!--					<input type="hidden" name="piece_instance_id" value="{{copy.id}}" />-->
 <!--					<input type="submit" value="delete instance">-->
 <!--				</form>-->
-	         	</td>
+<!--	         	</td>-->
+        </tr>
+	</table>
+
+    <table class="table table-light table-striped">
+	    <thead>
+		<tr>
+		<td><p>Serial Number</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
+		</tr>
+		</thead>
+      {% for copy in piece_instance %}
+      {% if copy.piece.cae_serialnumber == piece.cae_serialnumber %}
+      <tr class="datarow">
+				<td>{{ copy.serial_number }}</td>
+				<td>{{ copy.location }}</td>
+                <td>{{ copy.status }}</td>
+<!--				<td>-->
+<!--		  		<form action="{% url 'delete-instance' %}" method="post">-->
+<!--		           {% csrf_token %}-->
+<!--					<input type="hidden" name="piece_instance_id" value="{{copy.id}}" />-->
+<!--					<input type="submit" value="delete instance">-->
+<!--				</form>-->
+<!--	         	</td>-->
         </tr>
 	{% endif %}
 	{% endfor %}

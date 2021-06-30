@@ -5,7 +5,7 @@
   {% if piece_list %}
   <p>There are pieces in the inventory.</p>
 <form class="d-flex" method="POST"
-action="{%url 'search-database' %}">
+action="{%url 'search-piece-database' %}">
     {% csrf_token %}
     <input class="form-control me-2" type="search"
            placeholder="Search Database" aria-label="Search" name="searched">
@@ -17,14 +17,12 @@ action="{%url 'search-database' %}">
 	<th>Part Number</th>
 	<th>Manufacturer</th>
 	<th>Piece Model</th>
-	<th>CAE Serial Number</th>
+	<th>Serial Number</th>
 	<th>Documentation</th>
 	<th>Type</th>
 	<th>Characteristic</th>
 	<th>Owner</th>
 	<th>Restriction</th>
-	<th>Location</th>
-	<th>Status</th>
 	</tr>
   </thead>
     {% for piece in piece_list %}
@@ -40,8 +38,6 @@ action="{%url 'search-database' %}">
       <td>{{ piece.item_characteristic }}</td>
       <td>{{ piece.owner }}</td>
       <td>{{ piece.restriction }}</td>
-      <td>{{ piece.location }}</td>
-      <td>{{ piece.status }}</td>
     </tr>
     {% endfor %}
 </table>
