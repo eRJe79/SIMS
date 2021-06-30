@@ -67,6 +67,19 @@ def create_piece(request):
     }
     return render(request, 'inventory/create_piece.html', context)
 
+def show_piece(request, primary_key):
+    piece = Piece.objects.get(pk=primary_key)
+    piece_instance = PieceInstance.objects.all().order_by('status')
+    instance_in_use = PieceInstance.objects.filter(status='U', piece=piece).count()
+    instance_in_stock = PieceInstance.objects.filter(status='S', piece=piece).count()
+    instance_in_refurbished = PieceInstance.objects.filter(status='Refurbishing', piece=piece).count()
+    instance_in_reparation = PieceInstance.objects.filter(status='Reparation', piece=piece).count()
+    context = {'piece': piece, 'piece_instance': piece_instance, 'instance_in_use': instance_in_use,
+               'instance_in_stock': instance_in_stock, 'instance_in_refurbished': instance_in_refurbished,
+               'instance_in_reparation': instance_in_reparation}
+    return render(request, 'inventory/piece_detail.html',
+                  context)
+
 def create_piece_instance(request):
     submitted = False
     form_class = PieceInstanceForm
@@ -180,18 +193,15 @@ class PieceDetailView(DetailView):
 
     # Protection to verify we indeed have an existing piece
     def piece_detail_view(request, primary_key):
-        piece = get_object_or_404(Piece, pk=primary_key)
-        return render(request, 'inventory/piece_detail.html', context={'piece': piece})
+        mypiece = get_object_or_404(Piece, pk=primary_key)
+        context = {'piece': mypiece}
+        return render(request, 'inventory/piece_detail.html', context)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
         context = super(PieceDetailView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
         context['piece_instance'] = PieceInstance.objects.all().order_by('status')
-        instance_in_use = PieceInstance.objects.filter(status='U').count()
-        instance_in_stock = PieceInstance.objects.filter(status='S').count()
-        instance_in_refurbishing = PieceInstance.objects.filter(status='Refurbishing').count()
-        instance_in_reparation = PieceInstance.objects.filter(status='Reparation').count()
         return context
 
 

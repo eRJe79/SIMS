@@ -37,11 +37,10 @@
 		<td><p>Reparation</p></td>
 		</tr>
 		</thead>
-      {% if piece_instance.piece.part_number == piece.part_number %}
       <tr class="datarow">
 				<td>{{ instance_in_use }}</td>
                 <td>{{ instance_in_stock }}</td>
-				<td>{{ instance_in_refurbishing }}</td>
+				<td>{{ instance_in_refurbished }}</td>
                 <td>{{ instance_in_reparation }}</td>
 <!--				<td>-->
 <!--		  		<form action="{% url 'delete-instance' %}" method="post">-->
@@ -51,7 +50,6 @@
 <!--				</form>-->
 <!--	         	</td>-->
         </tr>
-	{% endif %}
 	</table>
 
     <table class="table table-light table-striped">
