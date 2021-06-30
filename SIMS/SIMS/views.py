@@ -12,13 +12,9 @@ def index(request):
     num_pieces = Piece.objects.all().count()
     num_instances = PieceInstance.objects.all().count()
 
-    # Available books (status = 'a')
-    #num_instances_available = PieceInstance.objects.filter(status__exact='S').count()
-
     context = {
         'num_pieces': num_pieces,
         'num_instances': num_instances,
-        #'num_instances_available': num_instances_available,
     }
 
     # Render the HTML template index.html with the data in the context variable

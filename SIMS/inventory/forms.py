@@ -8,7 +8,7 @@ from .models import Piece, PieceInstance
 class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
-        fields = ['part_number', 'manufacturer', 'cae_serialnumber', 'website', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic','owner', 'restriction']
+        fields = ['part_number', 'manufacturer', 'manufacturer_serialnumber', 'website', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic','owner', 'restriction']
         widgets = {
         'part_number': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'part_number'
@@ -16,8 +16,8 @@ class PieceForm(forms.ModelForm):
         'manufacturer': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'manufacturer'
         }),
-        'cae_serialnumber': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'cae_serialnumber'
+        'manufacturer_serialnumber': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'manufacturer_serialnumber'
         }),
         'website': forms.URLInput(attrs={
             'class': 'form-control', 'id': 'website'
@@ -44,7 +44,6 @@ class PieceForm(forms.ModelForm):
             'class': 'form-select', 'id': 'restriction'
         }),
         }
-
 
 
 class PieceInstanceForm(ModelForm):
