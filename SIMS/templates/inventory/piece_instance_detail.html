@@ -7,7 +7,7 @@
 	  {% csrf_token %}
 		<td>{{form.piece}}</td>
 		<td>{{form.instance_number}}</td>
-		<td>{{form.location}}</td>
+		<td>{{form.location}}-{{form.second_location|default_if_none:""}}-{{form.third_location|default_if_none:""}}-{{form.fourth_location|default_if_none:""}}-{{form.fifth_location|default_if_none:""}}</td>
 		<td>{{form.status}}</td>
 		<td> <input class="table_button" type="submit" value="Add" /></td>
 	</form>
@@ -24,7 +24,7 @@
 			<tr class="datarow">
 				<td>{{item.piece}}</td>
 				<td>{{item.instance_number}}</td>
-				<td>{{item.location}}</td>
+				<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}</td>
 				<td>{{item.status}}</td>
 				<td>
 				<form action="{% url 'delete-instance' %}" method="post">

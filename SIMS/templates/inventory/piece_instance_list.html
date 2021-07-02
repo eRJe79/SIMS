@@ -28,7 +28,7 @@ action="{%url 'search-instance-database' %}">
     <tr class="datarow">
       <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
       <td>{{ piece_instance.serial_number }}</td>
-      <td>{{ piece_instance.location }}</td>
+      <td>{{ piece_instance.location }}-{{ piece_instance.second_location|default_if_none:"" }}-{{ piece_instance.third_location|default_if_none:"" }}-{{ piece_instance.fourth_location|default_if_none:"" }}-{{ piece_instance.fifth_location|default_if_none:"" }}</td>
       <td>{{ piece_instance.status }}</td>
     </tr>
     {% endfor %}

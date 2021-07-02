@@ -49,17 +49,26 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'serial_number', 'location', 'status']
+        fields = ['piece', 'serial_number', 'location', 'second_location', 'third_location', 'fourth_location',
+                  'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
             'serial_number': 'Serial Number',
             'location': 'Location',
+            'second_location': 'Second Location',
+            'third_location': 'Third Location',
+            'fourth_location': 'Fourth Location',
+            'fifth_location': 'Fifth Location',
             'status': 'Status'
         }
         widgets = {
             'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Piece'}),
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Serial Number'}),
             'location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Location'}),
+            'second_location': forms.Select(attrs={'class': 'form-select', 'placeholder': ' Second Location'}),
+            'third_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Third Location'}),
+            'fourth_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Fourth Location'}),
+            'fifth_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Fifth Location'}),
             'status': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Status'}),
         }
 
