@@ -9,6 +9,7 @@ from .views import (
     create_piece,
     show_piece,
     create_piece_instance,
+    update_instance,
     all_piece_instance,
     search_piece_database,
     search_instance_database,
@@ -25,5 +26,6 @@ urlpatterns = [
     path('piece_instance_list', all_piece_instance, name="piece-instance-list"),
     path('create_instance_piece/', create_piece_instance, name='piece-instance-create'),
     path('inventory/piece-instance-detail/', show_instance_form, name='piece-instance-detail'),
-    path('delete-instance/', delete_instance, name="delete-instance"),
+    path('delete_piece_instance/<instance_id>', delete_instance, name="delete-piece-instance"),
+    path('update_piece_instance/<instance_id>', update_instance, name='update-piece-instance'),
 ]
