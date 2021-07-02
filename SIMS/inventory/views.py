@@ -72,9 +72,9 @@ def show_instance_form(request):
     else:
         print('unvalid form')
         form = PieceInstanceForm()
-        context = {
-            'form': form, 'inventory': inventory,
-        }
+    context = {
+        'form': form, 'inventory': inventory,
+    }
     return render(request, 'inventory/piece_instance_detail.html', context)
 
 def all_piece_instance(request):
@@ -82,17 +82,23 @@ def all_piece_instance(request):
 
     return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
 
-def delete_instance(request):
-    if request.method == 'POST':
+# Update an instance (location and/or status only)
+def update_instance(request, instance_id):
+    piece_instance = PieceInstance.objects.get(pk=instance_id)
+    form = PieceInstanceForm(request.POST or None, instance=piece_instance)
+    if form.is_valid():
+        form.save()
+        return redirect('piece-instance-list')
+    else:
         form = PieceInstanceForm()
-        inventory = PieceInstance.objects.all()
-        piece_instance_id = str(request.POST.get('piece_instance_id'))
-        piece_instance = PieceInstance.objects.get(id=piece_instance_id)
-        piece_instance.delete()
-        context = {
-            'form': form, 'inventory': inventory,
-        }
-        return render(request, 'inventory/piece_instance_detail.html', context)
+    context = {'piece_instance': piece_instance, 'form':form}
+    return render(request, 'inventory/update_piece_instance.html', context)
+
+# Delete an Event
+def delete_instance(request, instance_id):
+    piece_instance = PieceInstance.objects.get(pk=instance_id)
+    piece_instance.delete()
+    return redirect('piece-detail')
 
 class PieceListView(ListView):
     model = Piece
