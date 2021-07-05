@@ -137,6 +137,10 @@ def search_instance_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
         results = PieceInstance.objects.filter(Q(location__contains=searched)
+                                    | Q(second_location__contains=searched)
+                                    | Q(third_location__contains=searched)
+                                    | Q(fourth_location__contains=searched)
+                                    | Q(fifth_location__contains=searched)
                                     | Q(status__contains=searched)
                                     )
         context = {'searched':searched, 'results':results,

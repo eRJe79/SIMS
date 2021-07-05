@@ -32,7 +32,7 @@
       <td>{{ result.piece.item_characteristic }}</td>
       <td>{{ result.piece.owner }}</td>
       <td>{{ result.piece.restriction }}</td>
-      <td>{{ result.location }}</td>
+      <td>{{ result.location }}-{{ result.second_location|default_if_none:"" }}-{{ result.third_location|default_if_none:"" }}-{{ result.fourth_location|default_if_none:"" }}-{{ result.fifth_location|default_if_none:"" }}</td>
       <td>{{ result.status }}</td>
     </tr>
     {% endfor %}

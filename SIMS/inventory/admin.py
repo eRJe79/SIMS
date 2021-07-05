@@ -15,4 +15,4 @@ class PieceAdmin(admin.ModelAdmin):
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(admin.ModelAdmin):
-    list_display = ('piece', 'location', 'status')
+    list_display = ('piece', 'location', 'second_location', 'third_location', 'fourth_location', 'fifth_location', 'status')
