@@ -1,6 +1,7 @@
 import datetime
 
 from django import forms
+from django.conf import settings
 from django.forms import ModelForm
 
 from .models import Piece, PieceInstance
@@ -49,11 +50,13 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'serial_number', 'location', 'second_location', 'third_location', 'fourth_location',
+        fields = ['piece', 'serial_number', 'date_calibration', 'date_end_of_life', 'location', 'second_location', 'third_location', 'fourth_location',
                   'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
             'serial_number': 'Serial Number',
+            'date_calibration': 'Next Calibration',
+            'date_end_of_life': 'End of Life',
             'location': 'Location',
             'second_location': 'Second Location',
             'third_location': 'Third Location',
@@ -64,6 +67,8 @@ class PieceInstanceForm(ModelForm):
         widgets = {
             'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Piece'}),
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Serial Number'}),
+            'date_calibration': forms.DateInput(format='%Y-%m-%d'),
+            'date_end_of_life': forms.DateInput(format='%Y-%m-%d'),
             'location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Location'}),
             'second_location': forms.Select(attrs={'class': 'form-select', 'placeholder': ' Second Location'}),
             'third_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Third Location'}),
