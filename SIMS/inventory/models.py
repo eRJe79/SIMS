@@ -206,9 +206,9 @@ class PieceInstance(models.Model):
     # Date of update: this date changes at update and the history is kept - automatic set
     date_update = models.DateField(auto_now=True)
     # Date of the next calibration: to be changes when calibration is done - can be let empty
-    date_calibration = models.DateField(blank=True, null=True, help_text='DD/MM/YY')
+    date_calibration = models.DateField(blank=True, null=True, help_text='YYYY-MM-DD')
     # Date of end of life: where the instance will end - can be let empty
-    date_end_of_life = models.DateField(blank=True, null=True, help_text='DD/MM/YY')
+    date_end_of_life = models.DateField(blank=True, null=True, help_text='YYYY-MM-DD')
 
     location = models.CharField(
         max_length=20,
