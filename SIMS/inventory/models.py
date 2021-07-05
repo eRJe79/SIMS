@@ -196,9 +196,16 @@ class PieceInstance(models.Model):
              )),
     )
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
-    piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True)
+    piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
     # Instance specific serial number, setting blank=True as it might not be required
-    serial_number = models.CharField(max_length=200, blank=True, help_text='Enter the part_number')
+    serial_number = models.CharField(max_length=200, null=True, blank=False, help_text='Enter the CAE Serial Number')
+
+    # Provider information - an instance of a piece can be bought from different providers
+    provider = models.CharField(max_length=120, help_text='Enter the provider name', null=True, blank=False)
+    provider_serialnumber = models.CharField(max_length=120, help_text='Enter the piece serial number', null=True, blank=False)
+
+    # Calibration time recurrence - can be let empty
+    calibration_recurrence = models.IntegerField(null=True, blank=True, help_text='Enter the Recurrence Time of Calibration in days')
 
     # Date management
     # Date where the instance is created (set at creation and never updated then)
@@ -209,6 +216,8 @@ class PieceInstance(models.Model):
     date_calibration = models.DateField(blank=True, null=True, help_text='YYYY-MM-DD')
     # Date of end of life: where the instance will end - can be let empty
     date_end_of_life = models.DateField(blank=True, null=True, help_text='YYYY-MM-DD')
+    # Guarantee expiration date: where the guarantee will end - can be let empty
+    date_guarantee = models.DateField(blank=True, null=True, help_text='YYYY-MM-DD')
 
     location = models.CharField(
         max_length=20,
