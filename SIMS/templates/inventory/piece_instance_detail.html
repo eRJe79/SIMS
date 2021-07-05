@@ -16,6 +16,10 @@
 		<tr>
 		<td><p>Piece</p></td>
 		<td><p>Instance Number</p></td>
+		<td><p>Creation Date</p></td>
+		<td><p>Last update</p></td>
+		<td><p>Next Calibration</p></td>
+		<td><p>End of Life</p></td>
 		<td><p>Location</p></td>
 		<td><p>Status</p></td>
 		</tr>
@@ -24,6 +28,10 @@
 			<tr class="datarow">
 				<td>{{item.piece}}</td>
 				<td>{{item.instance_number}}</td>
+				<td>{{item.date_created}}</td>
+				<td>{{item.date_updated}}</td>
+				<td>{{item.date_calibration}}</td>
+				<td>{{item.date_end_of_life}}</td>
 				<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}</td>
 				<td>{{item.status}}</td>
 				<td>

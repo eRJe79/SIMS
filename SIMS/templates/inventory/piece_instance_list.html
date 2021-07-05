@@ -20,6 +20,10 @@ action="{%url 'search-instance-database' %}">
     <tr>
 	<th>Part Number</th>
 	<th>Serial Number</th>
+	<th>Creation Date</th>
+	<th>Last update</th>
+	<th>Next Calibration</th>
+	<th>End of Life</th>
 	<th>Location</th>
 	<th>Status</th>
 	</tr>
@@ -28,6 +32,10 @@ action="{%url 'search-instance-database' %}">
     <tr class="datarow">
       <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
       <td>{{ piece_instance.serial_number }}</td>
+      <td>{{piece_instance.date_created}}</td>
+      <td>{{piece_instance.date_updated}}</td>
+	  <td>{{piece_instance.date_calibration}}</td>
+	  <td>{{piece_instance.date_end_of_life}}</td>
       <td>{{ piece_instance.location }}-{{ piece_instance.second_location|default_if_none:"" }}-{{ piece_instance.third_location|default_if_none:"" }}-{{ piece_instance.fourth_location|default_if_none:"" }}-{{ piece_instance.fifth_location|default_if_none:"" }}</td>
       <td>{{ piece_instance.status }}</td>
     </tr>

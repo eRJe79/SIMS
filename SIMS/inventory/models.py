@@ -200,6 +200,16 @@ class PieceInstance(models.Model):
     # Instance specific serial number, setting blank=True as it might not be required
     serial_number = models.CharField(max_length=200, blank=True, help_text='Enter the part_number')
 
+    # Date management
+    # Date where the instance is created (set at creation and never updated then)
+    date_created = models.DateField(auto_now_add=True)
+    # Date of update: this date changes at update and the history is kept - automatic set
+    date_update = models.DateField(auto_now=True)
+    # Date of the next calibration: to be changes when calibration is done - can be let empty
+    date_calibration = models.DateField(blank=True, null=True, help_text='DD/MM/YY')
+    # Date of end of life: where the instance will end - can be let empty
+    date_end_of_life = models.DateField(blank=True, null=True, help_text='DD/MM/YY')
+
     location = models.CharField(
         max_length=20,
         choices=LOCATION,
