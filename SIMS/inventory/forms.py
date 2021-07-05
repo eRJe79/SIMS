@@ -50,13 +50,17 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'serial_number', 'date_calibration', 'date_end_of_life', 'location', 'second_location', 'third_location', 'fourth_location',
+        fields = ['piece', 'serial_number', 'provider', 'provider_serialnumber', 'calibration_recurrence', 'date_calibration', 'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
                   'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
             'serial_number': 'Serial Number',
+            'provider': 'Provider',
+            'provider_serialnumber': 'Provider Serial Number',
+            'calibration_recurrence': 'Calibration Recurrence in Days',
             'date_calibration': 'Next Calibration',
             'date_end_of_life': 'End of Life',
+            'date_guarantee': 'Guarantee Expiration',
             'location': 'Location',
             'second_location': 'Second Location',
             'third_location': 'Third Location',
@@ -66,9 +70,13 @@ class PieceInstanceForm(ModelForm):
         }
         widgets = {
             'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Piece'}),
-            'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Serial Number'}),
+            'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'CAE Serial Number'}),
+            'provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Provider'}),
+            'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Provider Serial Number'}),
+            'calibration_recurrence': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Calibration Recurrence in Days'}),
             'date_calibration': forms.DateInput(format='%Y-%m-%d'),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d'),
+            'date_guarantee': forms.DateInput(format='%Y-%m-%d'),
             'location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Location'}),
             'second_location': forms.Select(attrs={'class': 'form-select', 'placeholder': ' Second Location'}),
             'third_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Third Location'}),
