@@ -1,5 +1,6 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -85,6 +86,7 @@ def all_piece_instance(request):
 # Update an instance (location and/or status only)
 def update_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
+    piece_instance.date_update = timezone.now()
     form = PieceInstanceForm(request.POST or None, instance=piece_instance)
     if form.is_valid():
         form.save()
