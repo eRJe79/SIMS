@@ -43,8 +43,7 @@ def show_piece(request, primary_key):
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_in_use': instance_in_use,
                'instance_in_stock': instance_in_stock, 'instance_in_refurbished': instance_in_refurbished,
                'instance_in_reparation': instance_in_reparation}
-    return render(request, 'inventory/piece_detail.html',
-                  context)
+    return render(request, 'inventory/piece_detail.html', context)
 
 def create_piece_instance(request):
     submitted = False
@@ -56,40 +55,25 @@ def create_piece_instance(request):
             forms.save()
             return redirect('piece-instance-list')
         else:
-            forms = PieceInstanceForm
+            forms = PieceInstanceForm()
             if 'submitted' in request.GET:
                 submitted = True
     context = {'form': forms}
     return render(request, 'inventory/create_instance_piece.html', context)
 
-def show_instance_form(request):
-    model = PieceInstance
-    inventory = PieceInstance.objects.all()
-    if request.method == "POST":
-        form = PieceInstanceForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            print('valid form')
-    else:
-        print('unvalid form')
-        form = PieceInstanceForm()
-    context = {
-        'form': form, 'inventory': inventory,
-    }
-    return render(request, 'inventory/piece_instance_detail.html', context)
-
 def all_piece_instance(request):
     piece_instance_list = PieceInstance.objects.all().order_by('piece')
-
     return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
 
-# Update an instance (location and/or status only)
+# Display specific instance information
+def show_instance_form(request, primary_key):
+    piece_instance = PieceInstance.objects.get(pk=primary_key)
+    return render(request, 'inventory/piece_instance_detail.html', {'piece_instance': piece_instance})
+
+# Update an instance
 def update_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.date_update = timezone.now()
-    # ['piece', 'serial_number', 'provider', 'provider_serialnumber', 'calibration_recurrence', 'date_calibration',
-    #  'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
-    #  'fifth_location', 'status']
     if request.method == "POST":
         form = PieceInstanceForm(request.POST, instance=piece_instance)
         if form.is_valid():
@@ -100,7 +84,7 @@ def update_instance(request, instance_id):
     context = {'piece_instance': piece_instance, 'form':form}
     return render(request, 'inventory/update_piece_instance.html', context)
 
-# Delete an Event
+# Delete an instance
 def delete_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.delete()
