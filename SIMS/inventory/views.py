@@ -65,8 +65,9 @@ def all_piece_instance(request):
     piece_instance_list = PieceInstance.objects.all().order_by('piece')
     return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
 
-def show_instance_form(request, instance_id):
-    piece_instance = PieceInstance.objects.get(pk=instance_id)
+# Display specific instance information
+def show_instance_form(request, primary_key):
+    piece_instance = PieceInstance.objects.get(pk=primary_key)
     return render(request, 'inventory/piece_instance_detail.html', {'piece_instance': piece_instance})
 
 # Update an instance

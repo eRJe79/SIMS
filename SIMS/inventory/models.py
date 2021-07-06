@@ -269,6 +269,11 @@ class PieceInstance(models.Model):
     def __str__(self):
         return self.serial_number
 
+    # This method is used is some templates to have link directed to the piece instance detail
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this piece instance."""
+        return reverse('piece-instance-detail', args=[str(self.id)])
+
 
 
 

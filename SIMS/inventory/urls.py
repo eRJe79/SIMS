@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('piece_instance_list', all_piece_instance, name="piece-instance-list"),
     path('create_instance_piece/', create_piece_instance, name='piece-instance-create'),
-    path('piece_instance_detail/<instance_id>', show_instance_form, name='piece-instance-detail'),
+    path('piece_instance_detail/<primary_key>', show_instance_form, name='piece-instance-detail'),
     path('delete_piece_instance/<instance_id>', delete_instance, name="delete-piece-instance"),
     path('update_piece_instance/<instance_id>', update_instance, name='update-piece-instance'),
 ]
