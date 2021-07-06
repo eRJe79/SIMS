@@ -44,7 +44,15 @@ action="{%url 'search-instance-database' %}">
 	  <td>{{piece_instance.date_calibration}}</td>
 	  <td>{{piece_instance.date_end_of_life}}</td>
 	  <td>{{piece_instance.date_guarantee}}</td>
-      <td>{{ piece_instance.location }}-{{ piece_instance.second_location|default_if_none:"" }}-{{ piece_instance.third_location|default_if_none:"" }}-{{ piece_instance.fourth_location|default_if_none:"" }}-{{ piece_instance.fifth_location|default_if_none:"" }}</td>
+	  {% if piece_instance.fifth_location %}
+	  	<td>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}</td>
+	  {% elif piece_instance.fourth_location %}
+	  	<td>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}</td>
+	  {% elif piece_instance.third_location %}
+	  	<td>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}</td>
+	  {% else %}
+	  	<td>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}</td>
+	  {% endif %}
       <td>{{ piece_instance.status }}</td>
     </tr>
     {% endfor %}

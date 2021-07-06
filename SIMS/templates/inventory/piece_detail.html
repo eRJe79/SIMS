@@ -58,7 +58,15 @@
       {% if copy.piece.manufacturer_serialnumber == piece.manufacturer_serialnumber %}
       <tr class="datarow">
 		<td>{{ copy.serial_number }}</td>
-        <td>{{ copy.location }}-{{ copy.second_location|default_if_none:"" }}-{{ copy.third_location|default_if_none:"" }}-{{ copy.fourth_location|default_if_none:"" }}-{{ copy.fifth_location|default_if_none:"" }}</td>
+	    {% if copy.fifth_location %}
+	  	    <td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
+	    {% elif copy.fourth_location %}
+	    	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}</td>
+	     {% elif copy.third_location %}
+	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}</td>
+	     {% else %}
+	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}</td>
+	     {% endif %}
         <td>{{ copy.status }}</td>
         <td><a href="{% url 'update-piece-instance' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
           <a href="{% url 'delete-piece-instance' copy.id %}" class="btn btn-outline-danger btn-sm">Delete</a></td>
