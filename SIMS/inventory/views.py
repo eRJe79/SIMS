@@ -68,7 +68,9 @@ def all_piece_instance(request):
 # Display specific instance information
 def show_instance_form(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
-    return render(request, 'inventory/piece_instance_detail.html', {'piece_instance': piece_instance})
+    piece_instance_history = piece_instance.history.all()
+    context = {'piece_instance': piece_instance, 'piece_instance_history': piece_instance_history}
+    return render(request, 'inventory/piece_instance_detail.html', context)
 
 # Update an instance
 def update_instance(request, instance_id):
