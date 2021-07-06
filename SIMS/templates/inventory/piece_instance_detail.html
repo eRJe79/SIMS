@@ -1,71 +1,34 @@
 {% extends 'base/base.html' %}
+
 {% block content %}
-<table>
 	{% csrf_token %}
-	<tr>
-	   <form action="" method="post">
-	  {% csrf_token %}
-		<td>{{form.piece}}</td>
-		<td>{{form.instance_number}}</td>
-		<td>{{form.location}}-{{form.second_location|default_if_none:""}}-{{form.third_location|default_if_none:""}}-{{form.fourth_location|default_if_none:""}}-{{form.fifth_location|default_if_none:""}}</td>
-		<td>{{form.status}}</td>
-		<td> <input class="table_button" type="submit" value="Add" /></td>
-	</form>
-	</td></tr>
-	    <thead>
-		<tr>
-		<td><p>Piece</p></td>
-		<td><p>CAE Serial Number</p></td>
-		<td><p>Provider</p></td>
-		<td><p>Provider Serial Number</p></td>
-		<td><p>Creation Date</p></td>
-		<td><p>Last update</p></td>
-		<td><p>Calibration Reccurence in Days</p></td>
-		<td><p>Next Calibration</p></td>
-		<td><p>End of Life</p></td>
-		<td><p>Guarantee Expiration</p></td>
-		<td><p>Location</p></td>
-		<td><p>Status</p></td>
-		</tr>
-		</thead>
-		{% for item in inventory %}
-			<tr class="datarow">
-				<td>{{item.piece}}</td>
-				<td>{{item.serial_number}}</td>
-				<td>{{item.provider}}</td>
-				<td>{{item.provider_serialnumber}}</td>
-				<td>{{item.date_created}}</td>
-				<td>{{item.date_update}}</td>
-				<td>{{item.calibration_recurrence}}</td>
-				<td>{{item.date_calibration}}</td>
-				<td>{{item.date_end_of_life}}</td>
-				<td>{{item.date_guarantee}}</td>
-				{% if item.fifth_location %}
-					<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}</td>
-				{% elif item.fourth_location %}
-					<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}</td>
-				{% elif item.third_location %}
-					<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}</td>
-				{% else %}
-					<td>{{item.location}}-{{item.second_location|default_if_none:""}}</td>
-				{% endif %}
-				<td>{{item.status}}</td>
-				<td>
-				<form action="{% url 'delete-instance' %}" method="post">
-		           {% csrf_token %}
-					<input type="hidden" name="piece_instance_id" value="{{item.id}}" />
-					<input type="submit" value="delete">
-				</form>
-	         	</td>
-		  		<td>
-		  		<form action="{% url 'update-instance' %}" method="post">
-		           {% csrf_token %}
-					<input type="hidden" name="piece_instance_id" value="{{item.id}}" />
-					<input type="submit" value="update">
-				</form>
-	         	</td>
-              </td>
-        </tr>
-		{% endfor %}
-</table>
+	<div class="card">
+  	<div class="card-header">
+    Piece Instance Detail
+  	</div>
+  	<div class="card-body">
+		<h5 class="card-title"> CAE Serial Number : {{ piece_instance.serial_number }}</h5>
+		<p class="card-text">
+  		<p><strong>Piece Manufacturer Part Number:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></p>
+  		<p><strong>Provider:</strong> {{ piece_instance.provider }}</p>
+  		<p><strong>Provider Serial Number:</strong> {{ piece_instance.provider_serialnumber }}</p>
+  		<p><strong>Date Created:</strong> {{ piece_instance.date_created }}</p>
+		<p><strong>Last Update:</strong> {{ piece_instance.date_update }}</p>
+  		<p><strong>Next Calibration:</strong> {{ piece_instance.date_calibration }}</p>
+  		<p><strong>Manufacturer Serial Number:</strong> {{ piece_instance.manufacturer_serialnumber }}</p>
+  		<p><strong>End of Life:</strong> {{ piece_instance.date_end_of_life }}</p>
+		{% if piece_instance.fifth_location %}
+			<p><strong>Location:</strong>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}</p>
+		{% elif piece_instance.fourth_location %}
+			<p><strong>Location:</strong>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}</p>
+		{% elif piece_instance.third_location %}
+			<p><strong>Location:</strong>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}</p>
+		{% else %}
+			<p><strong>Location:</strong>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}</p>
+		{% endif %}
+  		<p><strong>Status:</strong> {{ piece_instance.status }}</p>
+  		<p><strong>History:</strong> {{ piece_instance.history }}</p>
+    	</p>
+  	</div>
+	</div>
 {% endblock %}

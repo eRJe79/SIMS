@@ -1,13 +1,12 @@
 from django.db import models
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from simple_history.models import HistoricalRecords
 
 from django.urls import reverse
 import uuid
 
-
 # from qr_code.qrcode.utils import QRCodeOptions
-
 
 def user_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
@@ -76,6 +75,9 @@ class Piece(models.Model):
         default='CAE',
         help_text='Piece owner',
     )
+
+    # History log
+    history = HistoricalRecords()
 
     # This is a default return method to access Piece
     def __str__(self):
@@ -259,6 +261,9 @@ class PieceInstance(models.Model):
         blank=True,
         default='New',
     )
+
+    # History log
+    history = HistoricalRecords()
 
     # Default method to access the PieceInstance
     def __str__(self):
