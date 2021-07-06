@@ -69,20 +69,20 @@ class PieceInstanceForm(ModelForm):
             'status': 'Status'
         }
         widgets = {
-            'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Piece'}),
-            'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'CAE Serial Number'}),
-            'provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Provider'}),
-            'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Provider Serial Number'}),
-            'calibration_recurrence': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Calibration Recurrence in Days'}),
+            'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Piece'}),
+            'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
+            'provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the provider name'}),
+            'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
+            'calibration_recurrence': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Recurrence Time of Calibration in days'}),
             'date_calibration': forms.DateInput(format='%Y-%m-%d'),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d'),
             'date_guarantee': forms.DateInput(format='%Y-%m-%d'),
             'location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Location'}),
-            'second_location': forms.Select(attrs={'class': 'form-select', 'placeholder': ' Second Location'}),
-            'third_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Third Location'}),
-            'fourth_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Fourth Location'}),
-            'fifth_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Fifth Location'}),
-            'status': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Status'}),
+            'second_location': forms.Select(attrs={'class': 'form-select'}),
+            'third_location': forms.Select(attrs={'class': 'form-select'}),
+            'fourth_location': forms.Select(attrs={'class': 'form-select'}),
+            'fifth_location': forms.Select(attrs={'class': 'form-select'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
 

@@ -87,12 +87,16 @@ def all_piece_instance(request):
 def update_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.date_update = timezone.now()
-    form = PieceInstanceForm(request.POST or None, instance=piece_instance)
-    if form.is_valid():
-        form.save()
-        return redirect('piece-instance-list')
+    # ['piece', 'serial_number', 'provider', 'provider_serialnumber', 'calibration_recurrence', 'date_calibration',
+    #  'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
+    #  'fifth_location', 'status']
+    if request.method == "POST":
+        form = PieceInstanceForm(request.POST, instance=piece_instance)
+        if form.is_valid():
+            form.save()
+            return redirect('piece-instance-list')
     else:
-        form = PieceInstanceForm()
+        form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form':form}
     return render(request, 'inventory/update_piece_instance.html', context)
 

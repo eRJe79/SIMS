@@ -40,7 +40,15 @@
 				<td>{{item.date_calibration}}</td>
 				<td>{{item.date_end_of_life}}</td>
 				<td>{{item.date_guarantee}}</td>
-				<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}</td>
+				{% if item.fifth_location %}
+					<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}</td>
+				{% elif item.fourth_location %}
+					<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}</td>
+				{% elif item.third_location %}
+					<td>{{item.location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}</td>
+				{% else %}
+					<td>{{item.location}}-{{item.second_location|default_if_none:""}}</td>
+				{% endif %}
 				<td>{{item.status}}</td>
 				<td>
 				<form action="{% url 'delete-instance' %}" method="post">

@@ -198,14 +198,14 @@ class PieceInstance(models.Model):
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
     piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
     # Instance specific serial number, setting blank=True as it might not be required
-    serial_number = models.CharField(max_length=200, null=True, blank=False, help_text='Enter the CAE Serial Number')
+    serial_number = models.CharField(max_length=200, null=True, blank=False)
 
     # Provider information - an instance of a piece can be bought from different providers
-    provider = models.CharField(max_length=120, help_text='Enter the provider name', null=True, blank=False)
-    provider_serialnumber = models.CharField(max_length=120, help_text='Enter the piece serial number', null=True, blank=False)
+    provider = models.CharField(max_length=120, null=True, blank=False)
+    provider_serialnumber = models.CharField(max_length=120, null=True, blank=False)
 
     # Calibration time recurrence - can be let empty
-    calibration_recurrence = models.IntegerField(null=True, blank=True, help_text='Enter the Recurrence Time of Calibration in days')
+    calibration_recurrence = models.IntegerField(null=True, blank=True)
 
     # Date management
     # Date where the instance is created (set at creation and never updated then)
@@ -223,7 +223,6 @@ class PieceInstance(models.Model):
         max_length=20,
         choices=LOCATION,
         blank=True, null=True,
-        help_text='Piece location',
     )
 
     second_location = models.CharField(
@@ -231,7 +230,6 @@ class PieceInstance(models.Model):
         default='',
         choices=SECOND_LOCATION,
         blank=True, null=True,
-        help_text='Piece second location',
     )
 
     third_location = models.CharField(
@@ -239,7 +237,6 @@ class PieceInstance(models.Model):
         default='',
         choices=THIRD_LOCATION,
         blank=True, null=True,
-        help_text='Piece third location',
     )
 
     fourth_location = models.CharField(
@@ -247,7 +244,6 @@ class PieceInstance(models.Model):
         choices=FOURTH_LOCATION,
         default='',
         blank=True, null=True,
-        help_text='Piece fourth location',
     )
 
     fifth_location = models.CharField(
@@ -255,7 +251,6 @@ class PieceInstance(models.Model):
         choices=FIFTH_LOCATION,
         default='',
         blank=True, null=True,
-        help_text='Piece fifth location',
     )
 
     status = models.CharField(
@@ -263,7 +258,6 @@ class PieceInstance(models.Model):
         choices=STATUS_CHOICE,
         blank=True,
         default='New',
-        help_text='Piece current status',
     )
 
     # Default method to access the PieceInstance
