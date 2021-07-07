@@ -27,7 +27,25 @@
 			<p><strong>Location:</strong>{{piece_instance.location}}-{{piece_instance.second_location|default_if_none:""}}</p>
 		{% endif %}
   		<p><strong>Status:</strong> {{ piece_instance.status }}</p>
-  		<p><strong>History:</strong> {{ piece_instance_history }}</p>
+  		<p><strong>History:</strong></p>
+		{% for h in piece_instance.history.all %}
+   			<p>
+			<td>{{ piece_instance }} was </td>
+			<td>{{ h.get_history_type_display }} by </td>
+			<td><strong>{{ h.history_user }}</strong> at time : </td>
+			<td>{{ h.history_date }} with Status: </td>
+			<td><strong>{{ h.status }}</strong> and Location: </td>
+			{% if h.fifth_location %}
+				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}</strong></td>
+			{% elif h.fourth_location %}
+				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}</strong></td>
+			{% elif h.third_location %}
+				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}</strong></td>
+			{% else %}
+				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}</strong></td>
+			{% endif %}
+			</p>
+		{% endfor %}
     	</p>
   	</div>
 	</div>

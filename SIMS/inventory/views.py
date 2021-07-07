@@ -1,6 +1,7 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from simple_history.utils import update_change_reason
 from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -68,8 +69,7 @@ def all_piece_instance(request):
 # Display specific instance information
 def show_instance_form(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
-    piece_instance_history = piece_instance.history.all()
-    context = {'piece_instance': piece_instance, 'piece_instance_history': piece_instance_history}
+    context = {'piece_instance': piece_instance}
     return render(request, 'inventory/piece_instance_detail.html', context)
 
 # Update an instance
