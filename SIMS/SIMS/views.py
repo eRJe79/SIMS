@@ -19,3 +19,12 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+def dashboard(request):
+    mypieces = Piece.objects.all().count()
+    num_piece_instances = PieceInstance.objects.all().count()
+    context = {
+        'mypieces': mypieces,
+        'num_piece_instances': num_piece_instances,
+    }
+    return render(request, 'dashboard.html', context=context)

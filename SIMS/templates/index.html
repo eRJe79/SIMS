@@ -3,7 +3,7 @@
 {% block content %}
   <h1>Software Inventory Management System</h1>
   <p>Welcome to SIMS, a website developed by <em>CAE Cazaux</em>!</p>
-  <h2>Dashboard</h2>
+  <h2><a href="{% url 'dashboard' %}">Dashboard</a></h2>
   <p>The inventory has the following record counts:</p>
   <ul>
     <li><strong>Pieces:</strong> {{ num_pieces }}</li>
