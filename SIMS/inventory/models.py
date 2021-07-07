@@ -2,6 +2,7 @@ from django.db import models
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from simple_history.models import HistoricalRecords
+from datetime import date
 
 from django.urls import reverse
 import uuid
@@ -273,6 +274,11 @@ class PieceInstance(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this piece instance."""
         return reverse('piece-instance-detail', args=[str(self.id)])
+
+    @property
+    def is_calibration_due(self):
+        due_days = date.today() - self.date_calibration
+        return due_days
 
 
 

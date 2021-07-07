@@ -1,7 +1,22 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Dashboard{% endblock title %}
-
 {% block content %}
+ <h1>Dashboard</h1>
+
+<table class="table table-light table-striped">
+    <thead>
+    <tr>
+    <td><p>CAE Serial Number</p></td>
+    <td><p>Location</p></td>
+    <td><p>Status</p></td>
+    </tr>
+    </thead>
+
+    {% for instance in my_piece_instances %}
+    <tr class="datarow">
+        <td>{{ instance.is_calibration_due }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock content %}
