@@ -9,7 +9,7 @@ from .models import Piece, PieceInstance
 class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
-        fields = ['part_number', 'manufacturer', 'manufacturer_serialnumber', 'website', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic','owner', 'restriction']
+        fields = ['part_number', 'manufacturer', 'manufacturer_serialnumber', 'website', 'piece_model', 'description', 'documentation', 'calibration_recurrence', 'item_type', 'item_characteristic','owner', 'restriction']
         widgets = {
         'part_number': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'part_number'
@@ -32,6 +32,9 @@ class PieceForm(forms.ModelForm):
         'documentation': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'documentation'
         }),
+        'calibration_recurrence': forms.NumberInput(attrs={
+            'class': 'form-control', 'id': 'calibration_recurrence'
+        }),
         'item_type': forms.Select(attrs={
             'class': 'form-select', 'id': 'item_type'
         }),
@@ -50,14 +53,13 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'serial_number', 'provider', 'provider_serialnumber', 'calibration_recurrence', 'date_calibration', 'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
+        fields = ['piece', 'serial_number', 'provider', 'provider_serialnumber', 'date_calibration', 'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
                   'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
             'serial_number': 'Serial Number',
             'provider': 'Provider',
             'provider_serialnumber': 'Provider Serial Number',
-            'calibration_recurrence': 'Calibration Recurrence in Days',
             'date_calibration': 'Next Calibration',
             'date_end_of_life': 'End of Life',
             'date_guarantee': 'Guarantee Expiration',
@@ -73,7 +75,6 @@ class PieceInstanceForm(ModelForm):
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
             'provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the provider name'}),
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
-            'calibration_recurrence': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Recurrence Time of Calibration in days'}),
             'date_calibration': forms.DateInput(format='%Y-%m-%d'),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d'),
             'date_guarantee': forms.DateInput(format='%Y-%m-%d'),

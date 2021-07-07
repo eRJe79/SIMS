@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -5,7 +6,6 @@ from simple_history.models import HistoricalRecords
 from datetime import date
 
 from django.urls import reverse
-import uuid
 
 # from qr_code.qrcode.utils import QRCodeOptions
 
@@ -51,15 +51,14 @@ class Piece(models.Model):
     website = models.URLField(max_length=254, help_text='Enter the part manufacturer website')
     piece_model = models.CharField(max_length=200)
 
-
-    # Category as a string rather than object because it hasn't been declared yet in the file
-    #category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
-
     description = models.TextField(max_length=1000, help_text='Enter a brief description of the piece')
     documentation = models.CharField(max_length=120, help_text='Enter the piece documentation')
 
     item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
     item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
+
+    # Calibration time recurrence - can be let empty
+    calibration_recurrence = models.IntegerField(null=True, blank=True)
 
     restriction = models.CharField(
         max_length=20,
@@ -89,6 +88,11 @@ class Piece(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this piece."""
         return reverse('piece-detail', args=[str(self.id)])
+
+    # This method is used is some templates to get calibration reccurence in days
+    def get_calibration_recurrence(self):
+        """Returns the calibration reccurence days this piece."""
+        return self.calibration_recurrence
 
 
 class PieceInstance(models.Model):
@@ -207,9 +211,6 @@ class PieceInstance(models.Model):
     provider = models.CharField(max_length=120, null=True, blank=False)
     provider_serialnumber = models.CharField(max_length=120, null=True, blank=False)
 
-    # Calibration time recurrence - can be let empty
-    calibration_recurrence = models.IntegerField(null=True, blank=True)
-
     # Date management
     # Date where the instance is created (set at creation and never updated then)
     date_created = models.DateField(auto_now_add=True)
@@ -263,6 +264,11 @@ class PieceInstance(models.Model):
         default='New',
     )
 
+    # Color tags for dashboard
+    jaune = 'Jaune'
+    orange = 'Orange'
+    rouge = 'Rouge'
+
     # History log
     history = HistoricalRecords()
 
@@ -276,11 +282,18 @@ class PieceInstance(models.Model):
         return reverse('piece-instance-detail', args=[str(self.id)])
 
     @property
+    def calibration_days(self):
+        delta = self.date_calibration - date.today()
+        return delta.days
+
     def is_calibration_due(self):
-        due_days = date.today() - self.date_calibration
-        return due_days
-
-
-
+        due_days = self.date_calibration - date.today() - datetime.timedelta(days=self.piece.calibration_recurrence)
+        if due_days < datetime.timedelta(days=-30):
+            calibration_is_due = 'Jaune'
+        elif due_days < datetime.timedelta(days=-15):
+            calibration_is_due = 'Orange'
+        elif due_days < datetime.timedelta(days=0):
+            calibration_is_due = 'Rouge'
+        return calibration_is_due
 
 

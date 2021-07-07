@@ -22,7 +22,7 @@ def index(request):
 
 def dashboard(request):
     mypieces = Piece.objects.all()
-    my_piece_instances = PieceInstance.objects.all()
+    my_piece_instances = PieceInstance.objects.all().order_by('date_calibration')
     context = {
         'mypieces': mypieces,
         'my_piece_instances': my_piece_instances,

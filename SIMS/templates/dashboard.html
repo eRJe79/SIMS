@@ -6,15 +6,19 @@
 <table class="table table-light table-striped">
     <thead>
     <tr>
-    <td><p>CAE Serial Number</p></td>
-    <td><p>Location</p></td>
-    <td><p>Status</p></td>
+    <td><p>Day to calibration</p></td>
+    <td><p>Piece</p></td>
+    <td><p>Instance</p></td>
     </tr>
     </thead>
 
     {% for instance in my_piece_instances %}
     <tr class="datarow">
-        <td>{{ instance.is_calibration_due }}</td>
+        {% if instance.is_calibration_due == instance.rouge %}
+            <td>{{ instance.calibration_days }} days</td>
+            <td>{{ instance}}</td>
+            <td>{{ instance.piece }}</td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>
