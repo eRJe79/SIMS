@@ -17,6 +17,15 @@
   <p><strong>Manufacturer:</strong> {{ piece.manufacturer }}</p>
   <p><strong>Manufacturer Serial Number:</strong> {{ piece.manufacturer_serialnumber }}</p>
   <a href="{{ piece.website }}">{{ piece.website }}</a>
+  <p><strong>History:</strong></p>
+  {% for h in piece.history.all %}
+  	<p>
+	<td>{{ piece }} was </td>
+	<td>{{ h.get_history_type_display }} by </td>
+	<td><strong>{{ h.history_user }}</strong> at time : </td>
+	<td>{{ h.history_date }}</td>
+    </p>
+  {% endfor %}
 
 	</ul>
     </p>

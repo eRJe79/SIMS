@@ -35,7 +35,7 @@ action="{%url 'search-instance-database' %}">
     {% for piece_instance in piece_instance_list %}
     <tr class="datarow">
       <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></td>
-      <td>{{ piece_instance.serial_number }}</td>
+      <td><a href="{{ piece_instance.get_absolute_url }}">{{ piece_instance.serial_number }}</a></td>
       <td>{{ piece_instance.provider }}</td>
       <td>{{piece_instance.provider_serialnumber}}</td>
       <td>{{piece_instance.date_created}}</td>
