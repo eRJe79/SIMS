@@ -264,11 +264,6 @@ class PieceInstance(models.Model):
         default='New',
     )
 
-    # Color tags for dashboard
-    jaune = 'Jaune'
-    orange = 'Orange'
-    rouge = 'Rouge'
-
     # History log
     history = HistoricalRecords()
 
@@ -288,12 +283,10 @@ class PieceInstance(models.Model):
 
     def is_calibration_due(self):
         due_days = self.date_calibration - date.today() - datetime.timedelta(days=self.piece.calibration_recurrence)
-        if due_days < datetime.timedelta(days=-30):
-            calibration_is_due = 'Jaune'
-        elif due_days < datetime.timedelta(days=-15):
-            calibration_is_due = 'Orange'
-        elif due_days < datetime.timedelta(days=0):
-            calibration_is_due = 'Rouge'
+        if due_days < datetime.timedelta(days=0):
+            calibration_is_due = True
+        else:
+            calibration_is_due = False
         return calibration_is_due
 
 

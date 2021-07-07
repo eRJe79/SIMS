@@ -7,6 +7,7 @@
     <thead>
     <tr>
     <td><p>Day to calibration</p></td>
+    <td><p>Calibration Date</p></td>
     <td><p>Piece</p></td>
     <td><p>Instance</p></td>
     </tr>
@@ -14,8 +15,9 @@
 
     {% for instance in my_piece_instances %}
     <tr class="datarow">
-        {% if instance.is_calibration_due == instance.rouge %}
+        {% if instance.is_calibration_due%}
             <td>{{ instance.calibration_days }} days</td>
+            <td>{{ instance.date_calibration}}</td>
             <td>{{ instance}}</td>
             <td>{{ instance.piece }}</td>
         {% endif %}
