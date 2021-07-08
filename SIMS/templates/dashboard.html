@@ -8,8 +8,9 @@
     <tr>
     <td><p>Day to calibration</p></td>
     <td><p>Calibration Date</p></td>
-    <td><p>Piece</p></td>
     <td><p>Instance</p></td>
+    <td><p>Model</p></td>
+    <td><p>Piece</p></td>
     </tr>
     </thead>
 
@@ -19,6 +20,7 @@
             <td>{{ instance.calibration_days }} days</td>
             <td>{{ instance.date_calibration}}</td>
             <td>{{ instance}}</td>
+            <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
         {% endif %}
     </tr>
