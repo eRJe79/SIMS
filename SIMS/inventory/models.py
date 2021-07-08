@@ -13,7 +13,8 @@ def user_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
-
+# Class describing main categories with their specific attribute and pieces
+# Example of category : a 500GB Seagate Hard Drive and a 1TB Seagate Hard Drive are 2 different categories
 class Piece(models.Model):
     """Model representing a generic piece"""
 
@@ -94,7 +95,22 @@ class Piece(models.Model):
         """Returns the calibration reccurence days this piece."""
         return self.calibration_recurrence
 
+# A kit is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
+class Kit(models.Model):
+    name = models.CharField(max_length=250, blank=False, null=False)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+    number_of_instance = models.IntegerField(blank=True, null=True)
 
+    # Default method to access the Kit
+    def __str__(self):
+        return self.name
+
+    # This method is used is some templates to have link directed to the kit detail
+    def get_absolute_url(self):
+       """Returns the url to access a detail record for this kit."""
+       return reverse('kit-detail', args=[str(self.id)])
+
+# Class describing the instance of pieces with their specific attributes and methods
 class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
     # Choices for the piece status
@@ -204,6 +220,9 @@ class PieceInstance(models.Model):
     )
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
     piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
+    # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
+    # It can be left empty as an instance doesn't necessarily belongs to a kit
+    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
     # Instance specific serial number, setting blank=True as it might not be required
     serial_number = models.CharField(max_length=200, null=True, blank=False)
 
@@ -288,5 +307,9 @@ class PieceInstance(models.Model):
         else:
             calibration_is_due = False
         return calibration_is_due
+
+
+
+
 
 

@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -13,12 +14,15 @@ from django.db.models import Q
 
 from .models import (
     Piece,
-    PieceInstance
+    PieceInstance,
+    Kit,
 )
 
 from .forms import (
     PieceForm,
     PieceInstanceForm,
+    PieceInstanceFormSet,
+    KitForm,
 )
 
 # Create new piece
@@ -34,6 +38,20 @@ def create_piece(request):
     }
     return render(request, 'inventory/create_piece.html', context)
 
+# Display a list of all the Pieces in the inventory
+class PieceListView(ListView):
+    model = Piece
+    paginate_by = 10
+    template_name = 'inventory/piece_list.html'  # Template location
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(PieceListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['piece'] = Piece.objects.all().order_by('-id')
+        return context
+
+# Display a specific Piece
 def show_piece(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
@@ -92,17 +110,6 @@ def delete_instance(request, instance_id):
     piece_instance.delete()
     return redirect('piece-detail')
 
-class PieceListView(ListView):
-    model = Piece
-    paginate_by = 10
-    template_name = 'inventory/piece_list.html'  # Template location
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get the context
-        context = super(PieceListView, self).get_context_data(**kwargs)
-        # Create any data and add it to the context
-        context['piece'] = Piece.objects.all().order_by('-id')
-        return context
 
 # Search feature
 # Specific to piece
@@ -142,3 +149,63 @@ def search_instance_database(request):
         return render(request,
                     'inventory/search_instance.html',
                     {})
+
+# Kit Management Section
+# Create new kit
+class KitCreate(CreateView):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'form': KitForm(),  # form used to create Kit instance(s)
+            'formset': PieceInstanceFormSet(),  # formset for create PieceInstance instance(s) linked to a specific Kit
+        }
+        return render(request, 'inventory/kit_form.html', context)
+
+
+def post(self, request, *args, **kwargs):
+    # if our ajax is calling so we have to take action
+    # because this is not the form submission
+    if request.is_ajax():
+        cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+        value = int(cp['wtd'])  # figure out if the process is addition or deletion
+        prefix = "fk_reverse"  # whatever your related_name is
+        cp[f'{prefix}-TOTAL_FORMS'] = int(
+            cp[f'{prefix}-TOTAL_FORMS']) + value
+        formset = PieceInstanceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+        # the new formsets again -> if the process is addition!
+        return render(request, 'inventory/formset.html', {'formset': formset})
+    form = KitForm(request.POST)
+    formset = PieceInstanceFormSet(request.POST or None)
+    theres_no_error = True
+    # important note: check any desired validation of formset here and it's helpful
+    # to prevent save Kit instance if formset contains invalid data which-
+    # means connected PieceInstance instance(s) wont be created
+    if formset.is_valid():
+        for subform in formset:
+            if subform.cleaned_data['name']:
+                theres_no_error = False
+                subform.full_clean()
+                subform.errors['name'] = subform.error_class(["No name was entered"])
+    if form.is_valid() and theres_no_error:  # if formsets are valid too!
+        form.save()
+        for subform in formset:
+            subform.save()
+
+# Display Kit List
+class KitList(ListView):
+    model = Kit
+    paginate_by = 10
+    template_name = 'inventory/kit_list.html'  # Template location
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(KitList, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['kit'] = Kit.objects.all().order_by('-id')
+        return context
+
+# Display a specific Kit
+def show_kit(request, primary_key):
+    kit = Kit.objects.get(pk=primary_key)
+    piece_instance = PieceInstance.objects.all().order_by('status')
+    context = {'kit': kit, 'piece_instance': piece_instance}
+    return render(request, 'inventory/kit_detail.html', context)

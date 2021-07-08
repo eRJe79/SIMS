@@ -13,6 +13,9 @@ from .views import (
     all_piece_instance,
     search_piece_database,
     search_instance_database,
+    KitCreate,
+    KitList,
+    show_kit,
 )
 
 urlpatterns = [
@@ -28,4 +31,8 @@ urlpatterns = [
     path('piece_instance_detail/<primary_key>', show_instance_form, name='piece-instance-detail'),
     path('delete_piece_instance/<instance_id>', delete_instance, name="delete-piece-instance"),
     path('update_piece_instance/<instance_id>', update_instance, name='update-piece-instance'),
+
+    path('kit_form/', KitCreate.as_view(), name='kit-create'),
+    path('kit_list/', KitList.as_view(), name='kit'),
+    path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
 ]

@@ -2,9 +2,9 @@ import datetime
 
 from django import forms
 from django.conf import settings
-from django.forms import ModelForm
+from django.forms import ModelForm, inlineformset_factory
 
-from .models import Piece, PieceInstance
+from .models import Piece, PieceInstance, Kit
 
 class PieceForm(forms.ModelForm):
     class Meta:
@@ -53,10 +53,11 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'serial_number', 'provider', 'provider_serialnumber', 'date_calibration', 'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
+        fields = ['piece', 'kit', 'serial_number', 'provider', 'provider_serialnumber', 'date_calibration', 'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
                   'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
+            'kit': 'Kit',
             'serial_number': 'Serial Number',
             'provider': 'Provider',
             'provider_serialnumber': 'Provider Serial Number',
@@ -72,6 +73,7 @@ class PieceInstanceForm(ModelForm):
         }
         widgets = {
             'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Piece'}),
+            'kit': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Kit'}),
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
             'provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the provider name'}),
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
@@ -86,7 +88,23 @@ class PieceInstanceForm(ModelForm):
             'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
+class KitForm(ModelForm):
+    class Meta:
+        model = Kit
+        fields = ['name', 'description', 'number_of_instance']
+        labels = {
+            'name': 'Name',
+            'description': 'Description',
+            'number_of_instance': 'Number of Instances',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Kit Name'}),
+            'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Kit Description'}),
+            'number_of_instance': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'How many instances are in the Kit?'}),
+        }
 
+
+PieceInstanceFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=5)
 
 
 
