@@ -2,7 +2,7 @@ from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
 from .models import (
-    Piece, PieceInstance
+    Piece, PieceInstance, Kit
 )
 # This is to register the models in the admin website
 
@@ -16,4 +16,9 @@ class PieceAdmin(SimpleHistoryAdmin):
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(SimpleHistoryAdmin):
-    list_display = ('serial_number', 'piece', 'location', 'second_location', 'third_location', 'fourth_location', 'fifth_location', 'status', 'history')
+    list_display = ('serial_number', 'piece', 'kit', 'location', 'second_location', 'third_location', 'fourth_location', 'fifth_location', 'status', 'history')
+
+@admin.register(Kit)
+class KitAdmin(SimpleHistoryAdmin):
+    list_display = ('name', 'description')
+    inlines = [PieceInstanceInline]

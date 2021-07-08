@@ -13,12 +13,14 @@ from django.db.models import Q
 
 from .models import (
     Piece,
-    PieceInstance
+    PieceInstance,
+    Kit,
 )
 
 from .forms import (
     PieceForm,
     PieceInstanceForm,
+    KitForm,
 )
 
 # Create new piece
@@ -142,3 +144,17 @@ def search_instance_database(request):
         return render(request,
                     'inventory/search_instance.html',
                     {})
+
+# Kit Management Section
+# Create new kit
+def create_kit(request):
+    forms = KitForm()
+    if request.method == 'POST':
+        forms = KitForm(request.POST)
+        if forms.is_valid():
+             forms.save()
+        return redirect('piece')
+    context = {
+        'form': forms
+    }
+    return render(request, 'inventory/create_kit.html', context)
