@@ -21,7 +21,8 @@ from .models import (
 from .forms import (
     PieceForm,
     PieceInstanceForm,
-    PieceInstanceFormSet,
+    PieceInstancePieceFormSet,
+    PieceInstanceKitFormSet,
     KitForm,
 )
 
@@ -37,6 +38,14 @@ def create_piece(request):
         'form': forms
     }
     return render(request, 'inventory/create_piece.html', context)
+
+class PieceCreate(CreateView):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'form': PieceForm(),  # form used to create Kit instance(s)
+            'formset': PieceInstancePieceFormSet(),  # formset for create PieceInstance instance(s) linked to a specific Kit
+        }
+        return render(request, 'inventory/create_piece.html', context)
 
 # Display a list of all the Pieces in the inventory
 class PieceListView(ListView):
@@ -156,7 +165,7 @@ class KitCreate(CreateView):
     def get(self, request, *args, **kwargs):
         context = {
             'form': KitForm(),  # form used to create Kit instance(s)
-            'formset': PieceInstanceFormSet(),  # formset for create PieceInstance instance(s) linked to a specific Kit
+            'formset': PieceInstanceKitFormSet(),  # formset for create PieceInstance instance(s) linked to a specific Kit
         }
         return render(request, 'inventory/kit_form.html', context)
 

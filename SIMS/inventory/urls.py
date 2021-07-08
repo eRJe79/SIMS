@@ -6,7 +6,7 @@ from .views import (
     PieceListView,
     show_instance_form,
     delete_instance,
-    create_piece,
+    PieceCreate,
     show_piece,
     create_piece_instance,
     update_instance,
@@ -24,7 +24,7 @@ urlpatterns = [
 
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),
-    path('inventory/create/', create_piece, name='piece-create'),
+    path('inventory/create/', PieceCreate.as_view(), name='piece-create'),
 
     path('piece_instance_list', all_piece_instance, name="piece-instance-list"),
     path('create_instance_piece/', create_piece_instance, name='piece-instance-create'),

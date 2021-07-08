@@ -46,14 +46,14 @@ class Piece(models.Model):
         ('None', 'Not Application')
     )
 
-    part_number = models.CharField(max_length=200, help_text='Enter the part_number')
-    manufacturer = models.CharField(max_length=120, help_text='Enter the manufacturer name')
-    manufacturer_serialnumber = models.CharField(max_length=120, help_text='Enter the piece serial number')
-    website = models.URLField(max_length=254, help_text='Enter the part manufacturer website')
+    part_number = models.CharField(max_length=200)
+    manufacturer = models.CharField(max_length=120)
+    manufacturer_serialnumber = models.CharField(max_length=120)
+    website = models.URLField(max_length=254)
     piece_model = models.CharField(max_length=200)
 
-    description = models.TextField(max_length=1000, help_text='Enter a brief description of the piece')
-    documentation = models.CharField(max_length=120, help_text='Enter the piece documentation')
+    description = models.TextField(max_length=1000)
+    documentation = models.CharField(max_length=120)
 
     item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
     item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
@@ -236,11 +236,11 @@ class PieceInstance(models.Model):
     # Date of update: this date changes at update and the history is kept - automatic set
     date_update = models.DateField(auto_now=True)
     # Date of the next calibration: to be changes when calibration is done - can be let empty
-    date_calibration = models.DateField(blank=True, null=True, help_text='YYYY-MM-DD')
+    date_calibration = models.DateField(blank=True, null=True)
     # Date of end of life: where the instance will end - can be let empty
-    date_end_of_life = models.DateField(blank=True, null=True, help_text='YYYY-MM-DD')
+    date_end_of_life = models.DateField(blank=True, null=True)
     # Guarantee expiration date: where the guarantee will end - can be let empty
-    date_guarantee = models.DateField(blank=True, null=True, help_text='YYYY-MM-DD')
+    date_guarantee = models.DateField(blank=True, null=True)
 
     location = models.CharField(
         max_length=20,

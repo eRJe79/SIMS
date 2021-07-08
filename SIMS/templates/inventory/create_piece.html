@@ -1,81 +1,24 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Create Piece{% endblock title %}
-
 {% block content %}
-{% csrf_token %}
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Add Piece</strong>
-            </div>
-            <div class="card-body">
-                <!-- Credit Card -->
-                <div id="creation">
-                    <div class="card-body">
-                        <form action="#" method="post" novalidate="novalidate">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="part_number" class="control-label mb-1">Manufacturer Part Number</label>
-                                {{ form.part_number }}
-                            </div>
-                            <div class="form-group">
-                                <label for="manufacturer" class="control-label mb-1">Manufacturer</label>
-                                {{ form.manufacturer }}
-                            </div>
-                            <div class="form-group">
-                                <label for="manufacturer_serialnumber" class="control-label mb-1">Manufacturer Serial Number</label>
-                                {{ form.manufacturer_serialnumber }}
-                            </div>
-                            <div class="form-group">
-                                <label for="website" class="control-label mb-1">Website</label>
-                                {{ form.website }}
-                            </div>
-                            <div class="form-group">
-                                <label for="piece_model" class="control-label mb-1">Piece Model</label>
-                                {{ form.piece_model }}
-                            </div>
-                            <div class="form-group">
-                                <label for="description" class="control-label mb-1">Description</label>
-                                {{ form.description }}
-                            </div>
-                            <div class="form-group">
-                                <label for="documentation" class="control-label mb-1">Documentation</label>
-                                {{ form.documentation }}
-                            </div>
-                            <div class="form-group">
-                                <label for="calibration_recurrence" class="control-label mb-1">Calibration Reccurence (in days)</label>
-                                {{ form.calibration_recurrence }}
-                            </div>
-                            <div class="form-group">
-                                <label for="item_type" class="control-label mb-1">Item Type</label>
-                                {{ form.item_type }}
-                            </div>
-                            <div class="form-group">
-                                <label for="item_characteristic" class="control-label mb-1">Item Characteristic</label>
-                                {{ form.item_characteristic }}
-                            </div>
-                            <div class="form-group">
-                                <label for="owner" class="control-label mb-1">Owner</label>
-                                {{ form.owner }}
-                            </div>
-                            <div class="form-group">
-                                <label for="restriction" class="control-label mb-1">Restriction</label>
-                                {{ form.restriction }}
-                            </div>
-                            <div>
-                                <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
-                                    <span id="submit-button-amount">Add Piece</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+<h1>Add New Piece</h1>
+  <br/><br/>
+<form id="form_with_formset" action="#" method="post">
+  {% csrf_token %}
+  <table class="table">
+    {{ form.as_table }}
+  </table>
 
-            </div>
-        </div> <!-- .card -->
+  <!-- this inputs value indicates the we want to add or remove a row -->
+  <input id="wtd" name="wtd" type="hidden" value="1">
 
-    </div><!--/.col-->
-</div>
-{% endblock content %}
+  <div id="formset_container">
+      {% include 'inventory/formset.html' %}
+  </div>
+
+  <button type="button" class="btn btn-info" data-target-url="{{ request.path }}" id="addNewRow">add new row</button>
+  <button type="button" class="btn btn-warning" data-target-url="{{ request.path }}" id="remLastRow" disabled="disabled">delete last row</button>
+
+  <button type="submit" class="btn btn-success">submit</button>
+</form>
+{% endblock %}

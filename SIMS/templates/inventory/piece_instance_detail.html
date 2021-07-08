@@ -10,6 +10,9 @@
 		<h5 class="card-title"> CAE Serial Number : {{ piece_instance.serial_number }}</h5>
 		<p class="card-text">
   		<p><strong>Piece Manufacturer Part Number:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></p>
+		{% if piece_instance.kit %}
+		<p><strong>Kit:</strong> {{ piece_instance.kit }}</p>
+		{% endif %}
   		<p><strong>Provider:</strong> {{ piece_instance.provider }}</p>
   		<p><strong>Provider Serial Number:</strong> {{ piece_instance.provider_serialnumber }}</p>
   		<p><strong>Date Created:</strong> {{ piece_instance.date_created }}</p>
