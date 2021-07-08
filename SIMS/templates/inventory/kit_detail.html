@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    Piece Detail
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"> Kit Name : {{ kit.name }}</h5>
+    <p class="card-text">
+    <ul>
+        <p><strong>Description:</strong> {{ kit.description }}</p>
+        <p><strong>Number of instances:</strong> {{ kit.number_of_instance }}</p>
+	</ul>
+    </p>
+  </div>
+</div>
+
+<div class="card-2">
+  <div class="card-header">
+    Instances
+  </div>
+    {% if piece_instance %}
+    <table class="table table-light table-striped">
+	    <thead>
+		<tr>
+		<td><p>CAE Serial Number</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
+        </tr>
+		</thead>
+      {% for copy in piece_instance %}
+      {% if copy.kit.name == kit.name %}
+      <tr class="datarow">
+        <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
+	    {% if copy.fifth_location %}
+	  	    <td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
+	    {% elif copy.fourth_location %}
+	    	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}</td>
+	     {% elif copy.third_location %}
+	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}</td>
+	     {% else %}
+	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}</td>
+	     {% endif %}
+        <td>{{ copy.status }}</td>
+        <td><a href="{% url 'update-piece-instance' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+            <a href="{% url 'delete-piece-instance' copy.id %}" class="btn btn-outline-danger btn-sm">Delete</a></td>
+      </tr>
+	{% endif %}
+	{% endfor %}
+	</table>
+    {% endif %}
+</div>
+{% endblock %}

@@ -202,3 +202,10 @@ class KitList(ListView):
         # Create any data and add it to the context
         context['kit'] = Kit.objects.all().order_by('-id')
         return context
+
+# Display a specific Kit
+def show_kit(request, primary_key):
+    kit = Kit.objects.get(pk=primary_key)
+    piece_instance = PieceInstance.objects.all().order_by('status')
+    context = {'kit': kit, 'piece_instance': piece_instance}
+    return render(request, 'inventory/kit_detail.html', context)
