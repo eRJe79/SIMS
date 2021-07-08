@@ -14,6 +14,7 @@ from .views import (
     search_piece_database,
     search_instance_database,
     create_kit,
+    KitCreate,
 )
 
 urlpatterns = [
@@ -30,5 +31,5 @@ urlpatterns = [
     path('delete_piece_instance/<instance_id>', delete_instance, name="delete-piece-instance"),
     path('update_piece_instance/<instance_id>', update_instance, name='update-piece-instance'),
 
-    path('create_kit/', create_kit, name='kit-create'),
+    path('kit_form/', KitCreate.as_view(), name='kit-create'),
 ]

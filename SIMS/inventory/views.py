@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -20,6 +21,7 @@ from .models import (
 from .forms import (
     PieceForm,
     PieceInstanceForm,
+    PieceInstanceFormSet,
     KitForm,
 )
 
@@ -158,3 +160,26 @@ def create_kit(request):
         'form': forms
     }
     return render(request, 'inventory/create_kit.html', context)
+
+class KitCreate(CreateView):
+    model = Kit
+    fields = ['name', 'description', 'number_of_instance']
+
+    def get_context_data(self, **kwargs):
+        data = super(KitCreate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['instanceform'] = PieceInstanceFormSet(self.request.POST)
+        else:
+            data['instanceform'] = PieceInstanceFormSet()
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        instances = context['instanceform']
+        with transaction.atomic():
+            self.object = form.save()
+
+            if instances.is_valid():
+                instances.instance = self.object
+                instances.save()
+        return super(KitCreate, self).form_valid(form)
