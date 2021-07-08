@@ -104,7 +104,7 @@ class KitForm(ModelForm):
         }
 
 
-PieceInstanceFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=1)
+PieceInstanceFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=5)
 
 
 
