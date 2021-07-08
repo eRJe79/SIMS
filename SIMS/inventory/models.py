@@ -222,7 +222,7 @@ class PieceInstance(models.Model):
     piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
     # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
     # It can be left empty as an instance doesn't necessarily belongs to a kit
-    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=False)
+    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
     # Instance specific serial number, setting blank=True as it might not be required
     serial_number = models.CharField(max_length=200, null=True, blank=False)
 
