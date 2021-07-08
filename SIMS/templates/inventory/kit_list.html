@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Kit List</h1>
+  <br/>
+  {% if piece_list %}
+  <p>There are kits in the inventory.</p>
+{% csrf_token %}
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Kit Name</th>
+	<th>Kit Description</th>
+	<th>Number of Instances</th>
+	</tr>
+  </thead>
+    {% for kit in kit_list %}
+    <tr class="datarow">
+      <td><a href="{{ kit.get_absolute_url }}">{{ kit.name }}</a></td>
+      <td>{{ kit.description }}</td>
+      <td>{{ kit.number_of_instance }}</td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>There are no kit in the inventory.</p>
+  {% endif %} 
+{% endblock %}

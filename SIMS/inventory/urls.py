@@ -13,8 +13,8 @@ from .views import (
     all_piece_instance,
     search_piece_database,
     search_instance_database,
-    create_kit,
     KitCreate,
+    KitList,
 )
 
 urlpatterns = [
@@ -32,4 +32,5 @@ urlpatterns = [
     path('update_piece_instance/<instance_id>', update_instance, name='update-piece-instance'),
 
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
+    path('kit_list/', KitList.as_view(), name="kit"),
 ]

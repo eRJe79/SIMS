@@ -38,6 +38,20 @@ def create_piece(request):
     }
     return render(request, 'inventory/create_piece.html', context)
 
+# Display a list of all the Pieces in the inventory
+class PieceListView(ListView):
+    model = Piece
+    paginate_by = 10
+    template_name = 'inventory/piece_list.html'  # Template location
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(PieceListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['piece'] = Piece.objects.all().order_by('-id')
+        return context
+
+# Display a specific Piece
 def show_piece(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
@@ -96,17 +110,6 @@ def delete_instance(request, instance_id):
     piece_instance.delete()
     return redirect('piece-detail')
 
-class PieceListView(ListView):
-    model = Piece
-    paginate_by = 10
-    template_name = 'inventory/piece_list.html'  # Template location
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get the context
-        context = super(PieceListView, self).get_context_data(**kwargs)
-        # Create any data and add it to the context
-        context['piece'] = Piece.objects.all().order_by('-id')
-        return context
 
 # Search feature
 # Specific to piece
@@ -149,18 +152,6 @@ def search_instance_database(request):
 
 # Kit Management Section
 # Create new kit
-def create_kit(request):
-    forms = KitForm()
-    if request.method == 'POST':
-        forms = KitForm(request.POST)
-        if forms.is_valid():
-             forms.save()
-        return redirect('piece')
-    context = {
-        'form': forms
-    }
-    return render(request, 'inventory/create_kit.html', context)
-
 class KitCreate(CreateView):
     def get(self, request, *args, **kwargs):
         context = {
@@ -198,3 +189,16 @@ def post(self, request, *args, **kwargs):
         form.save()
         for subform in formset:
             subform.save()
+
+# Display Kit List
+class KitList(ListView):
+    model = Kit
+    paginate_by = 10
+    template_name = 'inventory/kit_list.html'  # Template location
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(KitList, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['kit'] = Kit.objects.all().order_by('-id')
+        return context

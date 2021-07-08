@@ -105,6 +105,11 @@ class Kit(models.Model):
     def __str__(self):
         return self.name
 
+    # This method is used is some templates to have link directed to the kit detail
+    def get_absolute_url(self):
+       """Returns the url to access a detail record for this kit."""
+       return reverse('kit-detail', args=[str(self.id)])
+
 # Class describing the instance of pieces with their specific attributes and methods
 class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
