@@ -3,7 +3,11 @@
 {% block content %}
  <h1>Dashboard</h1>
 
+
 <table class="table table-light table-striped">
+    <div class="card-header">
+    <strong>Calibrations to come</strong>
+  	</div>
     <thead>
     <tr>
     <td><p>Day to calibration</p></td>
@@ -11,6 +15,7 @@
     <td><p>Instance</p></td>
     <td><p>Model</p></td>
     <td><p>Piece</p></td>
+    <td><p>Location</p></td>
     </tr>
     </thead>
 
@@ -22,9 +27,51 @@
             <td>{{ instance}}</td>
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
+            {% if instance.fifth_location %}
+				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
+			{% elif instance.fourth_location %}
+				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
+			{% elif instance.third_location %}
+				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
+			{% else %}
+				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}</td>
+            {% endif %}
         {% endif %}
     </tr>
     {% endfor %}
 </table>
+<table class="table table-light table-striped">
+    <div class="card-header">
+    <strong>Pieces in reparation</strong>
+  	</div>
+    <thead>
+    <tr>
+    <td><p>Instance</p></td>
+    <td><p>Model</p></td>
+    <td><p>Piece</p></td>
+    <td><p>Location</p></td>
+    </tr>
+    </thead>
+
+    {% for instance in my_piece_instances %}
+    <tr class="datarow">
+        {% if instance.is_in_reparation %}
+            <td>{{ instance}}</td>
+            <td>{{ instance.piece.piece_model}}</td>
+            <td>{{ instance.piece }}</td>
+            {% if instance.fifth_location %}
+				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
+			{% elif instance.fourth_location %}
+				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
+			{% elif instance.third_location %}
+				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
+			{% else %}
+				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}</td>
+            {% endif %}
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
 
 {% endblock content %}

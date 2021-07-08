@@ -308,6 +308,13 @@ class PieceInstance(models.Model):
             calibration_is_due = False
         return calibration_is_due
 
+    def is_in_reparation(self):
+        if self.status == 'Reparation':
+            reparation = True
+        else:
+            reparation = False
+        return reparation
+
 
 
 
