@@ -19,3 +19,12 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+def dashboard(request):
+    mypieces = Piece.objects.all()
+    my_piece_instances = PieceInstance.objects.all().order_by('date_calibration')
+    context = {
+        'mypieces': mypieces,
+        'my_piece_instances': my_piece_instances,
+    }
+    return render(request, 'dashboard.html', context=context)
