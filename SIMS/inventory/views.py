@@ -193,12 +193,41 @@ def search_instance_database(request):
 # Kit Management Section
 # Create new kit
 class KitCreate(CreateView):
+    template_name = 'inventory/kit_form.html'
+    model = Kit
+    form_class = KitForm
+
     def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = KitForm()
+        instance_form = PieceInstanceKitFormSet()
         context = {
-            'form': KitForm(),  # form used to create Kit instance(s)
-            'formset': PieceInstanceKitFormSet(),  # formset for create PieceInstance instance(s) linked to a specific Kit
+            'form': KitForm(),
+            'formset': PieceInstanceKitFormSet(),
         }
         return render(request, 'inventory/kit_form.html', context)
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        instance_form = PieceInstanceKitFormSet(request.POST)
+        if form.is_valid() and instance_form.is_valid() :
+            return self.form_valid(form, instance_form)
+        else:
+            return self.form_invalid(form, instance_form)
+
+    def form_valid(self, form, instance_form):
+        self.object = form.save()
+        instance_form.instance = self.object
+        instance_form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, instance_form):
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  instance_form=instance_form))
 
 
 # Display Kit List
