@@ -21,6 +21,7 @@
 
     {% for instance in my_piece_instances %}
     <tr class="datarow">
+        {% if instance.piece.calibration_recurrence %}
         {% if instance.is_calibration_due%}
             <td>{{ instance.calibration_days }} days</td>
             <td>{{ instance.date_calibration}}</td>
@@ -36,6 +37,7 @@
 			{% else %}
 				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}</td>
             {% endif %}
+        {% endif %}
         {% endif %}
     </tr>
     {% endfor %}
