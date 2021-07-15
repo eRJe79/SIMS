@@ -9,7 +9,9 @@ from .models import Piece, PieceInstance, Kit
 class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
-        fields = ['part_number', 'manufacturer', 'manufacturer_serialnumber', 'website', 'piece_model', 'description', 'documentation', 'calibration_recurrence', 'item_type', 'item_characteristic','owner', 'restriction']
+        fields = ['part_number', 'manufacturer', 'manufacturer_serialnumber', 'website', 'piece_model', 'description',
+                  'documentation', 'image', 'calibration_recurrence', 'item_type', 'item_characteristic','owner',
+                  'restriction']
         widgets = {
         'part_number': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'part_number', 'placeholder': 'Enter the manufacture part number'
