@@ -40,12 +40,42 @@ def create_piece(request):
     return render(request, 'inventory/create_piece.html', context)
 
 class PieceCreate(CreateView):
+    template_name = 'inventory/create_piece.html'
+    model = Piece
+    form_class = PieceForm
+
     def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = PieceForm()
+        instance_form = PieceInstancePieceFormSet()
         context = {
-            'form': PieceForm(),  # form used to create Kit instance(s)
-            'formset': PieceInstancePieceFormSet(),  # formset for create PieceInstance instance(s) linked to a specific Kit
+            'form': PieceForm(),
+            'formset': PieceInstancePieceFormSet(),
         }
         return render(request, 'inventory/create_piece.html', context)
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        instance_form = PieceInstancePieceFormSet(request.POST)
+        if form.is_valid() and instance_form.is_valid() :
+            return self.form_valid(form, instance_form)
+        else:
+            return self.form_invalid(form, instance_form)
+
+    def form_valid(self, form, instance_form):
+        self.object = form.save()
+        instance_form.instance = self.object
+        instance_form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, instance_form):
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  instance_form=instance_form))
+
 
 # Display a list of all the Pieces in the inventory
 class PieceListView(ListView):
@@ -59,6 +89,7 @@ class PieceListView(ListView):
         # Create any data and add it to the context
         context['piece'] = Piece.objects.all().order_by('-id')
         return context
+
 
 # Display a specific Piece
 def show_piece(request, primary_key):
@@ -162,42 +193,42 @@ def search_instance_database(request):
 # Kit Management Section
 # Create new kit
 class KitCreate(CreateView):
+    template_name = 'inventory/kit_form.html'
+    model = Kit
+    form_class = KitForm
+
     def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = KitForm()
+        instance_form = PieceInstanceKitFormSet()
         context = {
-            'form': KitForm(),  # form used to create Kit instance(s)
-            'formset': PieceInstanceKitFormSet(),  # formset for create PieceInstance instance(s) linked to a specific Kit
+            'form': KitForm(),
+            'formset': PieceInstanceKitFormSet(),
         }
         return render(request, 'inventory/kit_form.html', context)
 
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        instance_form = PieceInstanceKitFormSet(request.POST)
+        if form.is_valid() and instance_form.is_valid() :
+            return self.form_valid(form, instance_form)
+        else:
+            return self.form_invalid(form, instance_form)
 
-def post(self, request, *args, **kwargs):
-    # if our ajax is calling so we have to take action
-    # because this is not the form submission
-    if request.is_ajax():
-        cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
-        value = int(cp['wtd'])  # figure out if the process is addition or deletion
-        prefix = "fk_reverse"  # whatever your related_name is
-        cp[f'{prefix}-TOTAL_FORMS'] = int(
-            cp[f'{prefix}-TOTAL_FORMS']) + value
-        formset = PieceInstanceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
-        # the new formsets again -> if the process is addition!
-        return render(request, 'inventory/formset.html', {'formset': formset})
-    form = KitForm(request.POST)
-    formset = PieceInstanceFormSet(request.POST or None)
-    theres_no_error = True
-    # important note: check any desired validation of formset here and it's helpful
-    # to prevent save Kit instance if formset contains invalid data which-
-    # means connected PieceInstance instance(s) wont be created
-    if formset.is_valid():
-        for subform in formset:
-            if subform.cleaned_data['name']:
-                theres_no_error = False
-                subform.full_clean()
-                subform.errors['name'] = subform.error_class(["No name was entered"])
-    if form.is_valid() and theres_no_error:  # if formsets are valid too!
-        form.save()
-        for subform in formset:
-            subform.save()
+    def form_valid(self, form, instance_form):
+        self.object = form.save()
+        instance_form.instance = self.object
+        instance_form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, instance_form):
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  instance_form=instance_form))
+
 
 # Display Kit List
 class KitList(ListView):

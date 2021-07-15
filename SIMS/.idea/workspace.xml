@@ -2,6 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="572fb891-c972-4959-8087-901444d60319" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/SIMS.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/formset/jquery.formset.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/formset.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/kit_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/kit_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/kit_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/piece_instance_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/search.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/search_instance.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/update_piece_instance.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SIMS/.idea/SIMS.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SIMS/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SIMS/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
@@ -110,7 +122,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/templates/inventory/create_mainuser.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/index.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SIMS/views.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SIMS/urls.py" root0="FORCE_HIGHLIGHTING" />
