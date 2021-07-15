@@ -1,5 +1,7 @@
+import csv
+
 from django.db import transaction
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from simple_history.utils import update_change_reason
@@ -25,6 +27,38 @@ from .forms import (
     PieceInstanceKitFormSet,
     KitForm,
 )
+
+# Export database to csv
+# Generate CSV File Instance List
+def database_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=database.csv'
+    location = ''
+
+    # Create a csv writer
+    writer = csv.writer(response)
+
+    # Designate The Model
+    instances = PieceInstance.objects.all().order_by('piece')
+
+    # Add column headings to the csv file
+    writer.writerow(['Manufacturer', 'Manufacturer part Number', 'Manufacturer Serial Number', 'Website', 'Description', 'Documentation', 'Recurrence de calibration', 'Type', 'Characteristic', 'Owner', 'Restriction',
+                     'Kit', 'CAE Serial Number', 'Provider', 'Provider Serial Number', 'Location', 'Status'])
+
+    # Loop Through and output
+    for instance in instances:
+        if instance.fifth_location:
+            location = instance.location + "-" + instance.second_location + "-" + instance.third_location + "-" + instance.fourth_location + "-" + instance.fifth_location
+        elif instance.fourth_location:
+            location = instance.location + "-" + instance.second_location + "-" + instance.third_location + "-" + instance.fourth_location
+        elif instance.third_location:
+            location = instance.location + "-" + instance.second_location + "-" + instance.third_location
+        else:
+            location = instance.location + "-" + instance.second_location
+        writer.writerow([instance.piece.manufacturer, instance.piece.part_number, instance.piece.manufacturer_serialnumber, instance.piece.website, instance.piece.description, instance.piece.documentation, instance.piece.calibration_recurrence,
+                         instance.piece.item_type, instance.piece.item_characteristic, instance.piece.owner, instance.piece.restriction, instance.kit, instance.serial_number, instance.provider, instance.provider_serialnumber,
+                         location, instance.status])
+    return response
 
 # Create new piece
 def create_piece(request):
