@@ -55,6 +55,8 @@ class Piece(models.Model):
     description = models.TextField(max_length=1000)
     documentation = models.CharField(max_length=120)
 
+    image = models.ImageField(upload_to='images', blank=True)
+
     item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
     item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
 
