@@ -93,16 +93,16 @@ class PieceInstanceForm(ModelForm):
 class KitForm(ModelForm):
     class Meta:
         model = Kit
-        fields = ['name', 'description', 'number_of_instance']
+        fields = ['name', 'description', 'kit_serialnumber']
         labels = {
             'name': 'Name',
             'description': 'Description',
-            'number_of_instance': 'Number of Instances',
+            'kit_serialnumber': 'Kit Serial Number',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Kit Name'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Kit Description'}),
-            'number_of_instance': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'How many instances are in the Kit?'}),
+            'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Kit Serial Number'}),
         }
 
 

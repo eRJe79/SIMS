@@ -101,7 +101,7 @@ class Piece(models.Model):
 class Kit(models.Model):
     name = models.CharField(max_length=250, blank=False, null=False)
     description = models.TextField(max_length=1000, blank=True, null=True)
-    number_of_instance = models.IntegerField(blank=True, null=True)
+    kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
 
     # Default method to access the Kit
     def __str__(self):
