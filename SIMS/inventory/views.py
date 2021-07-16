@@ -90,6 +90,17 @@ class PieceCreate(CreateView):
         return render(request, 'inventory/create_piece.html', context)
 
     def post(self, request, *args, **kwargs):
+        # if our ajax is calling so we have to take action
+        # because this is not the form submission
+        if request.is_ajax():
+            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+            value = int(cp['wtd'])  # figure out if the process is addition or deletion
+            prefix = "instance_reverse"
+            cp[f'{prefix}-TOTAL_FORMS'] = int(
+                cp[f'{prefix}-TOTAL_FORMS']) + value
+            formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+            # the new formsets again -> if the process is addition!
+            return render(request, 'inventory/formset.html', {'formset': formset})
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)

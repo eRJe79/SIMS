@@ -16,9 +16,6 @@
       {% include 'inventory/formset.html' %}
   </div>
 
-  <button type="button" class="btn btn-info" data-target-url="{{ request.path }}" id="addNewRow">add new row</button>
-  <button type="button" class="btn btn-warning" data-target-url="{{ request.path }}" id="remLastRow" disabled="disabled">delete last row</button>
-
   <button type="submit" class="btn btn-success">submit</button>
 </form>
 {% endblock %}

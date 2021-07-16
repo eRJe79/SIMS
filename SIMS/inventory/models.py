@@ -45,6 +45,8 @@ class Piece(models.Model):
         ('Controlled', 'Controlled'),
         ('None', 'Not Application')
     )
+    # For new row feature
+    related_name = 'instance_reverse',
 
     part_number = models.CharField(max_length=200)
     manufacturer = models.CharField(max_length=120)
