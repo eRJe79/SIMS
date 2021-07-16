@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Add New Piece</h1>
   <br/><br/>
-<form id="form_with_formset" action="#" method="post">
+<form id="form_with_formset" action="#" method="post" enctype="multipart/form-data">
   {% csrf_token %}
   <table class="table">
     {{ form.as_table }}
