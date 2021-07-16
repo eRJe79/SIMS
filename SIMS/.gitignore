@@ -4,6 +4,7 @@
 .SIMS/inventory/__pycache__/
 .SIMS/SIMS/__pycache__/
 .SIMS/db.sqlite3
+.SIMS/media
 
 
 # Byte-compiled / optimized / DLL files

@@ -14,6 +14,7 @@
       <change afterPath="$PROJECT_DIR$/templates/inventory/search.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/search_instance.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/update_piece_instance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SIMS/.idea/SIMS.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SIMS/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SIMS/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
