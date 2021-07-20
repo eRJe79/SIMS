@@ -10,12 +10,14 @@
   <thead>
     <tr>
 	<th>Kit Name</th>
+    <th>Kit Serial Number</th>
 	<th>Kit Description</th>
 	</tr>
   </thead>
     {% for kit in kit_list %}
     <tr class="datarow">
       <td><a href="{{ kit.get_absolute_url }}">{{ kit.name }}</a></td>
+      <td>{{ kit.kit_serialnumber }}</td>
       <td>{{ kit.description }}</td>
     </tr>
     {% endfor %}

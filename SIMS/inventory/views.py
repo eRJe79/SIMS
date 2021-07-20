@@ -84,24 +84,36 @@ class PieceCreate(CreateView):
         form = PieceForm()
         instance_form = PieceInstancePieceFormSet()
         context = {
-            'form': PieceForm(),
-            'formset': PieceInstancePieceFormSet(),
+            'form': form,
+            'formset': instance_form,
         }
         return render(request, 'inventory/create_piece.html', context)
 
     def post(self, request, *args, **kwargs):
+        # if our ajax is calling so we have to take action
+        # because this is not the form submission
+        if request.is_ajax():
+            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+            value = int(cp['wtd'])  # figure out if the process is addition or deletion
+            prefix = "instance_reverse"
+            cp[f'{prefix}-TOTAL_FORMS'] = int(
+                cp[f'{prefix}-TOTAL_FORMS']) + value
+            formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+            # the new formsets again -> if the process is addition!
+            return render(request, 'inventory/formset.html', {'formset': formset})
+
         self.object = None
         form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        instance_form = PieceInstancePieceFormSet(request.POST)
-        if form.is_valid() and instance_form.is_valid() :
+        form = PieceForm(request.POST, request.FILES)
+        instance_form = PieceInstancePieceFormSet(request.POST, request.FILES)
+        if form.is_valid() and instance_form.is_valid():
             return self.form_valid(form, instance_form)
         else:
             return self.form_invalid(form, instance_form)
 
     def form_valid(self, form, instance_form):
         self.object = form.save()
-        instance_form.instance = self.object
+        # instance_form.instance = self.object
         instance_form.save()
         return HttpResponseRedirect(self.get_success_url())
 

@@ -17,8 +17,6 @@
 	<th>Documentation</th>
 	<th>Type</th>
 	<th>Characteristic</th>
-	<th>Owner</th>
-	<th>Restriction</th>
 	<th>Location</th>
 	<th>Status</th>
 	</tr>
@@ -34,7 +32,15 @@
       <td>{{ result.piece.documentation }}</td>
       <td>{{ result.piece.item_type }}</td>
       <td>{{ result.piece.item_characteristic }}</td>
-      <td>{{ result.location }}-{{ result.second_location|default_if_none:"" }}-{{ result.third_location|default_if_none:"" }}-{{ result.fourth_location|default_if_none:"" }}-{{ result.fifth_location|default_if_none:"" }}</td>
+      {% if result.fifth_location %}
+		<td>{{result.location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}-{{result.fifth_location|default_if_none:""}}</td>
+	  {% elif result.fourth_location %}
+		<td>{{result.location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}</td>
+	  {% elif result.third_location %}
+		<td>{{result.location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}</td>
+	  {% else %}
+		<td>{{result.location}}-{{result.second_location|default_if_none:""}}</td>
+	  {% endif %}
       <td>{{ result.status }}</td>
     </tr>
     {% endfor %}

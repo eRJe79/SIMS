@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Add New Piece</h1>
   <br/><br/>
-<form id="form_with_formset" action="#" method="post">
+<form id="form_with_formset" action="#" method="post" enctype="multipart/form-data">
   {% csrf_token %}
   <table class="table">
     {{ form.as_table }}
@@ -15,9 +15,6 @@
   <div id="formset_container">
       {% include 'inventory/formset.html' %}
   </div>
-
-  <button type="button" class="btn btn-info" data-target-url="{{ request.path }}" id="addNewRow">add new row</button>
-  <button type="button" class="btn btn-warning" data-target-url="{{ request.path }}" id="remLastRow" disabled="disabled">delete last row</button>
 
   <button type="submit" class="btn btn-success">submit</button>
 </form>

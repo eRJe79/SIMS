@@ -45,6 +45,8 @@ class Piece(models.Model):
         ('Controlled', 'Controlled'),
         ('None', 'Not Application')
     )
+    # For new row feature
+    related_name = 'instance_reverse',
 
     part_number = models.CharField(max_length=200)
     manufacturer = models.CharField(max_length=120)
@@ -55,7 +57,7 @@ class Piece(models.Model):
     description = models.TextField(max_length=1000)
     documentation = models.CharField(max_length=120)
 
-    image = models.ImageField(upload_to='images', blank=True)
+    image = models.ImageField(upload_to='images', blank=False)
 
     item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
     item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
@@ -101,7 +103,7 @@ class Piece(models.Model):
 class Kit(models.Model):
     name = models.CharField(max_length=250, blank=False, null=False)
     description = models.TextField(max_length=1000, blank=True, null=True)
-    number_of_instance = models.IntegerField(blank=True, null=True)
+    kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
 
     # Default method to access the Kit
     def __str__(self):
