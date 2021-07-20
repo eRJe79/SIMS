@@ -12,22 +12,22 @@
     <tr>
     <td><p>Day to calibration</p></td>
     <td><p>Calibration Date</p></td>
-    <td><p>Instance</p></td>
+    <td><p>Piece Part Number</p></td>
+    <td><p>Piece Serial Number</p></td>
     <td><p>Model</p></td>
-    <td><p>Piece</p></td>
     <td><p>Location</p></td>
     </tr>
     </thead>
 
-    {% for instance in my_piece_instances %}
+    {% for instance in mypieces %}
     <tr class="datarow">
-        {% if instance.piece.calibration_recurrence %}
-        {% if instance.is_calibration_due%}
+        {% if instance.calibration_recurrence %}
+        {% if instance.is_calibration_due %}
             <td>{{ instance.calibration_days }} days</td>
             <td>{{ instance.date_calibration}}</td>
-            <td>{{ instance}}</td>
-            <td>{{ instance.piece.piece_model}}</td>
-            <td>{{ instance.piece }}</td>
+            <td>{{ instance.part_number }}</td>
+            <td>{{ instance.manufacturer_serialnumber }}</td>
+            <td>{{ instance.piece_model}}</td>
             {% if instance.fifth_location %}
 				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
 			{% elif instance.fourth_location %}
@@ -48,19 +48,19 @@
   	</div>
     <thead>
     <tr>
-    <td><p>Instance</p></td>
+    <td><p>Part Number</p></td>
+    <td><p>Serial Number</p></td>
     <td><p>Model</p></td>
-    <td><p>Piece</p></td>
     <td><p>Location</p></td>
     </tr>
     </thead>
 
-    {% for instance in my_piece_instances %}
+    {% for instance in mypieces %}
     <tr class="datarow">
         {% if instance.is_in_reparation %}
-            <td>{{ instance}}</td>
-            <td>{{ instance.piece.piece_model}}</td>
-            <td>{{ instance.piece }}</td>
+            <td>{{ instance.part_number }}</td>
+            <td>{{ instance.manufacturer_serialnumber }}</td>
+            <td>{{ instance.piece_model}}</td>
             {% if instance.fifth_location %}
 				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
 			{% elif instance.fourth_location %}

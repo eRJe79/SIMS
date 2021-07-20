@@ -36,10 +36,11 @@ def database_csv(request):
     writer = csv.writer(response)
 
     # Designate The Model
-    instances = Piece.objects.all().order_by('piece')
+    instances = Piece.objects.all().order_by('part_number')
 
     # Add column headings to the csv file
-    writer.writerow(['Manufacturer', 'Manufacturer part Number', 'Manufacturer Serial Number', 'Website', 'Description', 'Documentation', 'Recurrence de calibration', 'Type', 'Characteristic', 'Owner', 'Restriction',
+    writer.writerow(['Manufacturer', 'Manufacturer part Number', 'Manufacturer Serial Number', 'Website', 'Description',
+                     'Documentation', 'Recurrence de calibration', 'Type', 'Characteristic', 'Owner', 'Restriction',
                      'Kit', 'CAE Serial Number', 'Provider', 'Provider Serial Number', 'Location', 'Status'])
 
     # Loop Through and output
@@ -52,8 +53,8 @@ def database_csv(request):
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location
         else:
             location = instance.location + "-" + instance.second_location
-        writer.writerow([instance.piece.manufacturer, instance.piece.part_number, instance.piece.manufacturer_serialnumber, instance.piece.website, instance.piece.description, instance.piece.documentation, instance.piece.calibration_recurrence,
-                         instance.piece.item_type, instance.piece.item_characteristic, instance.piece.owner, instance.piece.restriction, instance.kit, instance.serial_number, instance.provider, instance.provider_serialnumber,
+        writer.writerow([instance.manufacturer, instance.part_number, instance.manufacturer_serialnumber, instance.website, instance.description, instance.documentation, instance.calibration_recurrence,
+                         instance.item_type, instance.item_characteristic, instance.owner, instance.restriction, instance.kit, instance.cae_serial_number, instance.provider, instance.provider_serialnumber,
                          location, instance.status])
     return response
 

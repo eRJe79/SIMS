@@ -207,7 +207,7 @@ class Piece(models.Model):
 
     # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
     # It can be left empty as an instance doesn't necessarily belongs to a kit
-    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, blank=True)
+    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
     # Instance specific serial number, setting blank=True as it might not be required
 
     cae_serial_number = models.CharField(max_length=200, blank=False)
@@ -293,7 +293,7 @@ class Piece(models.Model):
         return delta.days
 
     def is_calibration_due(self):
-        due_days = self.date_calibration - date.today() - datetime.timedelta(days=self.piece.calibration_recurrence)
+        due_days = self.date_calibration - date.today() - datetime.timedelta(days=self.calibration_recurrence)
         if due_days < datetime.timedelta(days=0):
             calibration_is_due = True
         else:
