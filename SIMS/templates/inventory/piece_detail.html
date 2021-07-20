@@ -22,14 +22,24 @@
   <p><strong>Manufacturer Serial Number:</strong> {{ piece.manufacturer_serialnumber }}</p>
   <a href="{{ piece.website }}">{{ piece.website }}</a>
   <p><strong>History:</strong></p>
-  {% for h in piece.history.all %}
-  	<p>
-	<td>{{ piece }} was </td>
-	<td>{{ h.get_history_type_display }} by </td>
-	<td><strong>{{ h.history_user }}</strong> at time : </td>
-	<td>{{ h.history_date }}</td>
-    </p>
-  {% endfor %}
+		{% for h in piece.history.all %}
+   			<p>
+			<td>{{ piece }} was </td>
+			<td>{{ h.get_history_type_display }} by </td>
+			<td><strong>{{ h.history_user }}</strong> at time : </td>
+			<td>{{ h.history_date }} with Status: </td>
+			<td><strong>{{ h.status }}</strong> and Location: </td>
+			{% if h.fifth_location %}
+				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}</strong></td>
+			{% elif h.fourth_location %}
+				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}</strong></td>
+			{% elif h.third_location %}
+				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}</strong></td>
+			{% else %}
+				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}</strong></td>
+			{% endif %}
+			</p>
+		{% endfor %}
   <td><a href="{% url 'piece-update' piece.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
 	</ul>
     </p>

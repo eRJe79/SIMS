@@ -188,7 +188,6 @@ def search_piece_database(request):
 # Create new kit
 class KitCreate(CreateView):
     template_name = 'inventory/kit_form.html'
-    success_url = 'inventory/kit_list.html'
     model = Kit
     form_class = KitForm
 
