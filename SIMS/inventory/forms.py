@@ -4,63 +4,32 @@ from django import forms
 from django.conf import settings
 from django.forms import ModelForm, inlineformset_factory
 
-from .models import Piece, PieceInstance, Kit
+from .models import Piece, Kit
 
-class PieceForm(forms.ModelForm):
+class PieceForm(ModelForm):
     class Meta:
         model = Piece
         fields = ['part_number', 'manufacturer', 'manufacturer_serialnumber', 'website', 'piece_model', 'description',
                   'documentation', 'image', 'calibration_recurrence', 'item_type', 'item_characteristic','owner',
-                  'restriction']
-        widgets = {
-        'part_number': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'part_number', 'placeholder': 'Enter the manufacture part number'
-        }),
-        'manufacturer': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'manufacturer', 'placeholder': 'Enter the manufacturer name'
-        }),
-        'manufacturer_serialnumber': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'manufacturer_serialnumber', 'placeholder': 'Enter the piece serial number'
-        }),
-        'website': forms.URLInput(attrs={
-            'class': 'form-control', 'id': 'website', 'placeholder': 'https://www.website.com'
-        }),
-        'piece_model': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'piece_model'
-        }),
-        'description': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'description', 'placeholder': 'Enter a brief description of the piece'
-        }),
-        'documentation': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'documentation', 'placeholder': 'Enter the piece documentation'
-        }),
-        'calibration_recurrence': forms.NumberInput(attrs={
-            'class': 'form-control', 'id': 'calibration_recurrence'
-        }),
-        'item_type': forms.Select(attrs={
-            'class': 'form-select', 'id': 'item_type'
-        }),
-        'item_characteristic': forms.Select(attrs={
-            'class': 'form-select', 'id': 'item_characteristic'
-        }),
-        'owner': forms.Select(attrs={
-            'class': 'form-select', 'id': 'owner'
-        }),
-        'restriction': forms.Select(attrs={
-            'class': 'form-select', 'id': 'restriction'
-        }),
-        }
-
-
-class PieceInstanceForm(ModelForm):
-    class Meta:
-        model = PieceInstance
-        fields = ['piece', 'kit', 'serial_number', 'provider', 'provider_serialnumber', 'date_calibration', 'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
-                  'fifth_location', 'status']
+                  'restriction', 'kit', 'cae_serial_number', 'provider', 'provider_serialnumber', 'date_calibration',
+                  'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location',
+                  'fourth_location','fifth_location', 'status']
         labels = {
-            'piece': 'Piece',
+            'part_number': 'Part Number',
+            'manufacturer': 'Manufacturer',
+            'manufacturer_serialnumber': 'Manufacturer Serial Number',
+            'website': 'Website',
+            'piece_model': 'Piece model',
+            'description': 'Description',
+            'documentation': 'Documentation',
+            'image': 'Image',
+            'calibration_recurrence': 'Calibration Recurrence',
+            'item_type': 'Item Type',
+            'item_characteristic': 'Item Characteristic',
+            'owner': 'Owner',
+            'restriction': 'Restriction',
             'kit': 'Kit',
-            'serial_number': 'Serial Number',
+            'cae_serial_number': 'CAE Serial Number',
             'provider': 'Provider',
             'provider_serialnumber': 'Provider Serial Number',
             'date_calibration': 'Next Calibration',
@@ -74,9 +43,20 @@ class PieceInstanceForm(ModelForm):
             'status': 'Status'
         }
         widgets = {
-            'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Piece'}),
+            'part_number': forms.TextInput(attrs={'class': 'form-control', 'id': 'part_number', 'placeholder': 'Enter the manufacture part number'}),
+            'manufacturer': forms.TextInput(attrs={'class': 'form-control', 'id': 'manufacturer', 'placeholder': 'Enter the manufacturer name'}),
+            'manufacturer_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'id': 'manufacturer_serialnumber','placeholder': 'Enter the piece serial number'}),
+            'website': forms.URLInput(attrs={'class': 'form-control', 'id': 'website', 'placeholder': 'https://www.website.com'}),
+            'piece_model': forms.TextInput(attrs={'class': 'form-control', 'id': 'piece_model'}),
+            'description': forms.TextInput(attrs={'class': 'form-control', 'id': 'description', 'placeholder': 'Enter a brief description of the piece'}),
+            'documentation': forms.TextInput(attrs={'class': 'form-control', 'id': 'documentation', 'placeholder': 'Enter the piece documentation'}),
+            'calibration_recurrence': forms.NumberInput(attrs={'class': 'form-control', 'id': 'calibration_recurrence'}),
+            'item_type': forms.Select(attrs={'class': 'form-select', 'id': 'item_type'}),
+            'item_characteristic': forms.Select(attrs={'class': 'form-select', 'id': 'item_characteristic'}),
+            'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),
+            'restriction': forms.Select(attrs={'class': 'form-select', 'id': 'restriction'}),
             'kit': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Kit'}),
-            'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
+            'cae_serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
             'provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the provider name'}),
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
             'date_calibration': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
@@ -105,9 +85,7 @@ class KitForm(ModelForm):
             'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Kit Serial Number'}),
         }
 
-
-PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=10)
-PieceInstanceKitFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=10)
+PieceKitFormSet = inlineformset_factory(Kit, Piece, form=PieceForm, extra=10)
 
 
 

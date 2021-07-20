@@ -13,6 +13,22 @@ def user_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
+# A kit is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
+class Kit(models.Model):
+    name = models.CharField(max_length=250, blank=False, null=False)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+    kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
+
+    # Default method to access the Kit
+    def __str__(self):
+        return self.name
+
+    # This method is used is some templates to have link directed to the kit detail
+    def get_absolute_url(self):
+       """Returns the url to access a detail record for this kit."""
+       return reverse('kit-detail', args=[str(self.id)])
+
+
 # Class describing main categories with their specific attribute and pieces
 # Example of category : a 500GB Seagate Hard Drive and a 1TB Seagate Hard Drive are 2 different categories
 class Piece(models.Model):
@@ -45,77 +61,7 @@ class Piece(models.Model):
         ('Controlled', 'Controlled'),
         ('None', 'Not Application')
     )
-    # For new row feature
-    related_name = 'instance_reverse',
 
-    part_number = models.CharField(max_length=200)
-    manufacturer = models.CharField(max_length=120)
-    manufacturer_serialnumber = models.CharField(max_length=120)
-    website = models.URLField(max_length=254)
-    piece_model = models.CharField(max_length=200)
-
-    description = models.TextField(max_length=1000)
-    documentation = models.CharField(max_length=120)
-
-    image = models.ImageField(upload_to='images', blank=False)
-
-    item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
-    item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
-
-    # Calibration time recurrence - can be let empty
-    calibration_recurrence = models.IntegerField(null=True, blank=True)
-
-    restriction = models.CharField(
-        max_length=20,
-        choices=RESTRICTION_CHOICE,
-        blank=True,
-        default='None',
-        help_text='Piece restriction access',
-    )
-
-    owner = models.CharField(
-        max_length=20,
-        choices=OWNER_CHOICE,
-        blank=True,
-        default='CAE',
-        help_text='Piece owner',
-    )
-
-    # History log
-    history = HistoricalRecords()
-
-    # This is a default return method to access Piece
-    def __str__(self):
-        """String for representing the Model object."""
-        return self.manufacturer_serialnumber
-
-    # This method is used is some templates to have link directed to the piece detail
-    def get_absolute_url(self):
-        """Returns the url to access a detail record for this piece."""
-        return reverse('piece-detail', args=[str(self.id)])
-
-    # This method is used is some templates to get calibration reccurence in days
-    def get_calibration_recurrence(self):
-        """Returns the calibration reccurence days this piece."""
-        return self.calibration_recurrence
-
-# A kit is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
-class Kit(models.Model):
-    name = models.CharField(max_length=250, blank=False, null=False)
-    description = models.TextField(max_length=1000, blank=True, null=True)
-    kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
-
-    # Default method to access the Kit
-    def __str__(self):
-        return self.name
-
-    # This method is used is some templates to have link directed to the kit detail
-    def get_absolute_url(self):
-       """Returns the url to access a detail record for this kit."""
-       return reverse('kit-detail', args=[str(self.id)])
-
-# Class describing the instance of pieces with their specific attributes and methods
-class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
     # Choices for the piece status
     STATUS_CHOICE = (
@@ -168,11 +114,11 @@ class PieceInstance(models.Model):
             ('Compressor Room', 'Compressor Room'),
         )),
         ('Hangar-SG3', (
-                     ('A1', 'A1'), ('A1CB1', 'A1CB1'), ('A2', 'A2'), ('A3', 'A3'), ('A4', 'A4'), ('A5', 'A5'),
-                     ('A6', 'A6'), ('A7', 'A7'), ('A8', 'A8'), ('A9', 'A9'), ('A10', 'A10'), ('A10 Bis', 'A10 Bis'),
-                     ('A11', 'A11'), ('A20', 'A20'), ('A25', 'A25'), ('A30', 'A30'),
-                     ('SS1', 'SS1'), ('SS2', 'SS2'), ('SS3', 'SS3'), ('SS4', 'SS4'), ('SS5', 'SS5'), ('SS6', 'SS6'),
-                     ('SS7', 'SS7'),
+            ('A1', 'A1'), ('A1CB1', 'A1CB1'), ('A2', 'A2'), ('A3', 'A3'), ('A4', 'A4'), ('A5', 'A5'),
+            ('A6', 'A6'), ('A7', 'A7'), ('A8', 'A8'), ('A9', 'A9'), ('A10', 'A10'), ('A10 Bis', 'A10 Bis'),
+            ('A11', 'A11'), ('A20', 'A20'), ('A25', 'A25'), ('A30', 'A30'),
+            ('SS1', 'SS1'), ('SS2', 'SS2'), ('SS3', 'SS3'), ('SS4', 'SS4'), ('SS5', 'SS5'), ('SS6', 'SS6'),
+            ('SS7', 'SS7'),
         )),
     )
 
@@ -192,43 +138,79 @@ class PieceInstance(models.Model):
             ('Over Floor', 'Over Floor'), ('Under Floor', 'Under Floor'), ('Structure', 'Structure'),
         )),
         ('Server Room', (
-         ('S1', 'S1'),
-         ('SG1', 'SG1'),
-         ('SG2', 'SG2'),
+            ('S1', 'S1'),
+            ('SG1', 'SG1'),
+            ('SG2', 'SG2'),
         )),
     )
 
     FIFTH_LOCATION = (
         ('S1', (
-             ('A3', 'A3'), ('A6', 'A6'), ('A20', 'A20'), ('A35', 'A35'),
-             ('A40', 'A40'), ('A44', 'A44'), ('A50', 'A50'), ('A55', 'A55'),
-             ('A60', 'A60'), ('A65', 'A65'), ('A70', 'A70'), ('A75', 'A75'),
-             ('AB45', 'AB45'), ('AB50', 'AB50'), ('CRA9', 'CRA9'), ('CRA11', 'CRA11'),
-             )),
+            ('A3', 'A3'), ('A6', 'A6'), ('A20', 'A20'), ('A35', 'A35'),
+            ('A40', 'A40'), ('A44', 'A44'), ('A50', 'A50'), ('A55', 'A55'),
+            ('A60', 'A60'), ('A65', 'A65'), ('A70', 'A70'), ('A75', 'A75'),
+            ('AB45', 'AB45'), ('AB50', 'AB50'), ('CRA9', 'CRA9'), ('CRA11', 'CRA11'),
+        )),
         ('SG1', (
-             ('A2', 'A2'), ('A3', 'A3'), ('A4', 'A4'), ('A5', 'A5'),
-             ('A6', 'A6'), ('A7', 'A7'), ('A8', 'A8'), ('A10', 'A10'),
-             ('A11', 'A11'), ('A12', 'A12'), ('A13', 'A13'), ('A14', 'A14'),
-             ('A15', 'A15'), ('A16', 'A16'), ('A17', 'A17'), ('A18', 'A18'),
-             ('A19', 'A19'), ('A20', 'A20'), ('A21', 'A21'), ('A22', 'A22'),
-             ('A23', 'A23'), ('A24', 'A24'),
-             )),
+            ('A2', 'A2'), ('A3', 'A3'), ('A4', 'A4'), ('A5', 'A5'),
+            ('A6', 'A6'), ('A7', 'A7'), ('A8', 'A8'), ('A10', 'A10'),
+            ('A11', 'A11'), ('A12', 'A12'), ('A13', 'A13'), ('A14', 'A14'),
+            ('A15', 'A15'), ('A16', 'A16'), ('A17', 'A17'), ('A18', 'A18'),
+            ('A19', 'A19'), ('A20', 'A20'), ('A21', 'A21'), ('A22', 'A22'),
+            ('A23', 'A23'), ('A24', 'A24'),
+        )),
         ('SG2', (
-             ('A2', 'A2'), ('A3', 'A3'), ('A8', 'A8'), ('A10', 'A10'),
-             ('A11', 'A11'), ('A12', 'A12'), ('A13', 'A13'), ('A14', 'A14'),
-             ('A15', 'A15'), ('A16', 'A16'), ('A17', 'A17'), ('A18', 'A18'),
-             ('A19', 'A19'), ('A20', 'A20'), ('A21', 'A21'), ('A22', 'A22'),
-             ('A23', 'A23'), ('A24', 'A24'), ('A27', 'A27'), ('A28', 'A28'),
-             ('A30', 'A30'), ('A32', 'A32'), ('A34', 'A34'), ('A34 Bis', 'A34 Bis'),
-             )),
+            ('A2', 'A2'), ('A3', 'A3'), ('A8', 'A8'), ('A10', 'A10'),
+            ('A11', 'A11'), ('A12', 'A12'), ('A13', 'A13'), ('A14', 'A14'),
+            ('A15', 'A15'), ('A16', 'A16'), ('A17', 'A17'), ('A18', 'A18'),
+            ('A19', 'A19'), ('A20', 'A20'), ('A21', 'A21'), ('A22', 'A22'),
+            ('A23', 'A23'), ('A24', 'A24'), ('A27', 'A27'), ('A28', 'A28'),
+            ('A30', 'A30'), ('A32', 'A32'), ('A34', 'A34'), ('A34 Bis', 'A34 Bis'),
+        )),
     )
-    # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
-    piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
+
+    # For new row feature
+    related_name = 'instance_reverse',
+
+    part_number = models.CharField(max_length=200)
+    manufacturer = models.CharField(max_length=120)
+    manufacturer_serialnumber = models.CharField(max_length=120)
+    website = models.URLField(max_length=254)
+    piece_model = models.CharField(max_length=200)
+
+    description = models.TextField(max_length=1000)
+    documentation = models.CharField(max_length=120)
+
+    image = models.ImageField(upload_to='images', blank=False)
+
+    item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
+    item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
+
+    # Calibration time recurrence - can be let empty
+    calibration_recurrence = models.IntegerField(null=True, blank=True)
+
+    restriction = models.CharField(
+        max_length=20,
+        choices=RESTRICTION_CHOICE,
+        blank=True,
+        default='None',
+        help_text='Piece restriction access',
+    )
+
+    owner = models.CharField(
+        max_length=20,
+        choices=OWNER_CHOICE,
+        blank=True,
+        default='CAE',
+        help_text='Piece owner',
+    )
+
     # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
     # It can be left empty as an instance doesn't necessarily belongs to a kit
     kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
     # Instance specific serial number, setting blank=True as it might not be required
-    serial_number = models.CharField(max_length=200, null=True, blank=False)
+
+    cae_serial_number = models.CharField(max_length=200, null=True, blank=False)
 
     # Provider information - an instance of a piece can be bought from different providers
     provider = models.CharField(max_length=120, null=True, blank=False)
@@ -290,14 +272,20 @@ class PieceInstance(models.Model):
     # History log
     history = HistoricalRecords()
 
-    # Default method to access the PieceInstance
+    # This is a default return method to access Piece
     def __str__(self):
-        return self.serial_number
+        """String for representing the Model object."""
+        return self.part_number
 
-    # This method is used is some templates to have link directed to the piece instance detail
+    # This method is used is some templates to have link directed to the piece detail
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this piece instance."""
-        return reverse('piece-instance-detail', args=[str(self.id)])
+        """Returns the url to access a detail record for this piece."""
+        return reverse('piece-detail', args=[str(self.id)])
+
+    # This method is used is some templates to get calibration reccurence in days
+    def get_calibration_recurrence(self):
+        """Returns the calibration reccurence days this piece."""
+        return self.calibration_recurrence
 
     @property
     def calibration_days(self):

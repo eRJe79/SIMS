@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from inventory.models import Piece, PieceInstance
+from inventory.models import Piece
 
 
 def index(request):
@@ -10,7 +10,6 @@ def index(request):
     # Generate counts of some of the main objects
 
     num_pieces = Piece.objects.all().count()
-    num_instances = PieceInstance.objects.all().count()
 
     context = {
         'num_pieces': num_pieces,
@@ -22,9 +21,7 @@ def index(request):
 
 def dashboard(request):
     mypieces = Piece.objects.all()
-    my_piece_instances = PieceInstance.objects.all().order_by('date_calibration')
     context = {
         'mypieces': mypieces,
-        'my_piece_instances': my_piece_instances,
     }
     return render(request, 'dashboard.html', context=context)
