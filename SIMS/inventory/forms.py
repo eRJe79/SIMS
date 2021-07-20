@@ -85,7 +85,8 @@ class KitForm(ModelForm):
             'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Kit Serial Number'}),
         }
 
-PieceKitFormSet = inlineformset_factory(Kit, Piece, form=PieceForm, extra=10)
+
+PieceKitFormSet = inlineformset_factory(Kit, Piece, form=PieceForm, extra=1)
 
 
 

@@ -188,6 +188,7 @@ def search_piece_database(request):
 # Create new kit
 class KitCreate(CreateView):
     template_name = 'inventory/kit_form.html'
+    success_url = 'inventory/kit_list.html'
     model = Kit
     form_class = KitForm
 
@@ -206,8 +207,8 @@ class KitCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        piece_form = PieceKitFormSet(request.POST)
-        if form.is_valid() and piece_form.is_valid() :
+        piece_form = PieceKitFormSet(request.POST, request.FILES)
+        if form.is_valid() and piece_form.is_valid():
             return self.form_valid(form, piece_form)
         else:
             return self.form_invalid(form, piece_form)

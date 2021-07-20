@@ -3,6 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="572fb891-c972-4959-8087-901444d60319" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/SIMS.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/images/GTX580.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/images/index_2UO54LD.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/images/index_7UZLYNn.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/images/index_fmR0NmM.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/images/index_lqZhhxv.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/images/nvidia-geforce-gtx-1070-ti_QgVxBLR.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/images/nvidia-geforce-gtx-1070-ti_pAHAKKV.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/images/nvidia-geforce-gtx-1070-ti_u5Fma0x.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/formset/jquery.formset.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/clone_existing_piece.html" afterDir="false" />
@@ -139,12 +147,15 @@
     <setting file="file://$PROJECT_DIR$/templates/inventory/piece_list.html" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1tL8FfPk3UIE5XJUIyFu1hwMrCQ" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -172,5 +183,8 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

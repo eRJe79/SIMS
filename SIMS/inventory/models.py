@@ -173,9 +173,9 @@ class Piece(models.Model):
     related_name = 'instance_reverse',
 
     part_number = models.CharField(max_length=200, null=True, blank=False)
-    manufacturer = models.CharField(max_length=120, null=True, blank=True)
+    manufacturer = models.CharField(max_length=120, null=False, blank=True)
     manufacturer_serialnumber = models.CharField(max_length=120, null=True, blank=False)
-    website = models.URLField(max_length=254, null=True, blank=True)
+    website = models.URLField(max_length=254, null=False, blank=True)
     piece_model = models.CharField(max_length=200, blank=True)
 
     description = models.TextField(max_length=1000, blank=True)
@@ -210,7 +210,7 @@ class Piece(models.Model):
     kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
     # Instance specific serial number, setting blank=True as it might not be required
 
-    cae_serial_number = models.CharField(max_length=200, blank=False)
+    cae_serial_number = models.CharField(max_length=200, blank=True)
 
     # Provider information - an instance of a piece can be bought from different providers
     provider = models.CharField(max_length=120, blank=True)
