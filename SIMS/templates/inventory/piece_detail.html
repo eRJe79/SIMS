@@ -30,7 +30,7 @@
 	<td>{{ h.history_date }}</td>
     </p>
   {% endfor %}
-
+  <td><a href="{% url 'piece-update' piece.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
 	</ul>
     </p>
   </div>

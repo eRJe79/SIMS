@@ -7,6 +7,8 @@ from .views import (
     PieceCreate,
     show_piece,
     search_piece_database,
+    update_piece,
+    clone_piece,
     KitCreate,
     KitList,
     show_kit,
@@ -19,6 +21,8 @@ urlpatterns = [
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),
     path('inventory/create/', PieceCreate.as_view(), name='piece-create'),
+    path('update_piece_instance/<piece_id>', update_piece, name='piece-update'),
+    path('clone_existing_piece/<piece_id>', clone_piece, name='piece-clone'),
 
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
     path('kit_list/', KitList.as_view(), name='kit'),

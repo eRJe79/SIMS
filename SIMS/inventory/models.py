@@ -172,19 +172,19 @@ class Piece(models.Model):
     # For new row feature
     related_name = 'instance_reverse',
 
-    part_number = models.CharField(max_length=200)
-    manufacturer = models.CharField(max_length=120)
-    manufacturer_serialnumber = models.CharField(max_length=120)
-    website = models.URLField(max_length=254)
-    piece_model = models.CharField(max_length=200)
+    part_number = models.CharField(max_length=200, null=True, blank=False)
+    manufacturer = models.CharField(max_length=120, null=True, blank=True)
+    manufacturer_serialnumber = models.CharField(max_length=120, null=True, blank=False)
+    website = models.URLField(max_length=254, null=True, blank=True)
+    piece_model = models.CharField(max_length=200, blank=True)
 
-    description = models.TextField(max_length=1000)
-    documentation = models.CharField(max_length=120)
+    description = models.TextField(max_length=1000, blank=True)
+    documentation = models.CharField(max_length=120, blank=True)
 
-    image = models.ImageField(upload_to='images', blank=False)
+    image = models.ImageField(upload_to='images', blank=True)
 
-    item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
-    item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
+    item_type = models.CharField(max_length=20, choices=TYPE_CHOICE, blank=True)
+    item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE, blank=True)
 
     # Calibration time recurrence - can be let empty
     calibration_recurrence = models.IntegerField(null=True, blank=True)
@@ -207,14 +207,14 @@ class Piece(models.Model):
 
     # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
     # It can be left empty as an instance doesn't necessarily belongs to a kit
-    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
+    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, blank=True)
     # Instance specific serial number, setting blank=True as it might not be required
 
-    cae_serial_number = models.CharField(max_length=200, null=True, blank=False)
+    cae_serial_number = models.CharField(max_length=200, blank=False)
 
     # Provider information - an instance of a piece can be bought from different providers
-    provider = models.CharField(max_length=120, null=True, blank=False)
-    provider_serialnumber = models.CharField(max_length=120, null=True, blank=False)
+    provider = models.CharField(max_length=120, blank=True)
+    provider_serialnumber = models.CharField(max_length=120, blank=True)
 
     # Date management
     # Date where the instance is created (set at creation and never updated then)

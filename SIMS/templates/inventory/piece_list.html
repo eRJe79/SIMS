@@ -37,6 +37,8 @@ action="{%url 'search-piece-database' %}">
       <td>{{ piece.item_characteristic }}</td>
       <td>{{ piece.owner }}</td>
       <td>{{ piece.restriction }}</td>
+      <td><a href="{% url 'piece-update' piece.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+       <a href="{% url 'piece-clone' piece.id %}" class="btn btn-outline-danger btn-sm">Clone</a></td>
     </tr>
     {% endfor %}
 </table>

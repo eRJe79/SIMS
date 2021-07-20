@@ -5,6 +5,7 @@
       <change afterPath="$PROJECT_DIR$/.idea/SIMS.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/formset/jquery.formset.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/clone_existing_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/formset.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/kit_detail.html" afterDir="false" />

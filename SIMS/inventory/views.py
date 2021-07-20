@@ -134,7 +134,7 @@ def show_piece(request, primary_key):
     return render(request, 'inventory/piece_detail.html', context)
 
 
-# Update an instance
+# Update a piece
 def update_piece(request, piece_id):
     piece = Piece.objects.get(pk=piece_id)
     piece.date_update = timezone.now()
@@ -147,6 +147,21 @@ def update_piece(request, piece_id):
         form = PieceForm(instance=piece)
     context = {'piece': piece, 'form':form}
     return render(request, 'inventory/update_piece_instance.html', context)
+
+# clone a piece
+def clone_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    piece.pk=None
+    piece.date_update = timezone.now()
+    if request.method == "POST":
+        form = PieceForm(request.POST, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect('piece')
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form':form}
+    return render(request, 'inventory/clone_existing_piece.html', context)
 
 # Search feature
 # Specific to piece
