@@ -6,21 +6,39 @@
     Piece Detail
   </div>
   <div class="card-body">
-    <h5 class="card-title"> Manufacturer part number : {{ piece.part_number }}</h5>
+    <h5 class="card-title"> Manufacturer Part Number : {{ piece.part_number }}</h5>
     <p class="card-text">
     	<ul>
+  <p><strong>Manufacturer:</strong> {{ piece.manufacturer }}</p>
+  <p><strong>Manufacturer Serial number:</strong> {{ piece.manufacturer_serialnumber }}</p>
+  <a href="{{ piece.website }}">{{ piece.website }}</a>
   <p><strong>Piece Model:</strong> {{ piece.piece_model }}</p>
   <p><strong>Description:</strong> {{ piece.description }}</p>
   {% if piece.image %}
   <p><img src="{{ piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
   {% endif %}
-  <p><strong>Documentation:</strong> {{ piece.documentation }}</p>
   <p><strong>Calibration Recurrence (days):</strong> {{piece.calibration_recurrence}}</p>
   <p><strong>Type:</strong> {{ piece.item_type }}</p>
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
-  <p><strong>Manufacturer:</strong> {{ piece.manufacturer }}</p>
-  <p><strong>Manufacturer Serial Number:</strong> {{ piece.manufacturer_serialnumber }}</p>
-  <a href="{{ piece.website }}">{{ piece.website }}</a>
+  <p><strong>Owner:</strong> {{ piece.owner }}</p>
+  <p><strong>Restriction:</strong> {{ piece.restriction }}</p>
+  <p><strong>Kit:</strong> {{ piece.kit }}</p>
+  <p><strong>CAE Serial Number:</strong> {{ piece.cae_serial_number }}</p>
+  <p><strong>Provider:</strong> {{ piece.provider }}</p>
+  <p><strong>Provider Serial Number:</strong> {{ piece.provider_serialnumber }}</p>
+  <p><strong>Date of Next calibration:</strong> {{ piece.date_calibration }}</p>
+  <p><strong>End of Life:</strong> {{ piece.date_end_of_life }}</p>
+  <p><strong>End of Guarantee:</strong> {{ piece.date_guarantee }}</p>
+  <p><strong>Status:</strong> {{ piece.status }}</p>
+  {% if piece.fifth_location %}
+      <p><strong>Location:</strong>{{piece.location}}-{{piece.second_location|default_if_none:""}}-{{piece.third_location|default_if_none:""}}-{{piece.fourth_location|default_if_none:""}}-{{piece.fifth_location|default_if_none:""}}</p>
+  {% elif piece.fourth_location %}
+      <p><strong>Location:</strong>{{piece.location}}-{{piece.second_location|default_if_none:""}}-{{piece.third_location|default_if_none:""}}-{{piece.fourth_location|default_if_none:""}}</p>
+  {% elif piece.third_location %}
+      <p><strong>Location:</strong>{{piece.location}}-{{piece.second_location|default_if_none:""}}-{{piece.third_location|default_if_none:""}}</p>
+  {% else %}
+      <p><strong>Location:</strong>{{piece.location}}-{{piece.second_location|default_if_none:""}}</p>
+  {% endif %}
   <p><strong>History:</strong></p>
 		{% for h in piece.history.all %}
    			<p>
