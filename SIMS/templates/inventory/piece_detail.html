@@ -11,7 +11,7 @@
     	<ul>
   <p><strong>Manufacturer:</strong> {{ piece.manufacturer }}</p>
   <p><strong>Manufacturer Serial number:</strong> {{ piece.manufacturer_serialnumber }}</p>
-  <a href="{{ piece.website }}">{{ piece.website }}</a>
+  <p><strong>Website: </strong><a href="{{ piece.website }}">{{ piece.website }}</a></p>
   <p><strong>Piece Model:</strong> {{ piece.piece_model }}</p>
   <p><strong>Description:</strong> {{ piece.description }}</p>
   {% if piece.image %}
@@ -59,6 +59,7 @@
 			</p>
 		{% endfor %}
   <td><a href="{% url 'piece-update' piece.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+  <td><a href="{% url 'piece-clone' piece.id %}" class="btn btn-outline-secondary btn-sm">Clone</a>
 	</ul>
     </p>
   </div>
