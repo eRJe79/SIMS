@@ -51,8 +51,10 @@ def database_csv(request):
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location + "-" + instance.fourth_location
         elif instance.third_location:
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location
-        else:
+        elif instance.second_location:
             location = instance.location + "-" + instance.second_location
+        else:
+            location = "No location"
         writer.writerow([instance.manufacturer, instance.part_number, instance.manufacturer_serialnumber, instance.website, instance.description, instance.documentation, instance.calibration_recurrence,
                          instance.item_type, instance.item_characteristic, instance.owner, instance.restriction, instance.kit, instance.cae_serial_number, instance.provider, instance.provider_serialnumber,
                          location, instance.status])

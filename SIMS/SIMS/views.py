@@ -138,7 +138,6 @@ def dashboard(request):
         else:
             fms2_check_structure = 'Missing'
 
-
     context = {
         'mypieces': mypieces,
         'fms1_check_seat': fms1_check_seat,
