@@ -172,19 +172,29 @@ def search_piece_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
         results = Piece.objects.filter(Q(piece_model__contains=searched)
-                                    | Q(part_number__contains=searched)
-                                    | Q(manufacturer_serialnumber__contains=searched)
-                                    | Q(manufacturer__contains=searched)
-                                    | Q(item_type__contains=searched)
-                                    | Q(item_characteristic__contains=searched)
-                                    )
+                                       | Q(part_number__contains=searched)
+                                       | Q(manufacturer_serialnumber__contains=searched)
+                                       | Q(manufacturer__contains=searched)
+                                       | Q(item_type__contains=searched)
+                                       | Q(item_characteristic__contains=searched)
+                                       | Q(owner__contains=searched)
+                                       | Q(kit__contains=searched)
+                                       | Q(provider__contains=searched)
+                                       | Q(provider_serialnumber__contains=searched)
+                                       | Q(location__contains=searched)
+                                       | Q(second_location__contains=searched)
+                                       | Q(third_location__contains=searched)
+                                       | Q(fourth_location__contains=searched)
+                                       | Q(fifth_location__contains=searched)
+                                       )
+        if searched == 'RSPL' or searched == 'rspl':
+            results = Piece.objects.filter(is_rspl=True)
+
         context = {'searched':searched, 'results':results,
                  }
         return render(request, 'inventory/search.html', context)
     else:
-        return render(request,
-                    'inventory/search.html',
-                    {})
+        return render(request, 'inventory/search.html', {})
 
 # Kit Management Section
 # Create new kit

@@ -186,6 +186,8 @@ class Piece(models.Model):
     item_type = models.CharField(max_length=20, choices=TYPE_CHOICE, blank=True)
     item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE, blank=True)
 
+    is_rspl = models.BooleanField(default=False)  # Franck's account
+
     # Calibration time recurrence - can be let empty
     calibration_recurrence = models.IntegerField(null=True, blank=True)
 
