@@ -9,13 +9,6 @@
     {{ form.as_table }}
   </table>
 
-  <!-- this inputs value indicates the we want to add or remove a row -->
-  <input id="wtd" name="wtd" type="hidden" value="1">
-
-  <div id="formset_container">
-      {% include 'inventory/formset.html' %}
-  </div>
-
   <button type="submit" class="btn btn-success">submit</button>
 </form>
 {% endblock %}

@@ -10,24 +10,24 @@
   	</div>
     <thead>
     <tr>
-    <td><p>Day to calibration</p></td>
-    <td><p>Calibration Date</p></td>
-    <td><p>Instance</p></td>
-    <td><p>Model</p></td>
-    <td><p>Piece</p></td>
-    <td><p>Location</p></td>
+    <th>Day to calibration</th>
+    <th>Calibration Date</th>
+    <th>Piece Part Number</th>
+    <th>Piece Serial Number</th>
+    <th>Model</th>
+    <th>Location</th>
     </tr>
     </thead>
 
-    {% for instance in my_piece_instances %}
+    {% for instance in mypieces %}
     <tr class="datarow">
-        {% if instance.piece.calibration_recurrence %}
-        {% if instance.is_calibration_due%}
+        {% if instance.calibration_recurrence %}
+        {% if instance.is_calibration_due %}
             <td>{{ instance.calibration_days }} days</td>
             <td>{{ instance.date_calibration}}</td>
-            <td>{{ instance}}</td>
-            <td>{{ instance.piece.piece_model}}</td>
-            <td>{{ instance.piece }}</td>
+            <td>{{ instance.part_number }}</td>
+            <td>{{ instance.manufacturer_serialnumber }}</td>
+            <td>{{ instance.piece_model}}</td>
             {% if instance.fifth_location %}
 				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
 			{% elif instance.fourth_location %}
@@ -48,19 +48,19 @@
   	</div>
     <thead>
     <tr>
-    <td><p>Instance</p></td>
-    <td><p>Model</p></td>
-    <td><p>Piece</p></td>
-    <td><p>Location</p></td>
+    <th>Part Number</th>
+    <th>Serial Number</th>
+    <th>Model</th>
+    <th>Location</th>
     </tr>
     </thead>
 
-    {% for instance in my_piece_instances %}
+    {% for instance in mypieces %}
     <tr class="datarow">
         {% if instance.is_in_reparation %}
-            <td>{{ instance}}</td>
-            <td>{{ instance.piece.piece_model}}</td>
-            <td>{{ instance.piece }}</td>
+            <td>{{ instance.part_number }}</td>
+            <td>{{ instance.manufacturer_serialnumber }}</td>
+            <td>{{ instance.piece_model}}</td>
             {% if instance.fifth_location %}
 				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
 			{% elif instance.fourth_location %}
@@ -73,6 +73,60 @@
         {% endif %}
     </tr>
     {% endfor %}
+</table>
+
+<table class="table table-light table-striped">
+    <div class="card-header">
+    <strong>FMS 1 Location check</strong>
+  	</div>
+    <thead>
+    <tr>
+    <th>Seat</th>
+    <th>Front</th>
+    <th>Aft</th>
+    <th>Over Floor</th>
+    <th>Under Floor</th>
+    <th>Structure</th>
+    </tr>
+    </thead>
+
+
+    <tr class="datarow">
+        <td>{{fms1_check_seat}}</td>
+        <td>{{fms1_check_front}}</td>
+        <td>{{fms1_check_aft}}</td>
+        <td>{{fms1_check_ofloor}}</td>
+        <td>{{fms1_check_ufloor}}</td>
+        <td>{{fms1_check_structure}}</td>
+    </tr>
+
+</table>
+
+<table class="table table-light table-striped">
+    <div class="card-header">
+    <strong>FMS 2 Location check</strong>
+  	</div>
+    <thead>
+    <tr>
+    <th>Seat</th>
+    <th>Front</th>
+    <th>Aft</th>
+    <th>Over Floor</th>
+    <th>Under Floor</th>
+    <th>Structure</th>
+    </tr>
+    </thead>
+
+
+    <tr class="datarow">
+        <td>{{fms2_check_seat}}</td>
+        <td>{{fms2_check_front}}</td>
+        <td>{{fms2_check_aft}}</td>
+        <td>{{fms2_check_ofloor}}</td>
+        <td>{{fms2_check_ufloor}}</td>
+        <td>{{fms2_check_structure}}</td>
+    </tr>
+
 </table>
 
 
