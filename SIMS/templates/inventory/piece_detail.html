@@ -6,64 +6,86 @@
     Piece Detail
   </div>
   <div class="card-body">
-    <h5 class="card-title"> Manufacturer Part Number : {{ piece.part_number }}</h5>
+    <h5 class="card-title"> Manufacturer part number : {{ piece.part_number }}</h5>
     <p class="card-text">
     	<ul>
-  <p><strong>Manufacturer:</strong> {{ piece.manufacturer }}</p>
-  <p><strong>Manufacturer Serial number:</strong> {{ piece.manufacturer_serialnumber }}</p>
-  <p><strong>Website: </strong><a href="{{ piece.website }}">{{ piece.website }}</a></p>
   <p><strong>Piece Model:</strong> {{ piece.piece_model }}</p>
   <p><strong>Description:</strong> {{ piece.description }}</p>
   {% if piece.image %}
   <p><img src="{{ piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
   {% endif %}
+  <p><strong>Documentation:</strong> {{ piece.documentation }}</p>
   <p><strong>Calibration Recurrence (days):</strong> {{piece.calibration_recurrence}}</p>
   <p><strong>Type:</strong> {{ piece.item_type }}</p>
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
-  <p><strong>Owner:</strong> {{ piece.owner }}</p>
-  <p><strong>Restriction:</strong> {{ piece.restriction }}</p>
-  <p><strong>Kit:</strong> {{ piece.kit }}</p>
-  <p><strong>CAE Serial Number:</strong> {{ piece.cae_serial_number }}</p>
-  <p><strong>Provider:</strong> {{ piece.provider }}</p>
-  <p><strong>Provider Serial Number:</strong> {{ piece.provider_serialnumber }}</p>
-  <p><strong>Date of Next calibration:</strong> {{ piece.date_calibration }}</p>
-  <p><strong>End of Life:</strong> {{ piece.date_end_of_life }}</p>
-  <p><strong>End of Guarantee:</strong> {{ piece.date_guarantee }}</p>
-  <p><strong>Status:</strong> {{ piece.status }}</p>
-  {% if piece.fifth_location %}
-      <p><strong>Location:</strong>{{piece.location}}-{{piece.second_location|default_if_none:""}}-{{piece.third_location|default_if_none:""}}-{{piece.fourth_location|default_if_none:""}}-{{piece.fifth_location|default_if_none:""}}</p>
-  {% elif piece.fourth_location %}
-      <p><strong>Location:</strong>{{piece.location}}-{{piece.second_location|default_if_none:""}}-{{piece.third_location|default_if_none:""}}-{{piece.fourth_location|default_if_none:""}}</p>
-  {% elif piece.third_location %}
-      <p><strong>Location:</strong>{{piece.location}}-{{piece.second_location|default_if_none:""}}-{{piece.third_location|default_if_none:""}}</p>
-  {% else %}
-      <p><strong>Location:</strong>{{piece.location}}-{{piece.second_location|default_if_none:""}}</p>
-  {% endif %}
+  <p><strong>Manufacturer:</strong> {{ piece.manufacturer }}</p>
+  <p><strong>Manufacturer Serial Number:</strong> {{ piece.manufacturer_serialnumber }}</p>
+  <a href="{{ piece.website }}">{{ piece.website }}</a>
   <p><strong>History:</strong></p>
-		{% for h in piece.history.all %}
-   			<p>
-			<td>{{ piece }} was </td>
-			<td>{{ h.get_history_type_display }} by </td>
-			<td><strong>{{ h.history_user }}</strong> at time : </td>
-			<td>{{ h.history_date }} with Status: </td>
-			<td><strong>{{ h.status }}</strong> and Location: </td>
-			{% if h.fifth_location %}
-				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}</strong></td>
-			{% elif h.fourth_location %}
-				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}</strong></td>
-			{% elif h.third_location %}
-				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}</strong></td>
-			{% else %}
-				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}</strong></td>
-			{% endif %}
-			</p>
-		{% endfor %}
-  <td><a href="{% url 'piece-update' piece.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
-  <td><a href="{% url 'piece-clone' piece.id %}" class="btn btn-outline-secondary btn-sm">Clone</a>
+  {% for h in piece.history.all %}
+  	<p>
+	<td>{{ piece }} was </td>
+	<td>{{ h.get_history_type_display }} by </td>
+	<td><strong>{{ h.history_user }}</strong> at time : </td>
+	<td>{{ h.history_date }}</td>
+    </p>
+  {% endfor %}
+
 	</ul>
     </p>
   </div>
 </div>
 
+<div class="card-2">
+  <div class="card-header">
+    Available Instances
+  </div>
+    {% if piece_instance %}
+    <table class="table table-light table-striped">
+	    <thead>
+		<tr>
+		<td><p>In Use</p></td>
+		<td><p>In Stock</p></td>
+		<td><p>Refurbishing</p></td>
+		<td><p>Reparation</p></td>
+		</tr>
+		</thead>
+      <tr class="datarow">
+				<td>{{ instance_in_use }}</td>
+                <td>{{ instance_in_stock }}</td>
+				<td>{{ instance_in_refurbished }}</td>
+                <td>{{ instance_in_reparation }}</td>
+        </tr>
+	</table>
 
+    <table class="table table-light table-striped">
+	    <thead>
+		<tr>
+		<td><p>CAE Serial Number</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
+        </tr>
+		</thead>
+      {% for copy in piece_instance %}
+      {% if copy.piece.manufacturer_serialnumber == piece.manufacturer_serialnumber %}
+      <tr class="datarow">
+        <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
+	    {% if copy.fifth_location %}
+	  	    <td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
+	    {% elif copy.fourth_location %}
+	    	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}</td>
+	     {% elif copy.third_location %}
+	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}</td>
+	     {% else %}
+	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}</td>
+	     {% endif %}
+        <td>{{ copy.status }}</td>
+        <td><a href="{% url 'update-piece-instance' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+            <a href="{% url 'delete-piece-instance' copy.id %}" class="btn btn-outline-danger btn-sm">Delete</a></td>
+      </tr>
+	{% endif %}
+	{% endfor %}
+	</table>
+    {% endif %}
+</div>
 {% endblock %}

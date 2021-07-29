@@ -20,21 +20,21 @@
   <div class="card-header">
     Instances
   </div>
-    {% if piece %}
+    {% if piece_instance %}
     <table class="table table-light table-striped">
 	    <thead>
 		<tr>
-		<td><p>Part Number</p></td>
-		<td><p>Piece Model</p></td>
+		<td><p>CAE Serial Number</p></td>
+		<td><p>Model</p></td>
 		<td><p>Location</p></td>
 		<td><p>Status</p></td>
         </tr>
 		</thead>
-      {% for copy in piece %}
+      {% for copy in piece_instance %}
       {% if copy.kit.name == kit.name %}
       <tr class="datarow">
-        <td><a href="{{ copy.get_absolute_url }}">{{ copy.part_number }}</a></td>
-        <td>{{copy.piece_model}}</td>
+        <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
+        <td>{{copy.piece.piece_model}}</td>
 	    {% if copy.fifth_location %}
 	  	    <td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
 	    {% elif copy.fourth_location %}
@@ -45,7 +45,8 @@
 	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}</td>
 	     {% endif %}
         <td>{{ copy.status }}</td>
-        <td><a href="{% url 'piece-update' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+        <td><a href="{% url 'update-piece-instance' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+            <a href="{% url 'delete-piece-instance' copy.id %}" class="btn btn-outline-danger btn-sm">Delete</a></td>
       </tr>
 	{% endif %}
 	{% endfor %}

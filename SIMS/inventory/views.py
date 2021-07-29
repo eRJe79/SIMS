@@ -16,12 +16,15 @@ from django.db.models import Q
 
 from .models import (
     Piece,
+    PieceInstance,
     Kit,
 )
 
 from .forms import (
     PieceForm,
-    PieceKitFormSet,
+    PieceInstanceForm,
+    PieceInstancePieceFormSet,
+    PieceInstanceKitFormSet,
     KitForm,
 )
 
@@ -36,11 +39,10 @@ def database_csv(request):
     writer = csv.writer(response)
 
     # Designate The Model
-    instances = Piece.objects.all().order_by('part_number')
+    instances = PieceInstance.objects.all().order_by('piece')
 
     # Add column headings to the csv file
-    writer.writerow(['Manufacturer', 'Manufacturer part Number', 'Manufacturer Serial Number', 'Website', 'Description',
-                     'Documentation', 'Recurrence de calibration', 'Type', 'Characteristic', 'Owner', 'Restriction',
+    writer.writerow(['Manufacturer', 'Manufacturer part Number', 'Manufacturer Serial Number', 'Website', 'Description', 'Documentation', 'Recurrence de calibration', 'Type', 'Characteristic', 'Owner', 'Restriction',
                      'Kit', 'CAE Serial Number', 'Provider', 'Provider Serial Number', 'Location', 'Status'])
 
     # Loop Through and output
@@ -51,12 +53,10 @@ def database_csv(request):
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location + "-" + instance.fourth_location
         elif instance.third_location:
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location
-        elif instance.second_location:
-            location = instance.location + "-" + instance.second_location
         else:
-            location = "No location"
-        writer.writerow([instance.manufacturer, instance.part_number, instance.manufacturer_serialnumber, instance.website, instance.description, instance.documentation, instance.calibration_recurrence,
-                         instance.item_type, instance.item_characteristic, instance.owner, instance.restriction, instance.kit, instance.cae_serial_number, instance.provider, instance.provider_serialnumber,
+            location = instance.location + "-" + instance.second_location
+        writer.writerow([instance.piece.manufacturer, instance.piece.part_number, instance.piece.manufacturer_serialnumber, instance.piece.website, instance.piece.description, instance.piece.documentation, instance.piece.calibration_recurrence,
+                         instance.piece.item_type, instance.piece.item_characteristic, instance.piece.owner, instance.piece.restriction, instance.kit, instance.serial_number, instance.provider, instance.provider_serialnumber,
                          location, instance.status])
     return response
 
@@ -82,8 +82,10 @@ class PieceCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = PieceForm()
+        instance_form = PieceInstancePieceFormSet()
         context = {
             'form': form,
+            'formset': instance_form,
         }
         return render(request, 'inventory/create_piece.html', context)
 
@@ -96,24 +98,29 @@ class PieceCreate(CreateView):
             prefix = "instance_reverse"
             cp[f'{prefix}-TOTAL_FORMS'] = int(
                 cp[f'{prefix}-TOTAL_FORMS']) + value
+            formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+            # the new formsets again -> if the process is addition!
             return render(request, 'inventory/formset.html', {'formset': formset})
 
         self.object = None
         form_class = self.get_form_class()
         form = PieceForm(request.POST, request.FILES)
-        if form.is_valid() :
-            return self.form_valid(form)
+        instance_form = PieceInstancePieceFormSet(request.POST, request.FILES)
+        if form.is_valid() and instance_form.is_valid():
+            return self.form_valid(form, instance_form)
         else:
-            return self.form_invalid(form)
+            return self.form_invalid(form, instance_form)
 
-    def form_valid(self, form):
+    def form_valid(self, form, instance_form):
         self.object = form.save()
         # instance_form.instance = self.object
+        instance_form.save()
         return HttpResponseRedirect(self.get_success_url())
 
-    def form_invalid(self, form):
+    def form_invalid(self, form, instance_form):
         return self.render_to_response(
-            self.get_context_data(form=form))
+            self.get_context_data(form=form,
+                                  instance_form=instance_form))
 
 
 # Display a list of all the Pieces in the inventory
@@ -133,38 +140,62 @@ class PieceListView(ListView):
 # Display a specific Piece
 def show_piece(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
-    context = {'piece': piece}
+    piece_instance = PieceInstance.objects.all().order_by('status')
+    instance_in_use = PieceInstance.objects.filter(status='U', piece=piece).count()
+    instance_in_stock = PieceInstance.objects.filter(status='S', piece=piece).count()
+    instance_in_refurbished = PieceInstance.objects.filter(status='Refurbishing', piece=piece).count()
+    instance_in_reparation = PieceInstance.objects.filter(status='Reparation', piece=piece).count()
+    context = {'piece': piece, 'piece_instance': piece_instance, 'instance_in_use': instance_in_use,
+               'instance_in_stock': instance_in_stock, 'instance_in_refurbished': instance_in_refurbished,
+               'instance_in_reparation': instance_in_reparation}
     return render(request, 'inventory/piece_detail.html', context)
 
-
-# Update a piece
-def update_piece(request, piece_id):
-    piece = Piece.objects.get(pk=piece_id)
-    piece.date_update = timezone.now()
+def create_piece_instance(request):
+    submitted = False
+    form_class = PieceInstanceForm
+    forms = form_class(request.POST or None)
     if request.method == "POST":
-        form = PieceForm(request.POST, instance=piece)
+        forms = PieceInstanceForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return redirect('piece-instance-list')
+        else:
+            forms = PieceInstanceForm()
+            if 'submitted' in request.GET:
+                submitted = True
+    context = {'form': forms}
+    return render(request, 'inventory/create_instance_piece.html', context)
+
+def all_piece_instance(request):
+    piece_instance_list = PieceInstance.objects.all().order_by('piece')
+    return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
+
+# Display specific instance information
+def show_instance_form(request, primary_key):
+    piece_instance = PieceInstance.objects.get(pk=primary_key)
+    context = {'piece_instance': piece_instance}
+    return render(request, 'inventory/piece_instance_detail.html', context)
+
+# Update an instance
+def update_instance(request, instance_id):
+    piece_instance = PieceInstance.objects.get(pk=instance_id)
+    piece_instance.date_update = timezone.now()
+    if request.method == "POST":
+        form = PieceInstanceForm(request.POST, instance=piece_instance)
         if form.is_valid():
             form.save()
-            return redirect('piece')
+            return redirect('piece-instance-list')
     else:
-        form = PieceForm(instance=piece)
-    context = {'piece': piece, 'form':form}
+        form = PieceInstanceForm(instance=piece_instance)
+    context = {'piece_instance': piece_instance, 'form':form}
     return render(request, 'inventory/update_piece_instance.html', context)
 
-# clone a piece
-def clone_piece(request, piece_id):
-    piece = Piece.objects.get(pk=piece_id)
-    piece.pk=None
-    piece.date_update = timezone.now()
-    if request.method == "POST":
-        form = PieceForm(request.POST, instance=piece)
-        if form.is_valid():
-            form.save()
-            return redirect('piece')
-    else:
-        form = PieceForm(instance=piece)
-    context = {'piece': piece, 'form':form}
-    return render(request, 'inventory/clone_existing_piece.html', context)
+# Delete an instance
+def delete_instance(request, instance_id):
+    piece_instance = PieceInstance.objects.get(pk=instance_id)
+    piece_instance.delete()
+    return redirect('piece-detail')
+
 
 # Search feature
 # Specific to piece
@@ -172,29 +203,38 @@ def search_piece_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
         results = Piece.objects.filter(Q(piece_model__contains=searched)
-                                       | Q(part_number__contains=searched)
-                                       | Q(manufacturer_serialnumber__contains=searched)
-                                       | Q(manufacturer__contains=searched)
-                                       | Q(item_type__contains=searched)
-                                       | Q(item_characteristic__contains=searched)
-                                       | Q(owner__contains=searched)
-                                       | Q(kit__contains=searched)
-                                       | Q(provider__contains=searched)
-                                       | Q(provider_serialnumber__contains=searched)
-                                       | Q(location__contains=searched)
-                                       | Q(second_location__contains=searched)
-                                       | Q(third_location__contains=searched)
-                                       | Q(fourth_location__contains=searched)
-                                       | Q(fifth_location__contains=searched)
-                                       )
-        if searched == 'RSPL' or searched == 'rspl':
-            results = Piece.objects.filter(is_rspl=True)
-
+                                    | Q(part_number__contains=searched)
+                                    | Q(manufacturer_serialnumber__contains=searched)
+                                    | Q(manufacturer__contains=searched)
+                                    | Q(item_type__contains=searched)
+                                    | Q(item_characteristic__contains=searched)
+                                    )
         context = {'searched':searched, 'results':results,
                  }
         return render(request, 'inventory/search.html', context)
     else:
-        return render(request, 'inventory/search.html', {})
+        return render(request,
+                    'inventory/search.html',
+                    {})
+
+# Specific to instances
+def search_instance_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        results = PieceInstance.objects.filter(Q(location__contains=searched)
+                                    | Q(second_location__contains=searched)
+                                    | Q(third_location__contains=searched)
+                                    | Q(fourth_location__contains=searched)
+                                    | Q(fifth_location__contains=searched)
+                                    | Q(status__contains=searched)
+                                    )
+        context = {'searched':searched, 'results':results,
+                 }
+        return render(request, 'inventory/search_instance.html', context)
+    else:
+        return render(request,
+                    'inventory/search_instance.html',
+                    {})
 
 # Kit Management Section
 # Create new kit
@@ -207,10 +247,10 @@ class KitCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = KitForm()
-        piece_form = PieceKitFormSet()
+        instance_form = PieceInstanceKitFormSet()
         context = {
             'form': KitForm(),
-            'formset': PieceKitFormSet(),
+            'formset': PieceInstanceKitFormSet(),
         }
         return render(request, 'inventory/kit_form.html', context)
 
@@ -218,22 +258,22 @@ class KitCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        piece_form = PieceKitFormSet(request.POST, request.FILES)
-        if form.is_valid() and piece_form.is_valid():
-            return self.form_valid(form, piece_form)
+        instance_form = PieceInstanceKitFormSet(request.POST)
+        if form.is_valid() and instance_form.is_valid() :
+            return self.form_valid(form, instance_form)
         else:
-            return self.form_invalid(form, piece_form)
+            return self.form_invalid(form, instance_form)
 
-    def form_valid(self, form, piece_form):
+    def form_valid(self, form, instance_form):
         self.object = form.save()
-        piece_form.instance = self.object
-        piece_form.save()
+        instance_form.instance = self.object
+        instance_form.save()
         return HttpResponseRedirect(self.get_success_url())
 
-    def form_invalid(self, form, piece_form):
+    def form_invalid(self, form, instance_form):
         return self.render_to_response(
             self.get_context_data(form=form,
-                                  piece_form=piece_form))
+                                  instance_form=instance_form))
 
 
 # Display Kit List
@@ -252,6 +292,6 @@ class KitList(ListView):
 # Display a specific Kit
 def show_kit(request, primary_key):
     kit = Kit.objects.get(pk=primary_key)
-    piece = Piece.objects.all().order_by('status')
-    context = {'kit': kit, 'piece': piece}
+    piece_instance = PieceInstance.objects.all().order_by('status')
+    context = {'kit': kit, 'piece_instance': piece_instance}
     return render(request, 'inventory/kit_detail.html', context)

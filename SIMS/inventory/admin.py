@@ -2,22 +2,23 @@ from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
 from .models import (
-    Piece, Kit
+    Piece, PieceInstance, Kit
 )
 # This is to register the models in the admin website
 
-class PieceInline(admin.TabularInline):
-    model = Piece
+class PieceInstanceInline(admin.TabularInline):
+    model = PieceInstance
 
 @admin.register(Piece)
 class PieceAdmin(SimpleHistoryAdmin):
-    list_display = ('part_number', 'website', 'manufacturer', 'piece_model', 'manufacturer_serialnumber', 'description',
-                    'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction', 'history',
-                    'cae_serial_number', 'kit', 'location', 'second_location', 'third_location', 'fourth_location',
-                    'fifth_location', 'status')
+    list_display = ('part_number', 'website', 'manufacturer', 'piece_model', 'manufacturer_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction')
+    inlines = [PieceInstanceInline]
 
+@admin.register(PieceInstance)
+class PieceInstanceAdmin(SimpleHistoryAdmin):
+    list_display = ('serial_number', 'piece', 'kit', 'location', 'second_location', 'third_location', 'fourth_location', 'fifth_location', 'status', 'history')
 
 @admin.register(Kit)
 class KitAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'description')
-    inlines = [PieceInline]
+    inlines = [PieceInstanceInline]
