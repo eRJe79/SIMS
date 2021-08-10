@@ -11,8 +11,12 @@
 		<p class="card-text">
   		<p><strong>Piece Model:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.piece_model }}</a></p>
 		{% if piece_instance.kit %}
-		<p><strong>Kit:</strong> {{ piece_instance.kit }}</p>
+			<p><strong>Kit:</strong> {{ piece_instance.kit }}</p>
 		{% endif %}
+  		{% if piece.image %}
+  			<p><img src="{{ piece_instance.piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
+  		{% endif %}
+		<p><strong>Calibration document is stored there: </strong> {{ piece_instance.calibration_document }}</p>
   		<p><strong>Provider:</strong> {{ piece_instance.provider }}</p>
   		<p><strong>Provider Serial Number:</strong> {{ piece_instance.provider_serialnumber }}</p>
   		<p><strong>Date Created:</strong> {{ piece_instance.date_created }}</p>

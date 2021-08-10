@@ -23,6 +23,7 @@ action="{%url 'search-instance-database' %}">
 	<th>Manufacturer part number</th>
 	<th>Provider</th>
 	<th>Provider Serial Number</th>
+	<th>Calibration Document</th>
 	<th>Creation Date</th>
 	<th>Last update</th>
 	<th>Next Calibration</th>
@@ -39,6 +40,7 @@ action="{%url 'search-instance-database' %}">
       <td>{{ piece_instance.part_number }}</td>
       <td>{{ piece_instance.provider }}</td>
       <td>{{piece_instance.provider_serialnumber}}</td>
+      <td>{{piece_instance.calibration_document}}</td>
       <td>{{piece_instance.date_created}}</td>
       <td>{{piece_instance.date_update}}</td>
 	  <td>{{piece_instance.date_calibration}}</td>

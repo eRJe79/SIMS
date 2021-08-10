@@ -5,9 +5,11 @@
 <body>
   <h1>Add New Piece Instance</h1>
   <br/><br/>
-  <form action="" method="post">
+  <form id="form_with_formset" action="#" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+  <table class="table">
+    {{ form.as_table }}
+  </table>
     <div>
       <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
         <span id="submit-button-amount">Add Instance</span>

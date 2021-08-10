@@ -2,7 +2,7 @@ import datetime
 
 from django import forms
 from django.conf import settings
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 
 from .models import Piece, PieceInstance, Kit
 
@@ -43,9 +43,9 @@ class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
         fields = ['piece', 'kit', 'serial_number', 'part_number', 'manufacturer_serialnumber', 'provider',
-                  'provider_serialnumber', 'owner', 'restriction', 'date_calibration', 'date_end_of_life',
-                  'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
-                  'fifth_location', 'status']
+                  'provider_serialnumber', 'owner', 'restriction', 'is_rspl', 'calibration_document', 'date_calibration',
+                  'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location',
+                  'fourth_location', 'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
             'kit': 'Kit',
@@ -56,6 +56,8 @@ class PieceInstanceForm(ModelForm):
             'provider_serialnumber': 'Provider Serial Number',
             'owner': 'Owner',
             'restriction': 'Restriction',
+            'calibration_document': 'Calibration Document',
+            'is_rspl': 'RSPL',
             'date_calibration': 'Next Calibration',
             'date_end_of_life': 'End of Life',
             'date_guarantee': 'Guarantee Expiration',
@@ -72,6 +74,9 @@ class PieceInstanceForm(ModelForm):
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
             'provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the provider name'}),
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
+            'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),
+            'restriction': forms.Select(attrs={'class': 'form-select', 'id': 'restriction'}),
+            'is_rspl': forms.CheckboxInput(),
             'date_calibration': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_guarantee': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),

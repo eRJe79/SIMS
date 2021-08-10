@@ -218,6 +218,10 @@ class PieceInstance(models.Model):
     # Instance specific serial number, setting blank=True as it might not be required
     serial_number = models.CharField(max_length=200, null=True, blank=False)
 
+    is_rspl = models.BooleanField(default=False)  # Franck's account
+    calibration_document = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
     # Provider information - an instance of a piece can be bought from different providers
     provider = models.CharField(max_length=120, null=True, blank=False)
     provider_serialnumber = models.CharField(max_length=120, null=True, blank=False)
@@ -322,6 +326,155 @@ class PieceInstance(models.Model):
         else:
             reparation = False
         return reparation
+
+    # This function is to check if the FMS1/2 (second_location_) have no missing piece
+    # We just check the fourth_location attribute since the specific FMS location are at this level
+    # Checks for FMS 1
+    # Seat check
+    def fms1_seat_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS1' and piece.fourth_location == 'Seat':
+                i=i+1
+                print(i)
+        if i>0:
+            return True
+        else:
+            return False
+
+    # Front check
+    def fms1_front_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Front':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+
+    # Aft check
+    def fms1_aft_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Aft':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+
+    # Over Floor check
+    def fms1_overfloor_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Over Floor':
+                i=i+1
+        if i>0:
+            return True
+        else:
+            return False
+
+    # Under Floor check
+    def fms1_underfloor_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Under Floor':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+
+    # Structure check
+    def fms1_structure_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Structure':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+
+
+    # Checks for FMS 2
+    # Seat check
+    def fms2_seat_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Seat':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+
+    # Front check
+    def fms2_front_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Front':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+    # Aft check
+    def fms2_aft_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Aft':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+    # Over Floor check
+    def fms2_overfloor_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Over Floor':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+
+    # Under Floor check
+    def fms2_underfloor_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Under Floor':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+
+    # Structure check
+    def fms2_structure_check(self):
+        pieces = PieceInstance.objects.all()
+        i=0
+        for piece in pieces:
+            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Structure':
+                i=i+1
+            if i>0:
+                return True
+            else:
+                return False
+
 
 
 

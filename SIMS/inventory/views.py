@@ -55,8 +55,8 @@ def database_csv(request):
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location
         else:
             location = instance.location + "-" + instance.second_location
-        writer.writerow([instance.piece.manufacturer, instance.piece.part_number, instance.piece.manufacturer_serialnumber, instance.piece.website, instance.piece.description, instance.piece.documentation, instance.piece.calibration_recurrence,
-                         instance.piece.item_type, instance.piece.item_characteristic, instance.piece.owner, instance.piece.restriction, instance.kit, instance.serial_number, instance.provider, instance.provider_serialnumber,
+        writer.writerow([instance.piece.manufacturer, instance.part_number, instance.manufacturer_serialnumber, instance.piece.website, instance.piece.description, instance.piece.documentation, instance.piece.calibration_recurrence,
+                         instance.piece.item_type, instance.piece.item_characteristic, instance.owner, instance.restriction, instance.kit, instance.serial_number, instance.provider, instance.provider_serialnumber,
                          location, instance.status])
     return response
 
@@ -82,10 +82,8 @@ class PieceCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = PieceForm()
-        instance_form = PieceInstancePieceFormSet()
         context = {
             'form': form,
-            'formset': instance_form,
         }
         return render(request, 'inventory/create_piece.html', context)
 
@@ -105,22 +103,19 @@ class PieceCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = PieceForm(request.POST, request.FILES)
-        instance_form = PieceInstancePieceFormSet(request.POST, request.FILES)
-        if form.is_valid() and instance_form.is_valid():
-            return self.form_valid(form, instance_form)
+        if form.is_valid():
+            return self.form_valid(form)
         else:
-            return self.form_invalid(form, instance_form)
+            return self.form_invalid(form)
 
-    def form_valid(self, form, instance_form):
+    def form_valid(self, form):
         self.object = form.save()
         # instance_form.instance = self.object
-        instance_form.save()
         return HttpResponseRedirect(self.get_success_url())
 
-    def form_invalid(self, form, instance_form):
+    def form_invalid(self, form):
         return self.render_to_response(
-            self.get_context_data(form=form,
-                                  instance_form=instance_form))
+            self.get_context_data(form=form))
 
 
 # Display a list of all the Pieces in the inventory
@@ -150,21 +145,49 @@ def show_piece(request, primary_key):
                'instance_in_reparation': instance_in_reparation}
     return render(request, 'inventory/piece_detail.html', context)
 
-def create_piece_instance(request):
-    submitted = False
+class PieceInstanceCreate(CreateView):
+    template_name = 'inventory/create_instance_piece.html'
+    model = PieceInstance
     form_class = PieceInstanceForm
-    forms = form_class(request.POST or None)
-    if request.method == "POST":
-        forms = PieceInstanceForm(request.POST)
-        if forms.is_valid():
-            forms.save()
-            return redirect('piece-instance-list')
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = PieceInstanceForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'inventory/create_instance_piece.html', context)
+
+    def post(self, request, *args, **kwargs):
+        # if our ajax is calling so we have to take action
+        # because this is not the form submission
+        if request.is_ajax():
+            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+            value = int(cp['wtd'])  # figure out if the process is addition or deletion
+            prefix = "instance_reverse"
+            cp[f'{prefix}-TOTAL_FORMS'] = int(
+                cp[f'{prefix}-TOTAL_FORMS']) + value
+            formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+            # the new formsets again -> if the process is addition!
+            return render(request, 'inventory/formset.html', {'formset': formset})
+
+        self.object = None
+        form_class = self.get_form_class()
+        form = PieceInstanceForm(request.POST, request.FILES)
+        if form.is_valid():
+            return self.form_valid(form)
         else:
-            forms = PieceInstanceForm()
-            if 'submitted' in request.GET:
-                submitted = True
-    context = {'form': forms}
-    return render(request, 'inventory/create_instance_piece.html', context)
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        # instance_form.instance = self.object
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(
+            self.get_context_data(form=form))
 
 def all_piece_instance(request):
     piece_instance_list = PieceInstance.objects.all().order_by('piece')
@@ -189,6 +212,21 @@ def update_instance(request, instance_id):
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form':form}
     return render(request, 'inventory/update_piece_instance.html', context)
+
+# clone an instance
+def clone_instance(request, instance_id):
+    piece_instance = PieceInstance.objects.get(pk=instance_id)
+    piece_instance.pk=None
+    piece_instance.date_update = timezone.now()
+    if request.method == "POST":
+        form = PieceInstanceForm(request.POST, instance=piece_instance)
+        if form.is_valid():
+            form.save()
+            return redirect('piece-instance-list')
+    else:
+        form = PieceInstanceForm(instance=piece_instance)
+    context = {'piece_instance': piece_instance, 'form': form}
+    return render(request, 'inventory/clone_existing_piece.html', context)
 
 # Delete an instance
 def delete_instance(request, instance_id):
@@ -216,15 +254,22 @@ def search_piece_database(request):
 def search_instance_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        results = PieceInstance.objects.filter(Q(location__contains=searched)
-                                    | Q(second_location__contains=searched)
-                                    | Q(third_location__contains=searched)
-                                    | Q(fourth_location__contains=searched)
-                                    | Q(fifth_location__contains=searched)
-                                    | Q(status__contains=searched)
-                                    )
-        context = {'searched':searched, 'results':results,
-                 }
+        if searched == 'RSPL' or searched == 'rspl':
+            results = PieceInstance.objects.filter(is_rspl=True)
+        else:
+            results = PieceInstance.objects.filter(Q(location__contains=searched)
+                                                   | Q(second_location__contains=searched)
+                                                   | Q(third_location__contains=searched)
+                                                   | Q(fourth_location__contains=searched)
+                                                   | Q(fifth_location__contains=searched)
+                                                   | Q(status__contains=searched)
+                                                   | Q(part_number__contains=searched)
+                                                   | Q(manufacturer_serialnumber__contains=searched)
+                                                   | Q(owner__contains=searched)
+                                                   | Q(provider__contains=searched)
+                                                   | Q(provider_serialnumber__contains=searched)
+                                                   )
+        context = {'searched': searched, 'results': results}
         return render(request, 'inventory/search_instance.html', context)
     else:
         return render(request, 'inventory/search_instance.html', {})
