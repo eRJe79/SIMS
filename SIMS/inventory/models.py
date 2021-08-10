@@ -33,24 +33,10 @@ class Piece(models.Model):
         ('Office', 'office'),
         ('Building', 'building'),
     )
-    # Choices for the item owner
-    OWNER_CHOICE = (
-        ('CAE', 'CAE'),
-        ('Customer', 'RSAF'),
-        ('Other', 'other'),
-    )
-    # Choices for the restriction
-    RESTRICTION_CHOICE = (
-        ('ITAR', 'ITAR'),
-        ('Controlled', 'Controlled'),
-        ('None', 'Not Application')
-    )
     # For new row feature
     related_name = 'instance_reverse',
 
-    part_number = models.CharField(max_length=200)
     manufacturer = models.CharField(max_length=120)
-    manufacturer_serialnumber = models.CharField(max_length=120)
     website = models.URLField(max_length=254)
     piece_model = models.CharField(max_length=200)
 
@@ -65,29 +51,13 @@ class Piece(models.Model):
     # Calibration time recurrence - can be let empty
     calibration_recurrence = models.IntegerField(null=True, blank=True)
 
-    restriction = models.CharField(
-        max_length=20,
-        choices=RESTRICTION_CHOICE,
-        blank=True,
-        default='None',
-        help_text='Piece restriction access',
-    )
-
-    owner = models.CharField(
-        max_length=20,
-        choices=OWNER_CHOICE,
-        blank=True,
-        default='CAE',
-        help_text='Piece owner',
-    )
-
     # History log
     history = HistoricalRecords()
 
     # This is a default return method to access Piece
     def __str__(self):
         """String for representing the Model object."""
-        return self.manufacturer_serialnumber
+        return self.piece_model
 
     # This method is used is some templates to have link directed to the piece detail
     def get_absolute_url(self):
@@ -111,12 +81,27 @@ class Kit(models.Model):
 
     # This method is used is some templates to have link directed to the kit detail
     def get_absolute_url(self):
-       """Returns the url to access a detail record for this kit."""
-       return reverse('kit-detail', args=[str(self.id)])
+        """Returns the url to access a detail record for this kit."""
+        return reverse('kit-detail', args=[str(self.id)])
+
 
 # Class describing the instance of pieces with their specific attributes and methods
 class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
+
+    # Choices for the item owner
+    OWNER_CHOICE = (
+        ('CAE', 'CAE'),
+        ('Customer', 'RSAF'),
+        ('Other', 'other'),
+    )
+    # Choices for the restriction
+    RESTRICTION_CHOICE = (
+        ('ITAR', 'ITAR'),
+        ('Controlled', 'Controlled'),
+        ('None', 'Not Application')
+    )
+
     # Choices for the piece status
     STATUS_CHOICE = (
         ('Reparation', 'Reparation'),
@@ -227,6 +212,9 @@ class PieceInstance(models.Model):
     # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
     # It can be left empty as an instance doesn't necessarily belongs to a kit
     kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
+    # Manufacturer P/N and S/N
+    part_number = models.CharField(max_length=200)
+    manufacturer_serialnumber = models.CharField(max_length=120)
     # Instance specific serial number, setting blank=True as it might not be required
     serial_number = models.CharField(max_length=200, null=True, blank=False)
 
@@ -285,6 +273,22 @@ class PieceInstance(models.Model):
         choices=STATUS_CHOICE,
         blank=True,
         default='New',
+    )
+
+    restriction = models.CharField(
+        max_length=20,
+        choices=RESTRICTION_CHOICE,
+        blank=True,
+        default='None',
+        help_text='Piece restriction access',
+    )
+
+    owner = models.CharField(
+        max_length=20,
+        choices=OWNER_CHOICE,
+        blank=True,
+        default='CAE',
+        help_text='Piece owner',
     )
 
     # History log

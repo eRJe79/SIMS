@@ -11,12 +11,12 @@ class PieceInstanceInline(admin.TabularInline):
 
 @admin.register(Piece)
 class PieceAdmin(SimpleHistoryAdmin):
-    list_display = ('part_number', 'website', 'manufacturer', 'piece_model', 'manufacturer_serialnumber', 'description', 'documentation', 'item_type', 'item_characteristic', 'owner', 'restriction')
+    list_display = ('website', 'manufacturer', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic',)
     inlines = [PieceInstanceInline]
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(SimpleHistoryAdmin):
-    list_display = ('serial_number', 'piece', 'kit', 'location', 'second_location', 'third_location', 'fourth_location', 'fifth_location', 'status', 'history')
+    list_display = ('serial_number', 'piece', 'kit','part_number', 'manufacturer_serialnumber', 'owner', 'restriction', 'location', 'second_location', 'third_location', 'fourth_location', 'fifth_location', 'status', 'history')
 
 @admin.register(Kit)
 class KitAdmin(SimpleHistoryAdmin):

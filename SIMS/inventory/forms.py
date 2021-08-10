@@ -9,18 +9,11 @@ from .models import Piece, PieceInstance, Kit
 class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
-        fields = ['part_number', 'manufacturer', 'manufacturer_serialnumber', 'website', 'piece_model', 'description',
-                  'documentation', 'image', 'calibration_recurrence', 'item_type', 'item_characteristic','owner',
-                  'restriction']
+        fields = ['manufacturer', 'website', 'piece_model', 'description',
+                  'documentation', 'image', 'calibration_recurrence', 'item_type', 'item_characteristic']
         widgets = {
-        'part_number': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'part_number', 'placeholder': 'Enter the manufacture part number'
-        }),
         'manufacturer': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'manufacturer', 'placeholder': 'Enter the manufacturer name'
-        }),
-        'manufacturer_serialnumber': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'manufacturer_serialnumber', 'placeholder': 'Enter the piece serial number'
         }),
         'website': forms.URLInput(attrs={
             'class': 'form-control', 'id': 'website', 'placeholder': 'https://www.website.com'
@@ -43,26 +36,26 @@ class PieceForm(forms.ModelForm):
         'item_characteristic': forms.Select(attrs={
             'class': 'form-select', 'id': 'item_characteristic'
         }),
-        'owner': forms.Select(attrs={
-            'class': 'form-select', 'id': 'owner'
-        }),
-        'restriction': forms.Select(attrs={
-            'class': 'form-select', 'id': 'restriction'
-        }),
         }
 
 
 class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'kit', 'serial_number', 'provider', 'provider_serialnumber', 'date_calibration', 'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
+        fields = ['piece', 'kit', 'serial_number', 'part_number', 'manufacturer_serialnumber', 'provider',
+                  'provider_serialnumber', 'owner', 'restriction', 'date_calibration', 'date_end_of_life',
+                  'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
                   'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
             'kit': 'Kit',
             'serial_number': 'Serial Number',
+            'part_number': 'Part Number',
+            'manufacturer_serialnumber': 'Manufacturer Serial Number',
             'provider': 'Provider',
             'provider_serialnumber': 'Provider Serial Number',
+            'owner': 'Owner',
+            'restriction': 'Restriction',
             'date_calibration': 'Next Calibration',
             'date_end_of_life': 'End of Life',
             'date_guarantee': 'Guarantee Expiration',
