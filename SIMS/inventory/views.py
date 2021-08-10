@@ -231,19 +231,22 @@ def search_piece_database(request):
 def search_instance_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        results = PieceInstance.objects.filter(Q(location__contains=searched)
-                                               | Q(second_location__contains=searched)
-                                               | Q(third_location__contains=searched)
-                                               | Q(fourth_location__contains=searched)
-                                               | Q(fifth_location__contains=searched)
-                                               | Q(status__contains=searched)
-                                               | Q(part_number__contains=searched)
-                                               | Q(manufacturer_serialnumber__contains=searched)
-                                               | Q(manufacturer__contains=searched)
-                                               | Q(owner__contains=searched)
-                                               | Q(provider__contains=searched)
-                                               | Q(provider_serialnumber__contains=searched)
-                                               )
+        if searched == 'RSPL' or searched == 'rspl':
+            results = Piece.objects.filter(is_rspl=True)
+        else:
+            results = PieceInstance.objects.filter(Q(location__contains=searched)
+                                                   | Q(second_location__contains=searched)
+                                                   | Q(third_location__contains=searched)
+                                                   | Q(fourth_location__contains=searched)
+                                                   | Q(fifth_location__contains=searched)
+                                                   | Q(status__contains=searched)
+                                                   | Q(part_number__contains=searched)
+                                                   | Q(manufacturer_serialnumber__contains=searched)
+                                                   | Q(manufacturer__contains=searched)
+                                                   | Q(owner__contains=searched)
+                                                   | Q(provider__contains=searched)
+                                                   | Q(provider_serialnumber__contains=searched)
+                                                   )
         context = {'searched': searched, 'results': results}
         return render(request, 'inventory/search_instance.html', context)
     else:

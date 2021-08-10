@@ -2,7 +2,7 @@ import datetime
 
 from django import forms
 from django.conf import settings
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 
 from .models import Piece, PieceInstance, Kit
 
