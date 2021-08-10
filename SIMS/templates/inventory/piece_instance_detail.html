@@ -16,7 +16,7 @@
   		{% if piece.image %}
   			<p><img src="{{ piece_instance.piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
   		{% endif %}
-		<p><strong>Calibration document is stored there: </strong> {{ piece.calibration_document }}</p>
+		<p><strong>Calibration document is stored there: </strong> {{ piece_instance.calibration_document }}</p>
   		<p><strong>Provider:</strong> {{ piece_instance.provider }}</p>
   		<p><strong>Provider Serial Number:</strong> {{ piece_instance.provider_serialnumber }}</p>
   		<p><strong>Date Created:</strong> {{ piece_instance.date_created }}</p>
