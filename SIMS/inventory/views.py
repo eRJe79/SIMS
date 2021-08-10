@@ -190,6 +190,21 @@ def update_instance(request, instance_id):
     context = {'piece_instance': piece_instance, 'form':form}
     return render(request, 'inventory/update_piece_instance.html', context)
 
+# clone an instance
+def clone_instance(request, instance_id):
+    piece_instance = PieceInstance.objects.get(pk=instance_id)
+    piece_instance.pk=None
+    piece_instance.date_update = timezone.now()
+    if request.method == "POST":
+        form = PieceInstanceForm(request.POST, instance=piece_instance)
+        if form.is_valid():
+            form.save()
+            return redirect('piece-instance-list')
+    else:
+        form = PieceInstanceForm(instance=piece_instance)
+    context = {'piece_instance': piece_instance, 'form': form}
+    return render(request, 'inventory/clone_existing_piece.html', context)
+
 # Delete an instance
 def delete_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
