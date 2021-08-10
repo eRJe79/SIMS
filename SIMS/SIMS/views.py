@@ -38,7 +38,7 @@ def dashboard(request):
     fms2_number_ufloor = 0
     fms2_number_structure = 0
 
-    for piece in mypieces:
+    for piece in my_piece_instances:
         if piece.second_location == 'FMS1':
             if piece.fourth_location == 'Seat':
                 fms1_number_seat = fms1_number_seat + 1
