@@ -43,9 +43,9 @@ class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
         fields = ['piece', 'kit', 'serial_number', 'part_number', 'manufacturer_serialnumber', 'provider',
-                  'provider_serialnumber', 'owner', 'restriction', 'date_calibration', 'date_end_of_life',
-                  'date_guarantee', 'location', 'second_location', 'third_location', 'fourth_location',
-                  'fifth_location', 'status']
+                  'provider_serialnumber', 'owner', 'restriction', 'is_rspl', 'calibration_document', 'date_calibration',
+                  'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location',
+                  'fourth_location', 'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
             'kit': 'Kit',
@@ -56,6 +56,7 @@ class PieceInstanceForm(ModelForm):
             'provider_serialnumber': 'Provider Serial Number',
             'owner': 'Owner',
             'restriction': 'Restriction',
+            'calibration_document': 'Calibration Document',
             'is_rspl': 'RSPL',
             'date_calibration': 'Next Calibration',
             'date_end_of_life': 'End of Life',

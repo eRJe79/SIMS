@@ -219,6 +219,8 @@ class PieceInstance(models.Model):
     serial_number = models.CharField(max_length=200, null=True, blank=False)
 
     is_rspl = models.BooleanField(default=False)  # Franck's account
+    calibration_document = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
     # Provider information - an instance of a piece can be bought from different providers
     provider = models.CharField(max_length=120, null=True, blank=False)
