@@ -55,8 +55,8 @@ def database_csv(request):
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location
         else:
             location = instance.location + "-" + instance.second_location
-        writer.writerow([instance.piece.manufacturer, instance.piece.part_number, instance.piece.manufacturer_serialnumber, instance.piece.website, instance.piece.description, instance.piece.documentation, instance.piece.calibration_recurrence,
-                         instance.piece.item_type, instance.piece.item_characteristic, instance.piece.owner, instance.piece.restriction, instance.kit, instance.serial_number, instance.provider, instance.provider_serialnumber,
+        writer.writerow([instance.piece.manufacturer, instance.part_number, instance.manufacturer_serialnumber, instance.piece.website, instance.piece.description, instance.piece.documentation, instance.piece.calibration_recurrence,
+                         instance.piece.item_type, instance.piece.item_characteristic, instance.owner, instance.restriction, instance.kit, instance.serial_number, instance.provider, instance.provider_serialnumber,
                          location, instance.status])
     return response
 
@@ -255,7 +255,7 @@ def search_instance_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
         if searched == 'RSPL' or searched == 'rspl':
-            results = Piece.objects.filter(is_rspl=True)
+            results = PieceInstance.objects.filter(is_rspl=True)
         else:
             results = PieceInstance.objects.filter(Q(location__contains=searched)
                                                    | Q(second_location__contains=searched)
@@ -265,7 +265,6 @@ def search_instance_database(request):
                                                    | Q(status__contains=searched)
                                                    | Q(part_number__contains=searched)
                                                    | Q(manufacturer_serialnumber__contains=searched)
-                                                   | Q(manufacturer__contains=searched)
                                                    | Q(owner__contains=searched)
                                                    | Q(provider__contains=searched)
                                                    | Q(provider_serialnumber__contains=searched)
