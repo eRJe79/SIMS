@@ -7,9 +7,9 @@
     Piece Instance Detail
   	</div>
   	<div class="card-body">
-		<h5 class="card-title"> CAE Serial Number : {{ piece_instance.serial_number }}</h5>
+		<h5 class="card-title"> Manufacturer Part Number : {{ piece_instance.part_number }}</h5>
 		<p class="card-text">
-  		<p><strong>Piece Manufacturer Part Number:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.part_number }}</a></p>
+  		<p><strong>Piece Model:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.piece_model }}</a></p>
 		{% if piece_instance.kit %}
 		<p><strong>Kit:</strong> {{ piece_instance.kit }}</p>
 		{% endif %}

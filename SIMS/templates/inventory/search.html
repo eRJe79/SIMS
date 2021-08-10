@@ -8,28 +8,21 @@
     <table class="table table-light table-striped">
     <thead>
     <tr>
-	<th>Part Number</th>
-	<th>Manufacturer</th>
 	<th>Piece Model</th>
+	<th>Manufacturer</th>
 	<th>CAE Serial Number</th>
 	<th>Documentation</th>
 	<th>Type</th>
 	<th>Characteristic</th>
-	<th>Owner</th>
-	<th>Restriction</th>
 	</tr>
     </thead>
     <tr class="datarow">
       {% for result in results %}
-      <td><a href="{{ piece.get_absolute_url }}">{{ result.part_number }}</a></td>
+      <td><a href="{{ piece.get_absolute_url }}">{{ result.piece_model }}</a></td>
       <td>{{ result.manufacturer }}</td>
-      <td>{{ result.piece_model }}</td>
-      <td>{{ result.manufacturer_serialnumber }}</td>
       <td>{{ result.documentation }}</td>
       <td>{{ result.item_type }}</td>
       <td>{{ result.item_characteristic }}</td>
-      <td>{{ result.owner }}</td>
-      <td>{{ result.restriction }}</td>
     </tr>
     {% endfor %}
 </table>

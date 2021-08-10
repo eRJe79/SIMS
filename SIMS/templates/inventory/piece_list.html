@@ -15,10 +15,8 @@ action="{%url 'search-piece-database' %}">
 <table class="table table-light table-striped">
   <thead>
     <tr>
-	<th>Manufacturer Part Number</th>
+	<th>Manufacturer Piece Model</th>
 	<th>Manufacturer</th>
-	<th>Piece Model</th>
-	<th>Manufacturer Serial Number</th>
 	<th>Documentation</th>
 	<th>Type</th>
 	<th>Characteristic</th>
@@ -28,15 +26,11 @@ action="{%url 'search-piece-database' %}">
   </thead>
     {% for piece in piece_list %}
     <tr class="datarow">
-      <td><a href="{{ piece.get_absolute_url }}">{{ piece.part_number }}</a></td>
+      <td><a href="{{ piece.get_absolute_url }}">{{ piece.piece_model }}</a></td>
       <td>{{ piece.manufacturer }}</td>
-      <td>{{ piece.piece_model }}</td>
-      <td>{{ piece.manufacturer_serialnumber }}</td>
       <td>{{ piece.documentation }}</td>
       <td>{{ piece.item_type }}</td>
       <td>{{ piece.item_characteristic }}</td>
-      <td>{{ piece.owner }}</td>
-      <td>{{ piece.restriction }}</td>
     </tr>
     {% endfor %}
 </table>

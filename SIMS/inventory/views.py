@@ -203,19 +203,14 @@ def search_piece_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
         results = Piece.objects.filter(Q(piece_model__contains=searched)
-                                    | Q(part_number__contains=searched)
-                                    | Q(manufacturer_serialnumber__contains=searched)
-                                    | Q(manufacturer__contains=searched)
-                                    | Q(item_type__contains=searched)
-                                    | Q(item_characteristic__contains=searched)
-                                    )
-        context = {'searched':searched, 'results':results,
-                 }
+                                       | Q(manufacturer__contains=searched)
+                                       | Q(item_type__contains=searched)
+                                       | Q(item_characteristic__contains=searched)
+                                       )
+        context = {'searched': searched, 'results': results}
         return render(request, 'inventory/search.html', context)
     else:
-        return render(request,
-                    'inventory/search.html',
-                    {})
+        return render(request, 'inventory/search.html', {})
 
 # Specific to instances
 def search_instance_database(request):
@@ -232,9 +227,7 @@ def search_instance_database(request):
                  }
         return render(request, 'inventory/search_instance.html', context)
     else:
-        return render(request,
-                    'inventory/search_instance.html',
-                    {})
+        return render(request, 'inventory/search_instance.html', {})
 
 # Kit Management Section
 # Create new kit
