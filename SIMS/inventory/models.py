@@ -218,6 +218,8 @@ class PieceInstance(models.Model):
     # Instance specific serial number, setting blank=True as it might not be required
     serial_number = models.CharField(max_length=200, null=True, blank=False)
 
+    is_rspl = models.BooleanField(default=False)  # Franck's account
+
     # Provider information - an instance of a piece can be bought from different providers
     provider = models.CharField(max_length=120, null=True, blank=False)
     provider_serialnumber = models.CharField(max_length=120, null=True, blank=False)
