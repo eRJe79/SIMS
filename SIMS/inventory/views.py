@@ -42,10 +42,13 @@ def database_csv(request):
     instances = PieceInstance.objects.all().order_by('piece')
 
     # Add column headings to the csv file
-    writer.writerow(['Manufacturer', 'Manufacturer part Number', 'Manufacturer Serial Number', 'Website', 'Description', 'Documentation', 'Recurrence de calibration', 'Type', 'Characteristic', 'Owner', 'Restriction',
-                     'Kit', 'CAE Serial Number', 'Provider', 'Provider Serial Number', 'Location', 'Status'])
+    writer.writerow(['Piece model', 'Manufacturer', 'Manufacturer part Number', 'Manufacturer Serial Number', 'Website',
+                     'Description', 'Documentation', 'Calibration Recurrence', 'Type', 'Characteristic', 'Owner',
+                     'Restriction', 'RSPL', 'Kit Name', 'CAE Serial Number', 'Provider',
+                     'Provider Serial Number', 'Location', 'Status', 'Date created', 'Last Update',
+                     'Next calibration date', 'End of life', 'End of guarantee'])
 
-    # Loop Through and output
+    # Loop Through instance and output
     for instance in instances:
         if instance.fifth_location:
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location + "-" + instance.fourth_location + "-" + instance.fifth_location
@@ -55,9 +58,20 @@ def database_csv(request):
             location = instance.location + "-" + instance.second_location + "-" + instance.third_location
         else:
             location = instance.location + "-" + instance.second_location
-        writer.writerow([instance.piece.manufacturer, instance.part_number, instance.manufacturer_serialnumber, instance.piece.website, instance.piece.description, instance.piece.documentation, instance.piece.calibration_recurrence,
-                         instance.piece.item_type, instance.piece.item_characteristic, instance.owner, instance.restriction, instance.kit, instance.serial_number, instance.provider, instance.provider_serialnumber,
-                         location, instance.status])
+
+        if instance.is_rspl:
+            rspl = 'RSPL'
+        elif not instance.is_rspl:
+            rspl = 'Not RSPL'
+
+        writer.writerow([instance.piece.piece_model, instance.piece.manufacturer, instance.part_number,
+                         instance.manufacturer_serialnumber, instance.piece.website, instance.piece.description,
+                         instance.piece.documentation, instance.piece.calibration_recurrence,
+                         instance.piece.item_type, instance.piece.item_characteristic, instance.owner,
+                         instance.restriction, rspl, instance.kit, instance.serial_number,
+                         instance.provider, instance.provider_serialnumber, location, instance.status,
+                         instance.date_created, instance.date_update, instance.date_calibration,
+                         instance.date_end_of_life, instance.date_guarantee])
     return response
 
 # Create new piece
