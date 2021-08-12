@@ -264,7 +264,6 @@ def search_instance_database(request):
                                                    | Q(fourth_location__contains=searched)
                                                    | Q(fifth_location__contains=searched)
                                                    | Q(status__contains=searched)
-                                                   | Q(status__contains=searched)
                                                    | Q(part_number__contains=searched)
                                                    | Q(manufacturer_serialnumber__contains=searched)
                                                    | Q(owner__contains=searched)
