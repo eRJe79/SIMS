@@ -74,19 +74,6 @@ def database_csv(request):
                          instance.date_end_of_life, instance.date_guarantee])
     return response
 
-# Create new piece
-def create_piece(request):
-    forms = PieceForm()
-    if request.method == 'POST':
-        forms = PieceForm(request.POST)
-        if forms.is_valid():
-             forms.save()
-        return redirect('piece')
-    context = {
-        'form': forms
-    }
-    return render(request, 'inventory/create_piece.html', context)
-
 class PieceCreate(CreateView):
     template_name = 'inventory/create_piece.html'
     model = Piece
