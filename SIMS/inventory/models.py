@@ -36,12 +36,12 @@ class Piece(models.Model):
     # For new row feature
     related_name = 'instance_reverse',
 
-    manufacturer = models.CharField(max_length=120)
-    website = models.URLField(max_length=254)
+    manufacturer = models.CharField(max_length=120, null=True, blank=True)
+    website = models.URLField(max_length=254, null=True, blank=True)
     piece_model = models.CharField(max_length=200)
 
-    description = models.TextField(max_length=1000)
-    documentation = models.CharField(max_length=120)
+    description = models.TextField(max_length=1000, null=True, blank=True)
+    documentation = models.CharField(max_length=120, null=True, blank=True)
 
     image = models.ImageField(upload_to='images', blank=False)
 
@@ -71,8 +71,10 @@ class Piece(models.Model):
 
 # A kit is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
+    #Name is mandatory
     name = models.CharField(max_length=250, blank=False, null=False)
     description = models.TextField(max_length=1000, blank=True, null=True)
+    # Serial number is mandatory
     kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
 
     # Default method to access the Kit
@@ -214,12 +216,12 @@ class PieceInstance(models.Model):
     kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
     # Manufacturer P/N and S/N
     part_number = models.CharField(max_length=200)
-    manufacturer_serialnumber = models.CharField(max_length=120)
+    manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
     # Instance specific serial number, setting blank=True as it might not be required
     serial_number = models.CharField(max_length=200, null=True, blank=False)
 
     is_rspl = models.BooleanField(default=False)  # Franck's account
-    calibration_document = models.FileField(upload_to='documents/')
+    calibration_document = models.FileField(upload_to='documents/', blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     # Provider information - an instance of a piece can be bought from different providers

@@ -49,8 +49,8 @@ class PieceInstanceForm(ModelForm):
         labels = {
             'piece': 'Piece',
             'kit': 'Kit',
-            'serial_number': 'Serial Number',
-            'part_number': 'Part Number',
+            'serial_number': 'CAE Serial Number',
+            'part_number': 'Manufacturer Part Number',
             'manufacturer_serialnumber': 'Manufacturer Serial Number',
             'provider': 'Provider',
             'provider_serialnumber': 'Provider Serial Number',
