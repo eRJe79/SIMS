@@ -10,7 +10,7 @@
     <tr>
 	<th>Piece Model</th>
 	<th>Manufacturer</th>
-	<th>Part Number</th>
+	<th>Manufacturer Part Number</th>
 	<th>Manufacturer Serial Number</th>
 	<th>Provider</th>
 	<th>Provider Serial Number</th>
@@ -25,7 +25,6 @@
       {% for result in results %}
       <td><a href="{{ result.piece.get_absolute_url }}">{{ result.piece.piece_model }}</a></td>
       <td>{{ result.piece.manufacturer }}</td>
-      <td>{{ result.piece.piece_model }}</td>
       <td>{{ result.part_number }}</td>
       <td>{{ result.manufacturer_serialnumber }}</td>
       <td>{{ result.provider }}</td>
