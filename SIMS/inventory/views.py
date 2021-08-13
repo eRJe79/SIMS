@@ -42,9 +42,10 @@ def database_csv(request):
     instances = PieceInstance.objects.all().order_by('piece')
 
     # Add column headings to the csv file
-    writer.writerow(['Piece model', 'Manufacturer', 'Manufacturer part Number', 'Manufacturer Serial Number', 'Website',
+    writer.writerow(['Piece model', 'Manufacturer', 'Manufacturer Part Number', 'Manufacturer Serial Number',
+                       'Website',
                      'Description', 'Documentation', 'Calibration Recurrence', 'Type', 'Characteristic', 'Owner',
-                     'Restriction', 'RSPL', 'Kit Name', 'CAE Serial Number', 'Provider',
+                     'Restriction', 'RSPL', 'Kit Name', 'CAE Part Number', 'CAE Serial Number', 'OEM', 'OEM Part Number',
                      'Provider Serial Number', 'Location', 'Status', 'Date created', 'Last Update',
                      'Next calibration date', 'End of life', 'End of guarantee'])
 
@@ -64,13 +65,13 @@ def database_csv(request):
         elif not instance.is_rspl:
             rspl = 'Not RSPL'
 
-        writer.writerow([instance.piece.piece_model, instance.piece.manufacturer, instance.part_number,
+        writer.writerow([instance.piece.piece_model, instance.piece.manufacturer, instance.piece.manufacturer_part_number,
                          instance.manufacturer_serialnumber, instance.piece.website, instance.piece.description,
                          instance.piece.documentation, instance.piece.calibration_recurrence,
                          instance.piece.item_type, instance.piece.item_characteristic, instance.owner,
-                         instance.restriction, rspl, instance.kit, instance.serial_number,
-                         instance.provider, instance.provider_serialnumber, location, instance.status,
-                         instance.date_created, instance.date_update, instance.date_calibration,
+                         instance.restriction, rspl, instance.kit, instance.piece.cae_part_number, instance.serial_number,
+                         instance.piece.provider, instance.piece.provider_part_number,  instance.provider_serialnumber,
+                         location, instance.status, instance.date_created, instance.date_update, instance.date_calibration,
                          instance.date_end_of_life, instance.date_guarantee])
     return response
 
@@ -201,6 +202,33 @@ def show_instance_form(request, primary_key):
     return render(request, 'inventory/piece_instance_detail.html', context)
 
 # Update an instance
+def update_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    if request.method == "POST":
+        form = PieceForm(request.POST, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect('piece')
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form': form}
+    return render(request, 'inventory/update_piece.html', context)
+
+# clone a piece
+def clone_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    piece.pk=None
+    if request.method == "POST":
+        form = PieceForm(request.POST, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect('piece')
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form': form}
+    return render(request, 'inventory/clone_piece.html', context)
+
+# Update an instance
 def update_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.date_update = timezone.now()
@@ -211,7 +239,7 @@ def update_instance(request, instance_id):
             return redirect('piece-instance-list')
     else:
         form = PieceInstanceForm(instance=piece_instance)
-    context = {'piece_instance': piece_instance, 'form':form}
+    context = {'piece_instance': piece_instance, 'form': form}
     return render(request, 'inventory/update_piece_instance.html', context)
 
 # clone an instance
@@ -243,6 +271,10 @@ def search_piece_database(request):
         searched = request.POST['searched']
         results = Piece.objects.filter(Q(piece_model__contains=searched)
                                        | Q(manufacturer__contains=searched)
+                                       | Q(manufacturer_part_number__contains=searched)
+                                       | Q(cae_part_number__contains=searched)
+                                       | Q(provider_part_number__contains=searched)
+                                       | Q(provider__contains=searched)
                                        | Q(item_type__contains=searched)
                                        | Q(item_characteristic__contains=searched)
                                        )
@@ -264,10 +296,9 @@ def search_instance_database(request):
                                                    | Q(fourth_location__contains=searched)
                                                    | Q(fifth_location__contains=searched)
                                                    | Q(status__contains=searched)
-                                                   | Q(part_number__contains=searched)
+                                                   | Q(serial_number__contains=searched)
                                                    | Q(manufacturer_serialnumber__contains=searched)
                                                    | Q(owner__contains=searched)
-                                                   | Q(provider__contains=searched)
                                                    | Q(provider_serialnumber__contains=searched)
                                                    )
         context = {'searched': searched, 'results': results}

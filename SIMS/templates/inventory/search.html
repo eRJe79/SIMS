@@ -8,7 +8,12 @@
     <table class="table table-light table-striped">
     <thead>
     <tr>
+    <th>Manufacturer Part Number</th>
 	<th>Piece Model</th>
+	<th>CAE Part Number</th>
+	<th>OEM</th>
+	<th>OEM Part Number</th>
+	<th>CAE Part Number</th>
 	<th>Manufacturer</th>
 	<th>Type</th>
 	<th>Characteristic</th>
@@ -16,7 +21,11 @@
     </thead>
     <tr class="datarow">
       {% for result in results %}
-      <td><a href="{{ piece.get_absolute_url }}">{{ result.piece_model }}</a></td>
+      <td><a href="{{ piece.get_absolute_url }}">{{ result.manufacturer_part_number }}</a></td>
+      <td>{{ result.piece_model }}</td>
+      <td>{{ result.provider }}</td>
+      <td>{{ result.provider_part_number }}</td>
+      <td>{{ result.cae_part_number }}</td>
       <td>{{ result.manufacturer }}</td>
       <td>{{ result.item_type }}</td>
       <td>{{ result.item_characteristic }}</td>

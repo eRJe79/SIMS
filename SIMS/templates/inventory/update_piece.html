@@ -1,14 +1,14 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-
-	<h1>Clone Instance...</h1>
+	
+	<h1>Update Piece...</h1>
 	<br/>
 	<form action="" method=POST>
 		{% csrf_token %}
 		{{ form.as_p }}
 		<br/>
-		<input type="submit" value="Clone" class="btn btn-secondary">
+		<input type="submit" value="Update" class="btn btn-secondary">
 	</form>
-
+	
 {% endblock %}
