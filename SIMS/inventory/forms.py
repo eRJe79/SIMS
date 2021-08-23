@@ -10,8 +10,8 @@ class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
         fields = ['manufacturer', 'provider', 'manufacturer_part_number', 'cae_part_number', 'provider_part_number',
-                  'website', 'piece_model', 'description','documentation', 'image', 'calibration_recurrence',
-                  'item_type', 'item_characteristic']
+                  'website', 'piece_model', 'description', 'documentation', 'update_comment', 'image',
+                  'calibration_recurrence', 'item_type', 'item_characteristic']
         widgets = {
         'manufacturer': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'manufacturer', 'placeholder': 'Enter the manufacturer name'
@@ -40,6 +40,9 @@ class PieceForm(forms.ModelForm):
         'documentation': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'documentation', 'placeholder': 'Enter the piece documentation'
         }),
+        'update_comment': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'description', 'placeholder': 'Enter a comment'
+        }),
         'calibration_recurrence': forms.NumberInput(attrs={
             'class': 'form-control', 'id': 'calibration_recurrence'
         }),
@@ -56,7 +59,7 @@ class PieceInstanceForm(ModelForm):
     class Meta:
         model = PieceInstance
         fields = ['piece', 'kit', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
-                  'restriction', 'is_rspl', 'calibration_document', 'date_calibration',
+                  'restriction', 'update_comment', 'is_rspl', 'calibration_document', 'date_calibration',
                   'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location',
                   'fourth_location', 'fifth_location', 'status']
         labels = {
@@ -67,6 +70,7 @@ class PieceInstanceForm(ModelForm):
             'provider_serialnumber': 'OEM Serial Number',
             'owner': 'Owner',
             'restriction': 'Restriction',
+            'update_comment': 'Comment',
             'calibration_document': 'Calibration Document',
             'is_rspl': 'RSPL',
             'date_calibration': 'Next Calibration',
@@ -86,6 +90,7 @@ class PieceInstanceForm(ModelForm):
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
             'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),
             'restriction': forms.Select(attrs={'class': 'form-select', 'id': 'restriction'}),
+            'update_comment': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment'}),
             'is_rspl': forms.CheckboxInput(),
             'date_calibration': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),

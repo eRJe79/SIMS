@@ -40,18 +40,23 @@
 			<td>{{ piece_instance }} was </td>
 			<td>{{ h.get_history_type_display }} by </td>
 			<td><strong>{{ h.history_user }}</strong> at time : </td>
-			<td>{{ h.history_date }} with Status: </td>
-			<td><strong>{{ h.status }}</strong> and Location: </td>
-			{% if h.fifth_location %}
-				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}</strong></td>
-			{% elif h.fourth_location %}
-				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}</strong></td>
-			{% elif h.third_location %}
-				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}</strong></td>
+			<td>{{ h.history_date }} with comment: </td>
+			{% if h.update_comment %}
+				<td><strong>{{ h.update_comment }}</strong> </td>
 			{% else %}
-				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}</strong></td>
+				<td><strong>No comment given</strong> </td>
 			{% endif %}
-			</p>
+<!--			<td><strong>{{ h.status }}</strong> and Location: </td>-->
+<!--			{% if h.fifth_location %}-->
+<!--				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}</strong></td>-->
+<!--			{% elif h.fourth_location %}-->
+<!--				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}</strong></td>-->
+<!--			{% elif h.third_location %}-->
+<!--				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}</strong></td>-->
+<!--			{% else %}-->
+<!--				<td><strong>{{h.location}}-{{h.second_location|default_if_none:""}}</strong></td>-->
+<!--			{% endif %}-->
+<!--			</p>-->
 		{% endfor %}
     	</p>
 		<td><a href="{% url 'update-piece-instance' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
