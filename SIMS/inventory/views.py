@@ -138,8 +138,8 @@ class PieceListView(ListView):
 def show_piece(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
-    instance_in_use = PieceInstance.objects.filter(status='U', piece=piece).count()
-    instance_in_stock = PieceInstance.objects.filter(status='S', piece=piece).count()
+    instance_in_use = PieceInstance.objects.filter(status='Use', piece=piece).count()
+    instance_in_stock = PieceInstance.objects.filter(status='Stock', piece=piece).count()
     instance_in_refurbished = PieceInstance.objects.filter(status='Refurbishing', piece=piece).count()
     instance_in_reparation = PieceInstance.objects.filter(status='Reparation', piece=piece).count()
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_in_use': instance_in_use,
