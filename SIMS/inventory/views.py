@@ -204,8 +204,9 @@ def show_instance_form(request, primary_key):
 # Update an instance
 def update_piece(request, piece_id):
     piece = Piece.objects.get(pk=piece_id)
+    piece.update_comment = ''
     if request.method == "POST":
-        form = PieceForm(request.POST, instance=piece)
+        form = PieceForm(request.POST, request.FILES, instance=piece)
         if form.is_valid():
             form.save()
             return redirect('piece')
@@ -218,8 +219,9 @@ def update_piece(request, piece_id):
 def clone_piece(request, piece_id):
     piece = Piece.objects.get(pk=piece_id)
     piece.pk=None
+    piece.update_comment = ''
     if request.method == "POST":
-        form = PieceForm(request.POST, instance=piece)
+        form = PieceForm(request.POST, request.FILES, instance=piece)
         if form.is_valid():
             form.save()
             return redirect('piece')
@@ -232,8 +234,9 @@ def clone_piece(request, piece_id):
 def update_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.date_update = timezone.now()
+    piece_instance.update_comment = ''
     if request.method == "POST":
-        form = PieceInstanceForm(request.POST, instance=piece_instance)
+        form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
         if form.is_valid():
             form.save()
             return redirect('piece-instance-list')
@@ -246,9 +249,9 @@ def update_instance(request, instance_id):
 def clone_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.pk=None
-    piece_instance.date_update = timezone.now()
+    piece_instance.update_comment = ''
     if request.method == "POST":
-        form = PieceInstanceForm(request.POST, instance=piece_instance)
+        form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
         if form.is_valid():
             form.save()
             return redirect('piece-instance-list')
