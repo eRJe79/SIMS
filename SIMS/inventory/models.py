@@ -46,7 +46,7 @@ class Piece(models.Model):
 
     description = models.TextField(max_length=1000, null=True, blank=True)
     documentation = models.CharField(max_length=120, null=True, blank=True)
-    update_comment = models.TextField(max_length=1000, blank=True, null=True)
+    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
 
     image = models.ImageField(upload_to='images', null=True, blank=True)
 
@@ -243,7 +243,7 @@ class PieceInstance(models.Model):
     # Guarantee expiration date: where the guarantee will end - can be let empty
     date_guarantee = models.DateField(blank=True, null=True)
 
-    update_comment = models.TextField(max_length=1000, blank=True, null=True)
+    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
 
     location = models.CharField(
         max_length=20,
