@@ -6,9 +6,14 @@
     Piece Detail
   </div>
   <div class="card-body">
-    <h5 class="card-title"> Piece model : {{ piece.piece_model }}</h5>
+    <h5 class="card-title"> Manufacturer part model : {{ piece.manufacturer_piece_model }}</h5>
     <p class="card-text">
     	<ul>
+  <p><strong>Manufacturer:</strong> {{piece.manufacturer}}</p>
+  <p><strong>OEM:</strong> {{piece.provider}}</p>
+  <p><strong>OEM Part Number:</strong> {{piece.provider_part_number}}</p>
+  <p><strong>CAE Part Number:</strong> {{piece.cae_part_number}}</p>
+  <p><strong>Piece model:</strong> {{piece.piece_model}}</p>
   <p><strong>Description:</strong> {{ piece.description }}</p>
   {% if piece.image %}
   <p><img src="{{ piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
@@ -17,7 +22,6 @@
   <p><strong>Calibration Recurrence (days):</strong> {{piece.calibration_recurrence}}</p>
   <p><strong>Type:</strong> {{ piece.item_type }}</p>
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
-  <p><strong>Manufacturer:</strong> {{ piece.manufacturer }}</p>
   <a href="{{ piece.website }}">{{ piece.website }}</a>
   <p><strong>History:</strong></p>
   {% for h in piece.history.all %}
@@ -31,6 +35,8 @@
 
 	</ul>
     </p>
+	<td><a href="{% url 'update-piece' piece.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+    <td><a href="{% url 'piece-clone' piece.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
   </div>
 </div>
 
@@ -60,7 +66,8 @@
 	    <thead>
 		<tr>
 		<td><p>CAE Serial Number</p></td>
-		<td><p>Manufacturer Part Number</p></td>
+		<td><p>Manufacturer Serial Number</p></td>
+		<td><p>OEM Serial Number</p></td>
 		<td><p>Location</p></td>
 		<td><p>Status</p></td>
         </tr>
@@ -69,7 +76,8 @@
       {% if copy.piece.piece_model == piece.piece_model %}
       <tr class="datarow">
         <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
-        <td>{{ copy.part_number }}</td>
+        <td>{{ copy.manufacturer_serialnumber }}</td>
+        <td>{{ copy.provider_serialnumber }}</td>
 	    {% if copy.fifth_location %}
 	  	    <td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
 	    {% elif copy.fourth_location %}

@@ -8,6 +8,8 @@ from .views import (
     delete_instance,
     PieceCreate,
     show_piece,
+    update_piece,
+    clone_piece,
     PieceInstanceCreate,
     update_instance,
     clone_instance,
@@ -27,6 +29,9 @@ urlpatterns = [
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),
     path('inventory/create/', PieceCreate.as_view(), name='piece-create'),
+    path('update_piece/<piece_id>', update_piece, name='update-piece'),
+    path('clone_piece/<piece_id>', clone_piece, name='piece-clone'),
+
 
     path('piece_instance_list', all_piece_instance, name="piece-instance-list"),
     path('create_instance_piece/', PieceInstanceCreate.as_view(), name='piece-instance-create'),

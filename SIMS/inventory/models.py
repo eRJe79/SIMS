@@ -37,16 +37,21 @@ class Piece(models.Model):
     related_name = 'instance_reverse',
 
     manufacturer = models.CharField(max_length=120, null=True, blank=True)
+    manufacturer_part_number = models.CharField(max_length=200)
+    provider = models.CharField(max_length=120, null=True, blank=True)
+    provider_part_number = models.CharField(max_length=200, null=True, blank=True)
+    cae_part_number = models.CharField(max_length=200, null=True, blank=True)
     website = models.URLField(max_length=254, null=True, blank=True)
-    piece_model = models.CharField(max_length=200)
+    piece_model = models.CharField(max_length=200, null=True, blank=True)
 
     description = models.TextField(max_length=1000, null=True, blank=True)
     documentation = models.CharField(max_length=120, null=True, blank=True)
+    update_comment = models.TextField(max_length=1000, blank=True, null=True)
 
-    image = models.ImageField(upload_to='images', blank=False)
+    image = models.ImageField(upload_to='images', null=True, blank=True)
 
-    item_type = models.CharField(max_length=20, choices=TYPE_CHOICE)
-    item_characteristic = models.CharField(max_length=20, choices=CHARACTERISTIC_CHOICE)
+    item_type = models.CharField(max_length=20, null=True, blank=True, choices=TYPE_CHOICE)
+    item_characteristic = models.CharField(max_length=20, null=True, blank=True, choices=CHARACTERISTIC_CHOICE)
 
     # Calibration time recurrence - can be let empty
     calibration_recurrence = models.IntegerField(null=True, blank=True)
@@ -57,7 +62,7 @@ class Piece(models.Model):
     # This is a default return method to access Piece
     def __str__(self):
         """String for representing the Model object."""
-        return self.piece_model
+        return self.manufacturer_part_number
 
     # This method is used is some templates to have link directed to the piece detail
     def get_absolute_url(self):
@@ -214,19 +219,17 @@ class PieceInstance(models.Model):
     # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
     # It can be left empty as an instance doesn't necessarily belongs to a kit
     kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
-    # Manufacturer P/N and S/N
-    part_number = models.CharField(max_length=200)
+    # Manufacturer and S/N
     manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
     # Instance specific serial number, setting blank=True as it might not be required
     serial_number = models.CharField(max_length=200, null=True, blank=False)
+    # Provider information - an instance of a piece can be bought from different providers
+    provider_serialnumber = models.CharField(max_length=120, null=True, blank=True)
 
     is_rspl = models.BooleanField(default=False)  # Franck's account
     calibration_document = models.FileField(upload_to='documents/', blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    # Provider information - an instance of a piece can be bought from different providers
-    provider = models.CharField(max_length=120, null=True, blank=False)
-    provider_serialnumber = models.CharField(max_length=120, null=True, blank=False)
 
     # Date management
     # Date where the instance is created (set at creation and never updated then)
@@ -239,6 +242,8 @@ class PieceInstance(models.Model):
     date_end_of_life = models.DateField(blank=True, null=True)
     # Guarantee expiration date: where the guarantee will end - can be let empty
     date_guarantee = models.DateField(blank=True, null=True)
+
+    update_comment = models.TextField(max_length=1000, blank=True, null=True)
 
     location = models.CharField(
         max_length=20,

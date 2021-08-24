@@ -18,11 +18,11 @@ action="{%url 'search-instance-database' %}">
 <table class="table table-light table-striped">
   <thead>
     <tr>
-	<th>Piece model</th>
+	<th>Manufacturer Part Number</th>
 	<th>CAE Serial Number</th>
-	<th>Manufacturer part number</th>
-	<th>Provider</th>
-	<th>Provider Serial Number</th>
+	<th>Manufacturer Serial number</th>
+	<th>OEM</th>
+	<th>OEM Serial Number</th>
 	<th>Calibration Document</th>
 	<th>Creation Date</th>
 	<th>Last update</th>
@@ -35,10 +35,10 @@ action="{%url 'search-instance-database' %}">
   </thead>
     {% for piece_instance in piece_instance_list %}
     <tr class="datarow">
-      <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.piece_model }}</a></td>
+      <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.manufacturer_part_number }}</a></td>
       <td><a href="{{ piece_instance.get_absolute_url }}">{{ piece_instance.serial_number }}</a></td>
-      <td>{{ piece_instance.part_number }}</td>
-      <td>{{ piece_instance.provider }}</td>
+      <td>{{ piece_instance.manufacturer_serialnumber }}</td>
+      <td>{{ piece_instance.piece.provider }}</td>
       <td>{{piece_instance.provider_serialnumber}}</td>
       <td>{{piece_instance.calibration_document}}</td>
       <td>{{piece_instance.date_created}}</td>
