@@ -113,9 +113,9 @@ class PieceInstance(models.Model):
     STATUS_CHOICE = (
         ('Reparation', 'Reparation'),
         ('New', 'New'),
-        ('Refurbishing', 'Refurbishing'),
-        ('U', 'In Use'),
-        ('S', 'In Stock')
+        ('Refurbished', 'Refurbished'),
+        ('Use', 'In Use'),
+        ('Stock', 'In Stock')
     )
     # Choices for the instance location
     LOCATION = (
