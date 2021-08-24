@@ -89,8 +89,7 @@
 	     {% endif %}
         <td>{{ copy.status }}</td>
         <td><a href="{% url 'update-piece-instance' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
-        <td><a href="{% url 'instance-clone' copy.id %}" class="btn btn-outline-secondary btn-sm">Clone</a>
-            <a href="{% url 'delete-piece-instance' copy.id %}" class="btn btn-outline-danger btn-sm">Delete</a></td>
+        <td><a href="{% url 'instance-clone' copy.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
       </tr>
 	{% endif %}
 	{% endfor %}
