@@ -1,17 +1,17 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-  <h1>Kit List</h1>
+  <h1>Assembly List</h1>
   <br/>
   {% if kit_list %}
-  <p>There are kits in the inventory.</p>
+  <p>There are assemblies in the inventory.</p>
 {% csrf_token %}
 <table class="table table-light table-striped">
   <thead>
     <tr>
-	<th>Kit Name</th>
-    <th>Kit Serial Number</th>
-	<th>Kit Description</th>
+	<th>Assembly Name</th>
+    <th>Assembly Serial Number</th>
+	<th>Assembly Description</th>
 	</tr>
   </thead>
     {% for kit in kit_list %}
@@ -23,6 +23,6 @@
     {% endfor %}
 </table>
   {% else %}
-    <p>There are no kit in the inventory.</p>
+    <p>There are no assembly in the inventory.</p>
   {% endif %}
 {% endblock %}
