@@ -45,7 +45,7 @@ def database_csv(request):
     writer.writerow(['Piece model', 'Manufacturer', 'Manufacturer Part Number', 'Manufacturer Serial Number',
                        'Website',
                      'Description', 'Documentation', 'Calibration Recurrence', 'Type', 'Characteristic', 'Owner',
-                     'Restriction', 'RSPL', 'Kit Name', 'CAE Part Number', 'CAE Serial Number', 'OEM', 'OEM Part Number',
+                     'Restriction', 'RSPL', 'Assembly Name', 'CAE Part Number', 'CAE Serial Number', 'OEM', 'OEM Part Number',
                      'Provider Serial Number', 'Location', 'Status', 'Date created', 'Last Update',
                      'Next calibration date', 'End of life', 'End of guarantee'])
 

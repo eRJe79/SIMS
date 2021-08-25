@@ -74,7 +74,7 @@ class Piece(models.Model):
         """Returns the calibration reccurence days this piece."""
         return self.calibration_recurrence
 
-# A kit is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
+# A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
     #Name is mandatory
     name = models.CharField(max_length=250, blank=False, null=False)

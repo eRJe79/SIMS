@@ -113,9 +113,9 @@ class KitForm(ModelForm):
             'kit_serialnumber': 'Kit Serial Number',
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Kit Name'}),
-            'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Kit Description'}),
-            'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Kit Serial Number'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Name'}),
+            'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Description'}),
+            'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Assembly Serial Number'}),
         }
 
 
