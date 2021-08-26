@@ -13,6 +13,62 @@ def user_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
+# Defining Location as Classes to have a better object manipulation
+class First_location(models.Model):
+    name = models.CharField(max_length=30, default='Cazaux')
+
+    def __str__(self):
+        return self.name
+
+class Second_location(models.Model):
+    previous_loc = models.ForeignKey(First_location, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+class Third_location(models.Model):
+    previous_loc = models.ForeignKey(Second_location, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+class Fourth_location(models.Model):
+    previous_loc = models.ForeignKey(Third_location, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+class Fifth_location(models.Model):
+    previous_loc = models.ForeignKey(Fourth_location, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+class Sixth_location(models.Model):
+    previous_loc = models.ForeignKey(Fifth_location, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+class Seventh_location(models.Model):
+    previous_loc = models.ForeignKey(Sixth_location, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+class Eighth_location(models.Model):
+    previous_loc = models.ForeignKey(Seventh_location, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
 # Class describing main categories with their specific attribute and pieces
 # Example of category : a 500GB Seagate Hard Drive and a 1TB Seagate Hard Drive are 2 different categories
 class Piece(models.Model):
@@ -245,39 +301,14 @@ class PieceInstance(models.Model):
 
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
 
-    location = models.CharField(
-        max_length=20,
-        choices=LOCATION,
-        blank=True, null=True,
-    )
-
-    second_location = models.CharField(
-        max_length=20,
-        default='',
-        choices=SECOND_LOCATION,
-        blank=True, null=True,
-    )
-
-    third_location = models.CharField(
-        max_length=20,
-        default='',
-        choices=THIRD_LOCATION,
-        blank=True, null=True,
-    )
-
-    fourth_location = models.CharField(
-        max_length=20,
-        choices=FOURTH_LOCATION,
-        default='',
-        blank=True, null=True,
-    )
-
-    fifth_location = models.CharField(
-        max_length=20,
-        choices=FIFTH_LOCATION,
-        default='',
-        blank=True, null=True,
-    )
+    first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True)
+    second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True)
+    third_location = models.ForeignKey(Third_location, on_delete=models.SET_NULL, null=True)
+    fourth_location = models.ForeignKey(Fourth_location, on_delete=models.SET_NULL, null=True)
+    fifth_location = models.ForeignKey(Fifth_location, on_delete=models.SET_NULL, null=True)
+    sixth_location = models.ForeignKey(Sixth_location, on_delete=models.SET_NULL, null=True)
+    seventh_location = models.ForeignKey(Seventh_location, on_delete=models.SET_NULL, null=True)
+    eighth_location = models.ForeignKey(Eighth_location, on_delete=models.SET_NULL, null=True)
 
     status = models.CharField(
         max_length=20,

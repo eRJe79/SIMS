@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 
-from .models import Piece, PieceInstance, Kit
+from .models import Piece, PieceInstance, Kit, Second_location
 
 class PieceForm(forms.ModelForm):
     class Meta:
@@ -60,7 +60,7 @@ class PieceInstanceForm(ModelForm):
         model = PieceInstance
         fields = ['piece', 'kit', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
                   'restriction', 'update_comment', 'is_rspl', 'calibration_document', 'date_calibration',
-                  'date_end_of_life', 'date_guarantee', 'location', 'second_location', 'third_location',
+                  'date_end_of_life', 'date_guarantee', 'first_location', 'second_location', 'third_location',
                   'fourth_location', 'fifth_location', 'status']
         labels = {
             'piece': 'Piece',
@@ -76,7 +76,7 @@ class PieceInstanceForm(ModelForm):
             'date_calibration': 'Next Calibration',
             'date_end_of_life': 'End of Life',
             'date_guarantee': 'Guarantee Expiration',
-            'location': 'Location',
+            'first_location': 'First Location',
             'second_location': 'Second Location',
             'third_location': 'Third Location',
             'fourth_location': 'Fourth Location',
@@ -95,13 +95,18 @@ class PieceInstanceForm(ModelForm):
             'date_calibration': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_guarantee': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
-            'location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Location'}),
+            'first_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Location'}),
             'second_location': forms.Select(attrs={'class': 'form-select'}),
             'third_location': forms.Select(attrs={'class': 'form-select'}),
             'fourth_location': forms.Select(attrs={'class': 'form-select'}),
             'fifth_location': forms.Select(attrs={'class': 'form-select'}),
             'status': forms.Select(attrs={'class': 'form-select'}),
         }
+
+        # We overide the init method to have location choices dependent on each other
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['second_location'].queryset = Second_location.objects.none()
 
 class KitForm(ModelForm):
     class Meta:
