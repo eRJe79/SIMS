@@ -29,13 +29,13 @@
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
             {% if instance.fifth_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
 			{% elif instance.fourth_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
 			{% elif instance.third_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
 			{% else %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}</td>
             {% endif %}
         {% endif %}
         {% endif %}
@@ -62,13 +62,13 @@
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
             {% if instance.fifth_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
 			{% elif instance.fourth_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
 			{% elif instance.third_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
 			{% else %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}</td>
             {% endif %}
         {% endif %}
     </tr>

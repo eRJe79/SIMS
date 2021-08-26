@@ -89,21 +89,15 @@ def database_csv(request):
     writer.writerow(['Piece model', 'Manufacturer', 'Manufacturer Part Number', 'Manufacturer Serial Number',
                        'Website',
                      'Description', 'Documentation', 'Calibration Recurrence', 'Type', 'Characteristic', 'Owner',
-                     'Restriction', 'RSPL', 'Assembly Name', 'CAE Part Number', 'CAE Serial Number', 'OEM', 'OEM Part Number',
-                     'Provider Serial Number', 'Location', 'Status', 'Date created', 'Last Update',
+                     'Restriction', 'RSPL', 'Assembly Name', 'CAE Part Number', 'CAE Serial Number', 'OEM',
+                     'OEM Part Number', 'Provider Serial Number',
+                     'First Location', 'Second Location', 'Third Location', 'Fourth Location', 'Fifth Location',
+                     'Sixth Location', 'Seventh Location', 'Eighth Location',
+                     'Status', 'Date created', 'Last Update',
                      'Next calibration date', 'End of life', 'End of guarantee'])
 
     # Loop Through instance and output
     for instance in instances:
-        if instance.fifth_location:
-            location = instance.location + "-" + instance.second_location + "-" + instance.third_location + "-" + instance.fourth_location + "-" + instance.fifth_location
-        elif instance.fourth_location:
-            location = instance.location + "-" + instance.second_location + "-" + instance.third_location + "-" + instance.fourth_location
-        elif instance.third_location:
-            location = instance.location + "-" + instance.second_location + "-" + instance.third_location
-        else:
-            location = instance.location + "-" + instance.second_location
-
         if instance.is_rspl:
             rspl = 'RSPL'
         elif not instance.is_rspl:
@@ -115,8 +109,10 @@ def database_csv(request):
                          instance.piece.item_type, instance.piece.item_characteristic, instance.owner,
                          instance.restriction, rspl, instance.kit, instance.piece.cae_part_number, instance.serial_number,
                          instance.piece.provider, instance.piece.provider_part_number,  instance.provider_serialnumber,
-                         location, instance.status, instance.date_created, instance.date_update, instance.date_calibration,
-                         instance.date_end_of_life, instance.date_guarantee])
+                         instance.first_location, instance.second_location, instance.third_location, instance.fourth_location,
+                         instance.fifth_location, instance.sixth_location, instance.seventh_location, instance.eighth_location,
+                         instance.status, instance.date_created, instance.date_update,
+                         instance.date_calibration, instance.date_end_of_life, instance.date_guarantee])
     return response
 
 class PieceCreate(CreateView):
