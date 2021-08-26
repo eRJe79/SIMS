@@ -301,14 +301,14 @@ class PieceInstance(models.Model):
 
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
 
-    first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True)
-    second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True)
-    third_location = models.ForeignKey(Third_location, on_delete=models.SET_NULL, null=True)
-    fourth_location = models.ForeignKey(Fourth_location, on_delete=models.SET_NULL, null=True)
-    fifth_location = models.ForeignKey(Fifth_location, on_delete=models.SET_NULL, null=True)
-    sixth_location = models.ForeignKey(Sixth_location, on_delete=models.SET_NULL, null=True)
-    seventh_location = models.ForeignKey(Seventh_location, on_delete=models.SET_NULL, null=True)
-    eighth_location = models.ForeignKey(Eighth_location, on_delete=models.SET_NULL, null=True)
+    first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
+    second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)
+    third_location = models.ForeignKey(Third_location, on_delete=models.SET_NULL, null=True, blank=True)
+    fourth_location = models.ForeignKey(Fourth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    fifth_location = models.ForeignKey(Fifth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    sixth_location = models.ForeignKey(Sixth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    seventh_location = models.ForeignKey(Seventh_location, on_delete=models.SET_NULL, null=True, blank=True)
+    eighth_location = models.ForeignKey(Eighth_location, on_delete=models.SET_NULL, null=True, blank=True)
 
     status = models.CharField(
         max_length=20,
