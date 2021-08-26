@@ -18,6 +18,14 @@ from .models import (
     Piece,
     PieceInstance,
     Kit,
+    First_location,
+    Second_location,
+    Third_location,
+    Fourth_location,
+    Fifth_location,
+    Sixth_location,
+    Seventh_location,
+    Eighth_location,
 )
 
 from .forms import (
@@ -27,6 +35,12 @@ from .forms import (
     PieceInstanceKitFormSet,
     KitForm,
 )
+
+# Location dependencies management
+def load_second_location(request):
+    first_loc_id = request.GET.get('previous_loc')
+    second_loc = Second_location.objects.filter(previous_loc_id=first_loc_id).order_by('name')
+    return render(request, 'hr/second_loc_dropdown_list_options.html', {'second_loc': second_loc})
 
 # Export database to csv
 # Generate CSV File Instance List

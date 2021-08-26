@@ -55,7 +55,7 @@ class PieceForm(forms.ModelForm):
         }
 
 
-class PieceInstanceForm(ModelForm):
+class PieceInstanceForm(forms.ModelForm):
     class Meta:
         model = PieceInstance
         fields = ['piece', 'kit', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
@@ -103,10 +103,10 @@ class PieceInstanceForm(ModelForm):
             'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
-        # We overide the init method to have location choices dependent on each other
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields['second_location'].queryset = Second_location.objects.none()
+        # We override the init method to have location choices dependent on each other
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['second_location'].queryset = Second_location.objects.none()
 
 class KitForm(ModelForm):
     class Meta:

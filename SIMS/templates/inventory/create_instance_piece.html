@@ -5,7 +5,7 @@
 <body>
   <h1>Add New Piece Instance</h1>
   <br/><br/>
-  <form id="form_with_formset" action="#" method="post" enctype="multipart/form-data">
+  <form method="post"  id="form" data-second_location-url="{% url 'ajax_load_second_location' %}" action="#" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
   <table class="table">
     {{ form.as_table }}
@@ -16,7 +16,27 @@
       </button>
     </div>
   </form>
-<br/><br/>
+  <br/><br/>
 </body>
 </html>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#id_first_location").change(function () {
+      var url = $("#form").attr("data-second_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_second_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
 {% endblock %}

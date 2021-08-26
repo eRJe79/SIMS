@@ -20,6 +20,7 @@ from .views import (
     KitList,
     show_kit,
     database_csv,
+    load_second_location,
 )
 
 urlpatterns = [
@@ -45,4 +46,6 @@ urlpatterns = [
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
 
     path('database_csv', database_csv, name='database_csv'),
+
+    path('ajax/load-second_location/', load_second_location, name='ajax_load_second_location'),  # <-- this one here
 ]
