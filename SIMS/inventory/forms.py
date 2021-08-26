@@ -4,7 +4,8 @@ from django import forms
 from django.conf import settings
 from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 
-from .models import Piece, PieceInstance, Kit, Second_location
+from .models import Piece, PieceInstance, Kit, \
+    Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location, Eighth_location
 
 class PieceForm(forms.ModelForm):
     class Meta:
@@ -61,7 +62,8 @@ class PieceInstanceForm(forms.ModelForm):
         fields = ['piece', 'kit', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
                   'restriction', 'update_comment', 'is_rspl', 'calibration_document', 'date_calibration',
                   'date_end_of_life', 'date_guarantee', 'first_location', 'second_location', 'third_location',
-                  'fourth_location', 'fifth_location', 'status']
+                  'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location', 'eighth_location',
+                  'status']
         labels = {
             'piece': 'Piece',
             'kit': 'Kit',
@@ -81,6 +83,9 @@ class PieceInstanceForm(forms.ModelForm):
             'third_location': 'Third Location',
             'fourth_location': 'Fourth Location',
             'fifth_location': 'Fifth Location',
+            'sixth_location': 'Sixth Location',
+            'seventh_location': 'Seventh Location',
+            'eighth_location': 'Eighth Location',
             'status': 'Status'
         }
         widgets = {
@@ -100,6 +105,9 @@ class PieceInstanceForm(forms.ModelForm):
             'third_location': forms.Select(attrs={'class': 'form-select'}),
             'fourth_location': forms.Select(attrs={'class': 'form-select'}),
             'fifth_location': forms.Select(attrs={'class': 'form-select'}),
+            'sixth_location': forms.Select(attrs={'class': 'form-select'}),
+            'seventh_location': forms.Select(attrs={'class': 'form-select'}),
+            'eighth_location': forms.Select(attrs={'class': 'form-select'}),
             'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
@@ -107,6 +115,12 @@ class PieceInstanceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['second_location'].queryset = Second_location.objects.none()
+        self.fields['third_location'].queryset = Third_location.objects.none()
+        self.fields['fourth_location'].queryset = Fourth_location.objects.none()
+        self.fields['fifth_location'].queryset = Fifth_location.objects.none()
+        self.fields['sixth_location'].queryset = Sixth_location.objects.none()
+        self.fields['seventh_location'].queryset = Seventh_location.objects.none()
+        self.fields['eighth_location'].queryset = Eighth_location.objects.none()
 
 class KitForm(ModelForm):
     class Meta:

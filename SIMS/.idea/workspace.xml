@@ -21,7 +21,12 @@
       <change afterPath="$PROJECT_DIR$/media/images/nvidia-geforce-gtx-1070-ti_u5Fma0x.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/static/formset/jquery.formset.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hr/eighth_loc_dropdown_list_options.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hr/fifth_loc_dropdown_list_options.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hr/fourth_loc_dropdown_list_options.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/hr/second_loc_dropdown_list_options.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hr/sixth_loc_dropdown_list_options.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hr/third_loc_dropdown_list_options.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/clone_existing_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/clone_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" afterDir="false" />
