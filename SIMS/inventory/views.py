@@ -59,17 +59,17 @@ def load_fifth_location(request):
 
 def load_sixth_location(request):
     fifth_loc_id = request.GET.get('previous_loc')
-    sixth_loc = Second_location.objects.filter(fifth_loc_id=fifth_loc_id).order_by('name')
+    sixth_loc = Sixth_location.objects.filter(fifth_loc_id=fifth_loc_id).order_by('name')
     return render(request, 'hr/sixth_loc_dropdown_list_options.html', {'sixth_loc': sixth_loc})
 
 def load_seventh_location(request):
     sixth_loc_id = request.GET.get('previous_loc')
-    seventh_loc = Second_location.objects.filter(previous_loc_id=sixth_loc_id).order_by('name')
+    seventh_loc = Seventh_location.objects.filter(previous_loc_id=sixth_loc_id).order_by('name')
     return render(request, 'hr/seventh_loc_dropdown_list_options.html', {'seventh_loc': seventh_loc})
 
 def load_eighth_location(request):
     seventh_loc_id = request.GET.get('previous_loc')
-    eighth_loc = Second_location.objects.filter(previous_loc_id=seventh_loc_id).order_by('name')
+    eighth_loc = Eighth_location.objects.filter(previous_loc_id=seventh_loc_id).order_by('name')
     return render(request, 'hr/eighth_loc_dropdown_list_options.html', {'eighth_loc': eighth_loc})
 
 # Export database to csv
