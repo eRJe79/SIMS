@@ -77,6 +77,16 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR,'cache'),
+    },
+    'treenode': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+}
+
 WSGI_APPLICATION = 'SIMS.wsgi.application'
 
 
