@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'inventory.apps.InventoryConfig',
     'users.apps.UsersConfig',
     'simple_history',
+    'treenode',
 ]
 
 MIDDLEWARE = [
