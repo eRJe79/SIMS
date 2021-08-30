@@ -20,6 +20,13 @@ from .views import (
     KitList,
     show_kit,
     database_csv,
+    load_second_location,
+    load_third_location,
+    load_fourth_location,
+    load_fifth_location,
+    load_sixth_location,
+    load_seventh_location,
+    load_eighth_location,
 )
 
 urlpatterns = [
@@ -45,4 +52,12 @@ urlpatterns = [
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
 
     path('database_csv', database_csv, name='database_csv'),
+
+    path('ajax/load-second_location/', load_second_location, name='ajax_load_second_location'),  # <-- this one here
+    path('ajax/load-third_location/', load_third_location, name='ajax_load_third_location'),  # <-- this one here
+    path('ajax/load-fourth_location/', load_fourth_location, name='ajax_load_fourth_location'),  # <-- this one here
+    path('ajax/load-fifth_location/', load_fifth_location, name='ajax_load_fifth_location'),  # <-- this one here
+    path('ajax/load-sixth_location/', load_sixth_location, name='ajax_load_sixth_location'),  # <-- this one here
+    path('ajax/load-seventh_location/', load_seventh_location, name='ajax_load_seventh_location'),  # <-- this one here
+    path('ajax/load-eighth_location/', load_eighth_location, name='ajax_load_eighth_location'),  # <-- this one here
 ]

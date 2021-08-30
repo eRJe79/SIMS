@@ -29,13 +29,13 @@
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
             {% if instance.fifth_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
 			{% elif instance.fourth_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
 			{% elif instance.third_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
 			{% else %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}</td>
             {% endif %}
         {% endif %}
         {% endif %}
@@ -62,65 +62,65 @@
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
             {% if instance.fifth_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
 			{% elif instance.fourth_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
 			{% elif instance.third_location %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
 			{% else %}
-				<td>{{instance.location}}-{{instance.second_location|default_if_none:""}}</td>
+				<td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}</td>
             {% endif %}
         {% endif %}
     </tr>
     {% endfor %}
 </table>
 
-<table class="table table-light table-striped">
-    <div class="card-header">
-    <strong>FMS 1 Location check</strong>
-  	</div>
-    <thead>
-    <tr>
-    <th>Seat</th>
-    <th>Front</th>
-    <th>Aft</th>
-    <th>Over Floor</th>
-    <th>Under Floor</th>
-    <th>Structure</th>
-    </tr>
-    </thead>
-    <tr class="datarow">
-        <td>{{fms1_check_seat}}</td>
-        <td>{{fms1_check_front}}</td>
-        <td>{{fms1_check_aft}}</td>
-        <td>{{fms1_check_ofloor}}</td>
-        <td>{{fms1_check_ufloor}}</td>
-        <td>{{fms1_check_structure}}</td>
-    </tr>
-</table>
+<!--<table class="table table-light table-striped">-->
+<!--    <div class="card-header">-->
+<!--    <strong>FMS 1 Location check</strong>-->
+<!--  	</div>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--    <th>Seat</th>-->
+<!--    <th>Front</th>-->
+<!--    <th>Aft</th>-->
+<!--    <th>Over Floor</th>-->
+<!--    <th>Under Floor</th>-->
+<!--    <th>Structure</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tr class="datarow">-->
+<!--        <td>{{fms1_check_seat}}</td>-->
+<!--        <td>{{fms1_check_front}}</td>-->
+<!--        <td>{{fms1_check_aft}}</td>-->
+<!--        <td>{{fms1_check_ofloor}}</td>-->
+<!--        <td>{{fms1_check_ufloor}}</td>-->
+<!--        <td>{{fms1_check_structure}}</td>-->
+<!--    </tr>-->
+<!--</table>-->
 
-<table class="table table-light table-striped">
-    <div class="card-header">
-    <strong>FMS 2 Location check</strong>
-  	</div>
-    <thead>
-    <tr>
-    <th>Seat</th>
-    <th>Front</th>
-    <th>Aft</th>
-    <th>Over Floor</th>
-    <th>Under Floor</th>
-    <th>Structure</th>
-    </tr>
-    </thead>
-    <tr class="datarow">
-        <td>{{fms2_check_seat}}</td>
-        <td>{{fms2_check_front}}</td>
-        <td>{{fms2_check_aft}}</td>
-        <td>{{fms2_check_ofloor}}</td>
-        <td>{{fms2_check_ufloor}}</td>
-        <td>{{fms2_check_structure}}</td>
-    </tr>
-</table>
+<!--<table class="table table-light table-striped">-->
+<!--    <div class="card-header">-->
+<!--    <strong>FMS 2 Location check</strong>-->
+<!--  	</div>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--    <th>Seat</th>-->
+<!--    <th>Front</th>-->
+<!--    <th>Aft</th>-->
+<!--    <th>Over Floor</th>-->
+<!--    <th>Under Floor</th>-->
+<!--    <th>Structure</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tr class="datarow">-->
+<!--        <td>{{fms2_check_seat}}</td>-->
+<!--        <td>{{fms2_check_front}}</td>-->
+<!--        <td>{{fms2_check_aft}}</td>-->
+<!--        <td>{{fms2_check_ofloor}}</td>-->
+<!--        <td>{{fms2_check_ufloor}}</td>-->
+<!--        <td>{{fms2_check_structure}}</td>-->
+<!--    </tr>-->
+<!--</table>-->
 
 {% endblock content %}
