@@ -100,7 +100,7 @@ class PieceInstanceForm(forms.ModelForm):
             'date_calibration': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_guarantee': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
-            'first_location': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Location'}),
+            'first_location': forms.Select(attrs={'class': 'form-select'}),
             'second_location': forms.Select(attrs={'class': 'form-select'}),
             'third_location': forms.Select(attrs={'class': 'form-select'}),
             'fourth_location': forms.Select(attrs={'class': 'form-select'}),
@@ -121,6 +121,16 @@ class PieceInstanceForm(forms.ModelForm):
         self.fields['sixth_location'].queryset = Sixth_location.objects.none()
         self.fields['seventh_location'].queryset = Seventh_location.objects.none()
         self.fields['eighth_location'].queryset = Eighth_location.objects.none()
+
+        if 'first_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('first_location'))
+                self.fields['second_location'].queryset = Second_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk:
+            self.fields['second_location'].queryset = self.instance.previous_loc.second_location_set.order_by('name')
+
 
 class KitForm(ModelForm):
     class Meta:
