@@ -46,7 +46,13 @@ action="{%url 'search-instance-database' %}">
 	  <td>{{piece_instance.date_calibration}}</td>
 	  <td>{{piece_instance.date_end_of_life}}</td>
 	  <td>{{piece_instance.date_guarantee}}</td>
-	  {% if piece_instance.fifth_location %}
+	  {% if piece_instance.eighth_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}-{{piece_instance.sixth_location|default_if_none:""}}-{{piece_instance.seventh_location|default_if_none:""}}-{{piece_instance.eighth_location|default_if_none:""}}</td>
+	  {% elif piece_instance.seventh_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}-{{piece_instance.sixth_location|default_if_none:""}}-{{piece_instance.seventh_location|default_if_none:""}}</td>
+	  {% elif piece_instance.sixth_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}-{{piece_instance.sixth_location|default_if_none:""}}</td>
+	  {% elif piece_instance.fifth_location %}
 	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}</td>
 	  {% elif piece_instance.fourth_location %}
 	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}</td>

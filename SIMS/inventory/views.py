@@ -26,6 +26,7 @@ from .models import (
     Sixth_location,
     Seventh_location,
     Eighth_location,
+    Mptt,
 )
 
 from .forms import (
@@ -59,7 +60,7 @@ def load_fifth_location(request):
 
 def load_sixth_location(request):
     fifth_loc_id = request.GET.get('previous_loc')
-    sixth_loc = Sixth_location.objects.filter(fifth_loc_id=fifth_loc_id).order_by('name')
+    sixth_loc = Sixth_location.objects.filter(previous_loc_id=fifth_loc_id).order_by('name')
     return render(request, 'hr/sixth_loc_dropdown_list_options.html', {'sixth_loc': sixth_loc})
 
 def load_seventh_location(request):
@@ -114,6 +115,12 @@ def database_csv(request):
                          instance.status, instance.date_created, instance.date_update,
                          instance.date_calibration, instance.date_end_of_life, instance.date_guarantee])
     return response
+
+def tree(request):
+    tree_level = Mptt.objects.all()
+    context = {'tree_level': tree_level}
+    return render(request, 'inventory/tree.html', context)
+
 
 class PieceCreate(CreateView):
     template_name = 'inventory/create_piece.html'
@@ -288,10 +295,10 @@ def update_instance(request, instance_id):
 # clone an instance
 def clone_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
-    piece_instance.pk=None
     piece_instance.update_comment = ''
     if request.method == "POST":
         form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
+        piece_instance.pk=None
         if form.is_valid():
             form.save()
             return redirect('piece-instance-list')
@@ -333,11 +340,15 @@ def search_instance_database(request):
         if searched == 'RSPL' or searched == 'rspl':
             results = PieceInstance.objects.filter(is_rspl=True)
         else:
-            results = PieceInstance.objects.filter(Q(location__contains=searched)
-                                                   | Q(second_location__contains=searched)
-                                                   | Q(third_location__contains=searched)
-                                                   | Q(fourth_location__contains=searched)
-                                                   | Q(fifth_location__contains=searched)
+            results = PieceInstance.objects.filter(Q(first_location__name__contains=searched)
+                                                   | Q(second_location__name__contains=searched)
+                                                   | Q(third_location__name__contains=searched)
+                                                   | Q(fourth_location__name__contains=searched)
+                                                   | Q(fifth_location__name__contains=searched)
+                                                   | Q(sixth_location__name__contains=searched)
+                                                   | Q(seventh_location__name__contains=searched)
+                                                   | Q(eighth_location__name__contains=searched)
+                                                   | Q(piece__manufacturer_part_number__contains=searched)
                                                    | Q(status__contains=searched)
                                                    | Q(serial_number__contains=searched)
                                                    | Q(manufacturer_serialnumber__contains=searched)

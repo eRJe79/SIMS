@@ -4,6 +4,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from simple_history.models import HistoricalRecords
 from datetime import date
+from mptt.models import MPTTModel
+from treebeard.mp_tree import MP_Node
+from treebeard.al_tree import AL_Node
+from treebeard.ns_tree import NS_Node
+from treewidget.fields import TreeForeignKey, TreeManyToManyField
 
 from django.urls import reverse
 
@@ -12,6 +17,7 @@ from django.urls import reverse
 def user_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
+
 
 # Defining Location as Classes to have a better object manipulation
 class First_location(models.Model):
@@ -365,156 +371,18 @@ class PieceInstance(models.Model):
             reparation = False
         return reparation
 
-    # This function is to check if the FMS1/2 (second_location_) have no missing piece
-    # We just check the fourth_location attribute since the specific FMS location are at this level
-    # Checks for FMS 1
-    # Seat check
-    def fms1_seat_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS1' and piece.fourth_location == 'Seat':
-                i=i+1
-                print(i)
-        if i>0:
-            return True
-        else:
-            return False
 
-    # Front check
-    def fms1_front_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Front':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
+class Mptt(MPTTModel):
+    name = models.CharField(max_length=32)
+    parent = TreeForeignKey(
+        'self', blank=True, null=True, on_delete=models.CASCADE,
+        settings={'filtered': True}, help_text='filtered (exclude pk=1 from parent, see admin.py)')
 
-    # Aft check
-    def fms1_aft_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Aft':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
+    def __str__(self):
+        return self.name
 
-    # Over Floor check
-    def fms1_overfloor_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Over Floor':
-                i=i+1
-        if i>0:
-            return True
-        else:
-            return False
-
-    # Under Floor check
-    def fms1_underfloor_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Under Floor':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
-
-    # Structure check
-    def fms1_structure_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 1' and piece.fourth_location == 'Structure':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
-
-
-    # Checks for FMS 2
-    # Seat check
-    def fms2_seat_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Seat':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
-
-    # Front check
-    def fms2_front_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Front':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
-    # Aft check
-    def fms2_aft_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Aft':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
-    # Over Floor check
-    def fms2_overfloor_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Over Floor':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
-
-    # Under Floor check
-    def fms2_underfloor_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Under Floor':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
-
-    # Structure check
-    def fms2_structure_check(self):
-        pieces = PieceInstance.objects.all()
-        i=0
-        for piece in pieces:
-            if piece.second_location == 'FMS 2' and piece.fourth_location == 'Structure':
-                i=i+1
-            if i>0:
-                return True
-            else:
-                return False
-
-
-
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
 
 
