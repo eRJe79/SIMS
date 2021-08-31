@@ -288,10 +288,10 @@ def update_instance(request, instance_id):
 # clone an instance
 def clone_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
-    piece_instance.pk=None
     piece_instance.update_comment = ''
     if request.method == "POST":
         form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
+        piece_instance.pk=None
         if form.is_valid():
             form.save()
             return redirect('piece-instance-list')
