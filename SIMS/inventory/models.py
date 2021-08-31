@@ -4,7 +4,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from simple_history.models import HistoricalRecords
 from datetime import date
-from treenode.models import TreeNodeModel
+from mptt.models import MPTTModel
+from treebeard.mp_tree import MP_Node
+from treebeard.al_tree import AL_Node
+from treebeard.ns_tree import NS_Node
+from treewidget.fields import TreeForeignKey, TreeManyToManyField
 
 from django.urls import reverse
 
@@ -13,6 +17,7 @@ from django.urls import reverse
 def user_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
+
 
 # Defining Location as Classes to have a better object manipulation
 class First_location(models.Model):
@@ -366,17 +371,18 @@ class PieceInstance(models.Model):
             reparation = False
         return reparation
 
-class LocationCheck(TreeNodeModel):
-    treenode_display_field = 'location_name'
-    location_name = models.CharField(max_length=50)
 
-    class Meta(TreeNodeModel.Meta):
-        verbose_name = 'Location Check'
-        verbose_name_plural = 'Locations Check'
+class Mptt(MPTTModel):
+    name = models.CharField(max_length=32)
+    parent = TreeForeignKey(
+        'self', blank=True, null=True, on_delete=models.CASCADE,
+        settings={'filtered': True}, help_text='filtered (exclude pk=1 from parent, see admin.py)')
 
+    def __str__(self):
+        return self.name
 
-
-
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
 
 

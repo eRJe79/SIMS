@@ -26,6 +26,7 @@ from .models import (
     Sixth_location,
     Seventh_location,
     Eighth_location,
+    Mptt,
 )
 
 from .forms import (
@@ -114,6 +115,12 @@ def database_csv(request):
                          instance.status, instance.date_created, instance.date_update,
                          instance.date_calibration, instance.date_end_of_life, instance.date_guarantee])
     return response
+
+def tree(request):
+    tree_level = Mptt.objects.all()
+    context = {'tree_level': tree_level}
+    return render(request, 'inventory/tree.html', context)
+
 
 class PieceCreate(CreateView):
     template_name = 'inventory/create_piece.html'
