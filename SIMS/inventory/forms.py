@@ -131,6 +131,60 @@ class PieceInstanceForm(forms.ModelForm):
         elif self.instance.pk:
             self.fields['second_location'].queryset = self.instance.previous_loc.second_location_set.order_by('name')
 
+        if 'second_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('second_location'))
+                self.fields['third_location'].queryset = Third_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk:
+            self.fields['third_location'].queryset = self.instance.previous_loc.third_location_set.order_by('name')
+
+        if 'third_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('third_location'))
+                self.fields['fourth_location'].queryset = Fourth_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk:
+            self.fields['fourth_location'].queryset = self.instance.previous_loc.fourth_location_set.order_by('name')
+
+        if 'fourth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('fourth_location'))
+                self.fields['fifth_location'].queryset = Fifth_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk:
+            self.fields['fifth_location'].queryset = self.instance.previous_loc.fifth_location_set.order_by('name')
+
+        if 'fifth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('fifth_location'))
+                self.fields['sixth_location'].queryset = Sixth_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk:
+            self.fields['sixth_location'].queryset = self.instance.previous_loc.sixth_location_set.order_by('name')
+
+        if 'sixth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('sixth_location'))
+                self.fields['seventh_location'].queryset = Seventh_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk:
+            self.fields['seventh_location'].queryset = self.instance.previous_loc.seventh_location_set.order_by('name')
+
+        if 'seventh_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('seventh_location'))
+                self.fields['eighth_location'].queryset = Eighth_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk:
+            self.fields['eighth_location'].queryset = self.instance.previous_loc.eighth_location_set.order_by('name')
+
 
 class KitForm(ModelForm):
     class Meta:
