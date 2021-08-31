@@ -78,15 +78,21 @@
         <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
         <td>{{ copy.manufacturer_serialnumber }}</td>
         <td>{{ copy.provider_serialnumber }}</td>
-	    {% if copy.fifth_location %}
-	  	    <td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
-	    {% elif copy.fourth_location %}
-	    	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}</td>
-	     {% elif copy.third_location %}
-	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}</td>
-	     {% else %}
-	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}</td>
-	     {% endif %}
+	  {% if copy.eighth_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}-{{copy.sixth_location|default_if_none:""}}-{{copy.seventh_location|default_if_none:""}}-{{copy.eighth_location|default_if_none:""}}</td>
+	  {% elif copy.seventh_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}-{{copy.sixth_location|default_if_none:""}}-{{copy.seventh_location|default_if_none:""}}</td>
+	  {% elif copy.sixth_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}-{{copy.sixth_location|default_if_none:""}}</td>
+	  {% elif copy.fifth_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
+	  {% elif copy.fourth_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}</td>
+	  {% elif copy.third_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}</td>
+	  {% else %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}</td>
+	  {% endif %}
         <td>{{ copy.status }}</td>
         <td><a href="{% url 'update-piece-instance' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
         <td><a href="{% url 'instance-clone' copy.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>

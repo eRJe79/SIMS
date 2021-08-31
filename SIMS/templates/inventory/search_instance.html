@@ -37,15 +37,21 @@
       <td>{{ result.piece.documentation }}</td>
       <td>{{ result.piece.item_type }}</td>
       <td>{{ result.piece.item_characteristic }}</td>
-      {% if result.fifth_location %}
-		<td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}-{{result.fifth_location|default_if_none:""}}</td>
-	  {% elif result.fourth_location %}
-		<td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}</td>
-	  {% elif result.third_location %}
-		<td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}</td>
-	  {% else %}
-		<td>{{result.first_location}}-{{result.second_location|default_if_none:""}}</td>
-	  {% endif %}
+        {% if result.eighth_location %}
+            <td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}-{{result.fifth_location|default_if_none:""}}-{{result.sixth_location|default_if_none:""}}-{{result.seventh_location|default_if_none:""}}-{{result.eighth_location|default_if_none:""}}</td>
+        {% elif result.seventh_location %}
+            <td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}-{{result.fifth_location|default_if_none:""}}-{{result.sixth_location|default_if_none:""}}-{{result.seventh_location|default_if_none:""}}</td>
+        {% elif result.sixth_location %}
+            <td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}-{{result.fifth_location|default_if_none:""}}-{{result.sixth_location|default_if_none:""}}</td>
+        {% elif result.fifth_location %}
+            <td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}-{{result.fifth_location|default_if_none:""}}</td>
+        {% elif result.fourth_location %}
+            <td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}-{{result.fourth_location|default_if_none:""}}</td>
+        {% elif result.third_location %}
+            <td>{{result.first_location}}-{{result.second_location|default_if_none:""}}-{{result.third_location|default_if_none:""}}</td>
+        {% else %}
+            <td>{{result.first_location}}-{{result.second_location|default_if_none:""}}</td>
+        {% endif %}
       <td>{{ result.status }}</td>
     </tr>
     {% endfor %}
