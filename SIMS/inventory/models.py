@@ -368,7 +368,7 @@ class PieceInstance(models.Model):
 
 class LocationCheck(TreeNodeModel):
     treenode_display_field = 'location_name'
-    location_name = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
+    location_name = models.CharField(max_length=50)
 
     class Meta(TreeNodeModel.Meta):
         verbose_name = 'Location Check'
