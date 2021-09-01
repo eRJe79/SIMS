@@ -1,2 +1,2 @@
 # SIMS
-CAE Logistic App
+Logistic App
