@@ -9,10 +9,7 @@
   	<div class="card-body">
 		<h5 class="card-title"> CAE Serial Number : {{ piece_instance.serial_number}}</h5>
 		<p class="card-text">
-  		<p><strong>Manufacturer Part Number:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.manufacturer_part_number }}</a></p>
-		{% if piece_instance.kit %}
-			<p><strong>Assembly:</strong> {{ piece_instance.kit }}</p>
-		{% endif %}
+  		<p><strong>CAE Part Number:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.cae_part_number }}</a></p>
   		{% if piece_instance.piece.image %}
   			<p><img src="{{ piece_instance.piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
   		{% endif %}
