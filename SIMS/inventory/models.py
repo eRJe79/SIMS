@@ -23,12 +23,18 @@ def user_image_path(instance, filename):
 class First_location(models.Model):
     name = models.CharField(max_length=30, default='Cazaux')
 
+    class Meta:
+        verbose_name_plural = "1. First Location"
+
     def __str__(self):
         return self.name
 
 class Second_location(models.Model):
     previous_loc = models.ForeignKey(First_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
+
+    class Meta:
+        verbose_name_plural = "2. Second Location"
 
     def __str__(self):
         return self.name
@@ -37,12 +43,18 @@ class Third_location(models.Model):
     previous_loc = models.ForeignKey(Second_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
+    class Meta:
+        verbose_name_plural = "3. Third Location"
+
     def __str__(self):
         return self.name
 
 class Fourth_location(models.Model):
     previous_loc = models.ForeignKey(Third_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
+
+    class Meta:
+        verbose_name_plural = "4. Fourth Location"
 
     def __str__(self):
         return self.name
@@ -51,12 +63,18 @@ class Fifth_location(models.Model):
     previous_loc = models.ForeignKey(Fourth_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
+    class Meta:
+        verbose_name_plural = "5. Fifth Location"
+
     def __str__(self):
         return self.name
 
 class Sixth_location(models.Model):
     previous_loc = models.ForeignKey(Fifth_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
+
+    class Meta:
+        verbose_name_plural = "6. Sixth Location"
 
     def __str__(self):
         return self.name
@@ -65,12 +83,18 @@ class Seventh_location(models.Model):
     previous_loc = models.ForeignKey(Sixth_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
+    class Meta:
+        verbose_name_plural = "7. Seventh Location"
+
     def __str__(self):
         return self.name
 
 class Eighth_location(models.Model):
     previous_loc = models.ForeignKey(Seventh_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
+
+    class Meta:
+        verbose_name_plural = "8. Eighth Location"
 
     def __str__(self):
         return self.name
