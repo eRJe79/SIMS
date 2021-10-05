@@ -46,7 +46,7 @@ class Third_LocationAdmin(SimpleHistoryAdmin):
 
 @admin.register(Fourth_location)
 class Fourth_locationAdmin(SimpleHistoryAdmin):
-    list_display = ('name',)
+    list_display = ('previous_loc', 'name')
 
 @admin.register(Fifth_location)
 class Fifth_LocationAdmin(SimpleHistoryAdmin):
