@@ -148,7 +148,7 @@ class Piece(models.Model):
     # This is a default return method to access Piece
     def __str__(self):
         """String for representing the Model object."""
-        return self.manufacturer_part_number
+        return self.cae_part_number
 
     # This method is used is some templates to have link directed to the piece detail
     def get_absolute_url(self):
@@ -203,7 +203,7 @@ class PieceInstance(models.Model):
         ('Use', 'In Use'),
         ('Stock', 'In Stock')
     )
-   
+
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
     piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
     # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
