@@ -59,14 +59,13 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(forms.ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'kit', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
+        fields = ['piece', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
                   'restriction', 'update_comment', 'is_rspl', 'calibration_document', 'date_calibration',
                   'date_end_of_life', 'date_guarantee', 'first_location', 'second_location', 'third_location',
                   'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location', 'eighth_location',
                   'status']
         labels = {
             'piece': 'Piece',
-            'kit': 'Kit',
             'serial_number': 'CAE Serial Number',
             'manufacturer_serialnumber': 'Manufacturer Serial Number',
             'provider_serialnumber': 'OEM Serial Number',
@@ -90,7 +89,6 @@ class PieceInstanceForm(forms.ModelForm):
         }
         widgets = {
             'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Piece'}),
-            'kit': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Kit'}),
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
             'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),

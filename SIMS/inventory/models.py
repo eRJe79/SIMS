@@ -123,10 +123,10 @@ class Piece(models.Model):
     related_name = 'instance_reverse',
 
     manufacturer = models.CharField(max_length=120, null=True, blank=True)
-    manufacturer_part_number = models.CharField(max_length=200)
+    manufacturer_part_number = models.CharField(max_length=200, null=True, blank=True)
     provider = models.CharField(max_length=120, null=True, blank=True)
     provider_part_number = models.CharField(max_length=200, null=True, blank=True)
-    cae_part_number = models.CharField(max_length=200, null=True, blank=True)
+    cae_part_number = models.CharField(max_length=200)
     website = models.URLField(max_length=254, null=True, blank=True)
     piece_model = models.CharField(max_length=200, null=True, blank=True)
 
