@@ -10,23 +10,6 @@ from .models import (
     Mptt,
 )
 
-from treebeard.forms import movenodeform_factory
-
-@admin.register(Mptt)
-class MpttAdmin(DraggableMPTTAdmin):
-    list_display = (
-        'tree_actions',
-        'indented_title',
-    )
-    list_display_links = (
-        'indented_title',
-    )
-
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(MpttAdmin, self).get_form(request, obj=None, **kwargs)
-        form.base_fields['parent'].queryset = Mptt.objects.exclude(pk=1)  # filtered qs
-        return form
-
 # This is to register the models in the admin website
 
 class PieceInstanceInline(admin.TabularInline):
@@ -46,7 +29,7 @@ class Third_LocationAdmin(SimpleHistoryAdmin):
 
 @admin.register(Fourth_location)
 class Fourth_locationAdmin(SimpleHistoryAdmin):
-    list_display = ('name',)
+    list_display = ('previous_loc', 'name')
 
 @admin.register(Fifth_location)
 class Fifth_LocationAdmin(SimpleHistoryAdmin):
