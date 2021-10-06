@@ -167,7 +167,9 @@ class Kit(models.Model):
     description = models.TextField(max_length=1000, blank=True, null=True)
     # Serial number is mandatory
     kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
-
+    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    # History log
+    history = HistoricalRecords()
     # Default method to access the Kit
     def __str__(self):
         return self.name
@@ -176,6 +178,9 @@ class Kit(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this kit."""
         return reverse('kit-detail', args=[str(self.id)])
+
+    def get_pieceinstance_children(self):
+        return self.pieceinstance_set.all()
 
 
 # Class describing the instance of pieces with their specific attributes and methods

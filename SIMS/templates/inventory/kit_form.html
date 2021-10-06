@@ -5,10 +5,10 @@
   <br/><br/>
 <form id="form_with_formset" action="#" method="post">
   {% csrf_token %}
+    <h2>Assembly</h2>
   <table class="table">
     {{ form.as_table }}
   </table>
-
 
       <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
         <span id="submit-button-amount">Add Assembly</span>

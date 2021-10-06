@@ -11,8 +11,22 @@
     <ul>
         <p><strong>Description:</strong> {{ kit.description }}</p>
         <p><strong>Serial Number:</strong> {{ kit.kit_serialnumber }}</p>
+  		<p><strong>History:</strong></p>
+		{% for h in kit.history.all %}
+   			<p>
+			<td>{{ kit }} was </td>
+			<td>{{ h.get_history_type_display }} by </td>
+			<td><strong>User: </strong>{{ h.history_user }} at <strong>Time : </strong></td>
+			<td>{{ h.history_date }} with <strong>Comment: </strong></td>
+			{% if h.update_comment %}
+				<td>{{ h.update_comment }} </td>
+			{% else %}
+				<td>No comment given</td>
+			{% endif %}
+        {% endfor %}</p>
 	</ul>
     </p>
+	  <td><a href="{% url 'kit-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update</a></td>
   </div>
 </div>
 

@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from simple_history.utils import update_change_reason
 from django.template import RequestContext
+from django.forms.models import modelformset_factory
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
@@ -361,16 +362,14 @@ def search_instance_database(request):
         return render(request, 'inventory/search_instance.html', {})
 
 # Kit Management Section
-# Create new kit
+#Create new kit
 class KitCreate(CreateView):
     template_name = 'inventory/kit_form.html'
     model = Kit
-    form_class = KitForm
 
     def get(self, request, *args, **kwargs):
         self.object = None
-        form_class = self.get_form_class()
-        form = KitForm()
+        form = KitForm(request.POST)
         context = {
             'form': KitForm(),
         }
@@ -378,9 +377,8 @@ class KitCreate(CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        if form.is_valid() :
+        form = KitForm(request.POST)
+        if form.is_valid():
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
@@ -392,6 +390,33 @@ class KitCreate(CreateView):
     def form_invalid(self, form):
         return self.render_to_response(
             self.get_context_data(form=form))
+
+# Update an assembly
+def update_kit(request, kit_id):
+    kit = Kit.objects.get(pk=kit_id)
+    kit.date_update = timezone.now()
+    kit.update_comment = ''
+    form = KitForm(request.POST or None, instance=kit)
+    PieceInstanceFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=0)
+    qs = kit.pieceinstance_set.all()
+    formset = PieceInstanceFormset(request.POST or None, request.FILES or None, queryset=qs)
+    context = {
+        'kit': kit,
+        'formset': formset,
+        'form': form,
+    }
+    if all([form.is_valid() and formset.is_valid()]):
+        print("form and formset valid")
+        parent = form.save(commit=False)
+        parent.save()
+        for form in formset:
+            child = form.save(commit=False)
+            if child.kit is None:
+                print("Added new assembly")
+                child.kit = parent
+            child.save()
+        return redirect('kit-list')
+    return render(request, 'inventory/kit_update.html', context)
 
 
 # Display Kit List

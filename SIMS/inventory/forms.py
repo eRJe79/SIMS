@@ -59,19 +59,20 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(forms.ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
+        fields = ['piece', 'kit', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
                   'restriction', 'update_comment', 'is_rspl', 'calibration_document', 'date_calibration',
                   'date_end_of_life', 'date_guarantee', 'first_location', 'second_location', 'third_location',
                   'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location', 'eighth_location',
                   'status']
         labels = {
             'piece': 'Piece',
+            'kit': 'Kit',
             'serial_number': 'CAE Serial Number',
             'manufacturer_serialnumber': 'Manufacturer Serial Number',
             'provider_serialnumber': 'OEM Serial Number',
             'owner': 'Owner',
             'restriction': 'Restriction',
-            'update_comment': 'Comment',
+            'update_comment': 'Update Comment',
             'calibration_document': 'Calibration Document',
             'is_rspl': 'RSPL',
             'date_calibration': 'Next Calibration',
@@ -89,6 +90,7 @@ class PieceInstanceForm(forms.ModelForm):
         }
         widgets = {
             'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Piece'}),
+            'kit': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Kit'}),
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
             'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),
@@ -187,20 +189,22 @@ class PieceInstanceForm(forms.ModelForm):
 class KitForm(ModelForm):
     class Meta:
         model = Kit
-        fields = ['name', 'description', 'kit_serialnumber']
+        fields = ['name', 'description', 'kit_serialnumber', 'update_comment']
         labels = {
             'name': 'Name',
             'description': 'Description',
             'kit_serialnumber': 'Kit Serial Number',
+            'update_comment': 'Update Comment',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Name'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Description'}),
             'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Assembly Serial Number'}),
+            'update_comment': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Update Comment'}),
         }
 
-PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=10)
-PieceInstanceKitFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=10)
+PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=1)
+PieceInstanceKitFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=1)
 
 
 
