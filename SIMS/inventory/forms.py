@@ -72,7 +72,7 @@ class PieceInstanceForm(forms.ModelForm):
             'provider_serialnumber': 'OEM Serial Number',
             'owner': 'Owner',
             'restriction': 'Restriction',
-            'update_comment': 'Comment',
+            'update_comment': 'Update Comment',
             'calibration_document': 'Calibration Document',
             'is_rspl': 'RSPL',
             'date_calibration': 'Next Calibration',
@@ -189,20 +189,22 @@ class PieceInstanceForm(forms.ModelForm):
 class KitForm(ModelForm):
     class Meta:
         model = Kit
-        fields = ['name', 'description', 'kit_serialnumber']
+        fields = ['name', 'description', 'kit_serialnumber', 'update_comment']
         labels = {
             'name': 'Name',
             'description': 'Description',
             'kit_serialnumber': 'Kit Serial Number',
+            'update_comment': 'Update Comment',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Name'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Description'}),
             'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Assembly Serial Number'}),
+            'update_comment': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Update Comment'}),
         }
 
-PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=10)
-PieceInstanceKitFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=10)
+PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=1)
+PieceInstanceKitFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=1)
 
 
 

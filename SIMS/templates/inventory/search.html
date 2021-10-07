@@ -8,7 +8,7 @@
     <table class="table table-light table-striped">
     <thead>
     <tr>
-    <th>Manufacturer Part Number</th>
+    <th>CAE Part Number</th>
 	<th>Piece Model</th>
 	<th>CAE Part Number</th>
 	<th>OEM</th>
@@ -20,7 +20,7 @@
     </thead>
     <tr class="datarow">
       {% for result in results %}
-      <td><a href="{{ piece.get_absolute_url }}">{{ result.manufacturer_part_number }}</a></td>
+      <td><a href="{{ piece.get_absolute_url }}">{{ result.cae_part_number }}</a></td>
       <td>{{ result.piece_model }}</td>
       <td>{{ result.cae_part_number }}</td>
       <td>{{ result.provider }}</td>

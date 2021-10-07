@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	<style>
+		.pieceinstance-form {
+			border-bottom: 1px solid black;
+		}
+		.hidden {
+			display: none
+		}
+	</style>
+
+	<h1>Update Assembly...</h1>
+	<form id="form" action="#" method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<h3>Assembly</h3>
+		{{ form.as_p }}
+		{% if formset %}
+			{{ formset.management_form }}
+			<h3>Instance</h3>
+			<div id="pieceinstance-form-list">
+			{% for form in formset %}
+			<div class="pieceinstance-form">
+				{{ form.as_p }}
+			</div>
+			{% endfor %}
+			</div>
+		<div id="empty-form" class="hidden">
+			{{ formset.empty_form.as_p }}
+		</div>
+		<button id="add-more" type="button"> Add more </button>
+		{% endif %}
+		<button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+        <span id="submit-button-amount">Update Assembly</span>
+      </button>
+	</form>
+
+<script>
+	// To understand this section : https://www.youtube.com/watch?v=s3T-w2jhDHE&list=PLEsfXFp6DpzRMby_cSoWTFw8zaMdTEXgL&index=64
+	const addMoreBtn = document.getElementById("add-more")
+	const totalNewForms = document.getElementById("id_form-TOTAL_FORMS")
+	addMoreBtn.addEventListener('click', add_new_form)
+
+	function add_new_form(event) {
+		// we prevent java console from populating (adding traffic)
+		if (event) {
+			event.preventDefault()
+		}
+		const currentPieceinstanceForms = document.getElementsByClassName("pieceinstance-form")
+		let currentFormCount = currentPieceinstanceForms.length
+		// we want the new form to appear after the last loaded form
+		const formCopyTarget = document.getElementById("pieceinstance-form-list")
+		// now add new empty form element to our html form
+		const copyemptyFormEl = document.getElementById("empty-form").cloneNode(true)
+		// we reset the new empty form class to have the same as the form (pieceinstance-form)
+		copyemptyFormEl.setAttribute('class', 'pieceinstance-form')
+		copyemptyFormEl.setAttribute('id', `form-${currentFormCount}`)
+		const regex = new RegExp('__prefix__', 'g')
+		copyemptyFormEl.innerHTML = copyemptyFormEl.innerHTML.replace(regex,
+		currentFormCount)
+		totalNewForms.setAttribute('value', currentFormCount + 1)
+		formCopyTarget.append(copyemptyFormEl)
+	}
+</script>
+
+{% endblock %}

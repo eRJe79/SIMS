@@ -18,7 +18,7 @@ action="{%url 'search-instance-database' %}">
 <table class="table table-light table-striped">
   <thead>
     <tr>
-	<th>Manufacturer Part Number</th>
+	<th>CAE Part Number</th>
 	<th>CAE Serial Number</th>
 	<th>Manufacturer Serial number</th>
 	<th>OEM</th>
@@ -35,7 +35,7 @@ action="{%url 'search-instance-database' %}">
   </thead>
     {% for piece_instance in piece_instance_list %}
     <tr class="datarow">
-      <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.manufacturer_part_number }}</a></td>
+      <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.cae_part_number }}</a></td>
       <td><a href="{{ piece_instance.get_absolute_url }}">{{ piece_instance.serial_number }}</a></td>
       <td>{{ piece_instance.manufacturer_serialnumber }}</td>
       <td>{{ piece_instance.piece.provider }}</td>

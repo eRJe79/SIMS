@@ -123,10 +123,10 @@ class Piece(models.Model):
     related_name = 'instance_reverse',
 
     manufacturer = models.CharField(max_length=120, null=True, blank=True)
-    manufacturer_part_number = models.CharField(max_length=200)
+    manufacturer_part_number = models.CharField(max_length=200, null=True, blank=True)
     provider = models.CharField(max_length=120, null=True, blank=True)
     provider_part_number = models.CharField(max_length=200, null=True, blank=True)
-    cae_part_number = models.CharField(max_length=200, null=True, blank=True)
+    cae_part_number = models.CharField(max_length=200)
     website = models.URLField(max_length=254, null=True, blank=True)
     piece_model = models.CharField(max_length=200, null=True, blank=True)
 
@@ -148,7 +148,7 @@ class Piece(models.Model):
     # This is a default return method to access Piece
     def __str__(self):
         """String for representing the Model object."""
-        return self.manufacturer_part_number
+        return self.cae_part_number
 
     # This method is used is some templates to have link directed to the piece detail
     def get_absolute_url(self):
@@ -167,7 +167,9 @@ class Kit(models.Model):
     description = models.TextField(max_length=1000, blank=True, null=True)
     # Serial number is mandatory
     kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
-
+    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    # History log
+    history = HistoricalRecords()
     # Default method to access the Kit
     def __str__(self):
         return self.name
@@ -176,6 +178,9 @@ class Kit(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this kit."""
         return reverse('kit-detail', args=[str(self.id)])
+
+    def get_pieceinstance_children(self):
+        return self.pieceinstance_set.all()
 
 
 # Class describing the instance of pieces with their specific attributes and methods
@@ -203,103 +208,7 @@ class PieceInstance(models.Model):
         ('Use', 'In Use'),
         ('Stock', 'In Stock')
     )
-    # Choices for the instance location
-    LOCATION = (
-        ('Simulator', 'Simulator'),
-        ('Bureau', 'Bureau'),
-        ('MPDS', 'MPDS'),
-        ('PTD', 'PTD'),
-        ('ERTMS', 'ERTMS'),
-    )
 
-    SECOND_LOCATION = (
-        ('Simulator', (
-            ('FMS1', 'FMS1'),
-            ('FMS2', 'FMS2'),
-            ('Hangar', 'Hangar'),
-        )),
-        ('Bureau', (
-            ('Management', 'Management'),
-            ('Team A', 'Team A'),
-            ('Team B', 'Team B'),
-        )),
-        ('MPDS', (
-            ('MPDS1', 'MPDS1'), ('MPDS2', 'MPDS2'), ('MPDS3', 'MPDS3'), ('MPDS4', 'MPDS4'), ('MPDS5', 'MPDS5'),
-            ('MPDS6', 'MPDS6'), ('MPDS7', 'MPDS7'), ('MPDS8', 'MPDS8'), ('MPDS9', 'MPDS9'), ('MPDS10', 'MPDS10'),
-        )),
-        ('PTD', (
-            ('Laptop 1', 'Laptop 1'), ('Laptop 2', 'Laptop 2'),
-            ('PTD 1', 'PTD 1'), ('PTD 2', 'PTD 2'), ('PTD 3', 'PTD 3'), ('PTD 4', 'PTD 4'),
-        )),
-        ('ERTMS', (
-            ('ERTMS 1', 'ERTMS 1'), ('ERTMS 2', 'ERTMS 2'),
-        )),
-    )
-
-    THIRD_LOCATION = (
-        ('FMS1', (
-            ('IOS', 'IOS'), ('CRVS', 'CRVS'), ('Server Room', 'Server Room'), ('Cockpit', 'Cockpit'),
-            ('Compressor Room', 'Compressor Room'),
-        )),
-        ('FMS2', (
-            ('IOS', 'IOS'), ('CRVS', 'CRVS'), ('Server Room', 'Server Room'), ('Cockpit', 'Cockpit'),
-            ('Compressor Room', 'Compressor Room'),
-        )),
-        ('Hangar-SG3', (
-                     ('A1', 'A1'), ('A1CB1', 'A1CB1'), ('A2', 'A2'), ('A3', 'A3'), ('A4', 'A4'), ('A5', 'A5'),
-                     ('A6', 'A6'), ('A7', 'A7'), ('A8', 'A8'), ('A9', 'A9'), ('A10', 'A10'), ('A10 Bis', 'A10 Bis'),
-                     ('A11', 'A11'), ('A20', 'A20'), ('A25', 'A25'), ('A30', 'A30'),
-                     ('SS1', 'SS1'), ('SS2', 'SS2'), ('SS3', 'SS3'), ('SS4', 'SS4'), ('SS5', 'SS5'), ('SS6', 'SS6'),
-                     ('SS7', 'SS7'),
-        )),
-    )
-
-    FOURTH_LOCATION = (
-        ('IOS', 'IOS'),
-        ('CRVS', (
-            ('Front center stand', 'Front center stand'), ('Front top stand', 'Front top stand'),
-            ('Front right stand', 'Front right stand'), ('Front left stand', 'Front left stand'),
-            ('Aft right stand', 'Aft right stand'), ('Aft center stand', 'Aft center stand'),
-            ('Aft top stand', 'Aft top stand'), ('Aft left stand', 'Aft left stand'),
-            ('Door Mechanism', 'Door Mechanism'),
-        )),
-        ('Simulator-Simulated Cockpit', (
-            ('Seat', 'Seat'), ('Front', 'Front'), ('Aft', 'Aft'),
-        )),
-        ('Simulator-Other', (
-            ('Over Floor', 'Over Floor'), ('Under Floor', 'Under Floor'), ('Structure', 'Structure'),
-        )),
-        ('Server Room', (
-         ('S1', 'S1'),
-         ('SG1', 'SG1'),
-         ('SG2', 'SG2'),
-        )),
-    )
-
-    FIFTH_LOCATION = (
-        ('S1', (
-             ('A3', 'A3'), ('A6', 'A6'), ('A20', 'A20'), ('A35', 'A35'),
-             ('A40', 'A40'), ('A44', 'A44'), ('A50', 'A50'), ('A55', 'A55'),
-             ('A60', 'A60'), ('A65', 'A65'), ('A70', 'A70'), ('A75', 'A75'),
-             ('AB45', 'AB45'), ('AB50', 'AB50'), ('CRA9', 'CRA9'), ('CRA11', 'CRA11'),
-             )),
-        ('SG1', (
-             ('A2', 'A2'), ('A3', 'A3'), ('A4', 'A4'), ('A5', 'A5'),
-             ('A6', 'A6'), ('A7', 'A7'), ('A8', 'A8'), ('A10', 'A10'),
-             ('A11', 'A11'), ('A12', 'A12'), ('A13', 'A13'), ('A14', 'A14'),
-             ('A15', 'A15'), ('A16', 'A16'), ('A17', 'A17'), ('A18', 'A18'),
-             ('A19', 'A19'), ('A20', 'A20'), ('A21', 'A21'), ('A22', 'A22'),
-             ('A23', 'A23'), ('A24', 'A24'),
-             )),
-        ('SG2', (
-             ('A2', 'A2'), ('A3', 'A3'), ('A8', 'A8'), ('A10', 'A10'),
-             ('A11', 'A11'), ('A12', 'A12'), ('A13', 'A13'), ('A14', 'A14'),
-             ('A15', 'A15'), ('A16', 'A16'), ('A17', 'A17'), ('A18', 'A18'),
-             ('A19', 'A19'), ('A20', 'A20'), ('A21', 'A21'), ('A22', 'A22'),
-             ('A23', 'A23'), ('A24', 'A24'), ('A27', 'A27'), ('A28', 'A28'),
-             ('A30', 'A30'), ('A32', 'A32'), ('A34', 'A34'), ('A34 Bis', 'A34 Bis'),
-             )),
-    )
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
     piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
     # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece

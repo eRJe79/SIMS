@@ -19,6 +19,7 @@ from .views import (
     KitCreate,
     KitList,
     show_kit,
+    update_kit,
     database_csv,
     load_second_location,
     load_third_location,
@@ -49,8 +50,9 @@ urlpatterns = [
     path('clone_existing_piece/<instance_id>', clone_instance, name='instance-clone'),
 
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
-    path('kit_list/', KitList.as_view(), name='kit'),
+    path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
+    path('kit_update/<kit_id>', update_kit, name='kit-update'),
 
     path('database_csv', database_csv, name='database_csv'),
 
