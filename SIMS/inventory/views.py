@@ -405,9 +405,11 @@ def update_kit(request, kit_id):
         'formset': formset,
         'form': form,
     }
+    if request.method == 'POST':
+        print(request.POST)
     if all([form.is_valid() and formset.is_valid()]):
         print("form and formset valid")
-        parent = form.save(commit=False)
+        parent = form.save(commit= False)
         parent.save()
         for form in formset:
             child = form.save(commit=False)
