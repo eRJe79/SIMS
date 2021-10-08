@@ -12,7 +12,15 @@
 
 <h1>Add New Assembly</h1>
   <br/><br/>
-<form id="form_with_formset" action="#" method="post">
+<form id="form" action="#" method="post"
+		  data-second_location-url="{% url 'ajax_load_second_location' %}"
+		  data-third_location-url="{% url 'ajax_load_third_location' %}"
+		  data-fourth_location-url="{% url 'ajax_load_fourth_location' %}"
+		  data-fifth_location-url="{% url 'ajax_load_fifth_location' %}"
+		  data-sixth_location-url="{% url 'ajax_load_sixth_location' %}"
+		  data-seventh_location-url="{% url 'ajax_load_seventh_location' %}"
+		  data-eighth_location-url="{% url 'ajax_load_eighth_location' %}"
+		  enctype="multipart/form-data">
   {% csrf_token %}
     <h2>Assembly</h2>
   <table class="table">
@@ -39,5 +47,124 @@
   </button>
 </form>
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_first_location").change(function () {
+      var url = $("#form").attr("data-second_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
 
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_second_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_second_location").change(function () {
+      var url = $("#form").attr("data-third_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_third_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_third_location").change(function () {
+      var url = $("#form").attr("data-fourth_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_fourth_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_fifth_location").change(function () {
+      var url = $("#form").attr("data-fourth_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_fifth_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_fifth_location").change(function () {
+      var url = $("#form").attr("data-sixth_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_sixth_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_sixth_location").change(function () {
+      var url = $("#form").attr("data-seventh_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_seventh_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_seventh_location").change(function () {
+      var url = $("#form").attr("data-eighth_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_eighth_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
 {% endblock %}

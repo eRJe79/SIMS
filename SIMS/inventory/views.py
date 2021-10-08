@@ -431,7 +431,7 @@ def update_kit(request, kit_id):
         'form': form,
     }
     if all([form.is_valid() and formset.is_valid()]):
-        #print("form and formset valid")
+        print("form and formset valid")
         parent = form.save(commit=False)
         parent.save()
         for form in formset:
