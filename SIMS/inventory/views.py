@@ -361,8 +361,8 @@ def search_instance_database(request):
     else:
         return render(request, 'inventory/search_instance.html', {})
 
-# Kit Management Section
-#Create new kit
+# Assembly Management Section
+#Create new assembly
 class KitCreate(CreateView):
     template_name = 'inventory/kit_form.html'
     model = Kit
@@ -405,20 +405,56 @@ def update_kit(request, kit_id):
         'formset': formset,
         'form': form,
     }
-    if request.method == 'POST':
-        print(request.POST)
     if all([form.is_valid() and formset.is_valid()]):
         print("form and formset valid")
-        parent = form.save(commit= False)
+        parent = form.save(commit=False)
         parent.save()
         for form in formset:
             child = form.save(commit=False)
-            if child.kit is None:
-                print("Added new assembly")
-                child.kit = parent
-            child.save()
+            if child.serial_number is not None:
+                if child.kit is None:
+                    print("Added new assembly")
+                    child.kit = parent
+                child.save()
         return redirect('kit-list')
     return render(request, 'inventory/kit_update.html', context)
+
+
+def update_computer_assembly(request, kit_id):
+    kit = Kit.objects.get(pk=kit_id)
+    kit.date_update = timezone.now()
+    kit.update_comment = ''
+    form = KitForm(request.POST or None, instance=kit)
+    qs = kit.pieceinstance_set.all()
+    # We have 1 CPU, 2 Memory Disk, 1 GPU and 1 RAM per computer = 5 components
+    print(qs)
+    if qs:
+        ComputerFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=0)
+    else:
+        ComputerFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=5)
+    formset_computer = ComputerFormset(request.POST or None, request.FILES or None, queryset=qs)
+    context = {
+        'kit': kit,
+        'formset_computer': formset_computer,
+        'form': form,
+    }
+    if all([form.is_valid() and formset_computer.is_valid()]):
+        print("form and formsets valid")
+        parent = form.save(commit=False)
+        parent.save()
+        for form in formset_computer:
+            child = form.save(commit=False)
+            print(child)
+            if child.kit is None:
+                print("Added new cpu")
+                child.kit = parent
+            child.save()
+        print(child)
+        return redirect('kit-list')
+    else:
+        print(form.errors)
+        print(formset_computer.errors)
+    return render(request, 'inventory/computer_update.html', context)
 
 
 # Display Kit List
