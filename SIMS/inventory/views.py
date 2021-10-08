@@ -376,6 +376,31 @@ class KitCreate(CreateView):
         return render(request, 'inventory/kit_form.html', context)
 
     def post(self, request, *args, **kwargs):
+        # if our ajax is calling so we have to take action
+        # because this is not the form submission
+        if request.is_ajax():
+            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+            value = int(cp['wtd'])  # figure out if the process is addition or deletion
+            prefix = "instance_reverse"
+            cp[f'{prefix}-TOTAL_FORMS'] = int(
+                cp[f'{prefix}-TOTAL_FORMS']) + value
+            formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+            # the new formsets again -> if the process is addition!
+            return render(request, 'inventory/formset.html', {'formset': formset})
+
+    def post(self, request, *args, **kwargs):
+        # if our ajax is calling so we have to take action
+        # because this is not the form submission
+        if request.is_ajax():
+            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+            value = int(cp['wtd'])  # figure out if the process is addition or deletion
+            prefix = "instance_reverse"
+            cp[f'{prefix}-TOTAL_FORMS'] = int(
+                cp[f'{prefix}-TOTAL_FORMS']) + value
+            formset = PieceInstanceKitFormSet(
+                cp)  # catch any data which were in the previous formsets and deliver to-
+            # the new formsets again -> if the process is addition!
+            return render(request, 'inventory/formset.html', {'formset': formset})
         self.object = None
         form = KitForm(request.POST)
         if form.is_valid():
@@ -406,7 +431,7 @@ def update_kit(request, kit_id):
         'form': form,
     }
     if all([form.is_valid() and formset.is_valid()]):
-        print("form and formset valid")
+        #print("form and formset valid")
         parent = form.save(commit=False)
         parent.save()
         for form in formset:
@@ -415,6 +440,14 @@ def update_kit(request, kit_id):
                 if child.kit is None:
                     print("Added new assembly")
                     child.kit = parent
+                child.first_location = kit.first_location
+                child.second_location = kit.second_location
+                child.third_location = kit.third_location
+                child.fourth_location = kit.fourth_location
+                child.fifth_location = kit.fifth_location
+                child.sixth_location = kit.sixth_location
+                child.seventh_location = kit.seventh_location
+                child.eighth_location = kit.eighth_location
                 child.save()
         return redirect('kit-list')
     return render(request, 'inventory/kit_update.html', context)
@@ -424,6 +457,7 @@ def update_computer_assembly(request, kit_id):
     kit = Kit.objects.get(pk=kit_id)
     kit.date_update = timezone.now()
     kit.update_comment = ''
+    print(kit.name)
     form = KitForm(request.POST or None, instance=kit)
     qs = kit.pieceinstance_set.all()
     # We have 1 CPU, 2 Memory Disk, 1 GPU and 1 RAM per computer = 5 components
@@ -448,6 +482,14 @@ def update_computer_assembly(request, kit_id):
             if child.kit is None:
                 print("Added new cpu")
                 child.kit = parent
+            child.first_location = kit.first_location
+            child.second_location = kit.second_location
+            child.third_location = kit.third_location
+            child.fourth_location = kit.fourth_location
+            child.fifth_location = kit.fifth_location
+            child.sixth_location = kit.sixth_location
+            child.seventh_location = kit.seventh_location
+            child.eighth_location = kit.eighth_location
             child.save()
         print(child)
         return redirect('kit-list')

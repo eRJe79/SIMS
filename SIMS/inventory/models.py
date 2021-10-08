@@ -167,6 +167,16 @@ class Kit(models.Model):
     description = models.TextField(max_length=1000, blank=True, null=True)
     # Serial number is mandatory
     kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
+
+    first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
+    second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)
+    third_location = models.ForeignKey(Third_location, on_delete=models.SET_NULL, null=True, blank=True)
+    fourth_location = models.ForeignKey(Fourth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    fifth_location = models.ForeignKey(Fifth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    sixth_location = models.ForeignKey(Sixth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    seventh_location = models.ForeignKey(Seventh_location, on_delete=models.SET_NULL, null=True, blank=True)
+    eighth_location = models.ForeignKey(Eighth_location, on_delete=models.SET_NULL, null=True, blank=True)
+
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
     # History log
     history = HistoricalRecords()
