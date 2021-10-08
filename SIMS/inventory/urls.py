@@ -16,6 +16,7 @@ from .views import (
     all_piece_instance,
     search_piece_database,
     search_instance_database,
+    update_computer_assembly,
     KitCreate,
     KitList,
     show_kit,
@@ -53,6 +54,7 @@ urlpatterns = [
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
     path('kit_update/<kit_id>', update_kit, name='kit-update'),
+    path('computer_update/<kit_id>', update_computer_assembly, name='computer-update'),
 
     path('database_csv', database_csv, name='database_csv'),
 

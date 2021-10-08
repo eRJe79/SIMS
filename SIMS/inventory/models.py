@@ -183,6 +183,7 @@ class Kit(models.Model):
         return self.pieceinstance_set.all()
 
 
+
 # Class describing the instance of pieces with their specific attributes and methods
 class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""

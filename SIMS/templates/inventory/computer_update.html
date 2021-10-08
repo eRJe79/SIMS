@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	<style>
+		.component-form {
+			border-bottom: 1px solid black;
+		}
+		.hidden {
+			display: none
+		}
+	</style>
+
+<h1>Add New Assembly</h1>
+  <br/><br/>
+<form id="form_with_formset" action="#" method="post">
+  {% csrf_token %}
+    <h2>Assembly</h2>
+  <table class="table">
+    {{ form.as_table }}
+  </table>
+
+  <h3>Instances</h3>
+
+  <div id="computerupdate-form-list">
+    {{ formset_computer.management_form }}
+    {% for form in formset_computer %}
+    <h4>Component</h4>
+    <div id="component" class="component-form">
+      {{ form.as_p }}
+    </div>
+    {% endfor %}
+
+  </div>
+
+
+  </div>
+  <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+    <span id="submit-button-amount">Update Assembly</span>
+  </button>
+</form>
+
+
+{% endblock %}

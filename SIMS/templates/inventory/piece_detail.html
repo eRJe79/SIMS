@@ -73,7 +73,7 @@
         </tr>
 		</thead>
       {% for copy in piece_instance %}
-      {% if copy.piece.piece_model == piece.piece_model %}
+      {% if copy.piece.cae_part_number == piece.cae_part_number %}
       <tr class="datarow">
         <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
         <td>{{ copy.manufacturer_serialnumber }}</td>

@@ -26,7 +26,8 @@
         {% endfor %}</p>
 	</ul>
     </p>
-	  <td><a href="{% url 'kit-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update</a></td>
+	  <td><a href="{% url 'kit-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update to Custom</a></td>
+	  <td><a href="{% url 'computer-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update to Computer</a></td>
   </div>
 </div>
 
