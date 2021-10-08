@@ -440,6 +440,7 @@ def update_kit(request, kit_id):
                 if child.kit is None:
                     print("Added new assembly")
                     child.kit = parent
+                child.update_comment = kit.update_comment
                 child.first_location = kit.first_location
                 child.second_location = kit.second_location
                 child.third_location = kit.third_location
@@ -482,6 +483,7 @@ def update_computer_assembly(request, kit_id):
             if child.kit is None:
                 print("Added new cpu")
                 child.kit = parent
+            child.update_comment = kit.update_comment
             child.first_location = kit.first_location
             child.second_location = kit.second_location
             child.third_location = kit.third_location
