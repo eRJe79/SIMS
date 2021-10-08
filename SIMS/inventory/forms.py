@@ -189,19 +189,121 @@ class PieceInstanceForm(forms.ModelForm):
 class KitForm(ModelForm):
     class Meta:
         model = Kit
-        fields = ['name', 'description', 'kit_serialnumber', 'update_comment']
+        fields = ['name', 'description', 'kit_serialnumber', 'update_comment', 'first_location', 'second_location',
+                  'third_location', 'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location',
+                  'eighth_location']
         labels = {
             'name': 'Name',
             'description': 'Description',
             'kit_serialnumber': 'Kit Serial Number',
             'update_comment': 'Update Comment',
+            'first_location': 'First Location',
+            'second_location': 'Second Location',
+            'third_location': 'Third Location',
+            'fourth_location': 'Fourth Location',
+            'fifth_location': 'Fifth Location',
+            'sixth_location': 'Sixth Location',
+            'seventh_location': 'Seventh Location',
+            'eighth_location': 'Eighth Location',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Name'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Description'}),
             'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Assembly Serial Number'}),
             'update_comment': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Update Comment'}),
+            'first_location': forms.Select(attrs={'class': 'form-select'}),
+            'second_location': forms.Select(attrs={'class': 'form-select'}),
+            'third_location': forms.Select(attrs={'class': 'form-select'}),
+            'fourth_location': forms.Select(attrs={'class': 'form-select'}),
+            'fifth_location': forms.Select(attrs={'class': 'form-select'}),
+            'sixth_location': forms.Select(attrs={'class': 'form-select'}),
+            'seventh_location': forms.Select(attrs={'class': 'form-select'}),
+            'eighth_location': forms.Select(attrs={'class': 'form-select'}),
         }
+
+        # We override the init method to have location choices dependent on each other
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['second_location'].queryset = Second_location.objects.none()
+        self.fields['third_location'].queryset = Third_location.objects.none()
+        self.fields['fourth_location'].queryset = Fourth_location.objects.none()
+        self.fields['fifth_location'].queryset = Fifth_location.objects.none()
+        self.fields['sixth_location'].queryset = Sixth_location.objects.none()
+        self.fields['seventh_location'].queryset = Seventh_location.objects.none()
+        self.fields['eighth_location'].queryset = Eighth_location.objects.none()
+
+        if 'first_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('first_location'))
+                self.fields['second_location'].queryset = Second_location.objects.filter(
+                    previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.first_location:
+            self.fields['second_location'].queryset = self.instance.first_location.second_location_set.order_by('name')
+
+        if 'second_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('second_location'))
+                self.fields['third_location'].queryset = Third_location.objects.filter(
+                    previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.second_location:
+            self.fields['third_location'].queryset = self.instance.second_location.third_location_set.order_by('name')
+
+        if 'third_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('third_location'))
+                self.fields['fourth_location'].queryset = Fourth_location.objects.filter(
+                    previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.third_location:
+            self.fields['fourth_location'].queryset = self.instance.third_location.fourth_location_set.order_by('name')
+
+        if 'fourth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('fourth_location'))
+                self.fields['fifth_location'].queryset = Fifth_location.objects.filter(
+                    previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.fourth_location:
+            self.fields['fifth_location'].queryset = self.instance.fourth_location.fifth_location_set.order_by('name')
+
+        if 'fifth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('fifth_location'))
+                self.fields['sixth_location'].queryset = Sixth_location.objects.filter(
+                    previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.fifth_location:
+            self.fields['sixth_location'].queryset = self.instance.fifth_location.sixth_location_set.order_by('name')
+
+        if 'sixth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('sixth_location'))
+                self.fields['seventh_location'].queryset = Seventh_location.objects.filter(
+                    previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.sixth_location:
+            self.fields['seventh_location'].queryset = self.instance.sixth_location.seventh_location_set.order_by(
+                'name')
+
+        if 'seventh_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('seventh_location'))
+                self.fields['eighth_location'].queryset = Eighth_location.objects.filter(
+                    previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.seventh_location:
+            self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by(
+                'name')
 
 PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=1)
 PieceInstanceKitFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=1)
