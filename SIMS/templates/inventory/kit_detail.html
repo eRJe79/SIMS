@@ -11,6 +11,21 @@
     <ul>
         <p><strong>Description:</strong> {{ kit.description }}</p>
         <p><strong>Serial Number:</strong> {{ kit.kit_serialnumber }}</p>
+	  	<p><strong>Location: </strong>{% if kit.eighth_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}-{{kit.sixth_location|default_if_none:""}}-{{kit.seventh_location|default_if_none:""}}-{{kit.eighth_location|default_if_none:""}}</td>
+        		{% elif kit.seventh_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}-{{kit.sixth_location|default_if_none:""}}-{{kit.seventh_location|default_if_none:""}}</td>
+        		{% elif kit.sixth_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}-{{kit.sixth_location|default_if_none:""}}</td>
+        		{% elif kit.fifth_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}</td>
+        		{% elif kit.fourth_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}</td>
+        		{% elif kit.third_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}</td>
+        		{% else %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}</td>
+        		{% endif %}</p>
   		<p><strong>History:</strong></p>
 		{% for h in kit.history.all %}
    			<p>
