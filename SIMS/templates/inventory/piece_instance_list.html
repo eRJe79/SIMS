@@ -31,6 +31,7 @@ action="{%url 'search-instance-database' %}">
 	<th>Guarantee Expiration</th>
 	<th>Location</th>
 	<th>Status</th>
+	<th>Condition</th>
 	</tr>
   </thead>
     {% for piece_instance in piece_instance_list %}
@@ -62,6 +63,7 @@ action="{%url 'search-instance-database' %}">
 	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}</td>
 	  {% endif %}
       <td>{{ piece_instance.status }}</td>
+      <td>{{ piece_instance.condition }}</td>
 	  <td><a href="{% url 'update-piece-instance' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
       <td><a href="{% url 'instance-clone' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
     </tr>

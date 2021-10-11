@@ -36,8 +36,9 @@
             <td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}</td>
         {% else %}
             <td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}</td>
-        {% endif %}
+        {% endif %}</p>
   		<p><strong>Status:</strong> {{ piece_instance.status }}</p>
+  		<p><strong>Condition:</strong> {{ piece_instance.condition }}</p>
   		<p><strong>History:</strong></p>
 		{% for h in piece_instance.history.all %}
    			<p>

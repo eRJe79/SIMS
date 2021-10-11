@@ -213,11 +213,16 @@ class PieceInstance(models.Model):
 
     # Choices for the piece status
     STATUS_CHOICE = (
-        ('Reparation', 'Reparation'),
+        ('In Repair', 'In Repair'),
+        ('In Stock', 'In Stock'),
+        ('Installed', 'Installed'),
+        ('Discarded', 'Discarded')
+    )
+    # Choices for the piece condition
+    CONDITIONS_CHOICE = (
+        ('Damaged', 'Damaged'),
         ('New', 'New'),
-        ('Refurbished', 'Refurbished'),
-        ('Use', 'In Use'),
-        ('Stock', 'In Stock')
+        ('Repaired', 'Repaired')
     )
 
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
@@ -264,6 +269,13 @@ class PieceInstance(models.Model):
         max_length=20,
         choices=STATUS_CHOICE,
         blank=True,
+        default='',
+    )
+
+    condition = models.CharField(
+        max_length=20,
+        choices=CONDITIONS_CHOICE,
+        blank=True,
         default='New',
     )
 
@@ -309,7 +321,7 @@ class PieceInstance(models.Model):
         return calibration_is_due
 
     def is_in_reparation(self):
-        if self.status == 'Reparation':
+        if self.status == 'In Repair':
             reparation = True
         else:
             reparation = False
