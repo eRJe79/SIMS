@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 
-from .models import Piece, PieceInstance, Kit, Mptt,\
+from .models import Piece, PieceInstance, Kit, MovementExchange, Mptt, First_location,\
     Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location, Eighth_location
 
 class PieceForm(forms.ModelForm):
@@ -188,10 +188,23 @@ class PieceInstanceForm(forms.ModelForm):
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by('name')
 
 
-class MovementForm(forms.Form):
-    item_1 = forms.ModelChoiceField(queryset=PieceInstance.objects.all().order_by('serial_number'))
-    item_2 = forms.ModelChoiceField(queryset=PieceInstance.objects.all().order_by('serial_number'))
-
+class MovementForm(ModelForm):
+    class Meta:
+        model = MovementExchange
+        fields = ['reference_number', 'item_1', 'item_2', 'update_comment']
+        labels = {
+            'reference_number': 'Reference Number',
+            'item_1': 'Item 1',
+            'item_2': 'Item 2',
+            'update_comment': 'Update Comment'
+        }
+        widgets = {
+            'item_1': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 1'}),
+            'item_2': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 2'}),
+            'reference_number': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Enter the Reference Number'}),
+            'update_comment': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment'}),
+        }
 
 
 class KitForm(ModelForm):

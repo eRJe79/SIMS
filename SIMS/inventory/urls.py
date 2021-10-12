@@ -30,7 +30,9 @@ from .views import (
     load_seventh_location,
     load_eighth_location,
     tree,
-    movement_piece_instance,
+    movement_exchange,
+    movement_detail,
+    movement_list,
 )
 
 urlpatterns = [
@@ -59,9 +61,9 @@ urlpatterns = [
 
     path('database_csv', database_csv, name='database_csv'),
 
-    path('movement_choice/', movement_piece_instance, name='movement-choice'),
-    path('movement_mount/', movement_piece_instance, name='mount-piece-instance'),
-    path('movement_dismount/', movement_piece_instance, name='dismount-piece-instance'),
+    path('movement_choice/', movement_exchange, name='movement-choice'),
+    path('movement_detail/<primary_key>', movement_detail, name='movement-detail'),
+    path('movement_list', movement_list, name="movement-list"),
 
     path('tree', tree, name='tree'),
 

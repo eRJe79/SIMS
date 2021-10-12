@@ -213,10 +213,14 @@ class PieceInstance(models.Model):
 
     # Choices for the piece status
     STATUS_CHOICE = (
+        ('In Use', 'In Use'),
         ('In Repair', 'In Repair'),
         ('In Stock', 'In Stock'),
         ('Installed', 'Installed'),
-        ('Discarded', 'Discarded')
+        ('Discarded', 'Discarded'),
+        ('On Test', 'On Test'),
+        ('Received', 'Received'),
+        ('Waiting', 'Waiting'),
     )
     # Choices for the piece condition
     CONDITIONS_CHOICE = (
@@ -326,6 +330,32 @@ class PieceInstance(models.Model):
         else:
             reparation = False
         return reparation
+
+
+class MovementExchange(models.Model):
+    # Items exchanged is mandatory
+    item_1 = models.ForeignKey(PieceInstance, on_delete=models.SET_NULL, related_name='item_1', null=True, blank=False)
+    item_2 = models.ForeignKey(PieceInstance, on_delete=models.SET_NULL, related_name='item_2', null=True, blank=False)
+
+    # Reference number of the Exchange
+    reference_number = models.CharField(max_length=120, blank=True, null=False)
+
+    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    # History log
+    history = HistoricalRecords()
+
+    # Date management
+    # Date where the exchange is done (set at creation and never updated then)
+    date_created = models.DateField(auto_now_add=True)
+
+    # Default method to access the Kit
+    def __str__(self):
+        return self.reference_number
+
+    # This method is used is some templates to have link directed to the kit detail
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this kit."""
+        return reverse('movement-detail', args=[str(self.id)])
 
 
 class Mptt(MPTTModel):

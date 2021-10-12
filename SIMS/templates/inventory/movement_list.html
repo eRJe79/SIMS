@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Movement List</h1>
+  <br/>
+  {% if movements %}
+  <p>Here is the list of movements ordered by chronological order.</p>
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Reference Number</th>
+	<th>Date</th>
+	<th>Item 1</th>
+	<th>Item 2</th>
+	</tr>
+  </thead>
+    {% for movement in movements %}
+    <tr class="datarow">
+      <td><a href="{{ movement.get_absolute_url }}">{{ movement.reference_number }}</a></td>
+      <td>{{ movement.date_created }}</td>
+      <td>{{ movement.item_1 }}</td>
+      <td>{{ movement.item_2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>No movements yet.</p>
+  {% endif %} 
+{% endblock %}

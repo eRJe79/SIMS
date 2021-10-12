@@ -20,35 +20,37 @@
     #buttonbis{position:absolute;bottom:0;}
 </style>
 <h1>Movement Choice</h1>
-<form class=d-flex id="form" action="#" method="post" enctype="multipart/form-data"
-    action="{% url 'mount-piece-instance' %}">
+<form class=d-flex id="form" action="#" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-
-    <div id="container">
-        <div id="left">
-            <h2>Item to Mount:</h2>
-            <select id="item1" name="item1">
-            {% for item1 in items %}
-            <option value="{{ item1.serial_number }}">{{ item1.serial_number }}</option>
-            {% endfor %}
-        </select>
-        </div>
-        <div id="right">
-            <h2>To replace item:</h2>
-            <select id="item2" name="item2">
-            {% for item2 in items %}
-            <option value="{{ item2.serial_number }}">{{ item2.serial_number }}</option>
-            {% endfor %}
-            </select>
-        </div>
-    </div>
+    {{ form.as_p }}
+<!--    <div id="container">-->
+<!--        <div id="left">-->
+<!--            <label for="item_1">Item to Mount: </label>-->
+<!--            <select id="item1" name="item1">-->
+<!--            {% for item in items %}-->
+<!--            <option value="{{ item.serial_number }}">{{ item.serial_number }}</option>-->
+<!--            {% endfor %}-->
+<!--            </select>-->
+<!--            <label for="reference_number">Exchange Reference Number: </label>-->
+<!--            <input id="ref_number" type="text" name="ref_number" maxlength="100" required>-->
+<!--            <label for="update_comment">Comment: </label>-->
+<!--            <input id="comment" type="text" name="comment" maxlength="1000" required>-->
+<!--        </div>-->
+<!--        <div id="right">-->
+<!--            <label for="item_2">To replace item: </label>-->
+<!--            <select id="item2" name="item2">-->
+<!--            {% for item in items %}-->
+<!--            <option value="{{ item.serial_number }}">{{ item.serial_number }}</option>-->
+<!--            {% endfor %}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
     <div id="buttonbis">
         <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
-            <span id="submit-button-amount">Mount</span>
+            <span id="submit-button-amount">Exchange</span>
         </button>
     </div>
 
-
-
 </form>
 {% endblock %}
+

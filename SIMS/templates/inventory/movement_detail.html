@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    Movement Detail
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"> Reference Number : {{ movement.reference_number }}</h5>
+    <p class="card-text">
+    	<ul>
+  <p><strong>This item:</strong> {{movement.item_2}}</p>
+  <p><strong>Was exchanged with this item:</strong> {{movement.item_1}}</p>
+  <p><strong>Reason:</strong> {{movement.update_comment}}</p>
+  <p><strong>Date it was done:</strong> {{movement.date_created}}</p>
+	</ul>
+  </div>
+</div>
+
+{% endblock %}
