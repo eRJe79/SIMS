@@ -9,10 +9,13 @@
 </head>
 
 <style>
-	#container{width:100%;}
-    #left{float:left;width:100px;}
-    #right{float:right;width:100px;}
-    #center{margin:0 auto;width:100px;}
+	#container{width:100%;
+	           display: flex;                  /* establish flex container */
+               flex-direction: row;            /* default value; can be omitted */
+               flex-wrap: nowrap;              /* default value; can be omitted */
+               justify-content: space-between; /* switched from default (flex-start, see below) */ }
+    #left{align-self: flex-start; justify-self: flex-start;}
+    #right{align-self: flex-end; justify-self: flex-end;}
     #button{position:relative;margin-top:100%;}
     #buttonbis{position:absolute;bottom:0;}
 </style>
@@ -23,6 +26,7 @@
 
     <div id="container">
         <div id="left">
+            <h2>Item to Mount:</h2>
             <select id="item1" name="item1">
             {% for item1 in items %}
             <option value="{{ item1.serial_number }}">{{ item1.serial_number }}</option>
@@ -30,6 +34,7 @@
         </select>
         </div>
         <div id="right">
+            <h2>To replace item:</h2>
             <select id="item2" name="item2">
             {% for item2 in items %}
             <option value="{{ item2.serial_number }}">{{ item2.serial_number }}</option>
