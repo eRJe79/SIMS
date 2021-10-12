@@ -340,7 +340,7 @@ class MovementExchange(models.Model):
     # Reference number of the Exchange
     reference_number = models.CharField(max_length=120, blank=True, null=False)
 
-    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    update_comment = models.TextField(max_length=1000, blank=True, null=True)
     # History log
     history = HistoricalRecords()
 

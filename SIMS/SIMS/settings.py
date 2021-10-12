@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'treewidget',
     'mptt',
     'treebeard',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
