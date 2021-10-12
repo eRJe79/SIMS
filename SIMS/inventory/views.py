@@ -28,6 +28,7 @@ from .models import (
     Seventh_location,
     Eighth_location,
     Mptt,
+    MovementExchange,
 )
 
 from .forms import (
@@ -36,6 +37,7 @@ from .forms import (
     PieceInstancePieceFormSet,
     PieceInstanceKitFormSet,
     KitForm,
+    MovementForm,
 )
 
 # Location dependencies management
@@ -186,12 +188,12 @@ class PieceListView(ListView):
 def show_piece(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
-    instance_in_use = PieceInstance.objects.filter(status='Use', piece=piece).count()
-    instance_in_stock = PieceInstance.objects.filter(status='Stock', piece=piece).count()
-    instance_in_refurbished = PieceInstance.objects.filter(status='Refurbished', piece=piece).count()
-    instance_in_reparation = PieceInstance.objects.filter(status='Reparation', piece=piece).count()
-    context = {'piece': piece, 'piece_instance': piece_instance, 'instance_in_use': instance_in_use,
-               'instance_in_stock': instance_in_stock, 'instance_in_refurbished': instance_in_refurbished,
+    instance_installed = PieceInstance.objects.filter(status='Installed', piece=piece).count()
+    instance_in_stock = PieceInstance.objects.filter(status='In Stock', piece=piece).count()
+    instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
+    instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
+    context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
+               'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation}
     return render(request, 'inventory/piece_detail.html', context)
 
@@ -384,19 +386,6 @@ class KitCreate(CreateView):
             prefix = "instance_reverse"
             cp[f'{prefix}-TOTAL_FORMS'] = int(
                 cp[f'{prefix}-TOTAL_FORMS']) + value
-            formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
-            # the new formsets again -> if the process is addition!
-            return render(request, 'inventory/formset.html', {'formset': formset})
-
-    def post(self, request, *args, **kwargs):
-        # if our ajax is calling so we have to take action
-        # because this is not the form submission
-        if request.is_ajax():
-            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
-            value = int(cp['wtd'])  # figure out if the process is addition or deletion
-            prefix = "instance_reverse"
-            cp[f'{prefix}-TOTAL_FORMS'] = int(
-                cp[f'{prefix}-TOTAL_FORMS']) + value
             formset = PieceInstanceKitFormSet(
                 cp)  # catch any data which were in the previous formsets and deliver to-
             # the new formsets again -> if the process is addition!
@@ -520,3 +509,63 @@ def show_kit(request, primary_key):
     piece_instance = PieceInstance.objects.all().order_by('status')
     context = {'kit': kit, 'piece_instance': piece_instance}
     return render(request, 'inventory/kit_detail.html', context)
+
+
+# Movement Management Section
+
+def movement_exchange(request):
+    form = MovementForm(request.POST or None)
+    #items = PieceInstance.objects.all().order_by('serial_number')
+    context = {
+        'form': form,
+        #'items': items,
+    }
+    if form.is_valid():
+        obj = form.save(commit=False)
+        # Update location of the item being replaced with the item it replaces
+        obj.item_2.first_location = obj.item_1.first_location
+        obj.item_2.second_location = obj.item_1.second_location
+        obj.item_2.third_location = obj.item_1.third_location
+        obj.item_2.fourth_location = obj.item_1.fourth_location
+        obj.item_2.fifth_location = obj.item_1.fifth_location
+        obj.item_2.sixth_location = obj.item_1.sixth_location
+        obj.item_2.seventh_location = obj.item_1.seventh_location
+        obj.item_2.eighth_location = obj.item_1.eighth_location
+        # Put object being replaced in waiting zone
+        obj.item_1.first_location = First_location.objects.get(name='Waiting')
+        obj.item_1.second_location = None
+        obj.item_1.third_location = None
+        obj.item_1.fourth_location = None
+        obj.item_1.fifth_location = None
+        obj.item_1.sixth_location = None
+        obj.item_1.seventh_location = None
+        obj.item_1.eighth_location = None
+        # Both objects update comments take the comment of the movement
+        obj.item_1.update_comment = obj.update_comment
+        obj.item_2.update_comment = obj.update_comment
+        # Save the objects
+        obj.item_1.save()
+        obj.item_2.save()
+        # Save the movement
+        obj.save()
+        return redirect(obj.get_absolute_url())
+    return render(request, 'inventory/movement_choice.html', context)
+
+def movement_detail(request, primary_key):
+    movement = MovementExchange.objects.get(pk=primary_key)
+    context = {'movement': movement}
+    return render(request, 'inventory/movement_detail.html', context)
+
+def movement_list(request):
+    movements = MovementExchange.objects.order_by('date_created')
+    context = {'movements': movements}
+    return render(request, 'inventory/movement_list.html', context)
+
+def mount_piece_instance(request, item_id):
+    context = {}
+    return render(request, 'inventory/movement_mount.html', context)
+
+def dismount_piece_instance(request, item_id):
+    context = {}
+    return render(request, 'inventory/movement_dismount.html', context)
+

@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 
-from .models import Piece, PieceInstance, Kit, Mptt,\
+from .models import Piece, PieceInstance, Kit, MovementExchange, Mptt, First_location,\
     Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location, Eighth_location
 
 class PieceForm(forms.ModelForm):
@@ -63,7 +63,7 @@ class PieceInstanceForm(forms.ModelForm):
                   'restriction', 'update_comment', 'is_rspl', 'calibration_document', 'date_calibration',
                   'date_end_of_life', 'date_guarantee', 'first_location', 'second_location', 'third_location',
                   'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location', 'eighth_location',
-                  'status']
+                  'status', 'condition']
         labels = {
             'piece': 'Piece',
             'kit': 'Kit',
@@ -86,7 +86,8 @@ class PieceInstanceForm(forms.ModelForm):
             'sixth_location': 'Sixth Location',
             'seventh_location': 'Seventh Location',
             'eighth_location': 'Eighth Location',
-            'status': 'Status'
+            'status': 'Status',
+            'condition': 'Condition'
         }
         widgets = {
             'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Piece'}),
@@ -109,6 +110,7 @@ class PieceInstanceForm(forms.ModelForm):
             'seventh_location': forms.Select(attrs={'class': 'form-select'}),
             'eighth_location': forms.Select(attrs={'class': 'form-select'}),
             'status': forms.Select(attrs={'class': 'form-select'}),
+            'condition': forms.Select(attrs={'class': 'form-select'}),
         }
 
         # We override the init method to have location choices dependent on each other
@@ -184,6 +186,25 @@ class PieceInstanceForm(forms.ModelForm):
                 pass #invalid input, ignore request
         elif self.instance.pk and self.instance.seventh_location:
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by('name')
+
+
+class MovementForm(ModelForm):
+    class Meta:
+        model = MovementExchange
+        fields = ['reference_number', 'item_1', 'item_2', 'update_comment']
+        labels = {
+            'reference_number': 'Reference Number',
+            'item_1': 'Item 1',
+            'item_2': 'Item 2',
+            'update_comment': 'Update Comment'
+        }
+        widgets = {
+            'item_1': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 1'}),
+            'item_2': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 2'}),
+            'reference_number': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Enter the Reference Number'}),
+            'update_comment': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment'}),
+        }
 
 
 class KitForm(ModelForm):

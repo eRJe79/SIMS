@@ -30,6 +30,9 @@ from .views import (
     load_seventh_location,
     load_eighth_location,
     tree,
+    movement_exchange,
+    movement_detail,
+    movement_list,
 )
 
 urlpatterns = [
@@ -57,6 +60,10 @@ urlpatterns = [
     path('computer_update/<kit_id>', update_computer_assembly, name='computer-update'),
 
     path('database_csv', database_csv, name='database_csv'),
+
+    path('movement_choice/', movement_exchange, name='movement-choice'),
+    path('movement_detail/<primary_key>', movement_detail, name='movement-detail'),
+    path('movement_list', movement_list, name="movement-list"),
 
     path('tree', tree, name='tree'),
 
