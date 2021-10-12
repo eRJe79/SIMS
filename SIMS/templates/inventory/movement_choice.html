@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
+  <script type="text/javascript" src="timeline.js"></script>
+  <link rel="stylesheet" href="master.css" type="text/css" media="screen" />
+</head>
+
+<style>
+		.item1-list {
+			margin-left: auto;
+            margin-right: 0;
+		}
+		.item2-list {
+			margin-left: 0;
+            margin-right: auto;
+		}
+	</style>
+<h1>Movement Choice</h1>
+<form class=d-flex id="form" action="#" method="post" enctype="multipart/form-data"
+    action="{% url 'mount-piece-instance' %}">
+    {% csrf_token %}
+    <div id="item1-list">
+    <select id="item1" name="item1">
+        {% for item1 in items %}
+        <option value="{{ item1.serial_number }}">{{ item1.serial_number }}</option>
+        {% endfor %}
+    </select>
+    </div>
+    <div id="item2-list">
+    <select id="item2" name="item2">
+        {% for item2 in items %}
+        <option value="{{ item2.serial_number }}">{{ item2.serial_number }}</option>
+        {% endfor %}
+    </select>
+    </div>
+    <button class="btn btn-outline-secondary" type="submit"> Mount </button>
+
+</form>
+{% endblock %}

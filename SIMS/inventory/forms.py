@@ -188,6 +188,12 @@ class PieceInstanceForm(forms.ModelForm):
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by('name')
 
 
+class MovementForm(forms.Form):
+    item_1 = forms.ModelChoiceField(queryset=PieceInstance.objects.all().order_by('serial_number'))
+    item_2 = forms.ModelChoiceField(queryset=PieceInstance.objects.all().order_by('serial_number'))
+
+
+
 class KitForm(ModelForm):
     class Meta:
         model = Kit

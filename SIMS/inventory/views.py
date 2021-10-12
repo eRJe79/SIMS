@@ -36,6 +36,7 @@ from .forms import (
     PieceInstancePieceFormSet,
     PieceInstanceKitFormSet,
     KitForm,
+    MovementForm,
 )
 
 # Location dependencies management
@@ -186,12 +187,12 @@ class PieceListView(ListView):
 def show_piece(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
-    instance_in_use = PieceInstance.objects.filter(status='Use', piece=piece).count()
-    instance_in_stock = PieceInstance.objects.filter(status='Stock', piece=piece).count()
-    instance_in_refurbished = PieceInstance.objects.filter(status='Refurbished', piece=piece).count()
-    instance_in_reparation = PieceInstance.objects.filter(status='Reparation', piece=piece).count()
-    context = {'piece': piece, 'piece_instance': piece_instance, 'instance_in_use': instance_in_use,
-               'instance_in_stock': instance_in_stock, 'instance_in_refurbished': instance_in_refurbished,
+    instance_installed = PieceInstance.objects.filter(status='Installed', piece=piece).count()
+    instance_in_stock = PieceInstance.objects.filter(status='In Stock', piece=piece).count()
+    instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
+    instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
+    context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
+               'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation}
     return render(request, 'inventory/piece_detail.html', context)
 
@@ -520,3 +521,20 @@ def show_kit(request, primary_key):
     piece_instance = PieceInstance.objects.all().order_by('status')
     context = {'kit': kit, 'piece_instance': piece_instance}
     return render(request, 'inventory/kit_detail.html', context)
+
+
+def movement_piece_instance(request):
+    items=PieceInstance.objects.all()
+    form = MovementForm()
+    context = {'form': form, 'items':items}
+    return render(request, 'inventory/movement_choice.html', context)
+
+
+def mount_piece_instance(request, item_id):
+    context = {}
+    return render(request, 'inventory/movement_mount.html', context)
+
+def dismount_piece_instance(request, item_id):
+    context = {}
+    return render(request, 'inventory/movement_dismount.html', context)
+
