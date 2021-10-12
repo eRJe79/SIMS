@@ -9,34 +9,41 @@
 </head>
 
 <style>
-		.item1-list {
-			margin-left: auto;
-            margin-right: 0;
-		}
-		.item2-list {
-			margin-left: 0;
-            margin-right: auto;
-		}
-	</style>
+	#container{width:100%;}
+    #left{float:left;width:100px;}
+    #right{float:right;width:100px;}
+    #center{margin:0 auto;width:100px;}
+    #button{position:relative;margin-top:100%;}
+    #buttonbis{position:absolute;bottom:0;}
+</style>
 <h1>Movement Choice</h1>
 <form class=d-flex id="form" action="#" method="post" enctype="multipart/form-data"
     action="{% url 'mount-piece-instance' %}">
     {% csrf_token %}
-    <div id="item1-list">
-    <select id="item1" name="item1">
-        {% for item1 in items %}
-        <option value="{{ item1.serial_number }}">{{ item1.serial_number }}</option>
-        {% endfor %}
-    </select>
+
+    <div id="container">
+        <div id="left">
+            <select id="item1" name="item1">
+            {% for item1 in items %}
+            <option value="{{ item1.serial_number }}">{{ item1.serial_number }}</option>
+            {% endfor %}
+        </select>
+        </div>
+        <div id="right">
+            <select id="item2" name="item2">
+            {% for item2 in items %}
+            <option value="{{ item2.serial_number }}">{{ item2.serial_number }}</option>
+            {% endfor %}
+            </select>
+        </div>
     </div>
-    <div id="item2-list">
-    <select id="item2" name="item2">
-        {% for item2 in items %}
-        <option value="{{ item2.serial_number }}">{{ item2.serial_number }}</option>
-        {% endfor %}
-    </select>
+    <div id="buttonbis">
+        <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+            <span id="submit-button-amount">Mount</span>
+        </button>
     </div>
-    <button class="btn btn-outline-secondary" type="submit"> Mount </button>
+
+
 
 </form>
 {% endblock %}
