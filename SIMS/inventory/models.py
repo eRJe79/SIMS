@@ -331,6 +331,12 @@ class PieceInstance(models.Model):
             reparation = False
         return reparation
 
+    def is_in_waiting(self):
+        if self.first_location.name == 'Waiting':
+            waiting = True
+        else:
+            waiting = False
+        return waiting
 
 class MovementExchange(models.Model):
     # Items exchanged is mandatory
