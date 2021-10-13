@@ -87,6 +87,31 @@
     {% endfor %}
 </table>
 
+<table class="table table-light table-striped">
+    <div class="card-header">
+    <strong>Pieces in Waiting Zone</strong>
+  	</div>
+    <thead>
+    <tr>
+    <th><p>Instance CAE Serial Number</p></th>
+    <th><p>Instance CAE Part Number</p></th>
+    <th><p>Instance Model</p></th>
+    <th><p>Piece</p></th>
+    </tr>
+    </thead>
+
+    {% for instance in my_piece_instances %}
+    <tr class="datarow">
+        {% if instance.is_in_waiting %}
+            <td>{{ instance}}</td>
+            <td>{{ instance.piece.cae_part_number}}</td>
+            <td>{{ instance.piece.piece_model}}</td>
+            <td>{{ instance.piece }}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
 <!--<table class="table table-light table-striped">-->
 <!--    <div class="card-header">-->
 <!--    <strong>FMS 1 Location check</strong>-->
