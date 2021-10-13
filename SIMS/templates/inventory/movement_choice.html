@@ -1,8 +1,9 @@
 {% extends 'base/base.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
 
-<head>
+<head xmlns="http://www.w3.org/1999/html">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
   <script type="text/javascript" src="timeline.js"></script>
   <link rel="stylesheet" href="master.css" type="text/css" media="screen" />
@@ -11,30 +12,35 @@
 <style>
 	#container{width:100%;
 	           display: flex;                  /* establish flex container */
-               flex-direction: row;            /* default value; can be omitted */
-               flex-wrap: nowrap;              /* default value; can be omitted */
-               justify-content: space-between; /* switched from default (flex-start, see below) */ }
-    #left{align-self: flex-start; justify-self: flex-start;}
+               flex-direction: row;            /* default value; can be omitted */}
+    #left{align-self: flex-start;}
     #right{align-self: flex-end; justify-self: flex-end;}
-    #button{position:relative;margin-top:100%;}
-    #buttonbis{position:absolute;bottom:0;}
+    #center{justify-self: flex-center;}
+    #button{position:absolute;bottom:0;}
+
 </style>
 <h1>Movement Choice</h1>
 <form class=d-flex id="form" action="#" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="form-group">
+    <table class="table">
+      {{ form.as_table }}</table>
+    </div>
+
 <!--    <div id="container">-->
 <!--        <div id="left">-->
-<!--            <label for="item_1">Item to Mount: </label>-->
+<!--            <div>-->
+<!--            <br><label for="reference_number"> Exchange Reference Number: </label>-->
+<!--            <input id="ref_number" type="text" name="ref_number" maxlength="100" required></br>-->
+<!--            <br><label for="update_comment">Comment: </label>-->
+<!--            <input id="comment" type="text" name="comment" maxlength="1000" required></br></div>-->
+<!--            <br><label for="item_1">Item to Mount: </label>-->
 <!--            <select id="item1" name="item1">-->
 <!--            {% for item in items %}-->
 <!--            <option value="{{ item.serial_number }}">{{ item.serial_number }}</option>-->
 <!--            {% endfor %}-->
-<!--            </select>-->
-<!--            <label for="reference_number">Exchange Reference Number: </label>-->
-<!--            <input id="ref_number" type="text" name="ref_number" maxlength="100" required>-->
-<!--            <label for="update_comment">Comment: </label>-->
-<!--            <input id="comment" type="text" name="comment" maxlength="1000" required>-->
+<!--            </select></br>-->
+<!--        </div>-->
 <!--        </div>-->
 <!--        <div id="right">-->
 <!--            <label for="item_2">To replace item: </label>-->
@@ -45,11 +51,9 @@
 <!--            </select>-->
 <!--        </div>-->
 <!--    </div>-->
-    <div id="buttonbis">
-        <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+        <button id="button" type="submit" class="btn btn-lg btn-info btn-block">
             <span id="submit-button-amount">Exchange</span>
         </button>
-    </div>
 
 </form>
 {% endblock %}

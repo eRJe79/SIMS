@@ -331,6 +331,12 @@ class PieceInstance(models.Model):
             reparation = False
         return reparation
 
+    def is_in_waiting(self):
+        if self.first_location.name == 'Waiting':
+            waiting = True
+        else:
+            waiting = False
+        return waiting
 
 class MovementExchange(models.Model):
     # Items exchanged is mandatory
@@ -340,7 +346,7 @@ class MovementExchange(models.Model):
     # Reference number of the Exchange
     reference_number = models.CharField(max_length=120, blank=True, null=False)
 
-    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    update_comment = models.TextField(max_length=1000, blank=True, null=True)
     # History log
     history = HistoricalRecords()
 

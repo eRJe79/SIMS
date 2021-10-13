@@ -544,6 +544,8 @@ def movement_exchange(request):
         obj.item_1.update_comment = obj.update_comment
         obj.item_2.update_comment = obj.update_comment
         # Save the objects
+        print('is_valid')
+        print(obj.item_1)
         obj.item_1.save()
         obj.item_2.save()
         # Save the movement
