@@ -102,7 +102,7 @@
     {% for instance in my_piece_instances %}
     <tr class="datarow">
         {% if instance.is_in_waiting %}
-            <td>{{ instance}}</td>
+            <td><a href="{{ instance.get_absolute_url }}">{{ instance }}</a></td>
             <td>{{ instance.piece.cae_part_number}}</td>
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
