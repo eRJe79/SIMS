@@ -541,8 +541,8 @@ def movement_exchange(request):
         obj.item_1.seventh_location = None
         obj.item_1.eighth_location = None
         # Both objects update comments take the comment of the movement
-        obj.item_1.update_comment = obj.update_comment
-        obj.item_2.update_comment = obj.update_comment
+        obj.item_1.update_comment = obj.update_comment_item1
+        obj.item_2.update_comment = obj.update_comment_item2
         # Save the objects
         print('is_valid')
         print(obj.item_1)

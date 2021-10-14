@@ -191,19 +191,21 @@ class PieceInstanceForm(forms.ModelForm):
 class MovementForm(ModelForm):
     class Meta:
         model = MovementExchange
-        fields = ['reference_number','update_comment',  'item_1', 'item_2']
+        fields = ['reference_number','item_1','update_comment_item1', 'item_2','update_comment_item2']
         labels = {
             'reference_number': 'Reference Number',
-            'update_comment': 'Reason',
             'item_1': 'Item being replaced',
+            'update_comment_item1': 'Reason for item being replaced',
             'item_2': 'Replacing item',
+            'update_comment_item2': 'Reason for item replacing',
         }
         widgets = {
             'reference_number': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Enter the Reference Number'}),
-            'update_comment': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment'}),
-            'item_1': forms.Select(attrs={'class': 'form-select', 'style': 'align-self: flex-start; justify-self: flex-start;', 'placeholder': 'Choose Item 1'}),
-            'item_2': forms.Select(attrs={'class': 'form-select', 'style': 'align-self: flex-end; justify-self: flex-end;', 'placeholder': 'Choose Item 2'}),
+            'item_1': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 1'}),
+            'update_comment_item1': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment_item1'}),
+            'item_2': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 2'}),
+            'update_comment_item2': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment_item2'}),
         }
 
 
