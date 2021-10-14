@@ -242,7 +242,7 @@ class PieceInstance(models.Model):
     provider_serialnumber = models.CharField(max_length=120, null=True, blank=True)
 
     is_rspl = models.BooleanField(default=False)  # Franck's account
-    calibration_document = models.FileField(upload_to='documents/', blank=True, null=True)
+    calibration_document = models.FileField(upload_to='documents/calibration', blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -259,6 +259,7 @@ class PieceInstance(models.Model):
     date_guarantee = models.DateField(blank=True, null=True)
 
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    update_document = models.FileField(upload_to='documents/update/', blank=True, null=True)
 
     first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
     second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)

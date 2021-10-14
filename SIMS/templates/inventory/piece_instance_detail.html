@@ -48,6 +48,9 @@
 			<td>{{ h.history_date }} with <strong>Comment: </strong></td>
 			{% if h.update_comment %}
 				<td>{{ h.update_comment }} </td>
+				{% if h.update_document %}
+					<td><strong>Update Documents: </strong>  <a href="{{MEDIA_URL}}{{ h.update_document }}">link</a> </td>
+				{% endif %}
 			{% else %}
 				<td>No comment given</td>
 			{% endif %}

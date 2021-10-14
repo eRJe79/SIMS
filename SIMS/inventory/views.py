@@ -227,6 +227,7 @@ class PieceInstanceCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = PieceInstanceForm(request.POST, request.FILES)
+        files = request.FILES.getlist('update_document')
         if form.is_valid():
             return self.form_valid(form)
         else:
