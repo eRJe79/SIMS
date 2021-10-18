@@ -40,39 +40,46 @@
   		<p><strong>Status:</strong> {{ piece_instance.status }}</p>
   		<p><strong>Condition:</strong> {{ piece_instance.condition }}</p>
   		<p><strong>History:</strong></p>
-		{% for h in piece_instance.history.all %}
-   			<p>
-			<td>{{ piece_instance }} was </td>
-			<td>{{ h.get_history_type_display }} by </td>
-			<td><strong>User: </strong>{{ h.history_user }} at <strong>Time : </strong></td>
-			<td>{{ h.history_date }} with <strong>Comment: </strong></td>
-			{% if h.update_comment %}
+			<table class="table table-light table-striped">
+				<thead>
+    			<tr>
+				<th>Instance</th>
+    			<th>Type of update</th>
+				<th>User</th>
+				<th>Time</th>
+    			<th>Update Comment</th>
+				<th>Update Document</th>
+    			<th>Status</th>
+				<th>Location</th>
+				</tr>
+			</thead>
+			{% for h in piece_instance.get_history %}
+			<tr class="datarow">
+				<td>{{ piece_instance }}</td>
+				<td>{{ h.get_history_type_display }}</td>
+				<td>{{ h.history_user }}</td>
+				<td>{{ h.history_date }}</td>
 				<td>{{ h.update_comment }} </td>
-				{% if h.update_document %}
-					<td><strong>Update Documents: </strong>  <a href="{{MEDIA_URL}}{{ h.update_document }}">link</a> </td>
-				{% endif %}
-			{% else %}
-				<td>No comment given</td>
-			{% endif %}
-			<td><strong>Status: </strong>{{ h.status }} and <strong>Location: </strong></td>
-	  		{% if h.eighth_location %}
-	  			<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}-{{h.eighth_location|default_if_none:""}}</td>
-	  		{% elif h.seventh_location %}
-	  			<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}</td>
-	  		{% elif h.sixth_location %}
-	  			<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}</td>
-	  		{% elif h.fifth_location %}
-	  			<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}</td>
-	  		{% elif h.fourth_location %}
-	  			<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}</td>
-	  		{% elif h.third_location %}
-	  			<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}</td>
-	  		{% else %}
-	  			<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}</td>
-	  		{% endif %}
-			</p>
-		{% endfor %}
-    	</p>
+				<td><a href="{{MEDIA_URL}}{{ h.update_document }}">{{ h.update_document }}</a></td>
+				<td>{{ h.status }}</td>
+				{% if h.eighth_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}-{{h.eighth_location|default_if_none:""}}</td>
+	  			{% elif h.seventh_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}</td>
+	  			{% elif h.sixth_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}</td>
+	  			{% elif h.fifth_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}</td>
+	  			{% elif h.fourth_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}</td>
+	  			{% elif h.third_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}</td>
+	  			{% else %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}</td>
+	  			{% endif %}
+			</tr>
+			{% endfor %}
+		</table>
 		<td><a href="{% url 'update-piece-instance' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
         <td><a href="{% url 'instance-clone' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
   	</div>

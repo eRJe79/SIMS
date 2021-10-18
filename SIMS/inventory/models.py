@@ -339,6 +339,14 @@ class PieceInstance(models.Model):
             waiting = False
         return waiting
 
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        myhistory = (history[0], history[1], history[3])
+        return myhistory
+
+
+
 class MovementExchange(models.Model):
     # Items exchanged is mandatory
     item_1 = models.ForeignKey(PieceInstance, on_delete=models.SET_NULL, related_name='item_1', null=True, blank=False)
