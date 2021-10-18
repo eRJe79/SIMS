@@ -127,6 +127,7 @@ class Piece(models.Model):
     provider = models.CharField(max_length=120, null=True, blank=True)
     provider_part_number = models.CharField(max_length=200, null=True, blank=True)
     cae_part_number = models.CharField(max_length=200)
+    name = models.CharField(max_length=120, null=True, blank=True)
     website = models.URLField(max_length=254, null=True, blank=True)
     piece_model = models.CharField(max_length=200, null=True, blank=True)
 
@@ -148,7 +149,7 @@ class Piece(models.Model):
     # This is a default return method to access Piece
     def __str__(self):
         """String for representing the Model object."""
-        return self.cae_part_number
+        return self.name
 
     # This method is used is some templates to have link directed to the piece detail
     def get_absolute_url(self):

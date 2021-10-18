@@ -10,18 +10,21 @@ from .models import Piece, PieceInstance, Kit, MovementExchange, Mptt, First_loc
 class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
-        fields = ['manufacturer', 'provider', 'manufacturer_part_number', 'cae_part_number', 'provider_part_number',
+        fields = [ 'name', 'cae_part_number', 'manufacturer', 'provider', 'manufacturer_part_number', 'provider_part_number',
                   'website', 'piece_model', 'description', 'documentation', 'update_comment', 'image',
                   'calibration_recurrence', 'item_type', 'item_characteristic']
         widgets = {
+        'name': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'name', 'placeholder': 'Enter Name'
+        }),
+        'cae_part_number': forms.TextInput(attrs={
+            'class': 'form-control', 'id': 'cae_part_number', 'placeholder': 'Enter CAE PN'
+        }),
         'manufacturer': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'manufacturer', 'placeholder': 'Enter the manufacturer name'
         }),
         'manufacturer_part_number': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'manufacturer_part_number', 'placeholder': 'Enter the manufacturer PN'
-        }),
-        'cae_part_number': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'cae_part_number', 'placeholder': 'Enter CAE PN'
         }),
         'provider': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'provider', 'placeholder': 'Enter the OEM'
@@ -45,7 +48,7 @@ class PieceForm(forms.ModelForm):
             'class': 'form-control', 'id': 'description', 'placeholder': 'Enter a comment'
         }),
         'calibration_recurrence': forms.NumberInput(attrs={
-            'class': 'form-control', 'id': 'calibration_recurrence'
+            'class': 'form-control', 'id': 'calibration_recurrence', 'placeholder': 'Enter calibration recurrence in days'
         }),
         'item_type': forms.Select(attrs={
             'class': 'form-select', 'id': 'item_type'
