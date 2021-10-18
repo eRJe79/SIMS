@@ -572,3 +572,23 @@ def dismount_piece_instance(request, item_id):
     context = {}
     return render(request, 'inventory/movement_dismount.html', context)
 
+# Display a specific Piece
+def show_piece_history(request, primary_key):
+    piece = Piece.objects.get(pk=primary_key)
+    history = piece.history.all()
+    context = {'history': history, 'piece': piece}
+    return render(request, 'inventory/piece_history.html', context)
+
+# Display a specific Instance
+def show_instance_history(request, primary_key):
+    piece_instance = PieceInstance.objects.get(pk=primary_key)
+    history = piece_instance.history.all()
+    context = {'history': history, 'piece_instance': piece_instance}
+    return render(request, 'inventory/instance_history.html', context)
+
+# Display a specific Assembly
+def show_assembly_history(request, primary_key):
+    assembly = Kit.objects.get(pk=primary_key)
+    history = assembly.history.all()
+    context = {'history': history, 'assembly': assembly}
+    return render(request, 'inventory/assembly_history.html', context)

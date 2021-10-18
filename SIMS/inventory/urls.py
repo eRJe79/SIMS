@@ -10,10 +10,12 @@ from .views import (
     show_piece,
     update_piece,
     clone_piece,
+    show_piece_history,
     PieceInstanceCreate,
     update_instance,
     clone_instance,
     all_piece_instance,
+    show_instance_history,
     search_piece_database,
     search_instance_database,
     update_computer_assembly,
@@ -21,6 +23,7 @@ from .views import (
     KitList,
     show_kit,
     update_kit,
+    show_assembly_history,
     database_csv,
     load_second_location,
     load_third_location,
@@ -44,6 +47,7 @@ urlpatterns = [
     path('inventory/create/', PieceCreate.as_view(), name='piece-create'),
     path('update_piece/<piece_id>', update_piece, name='update-piece'),
     path('clone_piece/<piece_id>', clone_piece, name='piece-clone'),
+    path('piece_history/<primary_key>', show_piece_history, name='piece-history'),
 
 
     path('piece_instance_list', all_piece_instance, name="piece-instance-list"),
@@ -52,12 +56,14 @@ urlpatterns = [
     path('delete_piece_instance/<instance_id>', delete_instance, name="delete-piece-instance"),
     path('update_piece_instance/<instance_id>', update_instance, name='update-piece-instance'),
     path('clone_existing_piece/<instance_id>', clone_instance, name='instance-clone'),
+    path('instance_history/<primary_key>', show_instance_history, name='instance-history'),
 
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
     path('kit_update/<kit_id>', update_kit, name='kit-update'),
     path('computer_update/<kit_id>', update_computer_assembly, name='computer-update'),
+    path('assembly_history/<primary_key>', show_assembly_history, name='assembly-history'),
 
     path('database_csv', database_csv, name='database_csv'),
 

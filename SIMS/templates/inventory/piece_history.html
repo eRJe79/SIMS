@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<form action="ex_form" target="_blank">
+<div class="card">
+  <div class="card-header">
+    Piece History
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"> Piece : <a href="{{ piece.get_absolute_url }}">{{ piece.cae_part_number }}</a></h5>
+    <p class="card-text">
+    	<ul>
+  <p><strong>History:</strong></p>
+			<table class="table table-light table-striped">
+				<thead>
+    			<tr>
+				<th>Piece</th>
+    			<th>Type of update</th>
+				<th>User</th>
+				<th>Time</th>
+				</tr>
+			</thead>
+			{% for h in history %}
+			<tr class="datarow">
+				<td>{{ h.get_history_type_display }}</td>
+				<td>{{ h.history_user }}</td>
+				<td>{{ h.history_date }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</ul>
+    </p>
+  </div>
+</div>
+</form>
+{% endblock %}
