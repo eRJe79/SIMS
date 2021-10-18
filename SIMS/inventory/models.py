@@ -174,11 +174,25 @@ class Piece(models.Model):
 
 # A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
+    STATUS_CHOICE = (
+        ('In Use', 'In Use'),
+        ('In Stock', 'In Stock'),
+        ('Installed', 'Installed'),
+        ('On Test', 'On Test'),
+        ('Waiting', 'Waiting'),
+    )
     #Name is mandatory
     name = models.CharField(max_length=250, blank=False, null=False)
     description = models.TextField(max_length=1000, blank=True, null=True)
     # Serial number is mandatory
     kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
+    # Status
+    kit_status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICE,
+        blank=True,
+        default='',
+    )
 
     first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
     second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)

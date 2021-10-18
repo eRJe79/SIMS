@@ -439,6 +439,7 @@ def update_kit(request, kit_id):
                 child.sixth_location = kit.sixth_location
                 child.seventh_location = kit.seventh_location
                 child.eighth_location = kit.eighth_location
+                child.status = kit.kit_status
                 child.save()
         return redirect('kit-list')
     return render(request, 'inventory/kit_update.html', context)
@@ -482,6 +483,7 @@ def update_computer_assembly(request, kit_id):
             child.sixth_location = kit.sixth_location
             child.seventh_location = kit.seventh_location
             child.eighth_location = kit.eighth_location
+            child.status = kit.kit_status
             child.save()
         print(child)
         return redirect('kit-list')

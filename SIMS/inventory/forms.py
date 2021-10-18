@@ -214,14 +214,15 @@ class MovementForm(ModelForm):
 class KitForm(ModelForm):
     class Meta:
         model = Kit
-        fields = ['name', 'description', 'kit_serialnumber', 'update_comment', 'first_location', 'second_location',
-                  'third_location', 'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location',
-                  'eighth_location']
+        fields = ['name', 'description', 'kit_serialnumber', 'update_comment', 'kit_status', 'first_location',
+                  'second_location', 'third_location', 'fourth_location', 'fifth_location', 'sixth_location',
+                  'seventh_location', 'eighth_location']
         labels = {
             'name': 'Name',
             'description': 'Description',
             'kit_serialnumber': 'Kit Serial Number',
             'update_comment': 'Update Comment',
+            'kit_status': 'Status',
             'first_location': 'First Location',
             'second_location': 'Second Location',
             'third_location': 'Third Location',
@@ -236,6 +237,7 @@ class KitForm(ModelForm):
             'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Description'}),
             'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Assembly Serial Number'}),
             'update_comment': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Update Comment'}),
+            'kit_status': forms.Select(attrs={'class': 'form-select'}),
             'first_location': forms.Select(attrs={'class': 'form-select'}),
             'second_location': forms.Select(attrs={'class': 'form-select'}),
             'third_location': forms.Select(attrs={'class': 'form-select'}),
