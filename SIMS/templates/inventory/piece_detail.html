@@ -42,9 +42,9 @@
 			</tr>
 			{% endfor %}
 		</table>
-
 	</ul>
     </p>
+	<td><a href="{% url 'piece-history' piece.id %}" class="btn btn-outline-secondary btn-sm">Full History</a>
 	<td><a href="{% url 'update-piece' piece.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
     <td><a href="{% url 'piece-clone' piece.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
   </div>

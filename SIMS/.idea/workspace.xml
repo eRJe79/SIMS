@@ -37,6 +37,7 @@
       <change afterPath="$PROJECT_DIR$/templates/inventory/movement_choice.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/movement_detail.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/movement_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/piece_history.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/piece_instance_list.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/search.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/search_instance.html" afterDir="false" />
@@ -220,16 +221,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/inventory/views.py</url>
-          <line>231</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

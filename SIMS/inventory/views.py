@@ -572,3 +572,9 @@ def dismount_piece_instance(request, item_id):
     context = {}
     return render(request, 'inventory/movement_dismount.html', context)
 
+# Display a specific Piece
+def show_piece_history(request, primary_key):
+    piece = Piece.objects.get(pk=primary_key)
+    history = piece.history.all()
+    context = {'history': history, 'piece': piece}
+    return render(request, 'inventory/piece_history.html', context)
