@@ -131,7 +131,7 @@ class Piece(models.Model):
     piece_model = models.CharField(max_length=200, null=True, blank=True)
 
     description = models.TextField(max_length=1000, null=True, blank=True)
-    documentation = models.CharField(max_length=120, null=True, blank=True)
+    documentation = models.FileField(upload_to='documents/documentation/', blank=True, null=True)
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
 
     image = models.ImageField(upload_to='images', null=True, blank=True)
@@ -174,11 +174,25 @@ class Piece(models.Model):
 
 # A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
+    STATUS_CHOICE = (
+        ('In Use', 'In Use'),
+        ('In Stock', 'In Stock'),
+        ('Installed', 'Installed'),
+        ('On Test', 'On Test'),
+        ('Waiting', 'Waiting'),
+    )
     #Name is mandatory
     name = models.CharField(max_length=250, blank=False, null=False)
     description = models.TextField(max_length=1000, blank=True, null=True)
     # Serial number is mandatory
     kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
+    # Status
+    kit_status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICE,
+        blank=True,
+        default='',
+    )
 
     first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
     second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)
