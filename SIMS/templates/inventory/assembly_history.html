@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
 
-</body>
-</html>
+{% block content %}
+<form action="ex_form" target="_blank">
+<div class="card">
+  <div class="card-header">
+    Assembly History
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"> Assembly : <a href="{{ assembly.get_absolute_url }}">{{ assembly.name }}</a></h5>
+    <p class="card-text">
+    	<ul>
+  <p><strong>History:</strong></p>
+			<table class="table table-light table-striped">
+				<thead>
+    			<tr>
+				<th>Assembly</th>
+    			<th>Type of update</th>
+				<th>User</th>
+				<th>Time</th>
+    			<th>Update Comment</th>
+				<th>Location</th>
+				</tr>
+			</thead>
+			{% for h in history %}
+			<tr class="datarow">
+				<td>{{ assembly }}</td>
+				<td>{{ h.get_history_type_display }}</td>
+				<td>{{ h.history_user }}</td>
+				<td>{{ h.history_date }}</td>
+				<td>{{ h.update_comment }} </td>
+				{% if h.eighth_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}-{{h.eighth_location|default_if_none:""}}</td>
+	  			{% elif h.seventh_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}</td>
+	  			{% elif h.sixth_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}</td>
+	  			{% elif h.fifth_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}</td>
+	  			{% elif h.fourth_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}</td>
+	  			{% elif h.third_location %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}</td>
+	  			{% else %}
+	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}</td>
+	  			{% endif %}
+			</tr>
+			{% endfor %}
+		</table>
+	</ul>
+    </p>
+  </div>
+</div>
+</form>
+{% endblock %}
