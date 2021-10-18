@@ -160,6 +160,18 @@ class Piece(models.Model):
         """Returns the calibration reccurence days this piece."""
         return self.calibration_recurrence
 
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+             myhistory = (history[0], history[1])
+        else:
+             myhistory = (history[0], history[1], history[2])
+        print(len(history))
+        return myhistory
+
 # A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
     #Name is mandatory
