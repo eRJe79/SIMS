@@ -22,7 +22,9 @@
   <p><strong>Calibration Recurrence (days):</strong> {{piece.calibration_recurrence}}</p>
   <p><strong>Type:</strong> {{ piece.item_type }}</p>
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
-  <a href="{{ piece.website }}">{{ piece.website }}</a>
+  {% if piece.website %}
+  	<a href="{{ piece.website }}">{{ piece.website }}</a>
+  {% endif %}
   <p><strong>History:</strong></p>
 			<table class="table table-light table-striped">
 				<thead>
