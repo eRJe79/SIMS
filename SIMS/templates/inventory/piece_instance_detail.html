@@ -80,6 +80,7 @@
 			</tr>
 			{% endfor %}
 		</table>
+		<td><a href="{% url 'instance-history' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Full History</a>
 		<td><a href="{% url 'update-piece-instance' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
         <td><a href="{% url 'instance-clone' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
   	</div>
