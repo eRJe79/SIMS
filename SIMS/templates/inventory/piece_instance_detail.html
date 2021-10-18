@@ -18,7 +18,7 @@
 		{% else %}
 			<p><strong>Assembly: </strong> {{ piece_instance.kit }}</p>
 		{% endif %}
-		<p><strong>Calibration document is stored there: </strong> {{ piece_instance.calibration_document }}</p>
+		<p><strong>Calibration document: </strong> <a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}">{{ piece_instance.calibration_document }}</a></p>
   		<p><strong>OEM: </strong> {{ piece_instance.piece.provider }}</p>
   		<p><strong>OEM Serial Number: </strong> {{ piece_instance.provider_serialnumber }}</p>
   		<p><strong>Manufacturer Serial Number: </strong> {{ piece_instance.manufacturer_serialnumber }}</p>

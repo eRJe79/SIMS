@@ -38,8 +38,8 @@ class PieceForm(forms.ModelForm):
         'description': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'description', 'placeholder': 'Enter a brief description of the piece'
         }),
-        'documentation': forms.TextInput(attrs={
-            'class': 'form-control', 'id': 'documentation', 'placeholder': 'Enter the piece documentation'
+        'documentation': forms.ClearableFileInput(attrs={
+            'multiple': True, 'id': 'documentation'
         }),
         'update_comment': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'description', 'placeholder': 'Enter a comment'
@@ -99,6 +99,7 @@ class PieceInstanceForm(forms.ModelForm):
             'restriction': forms.Select(attrs={'class': 'form-select', 'id': 'restriction'}),
             'update_comment': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment'}),
             'update_document': forms.ClearableFileInput(attrs={'multiple': True, 'id': 'update_document'}),
+            'calibration_document': forms.ClearableFileInput(attrs={'multiple': True, 'id': 'calibration_document'}),
             'is_rspl': forms.CheckboxInput(),
             'date_calibration': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),

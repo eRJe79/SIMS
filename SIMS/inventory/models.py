@@ -131,7 +131,7 @@ class Piece(models.Model):
     piece_model = models.CharField(max_length=200, null=True, blank=True)
 
     description = models.TextField(max_length=1000, null=True, blank=True)
-    documentation = models.CharField(max_length=120, null=True, blank=True)
+    documentation = models.FileField(upload_to='documents/documentation/', blank=True, null=True)
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
 
     image = models.ImageField(upload_to='images', null=True, blank=True)
