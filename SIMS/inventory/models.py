@@ -192,6 +192,18 @@ class Kit(models.Model):
     def get_pieceinstance_children(self):
         return self.pieceinstance_set.all()
 
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+             myhistory = (history[0], history[1])
+        else:
+             myhistory = (history[0], history[1], history[2])
+        print(len(history))
+        return myhistory
+
 
 
 # Class describing the instance of pieces with their specific attributes and methods
@@ -342,9 +354,14 @@ class PieceInstance(models.Model):
     def get_history(self):
         history = self.history.all()
         # we get only the three last history iterations
-        myhistory = (history[0], history[1], history[3])
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+             myhistory = (history[0], history[1])
+        else:
+             myhistory = (history[0], history[1], history[2])
+        print(len(history))
         return myhistory
-
 
 
 class MovementExchange(models.Model):
