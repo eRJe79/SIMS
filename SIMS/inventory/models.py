@@ -160,6 +160,18 @@ class Piece(models.Model):
         """Returns the calibration reccurence days this piece."""
         return self.calibration_recurrence
 
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+             myhistory = (history[0], history[1])
+        else:
+             myhistory = (history[0], history[1], history[2])
+        print(len(history))
+        return myhistory
+
 # A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
     #Name is mandatory
@@ -191,6 +203,18 @@ class Kit(models.Model):
 
     def get_pieceinstance_children(self):
         return self.pieceinstance_set.all()
+
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+             myhistory = (history[0], history[1])
+        else:
+             myhistory = (history[0], history[1], history[2])
+        print(len(history))
+        return myhistory
 
 
 
@@ -242,7 +266,7 @@ class PieceInstance(models.Model):
     provider_serialnumber = models.CharField(max_length=120, null=True, blank=True)
 
     is_rspl = models.BooleanField(default=False)  # Franck's account
-    calibration_document = models.FileField(upload_to='documents/', blank=True, null=True)
+    calibration_document = models.FileField(upload_to='documents/calibration', blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -259,6 +283,7 @@ class PieceInstance(models.Model):
     date_guarantee = models.DateField(blank=True, null=True)
 
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    update_document = models.FileField(upload_to='documents/update/', blank=True, null=True)
 
     first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
     second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)
@@ -337,6 +362,19 @@ class PieceInstance(models.Model):
         else:
             waiting = False
         return waiting
+
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+             myhistory = (history[0], history[1])
+        else:
+             myhistory = (history[0], history[1], history[2])
+        print(len(history))
+        return myhistory
+
 
 class MovementExchange(models.Model):
     # Items exchanged is mandatory

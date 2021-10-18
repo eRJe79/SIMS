@@ -60,7 +60,7 @@ class PieceInstanceForm(forms.ModelForm):
     class Meta:
         model = PieceInstance
         fields = ['piece', 'kit', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
-                  'restriction', 'update_comment', 'is_rspl', 'calibration_document', 'date_calibration',
+                  'restriction', 'update_comment','update_document', 'is_rspl', 'calibration_document', 'date_calibration',
                   'date_end_of_life', 'date_guarantee', 'first_location', 'second_location', 'third_location',
                   'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location', 'eighth_location',
                   'status', 'condition']
@@ -73,6 +73,7 @@ class PieceInstanceForm(forms.ModelForm):
             'owner': 'Owner',
             'restriction': 'Restriction',
             'update_comment': 'Update Comment',
+            'update_document': 'Additional Comment',
             'calibration_document': 'Calibration Document',
             'is_rspl': 'RSPL',
             'date_calibration': 'Next Calibration',
@@ -97,6 +98,7 @@ class PieceInstanceForm(forms.ModelForm):
             'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),
             'restriction': forms.Select(attrs={'class': 'form-select', 'id': 'restriction'}),
             'update_comment': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment'}),
+            'update_document': forms.ClearableFileInput(attrs={'multiple': True, 'id': 'update_document'}),
             'is_rspl': forms.CheckboxInput(),
             'date_calibration': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),
             'date_end_of_life': forms.DateInput(format='%Y-%m-%d', attrs={'placeholder': 'YYYY-MM-DD'}),

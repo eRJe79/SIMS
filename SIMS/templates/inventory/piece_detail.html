@@ -24,14 +24,24 @@
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
   <a href="{{ piece.website }}">{{ piece.website }}</a>
   <p><strong>History:</strong></p>
-  {% for h in piece.history.all %}
-  	<p>
-	<td>{{ piece }} was </td>
-	<td>{{ h.get_history_type_display }} by </td>
-	<td><strong>{{ h.history_user }}</strong> at time : </td>
-	<td>{{ h.history_date }}</td>
-    </p>
-  {% endfor %}
+			<table class="table table-light table-striped">
+				<thead>
+    			<tr>
+				<th>Piece</th>
+    			<th>Type of update</th>
+				<th>User</th>
+				<th>Time</th>
+				</tr>
+			</thead>
+			{% for h in piece.get_history %}
+			<tr class="datarow">
+				<td>{{ piece }}</td>
+				<td>{{ h.get_history_type_display }}</td>
+				<td>{{ h.history_user }}</td>
+				<td>{{ h.history_date }}</td>
+			</tr>
+			{% endfor %}
+		</table>
 
 	</ul>
     </p>
