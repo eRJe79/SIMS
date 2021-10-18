@@ -7,6 +7,7 @@ from django.utils import timezone
 from simple_history.utils import update_change_reason
 from django.template import RequestContext
 from django.forms.models import modelformset_factory
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
@@ -229,12 +230,22 @@ class PieceInstanceCreate(CreateView):
         form = PieceInstanceForm(request.POST, request.FILES)
         files = request.FILES.getlist('update_document')
         if form.is_valid():
-            return self.form_valid(form)
+            return self.form_valid(request, form)
         else:
             return self.form_invalid(form)
 
-    def form_valid(self, form):
-        self.object = form.save()
+    def form_valid(self, request, form):
+        piece_instance = PieceInstance.objects.all()
+        print(piece_instance)
+        self.object = form.save(commit=False)
+        print(piece_instance)
+        for instance in piece_instance:
+            print(instance.serial_number)
+            print(self.object.serial_number)
+            if self.object.serial_number == instance.serial_number:
+                messages.success(request, 'An instance with this serial number already exist')
+                return self.render_to_response(self.get_context_data(form=form))
+        self.object.save()
         # instance_form.instance = self.object
         return HttpResponseRedirect(self.get_success_url())
 
