@@ -240,11 +240,12 @@ class PieceInstanceCreate(CreateView):
         self.object = form.save(commit=False)
         print(piece_instance)
         for instance in piece_instance:
-            print(instance.serial_number)
-            print(self.object.serial_number)
-            if self.object.serial_number == instance.serial_number:
-                messages.success(request, 'An instance with this serial number already exist')
-                return self.render_to_response(self.get_context_data(form=form))
+            if self.object.piece == instance.piece:
+                print(instance.serial_number)
+                print(self.object.serial_number)
+                if self.object.serial_number == instance.serial_number:
+                    messages.success(request, 'An instance with this serial number already exist')
+                    return self.render_to_response(self.get_context_data(form=form))
         self.object.save()
         # instance_form.instance = self.object
         return HttpResponseRedirect(self.get_success_url())
