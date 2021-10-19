@@ -1,6 +1,14 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <html lang="en">
 <body>
   <h1>Add New Piece Instance</h1>
