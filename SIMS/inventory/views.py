@@ -41,6 +41,21 @@ from .forms import (
     MovementForm,
 )
 
+# Movement dependencies management
+def load_item_1(request):
+    print("item 1")
+    piece_id = request.GET.get('piece')
+    print(piece_id)
+    items = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+    print(items)
+    return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
+
+def load_item_2(request):
+    piece_id = request.GET.get('piece')
+    items = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+    return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
+
+
 # Location dependencies management
 def load_second_location(request):
     first_loc_id = request.GET.get('previous_loc')
@@ -535,6 +550,18 @@ def movement_exchange(request):
         'form': form,
         #'items': items,
     }
+    if request.is_ajax():
+        print('ajax')
+        cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+        value = int(cp['wtd'])  # figure out if the process is addition or deletion
+        prefix = "instance_reverse"
+        cp[f'{prefix}-TOTAL_FORMS'] = int(
+            cp[f'{prefix}-TOTAL_FORMS']) + value
+        formset = PieceInstanceKitFormSet(
+            cp)  # catch any data which were in the previous formsets and deliver to-
+        # the new formsets again -> if the process is addition!
+        return render(request, 'inventory/formset.html', {'formset': formset})
+
     if form.is_valid():
         obj = form.save(commit=False)
         # Update location of the item being replaced with the item it replaces

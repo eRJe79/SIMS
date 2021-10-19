@@ -4,40 +4,56 @@
 {% block content %}
 
 <h1>Movement Choice</h1>
-<form id="form" action="#" method="post" enctype="multipart/form-data">
+<form method="post"  id="form" data-item_1-url="{% url 'ajax_load_item_1' %}"
+        data-item_2-url="{% url 'ajax_load_item_2' %}"
+        action="#" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
-    <table class="table">
-      {{ form.as_table }}
-    </table>
-
-<!--    <div id="container">-->
-<!--        <div id="left">-->
-<!--            <div>-->
-<!--            <br><label for="reference_number"> Exchange Reference Number: </label>-->
-<!--            <input id="ref_number" type="text" name="ref_number" maxlength="100" required></br>-->
-<!--            <br><label for="update_comment">Comment: </label>-->
-<!--            <input id="comment" type="text" name="comment" maxlength="1000" required></br></div>-->
-<!--            <br><label for="item_1">Item to Mount: </label>-->
-<!--            <select id="item1" name="item1">-->
-<!--            {% for item in items %}-->
-<!--            <option value="{{ item.serial_number }}">{{ item.serial_number }}</option>-->
-<!--            {% endfor %}-->
-<!--            </select></br>-->
-<!--        </div>-->
-<!--        </div>-->
-<!--        <div id="right">-->
-<!--            <label for="item_2">To replace item: </label>-->
-<!--            <select id="item2" name="item2">-->
-<!--            {% for item in items %}-->
-<!--            <option value="{{ item.serial_number }}">{{ item.serial_number }}</option>-->
-<!--            {% endfor %}-->
-<!--            </select>-->
-<!--        </div>-->
-<!--    </div>-->
-        <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+  <table class="table">
+    {{ form.as_table }}
+  </table>
+    <div>
+      <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
         <span id="submit-button-amount">Make Exchange</span>
       </button>
+    </div>
+  </form>
 
-</form>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#id_piece_1").change(function () {
+      var url = $("#form").attr("data-item_1-url");  // get the url of the `load_item_1` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item_1/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item_1` view function
+          $("#id_item_1").html(data);  // replace the contents of the item_1 input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_piece_2").change(function () {
+      var url = $("#form").attr("data-item_2-url");  // get the url of the `load_item_2` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item_2` view function
+          $("#id_item_2").html(data);  // replace the contents of the item_2 input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
 {% endblock %}
-

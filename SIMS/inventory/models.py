@@ -393,6 +393,8 @@ class PieceInstance(models.Model):
 
 class MovementExchange(models.Model):
     # Items exchanged is mandatory
+    piece_1 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='piece_1', null=True, blank=False)
+    piece_2 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='piece_2', null=True, blank=False)
     item_1 = models.ForeignKey(PieceInstance, on_delete=models.SET_NULL, related_name='item_1', null=True, blank=False)
     item_2 = models.ForeignKey(PieceInstance, on_delete=models.SET_NULL, related_name='item_2', null=True, blank=False)
 

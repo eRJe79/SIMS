@@ -25,6 +25,8 @@ from .views import (
     update_kit,
     show_assembly_history,
     database_csv,
+    load_item_1,
+    load_item_2,
     load_second_location,
     load_third_location,
     load_fourth_location,
@@ -72,6 +74,9 @@ urlpatterns = [
     path('movement_list', movement_list, name="movement-list"),
 
     path('tree', tree, name='tree'),
+
+    path('ajax/load-item_1/', load_item_1, name='ajax_load_item_1'),  # <-- this one here
+    path('ajax/load-item_2/', load_item_2, name='ajax_load_item_2'),  # <-- this one here
 
     path('ajax/load-second_location/', load_second_location, name='ajax_load_second_location'),  # <-- this one here
     path('ajax/load-third_location/', load_third_location, name='ajax_load_third_location'),  # <-- this one here
