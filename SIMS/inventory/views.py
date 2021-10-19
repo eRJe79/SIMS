@@ -52,7 +52,10 @@ def load_item_1(request):
 
 def load_item_2(request):
     piece_id = request.GET.get('piece')
-    items = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+    myitems = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+    items_instock = myitems.filter(status='In Stock')
+    items_ontest = myitems.filter(status='On Test')
+    items = myitems.filter(Q(status='In Stock') | Q(status = 'On Test'))
     return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
 
 
