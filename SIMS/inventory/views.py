@@ -573,6 +573,8 @@ def movement_exchange(request):
         obj.item_2.sixth_location = obj.item_1.sixth_location
         obj.item_2.seventh_location = obj.item_1.seventh_location
         obj.item_2.eighth_location = obj.item_1.eighth_location
+        # Update status of the item being replaced with the item it replaces
+        obj.item_2.status = obj.item_1.status
         # Put object being replaced in waiting zone
         obj.item_1.first_location = First_location.objects.get(name='Waiting')
         obj.item_1.second_location = None
@@ -582,6 +584,8 @@ def movement_exchange(request):
         obj.item_1.sixth_location = None
         obj.item_1.seventh_location = None
         obj.item_1.eighth_location = None
+        # Update status of the object being replaced
+        obj.item_1.status = 'Waiting'
         # Both objects update comments take the comment of the movement
         obj.item_1.update_comment = obj.update_comment_item1
         obj.item_2.update_comment = obj.update_comment_item2

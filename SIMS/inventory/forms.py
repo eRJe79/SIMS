@@ -227,7 +227,7 @@ class MovementForm(ModelForm):
         if 'piece_1' in self.data:
             try:
                 piece_id = int(self.data.get('piece_1'))
-                self.fields['item_1'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by('name')
+                self.fields['item_1'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
             except (ValueError, TypeError):
                 pass #invalid input, ignore request
         elif self.instance.pk and self.instance.piece_1:
