@@ -19,6 +19,7 @@ from django.db.models import Q
 from .models import (
     Piece,
     PieceInstance,
+    GroupAssembly,
     Kit,
     First_location,
     Second_location,
@@ -37,6 +38,8 @@ from .forms import (
     PieceInstanceForm,
     PieceInstancePieceFormSet,
     PieceInstanceKitFormSet,
+    KitGroupAssemblyFormSet,
+    GroupAssemblyForm,
     KitForm,
     MovementForm,
 )
@@ -395,6 +398,51 @@ def search_instance_database(request):
         return render(request, 'inventory/search_instance.html', {})
 
 # Assembly Management Section
+# Create Group Assembly
+class GroupAssemblyCreate(CreateView):
+    template_name = 'inventory/create_groupassembly.html'
+    model = GroupAssembly
+    form_class = GroupAssemblyForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = GroupAssemblyForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'inventory/create_groupassembly.html', context)
+
+    def post(self, request, *args, **kwargs):
+        # if our ajax is calling so we have to take action
+        # because this is not the form submission
+        if request.is_ajax():
+            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+            value = int(cp['wtd'])  # figure out if the process is addition or deletion
+            prefix = "instance_reverse"
+            cp[f'{prefix}-TOTAL_FORMS'] = int(
+                cp[f'{prefix}-TOTAL_FORMS']) + value
+            formset = KitGroupAssemblyFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+            # the new formsets again -> if the process is addition!
+            return render(request, 'inventory/formset.html', {'formset': formset})
+
+        self.object = None
+        form_class = self.get_form_class()
+        form = GroupAssembly(request.POST, request.FILES)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        # instance_form.instance = self.object
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(
+            self.get_context_data(form=form))
+
 #Create new assembly
 class KitCreate(CreateView):
     template_name = 'inventory/kit_form.html'

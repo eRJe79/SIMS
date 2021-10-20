@@ -173,6 +173,43 @@ class Piece(models.Model):
         print(len(history))
         return myhistory
 
+class GroupAssembly(models.Model):
+    name = models.CharField(max_length=250, blank=False, null=False)
+    # Part number is mandatory
+    kit_partnumber = models.CharField(max_length=250, blank=False, null=False)
+    # Date where the GA is created (set at creation and never updated then)
+    date_created = models.DateField(auto_now_add=True)
+
+    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    # History log
+    history = HistoricalRecords()
+
+    # Default method to access the Kit
+    def __str__(self):
+        return self.name
+
+    # This method is used is some templates to have link directed to the kit detail
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this kit."""
+        return reverse('kit-detail', args=[str(self.id)])
+
+    def get_kit_children(self):
+        return self.kit_set.all()
+
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+            myhistory = (history[0], history[1])
+        else:
+            myhistory = (history[0], history[1], history[2])
+        print(len(history))
+        return myhistory
+
+
+
 # A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
     STATUS_CHOICE = (
@@ -182,6 +219,7 @@ class Kit(models.Model):
         ('On Test', 'On Test'),
         ('Waiting', 'Waiting'),
     )
+    group_assembly = models.ForeignKey(GroupAssembly, on_delete=models.CASCADE, null=True, blank=False)
     #Name is mandatory
     name = models.CharField(max_length=250, blank=False, null=False)
     description = models.TextField(max_length=1000, blank=True, null=True)
@@ -194,6 +232,8 @@ class Kit(models.Model):
         blank=True,
         default='',
     )
+    # Date where the assembly is created (set at creation and never updated then)
+    date_created = models.DateField(auto_now_add=True)
 
     first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
     second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)

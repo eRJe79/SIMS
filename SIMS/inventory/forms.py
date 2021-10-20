@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 
-from .models import Piece, PieceInstance, Kit, MovementExchange, Mptt, First_location,\
+from .models import Piece, PieceInstance, Kit, MovementExchange, GroupAssembly, Mptt, First_location,\
     Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location, Eighth_location
 
 class PieceForm(forms.ModelForm):
@@ -242,14 +242,30 @@ class MovementForm(ModelForm):
         elif self.instance.pk and self.instance.piece_2:
             self.fields['item_2'].queryset = self.instance.piece_2.item_2.order_by('serial_number')
 
+class GroupAssemblyForm(ModelForm):
+    class Meta:
+        model = GroupAssembly
+        fields = ['name', 'kit_partnumber', 'update_comment']
+        labels = {
+            'name': 'Name',
+            'kit_partnumber': 'Kit Part Number',
+            'update_comment': 'Update Comment',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Group Assembly Name'}),
+            'kit_partnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Group Assembly Part Number'}),
+            'update_comment': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Update Comment'}),
+        }
+
 
 class KitForm(ModelForm):
     class Meta:
         model = Kit
-        fields = ['name', 'description', 'kit_serialnumber', 'update_comment', 'kit_status', 'first_location',
+        fields = ['group_assembly', 'name', 'description', 'kit_serialnumber', 'update_comment', 'kit_status', 'first_location',
                   'second_location', 'third_location', 'fourth_location', 'fifth_location', 'sixth_location',
                   'seventh_location', 'eighth_location']
         labels = {
+            'group_assembly': 'Group Assembly',
             'name': 'Name',
             'description': 'Description',
             'kit_serialnumber': 'Kit Serial Number',
@@ -364,6 +380,7 @@ class KitForm(ModelForm):
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by(
                 'name')
 
+KitGroupAssemblyFormSet = inlineformset_factory(GroupAssembly, Kit, form=KitForm, extra=1)
 PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=1)
 PieceInstanceKitFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=1)
 

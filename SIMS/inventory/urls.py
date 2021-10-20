@@ -18,6 +18,7 @@ from .views import (
     show_instance_history,
     search_piece_database,
     search_instance_database,
+    GroupAssemblyCreate,
     update_computer_assembly,
     KitCreate,
     KitList,
@@ -60,6 +61,7 @@ urlpatterns = [
     path('clone_existing_piece/<instance_id>', clone_instance, name='instance-clone'),
     path('instance_history/<primary_key>', show_instance_history, name='instance-history'),
 
+    path('create_groupassembly/', GroupAssemblyCreate.as_view(), name='groupassembly-create'),
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
