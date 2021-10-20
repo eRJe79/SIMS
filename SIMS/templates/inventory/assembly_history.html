@@ -19,6 +19,7 @@
 				<th>User</th>
 				<th>Time</th>
     			<th>Update Comment</th>
+    			<th>Status</th>
 				<th>Location</th>
 				</tr>
 			</thead>
@@ -29,6 +30,7 @@
 				<td>{{ h.history_user }}</td>
 				<td>{{ h.history_date }}</td>
 				<td>{{ h.update_comment }} </td>
+				<td>{{ h.kit_status }} </td>
 				{% if h.eighth_location %}
 	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}-{{h.eighth_location|default_if_none:""}}</td>
 	  			{% elif h.seventh_location %}

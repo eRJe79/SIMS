@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Piece List</h1>
+  <br/>
+  {% if groupassembly_list %}
+  <p>There are Groups Assemblies in the inventory.</p>
+<!--<form class="d-flex" method="POST"-->
+<!--action="{%url 'search-piece-database' %}">-->
+<!--    {% csrf_token %}-->
+<!--    <input class="form-control me-2" type="search"-->
+<!--           placeholder="Search Database" aria-label="Search" name="searched">-->
+<!--    <button class="btn btn-outline-secondary" type="submit"> Search </button>-->
+<!--</form>-->
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Name</th>
+	<th>Part Number</th>
+	</tr>
+  </thead>
+    {% for groupassembly in groupassembly_list %}
+    <tr class="datarow">
+      <td><a href="{{ groupassembly.get_absolute_url }}">{{ groupassembly.name }}</a></td>
+      <td>{{ groupassembly.kit_partnumber }}</td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>There are no Group Assemblies in the inventory.</p>
+  {% endif %} 
+{% endblock %}

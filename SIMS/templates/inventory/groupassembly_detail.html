@@ -1,0 +1,81 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    Group Assembly Detail
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"> Name : {{ groupassembly.name }}</h5>
+    <p class="card-text">
+    	<ul>
+  <p><strong>Part Number:</strong> {{groupassembly.kit_partnumber}}</p>
+  <p><strong>History:</strong></p>
+			<table class="table table-light table-striped">
+				<thead>
+    			<tr>
+				<th>Group Assembly</th>
+    			<th>Type of update</th>
+				<th>User</th>
+				<th>Time</th>
+				<th>Comment</th>
+				</tr>
+			</thead>
+			{% for h in groupassembly.get_history %}
+			<tr class="datarow">
+				<td>{{ groupassembly }}</td>
+				<td>{{ h.get_history_type_display }}</td>
+				<td>{{ h.history_user }}</td>
+				<td>{{ h.history_date }}</td>
+				<td>{{ h.update_comment }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</ul>
+    </p>
+  </div>
+</div>
+
+<div class="card-2">
+  <div class="card-header">
+    Available Assemblies
+  </div>
+    {% if kit %}
+
+    <table class="table table-light table-striped">
+	    <thead>
+		<tr>
+		<td><p>Name</p></td>
+		<td><p>Serial Number</p></td>
+		<td><p>Location</p></td>
+		<td><p>Status</p></td>
+        </tr>
+		</thead>
+      {% for copy in kit %}
+      {% if copy.group_assembly.kit_partnumber == groupassembly.kit_partnumber %}
+      <tr class="datarow">
+        <td><a href="{{ copy.get_absolute_url }}">{{ copy.name }}</a></td>
+        <td>{{ copy.kit_serialnumber }}</td>
+	  {% if copy.eighth_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}-{{copy.sixth_location|default_if_none:""}}-{{copy.seventh_location|default_if_none:""}}-{{copy.eighth_location|default_if_none:""}}</td>
+	  {% elif copy.seventh_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}-{{copy.sixth_location|default_if_none:""}}-{{copy.seventh_location|default_if_none:""}}</td>
+	  {% elif copy.sixth_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}-{{copy.sixth_location|default_if_none:""}}</td>
+	  {% elif copy.fifth_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
+	  {% elif copy.fourth_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}</td>
+	  {% elif copy.third_location %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}</td>
+	  {% else %}
+	  	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}</td>
+	  {% endif %}
+        <td>{{ copy.status }}</td>
+      </tr>
+	{% endif %}
+	{% endfor %}
+	</table>
+    {% endif %}
+</div>
+{% endblock %}
