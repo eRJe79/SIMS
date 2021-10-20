@@ -10,7 +10,9 @@
     <p class="card-text">
     <ul>
         <p><strong>Description:</strong> {{ kit.description }}</p>
+        <a><strong>Part Number:</strong> <a href="{{ kit.group_assembly.get_absolute_url }}"> {{ kit.group_assembly.kit_partnumber }}</a></p>
         <p><strong>Serial Number:</strong> {{ kit.kit_serialnumber }}</p>
+        <p><strong>Status:</strong> {{ kit.kit_status }}</p>
 	  	<p><strong>Location: </strong>{% if kit.eighth_location %}
             <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}-{{kit.sixth_location|default_if_none:""}}-{{kit.seventh_location|default_if_none:""}}-{{kit.eighth_location|default_if_none:""}}</td>
         		{% elif kit.seventh_location %}
@@ -35,6 +37,7 @@
 				<th>User</th>
 				<th>Time</th>
     			<th>Update Comment</th>
+				<th>Status</th>
 				<th>Location</th>
 				</tr>
 			</thead>
@@ -45,6 +48,7 @@
 				<td>{{ h.history_user }}</td>
 				<td>{{ h.history_date }}</td>
 				<td>{{ h.update_comment }} </td>
+				<td>{{ h.kit_status }} </td>
 				{% if h.eighth_location %}
 	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}-{{h.eighth_location|default_if_none:""}}</td>
 	  			{% elif h.seventh_location %}
