@@ -191,7 +191,7 @@ class GroupAssembly(models.Model):
     # This method is used is some templates to have link directed to the kit detail
     def get_absolute_url(self):
         """Returns the url to access a detail record for this kit."""
-        return reverse('kit-detail', args=[str(self.id)])
+        return reverse('groupassembly-detail', args=[str(self.id)])
 
     def get_kit_children(self):
         return self.kit_set.all()

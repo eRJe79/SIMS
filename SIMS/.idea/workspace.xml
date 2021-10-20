@@ -33,6 +33,8 @@
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_groupassembly.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/formset.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/groupassembly_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/groupassembly_list.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/instance_history.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/kit_detail.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/kit_form.html" afterDir="false" />

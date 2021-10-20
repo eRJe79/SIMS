@@ -19,6 +19,8 @@ from .views import (
     search_piece_database,
     search_instance_database,
     GroupAssemblyCreate,
+    GroupAssemblyListView,
+    show_groupassembly,
     update_computer_assembly,
     KitCreate,
     KitList,
@@ -62,6 +64,8 @@ urlpatterns = [
     path('instance_history/<primary_key>', show_instance_history, name='instance-history'),
 
     path('create_groupassembly/', GroupAssemblyCreate.as_view(), name='groupassembly-create'),
+    path('groupassembly_list/', GroupAssemblyListView.as_view(), name='groupassembly-list'),
+    path('groupassembly_detail/<primary_key>', show_groupassembly, name='groupassembly-detail'),
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),

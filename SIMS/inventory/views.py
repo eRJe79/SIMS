@@ -428,7 +428,7 @@ class GroupAssemblyCreate(CreateView):
 
         self.object = None
         form_class = self.get_form_class()
-        form = GroupAssembly(request.POST, request.FILES)
+        form = GroupAssemblyForm(request.POST)
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -442,6 +442,26 @@ class GroupAssemblyCreate(CreateView):
     def form_invalid(self, form):
         return self.render_to_response(
             self.get_context_data(form=form))
+
+# Display a list of all the Pieces in the inventory
+class GroupAssemblyListView(ListView):
+    model = GroupAssembly
+    paginate_by = 10
+    template_name = 'inventory/groupassembly_list.html'  # Template location
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(GroupAssemblyListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['groupassembly'] = GroupAssembly.objects.all().order_by('-id')
+        return context
+
+# Display a specific Group Assembly
+def show_groupassembly(request, primary_key):
+    groupassembly = GroupAssembly.objects.get(pk=primary_key)
+    kit = Kit.objects.all().order_by('name')
+    context = {'groupassembly': groupassembly, 'kit': kit}
+    return render(request, 'inventory/groupassembly_detail.html', context)
 
 #Create new assembly
 class KitCreate(CreateView):
