@@ -4,7 +4,7 @@ from mptt.admin import DraggableMPTTAdmin
 from treebeard.admin import TreeAdmin
 
 from .models import (
-    Piece, PieceInstance, Kit, GroupAssembly,
+    Piece, PieceInstance, Kit, GroupAssembly, MovementExchange,
     First_location, Second_location, Third_location, Fourth_location,
     Fifth_location, Sixth_location, Seventh_location, Eighth_location,
     Mptt,
@@ -70,3 +70,7 @@ class KitAdmin(SimpleHistoryAdmin):
 class GroupAssemblyAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'kit_partnumber')
     inlines = [KitInline]
+
+@admin.register(MovementExchange)
+class MovementExchangeAdmin(SimpleHistoryAdmin):
+    list_display = ('piece_1', 'piece_2', 'item_1', 'item_2', 'reference_number')
