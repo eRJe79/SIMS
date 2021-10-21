@@ -1,17 +1,9 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-  <h1>Assembly and Instance List</h1>
-  <br/>
-  {% if mylist %}
-  <p>There are assemblies and instances in the inventory.</p>
-<form class="d-flex" method="POST"
-action="{%url 'search-general-database' %}">
-    {% csrf_token %}
-    <input class="form-control me-2" type="search"
-           placeholder="Search Database" aria-label="Search" name="searched">
-    <button class="btn btn-outline-secondary" type="submit"> Search </button>
-</form>
+<center>
+    {% if searched %}
+    <h1> You searched for {{ searched }} </h1>
 {% csrf_token %}
 <table class="table table-light table-striped">
   <thead>
@@ -23,7 +15,7 @@ action="{%url 'search-general-database' %}">
 	<th>Location</th>
 	</tr>
   </thead>
-    {% for item in mylist %}
+    {% for item in results %}
     <tr class="datarow">
 		{% if item.group_assembly %}
             <td><a href="{{ item.get_absolute_url }}">{{ item.group_assembly }}</a> <a href="{{ item.get_absolute_url }}">{{ item.piece }}</a></td>
@@ -73,7 +65,8 @@ action="{%url 'search-general-database' %}">
     </tr>
     {% endfor %}
 </table>
-  {% else %}
-    <p>There are no assembly in the inventory.</p>
-  {% endif %}
+    {% else %}
+    <h1> You forgot to search a specific term </h1>
+    {% endif %}
+</center>
 {% endblock %}

@@ -449,7 +449,63 @@ def search_assembly_database(request):
         context = {'searched': searched, 'results': results}
         return render(request, 'inventory/search_assembly.html', context)
     else:
-        return render(request, 'inventory/search_groupassembly.html', {})
+        return render(request, 'inventory/search_assembly.html', {})
+
+# Specific to General List
+def search_general_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        results_instance = []
+        results_assemblies = []
+        if searched == 'RSPL' or searched == 'rspl':
+            for i in PieceInstance.objects.filter(is_rspl=True):
+                results_instance.append(i)
+        else:
+            for i in PieceInstance.objects.filter(Q(first_location__name__contains=searched)
+                                                   | Q(second_location__name__contains=searched)
+                                                   | Q(third_location__name__contains=searched)
+                                                   | Q(fourth_location__name__contains=searched)
+                                                   | Q(fifth_location__name__contains=searched)
+                                                   | Q(sixth_location__name__contains=searched)
+                                                   | Q(seventh_location__name__contains=searched)
+                                                   | Q(eighth_location__name__contains=searched)
+                                                   | Q(piece__manufacturer_part_number__contains=searched)
+                                                   | Q(status__contains=searched)
+                                                   | Q(serial_number__contains=searched)
+                                                   | Q(manufacturer_serialnumber__contains=searched)
+                                                   | Q(owner__contains=searched)
+                                                   | Q(provider_serialnumber__contains=searched)
+                                                   | Q(piece__piece_model__contains=searched)
+                                                   | Q(piece__manufacturer__contains=searched)
+                                                   | Q(piece__manufacturer_part_number__contains=searched)
+                                                   | Q(piece__cae_part_number__contains=searched)
+                                                   | Q(piece__provider_part_number__contains=searched)
+                                                   | Q(piece__provider__contains=searched)
+                                                   | Q(piece__item_type__contains=searched)
+                                                   | Q(piece__item_characteristic__contains=searched)
+                                                   ):
+                results_instance.append(i)
+            for i in Kit.objects.filter(Q(group_assembly__name__contains=searched)
+                                                    | Q(group_assembly__kit_partnumber__contains=searched)
+                                                    | Q(group_assembly__update_comment__contains=searched)
+                                                    | Q(first_location__name__contains=searched)
+                                                    | Q(second_location__name__contains=searched)
+                                                    | Q(third_location__name__contains=searched)
+                                                    | Q(fourth_location__name__contains=searched)
+                                                    | Q(fifth_location__name__contains=searched)
+                                                    | Q(sixth_location__name__contains=searched)
+                                                    | Q(seventh_location__name__contains=searched)
+                                                    | Q(eighth_location__name__contains=searched)
+                                                    | Q(name__contains=searched)
+                                                    | Q(kit_status__contains=searched)
+                                                    | Q(kit_serialnumber__contains=searched)
+                                                    ):
+                results_assemblies.append(i)
+            results = (results_assemblies + results_instance)
+        context = {'searched': searched, 'results': results}
+        return render(request, 'inventory/search_general.html', context)
+    else:
+        return render(request, 'inventory/search_general.html', {})
 
 # Assembly Management Section
 # Create Group Assembly
