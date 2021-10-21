@@ -285,6 +285,22 @@ def show_instance_form(request, primary_key):
     context = {'piece_instance': piece_instance}
     return render(request, 'inventory/piece_instance_detail.html', context)
 
+# Display instances and assembly as list
+def show_instance_assembly_list(request):
+    # We create 2 lists to regroup objects from pieceInstance and Kit
+    myinstancelist=[]
+    myassemblylist=[]
+    for i in PieceInstance.objects.all():
+        myinstancelist.append(i)
+    for i in Kit.objects.all():
+        myassemblylist.append(i)
+    print(myinstancelist, myassemblylist)
+    # We assemble one list under one for display purpose
+    mylist = (myinstancelist + myassemblylist)
+    print(mylist)
+    context = {'mylist': mylist}
+    return render(request, 'inventory/general_list.html', context)
+
 # Update an instance
 def update_piece(request, piece_id):
     piece = Piece.objects.get(pk=piece_id)
