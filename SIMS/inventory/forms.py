@@ -76,7 +76,7 @@ class PieceInstanceForm(forms.ModelForm):
             'owner': 'Owner',
             'restriction': 'Restriction',
             'update_comment': 'Update Comment',
-            'update_document': 'Additional Comment',
+            'update_document': 'Additional/Update Document',
             'calibration_document': 'Calibration Document',
             'is_rspl': 'RSPL',
             'date_calibration': 'Next Calibration',
