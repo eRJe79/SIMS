@@ -38,6 +38,8 @@
 	        {% else %}
 	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}</td>
 	        {% endif %}
+	  		<td><a href="{% url 'kit-update' item.id %}" class="btn btn-outline-secondary btn-sm">Update to Custom</a></td>
+	  		<td><a href="{% url 'computer-update' item.id %}" class="btn btn-outline-secondary btn-sm">Update to Computer</a></td>
         {% elif item.piece %}
             <td><a href="{{ item.get_absolute_url }}">{{ item.piece }}</a></td>
             <td>{{ item.piece.cae_part_number }}</td>
