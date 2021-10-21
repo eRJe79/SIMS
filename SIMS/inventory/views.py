@@ -413,8 +413,8 @@ def search_instance_database(request):
     else:
         return render(request, 'inventory/search_instance.html', {})
 
+# Specific to Assemblies
 # Specific to Group Assemblies
-# Specific to piece
 def search_groupassembly_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
@@ -424,6 +424,30 @@ def search_groupassembly_database(request):
                                        )
         context = {'searched': searched, 'results': results}
         return render(request, 'inventory/search_groupassembly.html', context)
+    else:
+        return render(request, 'inventory/search_groupassembly.html', {})
+
+# Specific to Assemblies
+def search_assembly_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        results = Kit.objects.filter(Q(group_assembly__name__contains=searched)
+                                       | Q(group_assembly__kit_partnumber__contains=searched)
+                                       | Q(group_assembly__update_comment__contains=searched)
+                                       | Q(first_location__name__contains=searched)
+                                       | Q(second_location__name__contains=searched)
+                                       | Q(third_location__name__contains=searched)
+                                       | Q(fourth_location__name__contains=searched)
+                                       | Q(fifth_location__name__contains=searched)
+                                       | Q(sixth_location__name__contains=searched)
+                                       | Q(seventh_location__name__contains=searched)
+                                       | Q(eighth_location__name__contains=searched)
+                                       | Q(name__contains=searched)
+                                       | Q(kit_status__contains=searched)
+                                       | Q(kit_serialnumber__contains=searched)
+                                       )
+        context = {'searched': searched, 'results': results}
+        return render(request, 'inventory/search_assembly.html', context)
     else:
         return render(request, 'inventory/search_groupassembly.html', {})
 

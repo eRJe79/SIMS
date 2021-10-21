@@ -12,6 +12,7 @@ action="{%url 'search-groupassembly-database' %}">
            placeholder="Search Database" aria-label="Search" name="searched">
     <button class="btn btn-outline-secondary" type="submit"> Search </button>
 </form>
+{% csrf_token %}
 <table class="table table-light table-striped">
   <thead>
     <tr>

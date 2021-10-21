@@ -19,6 +19,7 @@ from .views import (
     search_piece_database,
     search_instance_database,
     search_groupassembly_database,
+    search_assembly_database,
     GroupAssemblyCreate,
     GroupAssemblyListView,
     show_groupassembly,
@@ -49,6 +50,7 @@ urlpatterns = [
     path('search/', search_piece_database, name='search-piece-database'),
     path('search_instance/', search_instance_database, name='search-instance-database'),
     path('search_groupassembly/', search_groupassembly_database, name='search-groupassembly-database'),
+    path('search_assembly/', search_assembly_database, name='search-assembly-database'),
 
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),
