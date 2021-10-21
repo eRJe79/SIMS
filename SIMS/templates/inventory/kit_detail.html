@@ -95,13 +95,13 @@
         <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
         <td>{{copy.piece.piece_model}}</td>
 	    {% if copy.fifth_location %}
-	  	    <td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
+	  	    <td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}-{{copy.fifth_location|default_if_none:""}}</td>
 	    {% elif copy.fourth_location %}
-	    	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}</td>
+	    	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}-{{copy.fourth_location|default_if_none:""}}</td>
 	     {% elif copy.third_location %}
-	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}</td>
+	     	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}-{{copy.third_location|default_if_none:""}}</td>
 	     {% else %}
-	     	<td>{{copy.location}}-{{copy.second_location|default_if_none:""}}</td>
+	     	<td>{{copy.first_location}}-{{copy.second_location|default_if_none:""}}</td>
 	     {% endif %}
         <td>{{ copy.status }}</td>
         <td><a href="{% url 'update-piece-instance' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
