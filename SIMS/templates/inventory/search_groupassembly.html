@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<center>
+    {% if searched %}
+    <h1> You searched for {{ searched }} </h1>
+    <br/>
+    <table class="table table-light table-striped">
+    <thead>
+    <tr>
+    <th>Name</th>
+	<th>Part Number</th>
+	</tr>
+    </thead>
+    <tr class="datarow">
+      {% for result in results %}
+      <td><a href="{{ piece.get_absolute_url }}">{{ result.name }}</a></td>
+      <td>{{ result.kit_partnumber }}</td>
+    </tr>
+    {% endfor %}
+</table>
+    {% else %}
+    <h1> You forgot to search a specific term </h1>
+    {% endif %}
+</center>
+{% endblock %}

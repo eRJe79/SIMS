@@ -413,6 +413,20 @@ def search_instance_database(request):
     else:
         return render(request, 'inventory/search_instance.html', {})
 
+# Specific to Group Assemblies
+# Specific to piece
+def search_groupassembly_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        results = GroupAssembly.objects.filter(Q(name__contains=searched)
+                                       | Q(kit_partnumber__contains=searched)
+                                       | Q(update_comment__contains=searched)
+                                       )
+        context = {'searched': searched, 'results': results}
+        return render(request, 'inventory/search_groupassembly.html', context)
+    else:
+        return render(request, 'inventory/search_groupassembly.html', {})
+
 # Assembly Management Section
 # Create Group Assembly
 class GroupAssemblyCreate(CreateView):

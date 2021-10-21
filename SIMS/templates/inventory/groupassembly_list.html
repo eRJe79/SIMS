@@ -5,13 +5,13 @@
   <br/>
   {% if groupassembly_list %}
   <p>There are Groups Assemblies in the inventory.</p>
-<!--<form class="d-flex" method="POST"-->
-<!--action="{%url 'search-piece-database' %}">-->
-<!--    {% csrf_token %}-->
-<!--    <input class="form-control me-2" type="search"-->
-<!--           placeholder="Search Database" aria-label="Search" name="searched">-->
-<!--    <button class="btn btn-outline-secondary" type="submit"> Search </button>-->
-<!--</form>-->
+<form class="d-flex" method="POST"
+action="{%url 'search-groupassembly-database' %}">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search"
+           placeholder="Search Database" aria-label="Search" name="searched">
+    <button class="btn btn-outline-secondary" type="submit"> Search </button>
+</form>
 <table class="table table-light table-striped">
   <thead>
     <tr>
