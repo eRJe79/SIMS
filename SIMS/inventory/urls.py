@@ -41,6 +41,7 @@ from .views import (
     movement_exchange,
     movement_detail,
     movement_list,
+    show_instance_assembly_list,
 )
 
 urlpatterns = [
@@ -72,6 +73,8 @@ urlpatterns = [
     path('kit_update/<kit_id>', update_kit, name='kit-update'),
     path('computer_update/<kit_id>', update_computer_assembly, name='computer-update'),
     path('assembly_history/<primary_key>', show_assembly_history, name='assembly-history'),
+
+    path('general_list', show_instance_assembly_list, name="assembly-instance-list"),
 
     path('database_csv', database_csv, name='database_csv'),
 
