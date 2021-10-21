@@ -5,6 +5,13 @@
   <br/>
   {% if kit_list %}
   <p>There are assemblies in the inventory.</p>
+<form class="d-flex" method="POST"
+action="{%url 'search-assembly-database' %}">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search"
+           placeholder="Search Database" aria-label="Search" name="searched">
+    <button class="btn btn-outline-secondary" type="submit"> Search </button>
+</form>
 {% csrf_token %}
 <table class="table table-light table-striped">
   <thead>

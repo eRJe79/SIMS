@@ -47,6 +47,9 @@
       <change afterPath="$PROJECT_DIR$/templates/inventory/piece_history.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/piece_instance_list.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/search.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/search_assembly.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/search_general.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/search_groupassembly.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/search_instance.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/tree.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/tree_view_template.html" afterDir="false" />
