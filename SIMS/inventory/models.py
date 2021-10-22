@@ -131,6 +131,8 @@ class Piece(models.Model):
     website = models.URLField(max_length=254, null=True, blank=True)
     piece_model = models.CharField(max_length=200, null=True, blank=True)
 
+    is_obsolete = models.BooleanField(default=False)  # Franck's account
+
     description = models.TextField(max_length=1000, null=True, blank=True)
     documentation = models.FileField(upload_to='documents/documentation/', blank=True, null=True)
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)

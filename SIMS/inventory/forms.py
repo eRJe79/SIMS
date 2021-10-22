@@ -11,7 +11,7 @@ class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
         fields = [ 'name', 'cae_part_number', 'manufacturer', 'provider', 'manufacturer_part_number', 'provider_part_number',
-                  'website', 'piece_model', 'description', 'documentation', 'update_comment', 'image',
+                  'website', 'piece_model', 'is_obsolete', 'description', 'documentation', 'update_comment', 'image',
                   'calibration_recurrence', 'item_type', 'item_characteristic']
         widgets = {
         'name': forms.TextInput(attrs={
@@ -38,6 +38,7 @@ class PieceForm(forms.ModelForm):
         'piece_model': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'piece_model'
         }),
+        'is_obsolete': forms.CheckboxInput(),
         'description': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'description', 'placeholder': 'Enter a brief description of the piece'
         }),
