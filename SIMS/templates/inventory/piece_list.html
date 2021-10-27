@@ -15,6 +15,7 @@ action="{%url 'search-piece-database' %}">
 <table class="table table-light table-striped">
   <thead>
     <tr>
+	<th>Name</th>
 	<th>CAE Part Number</th>
 	<th>Piece Model</th>
 	<th>Manufacturer</th>
@@ -27,7 +28,8 @@ action="{%url 'search-piece-database' %}">
   </thead>
     {% for piece in piece_list %}
     <tr class="datarow">
-      <td><a href="{{ piece.get_absolute_url }}">{{ piece.cae_part_number }}</a></td>
+      <td><a href="{{ piece.get_absolute_url }}">{{ piece.name }}</a></td>
+      <td>{{ piece.cae_part_number }}</td>
       <td>{{ piece.piece_model }}</td>
       <td>{{ piece.manufacturer }}</td>
       <td>{{ piece.provider }}</td>
