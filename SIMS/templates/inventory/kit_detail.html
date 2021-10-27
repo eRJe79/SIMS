@@ -9,6 +9,7 @@
     <h5 class="card-title"> Assembly Name : {{ kit.name }}</h5>
     <p class="card-text">
     <ul>
+        <p><strong>Group Assembly:</strong> {{ kit.group_assembly }}</p>
         <p><strong>Description:</strong> {{ kit.description }}</p>
         <a><strong>Part Number:</strong> <a href="{{ kit.group_assembly.get_absolute_url }}"> {{ kit.group_assembly.kit_partnumber }}</a></p>
         <p><strong>Serial Number:</strong> {{ kit.kit_serialnumber }}</p>
@@ -32,7 +33,7 @@
 			<table class="table table-light table-striped">
 				<thead>
     			<tr>
-				<th>Assembly</th>
+				<th>Group Assembly</th>
     			<th>Type of update</th>
 				<th>User</th>
 				<th>Time</th>
@@ -43,7 +44,7 @@
 			</thead>
 			{% for h in kit.get_history %}
 			<tr class="datarow">
-				<td>{{ kit }}</td>
+				<td>{{ kit.group_assembly }}</td>
 				<td>{{ h.get_history_type_display }}</td>
 				<td>{{ h.history_user }}</td>
 				<td>{{ h.history_date }}</td>
