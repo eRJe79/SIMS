@@ -12,7 +12,7 @@ class PieceForm(forms.ModelForm):
         model = Piece
         fields = [ 'name', 'cae_part_number', 'manufacturer', 'provider', 'manufacturer_part_number', 'provider_part_number',
                   'website', 'piece_model', 'is_obsolete', 'description', 'documentation', 'update_comment', 'image',
-                  'calibration_recurrence', 'item_type', 'item_characteristic', 'equivalence']
+                  'calibration_recurrence', 'item_type', 'item_characteristic']
         widgets = {
         'name': forms.TextInput(attrs={
             'class': 'form-control', 'id': 'name', 'placeholder': 'Enter Name'
@@ -57,7 +57,6 @@ class PieceForm(forms.ModelForm):
         'item_characteristic': forms.Select(attrs={
             'class': 'form-select', 'id': 'item_characteristic'
         }),
-        'equivalence': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Equivalent Piece'}),
         }
 
 

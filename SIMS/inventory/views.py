@@ -218,13 +218,15 @@ def show_piece(request, primary_key):
     instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
     instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
     # Equivalence management
-    equivalences = Equivalence.objects.get(name=piece.equivalence.name)
-    piece_eq_list = []
-    for piece_eq in mypieces:
-        if piece_eq.equivalence.name == equivalences.name:
-            piece_eq_list.append(piece_eq)
-    print(piece.equivalence.name)
-    print(equivalences.name)
+    print(piece.equivalence)
+    if piece.equivalence is not None:
+        equivalences = Equivalence.objects.get(name=piece.equivalence.name)
+        print(equivalences)
+        piece_eq_list = []
+        for piece_eq in mypieces:
+            if piece_eq.equivalence == equivalences:
+                piece_eq_list.append(piece_eq)
+    else: piece_eq_list = None
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}

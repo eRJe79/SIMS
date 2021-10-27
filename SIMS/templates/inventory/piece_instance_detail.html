@@ -9,7 +9,8 @@
   	<div class="card-body">
 		<h5 class="card-title"> CAE Serial Number : {{ piece_instance.serial_number}}</h5>
 		<p class="card-text">
-  		<p><strong>CAE Part Number:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.cae_part_number }}</a></p>
+  		<p><strong>Piece name:</strong> <a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.name }}</a></p>
+  		<p><strong>CAE Serial Number: </strong> {{ piece_instance.piece.cae_part_number }}</p>
   		{% if piece_instance.piece.image %}
   			<p><img src="{{ piece_instance.piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
   		{% endif %}
@@ -19,12 +20,12 @@
 			<p><strong>Assembly: </strong> {{ piece_instance.kit }}</p>
 		{% endif %}
 		<p><strong>Calibration document: </strong> <a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}">{{ piece_instance.calibration_document }}</a></p>
-  		<p><strong>OEM: </strong> {{ piece_instance.piece.provider }}</p>
-  		<p><strong>OEM Serial Number: </strong> {{ piece_instance.provider_serialnumber }}</p>
+  		<p><strong>Provider: </strong> {{ piece_instance.piece.provider }}</p>
+  		<p><strong>Provider Serial Number: </strong> {{ piece_instance.piece.manufacturer }}</p>
+  		<p><strong>Manufacturer: </strong> {{ piece_instance.manufacturer_serialnumber }}</p>
   		<p><strong>Manufacturer Serial Number: </strong> {{ piece_instance.manufacturer_serialnumber }}</p>
   		<p><strong>Date Created: </strong> {{ piece_instance.date_created }}</p>
-		<p><strong>Last Update: </strong> {{ piece_instance.date_update }}</p>
-  		<p><strong>Next Calibration: </strong> {{ piece_instance.date_calibration }}</p>
+  		<p><strong>Next Calibration: </strong> {{ piece_instance.next_calibration }}</p>
   		<p><strong>End of Life: </strong> {{ piece_instance.date_end_of_life }}</p>
         <p><strong>Location: </strong>{% if piece_instance.eighth_location %}
             <td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}-{{piece_instance.sixth_location|default_if_none:""}}-{{piece_instance.seventh_location|default_if_none:""}}-{{piece_instance.eighth_location|default_if_none:""}}</td>
