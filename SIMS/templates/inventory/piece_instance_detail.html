@@ -20,8 +20,8 @@
 			<p><strong>Assembly: </strong> {{ piece_instance.kit }}</p>
 		{% endif %}
 		<p><strong>Calibration document: </strong> <a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}">{{ piece_instance.calibration_document }}</a></p>
-  		<p><strong>OEM: </strong> {{ piece_instance.piece.provider }}</p>
-  		<p><strong>OEM Serial Number: </strong> {{ piece_instance.piece.manufacturer }}</p>
+  		<p><strong>Provider: </strong> {{ piece_instance.piece.provider }}</p>
+  		<p><strong>Provider Serial Number: </strong> {{ piece_instance.piece.manufacturer }}</p>
   		<p><strong>Manufacturer: </strong> {{ piece_instance.manufacturer_serialnumber }}</p>
   		<p><strong>Manufacturer Serial Number: </strong> {{ piece_instance.manufacturer_serialnumber }}</p>
   		<p><strong>Date Created: </strong> {{ piece_instance.date_created }}</p>
