@@ -1,0 +1,84 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	<style>
+		.pieceeq {
+			border-bottom: 1px solid black;
+		}
+		.hidden {
+			display: none
+		}
+	</style>
+
+	<h1>Equivalence management...</h1>
+	<form id="form" action="#" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<h3>Add Equivalence for following Piece</h3>
+		{{ piece.name }}
+		<br></br>
+
+<!--			<select id="pieceeq-list" name="pieceeq_list" onChange="get_url(this)">-->
+<!--  		<option  value="" selected="selected">-&#45;&#45;SELECT-&#45;&#45;</option>-->
+<!--		<label for="piece_equivalent" class="control-label mb-1">Piece Equivalent</label>-->
+<!--			{{ form.piece_equivalent }}-->
+<!--		</select>-->
+<!--		-->
+		<select id="pieceeq-list" name="pieceeq_list" onChange="get_url(this)">
+  		<option  value="" selected="selected">---SELECT---</option>
+		{% for piece in avpieces %}
+   		<label for="piece_equivalent"><option id="pieceeq" class="pieceeq" value="{{piece.id}}"
+       		{% if piece == current_piece %}selected="selected"{% endif %}>
+       		{{form.piece_equivalent}}
+   		</option>
+			</label>
+		{% endfor %}
+		</select>
+		<select id="empty-list" class="hidden" onChange="get_url(this)">
+  		<option  value="" selected="selected">---SELECT---</option>
+		</select>
+
+		<button id="add-more" type="button"> Add more </button>
+
+		<button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+        <span id="submit-button-amount">Update Equivalence</span>
+      </button>
+	</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+	// To understand this section : https://www.youtube.com/watch?v=s3T-w2jhDHE&list=PLEsfXFp6DpzRMby_cSoWTFw8zaMdTEXgL&index=64
+	const addMoreBtn = document.getElementById("add-more")
+	const totalNewForms = document.getElementById("pieceeq-list")
+	console.log(totalNewForms);
+	addMoreBtn.addEventListener('click', add_new_pieceeq)
+
+	function get_url(selectObject) {
+  		var value = selectObject.value;
+  		console.log(value);
+		}
+
+	function add_new_pieceeq(event) {
+		// we prevent java console from populating (adding traffic)
+		if (event) {
+			event.preventDefault()
+		}
+		const currentPieceEq = document.getElementsByClassName("pieceeq")
+		let currentFormCount = currentPieceEq.length
+		// we want the new form to appear after the last loaded form
+		const formCopyTarget = document.getElementById("pieceeq-list")
+		// now add new empty form element to our html form
+		const copyemptyFormEl = document.getElementById("empty-list").cloneNode(true)
+		// we reset the new empty form class to have the same as the form (piece-form)
+		copyemptyFormEl.setAttribute('class', 'pieceeq')
+		copyemptyFormEl.setAttribute('id', `pieceeq-list-${currentFormCount}`)
+		console.log(copyemptyFormEl);
+		const regex = new RegExp('__prefix__', 'g')
+		copyemptyFormEl.innerHTML = copyemptyFormEl.innerHTML.replace(regex,
+		currentFormCount)
+		totalNewForms.setAttribute('value', currentFormCount + 1)
+		console.log(totalNewForms);
+		formCopyTarget.append(copyemptyFormEl)
+	}
+</script>
+
+{% endblock %}

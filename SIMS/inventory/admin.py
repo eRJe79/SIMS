@@ -4,11 +4,13 @@ from mptt.admin import DraggableMPTTAdmin
 from treebeard.admin import TreeAdmin
 
 from .models import (
-    Piece, PieceInstance, Kit, GroupAssembly, MovementExchange,
+    Piece, PieceInstance, Kit, GroupAssembly, MovementExchange, Equivalence,
     First_location, Second_location, Third_location, Fourth_location,
     Fifth_location, Sixth_location, Seventh_location, Eighth_location,
     Mptt,
 )
+
+from .forms import (EquivalenceForm)
 
 # This is to register the models in the admin website
 
@@ -17,6 +19,9 @@ class PieceInstanceInline(admin.TabularInline):
 
 class KitInline(admin.TabularInline):
     model = Kit
+
+class PieceAdminInline(admin.TabularInline):
+    model = Piece
 
 @admin.register(First_location)
 class First_locationAdmin(SimpleHistoryAdmin):
@@ -50,10 +55,15 @@ class Feventh_LocationAdmin(SimpleHistoryAdmin):
 class Eighth_LocationAdmin(SimpleHistoryAdmin):
     list_display = ('previous_loc', 'name')
 
+@admin.register(Equivalence)
+class EquivalenceAdmin(admin.ModelAdmin):
+    form = EquivalenceForm
+    inlines = [PieceAdminInline]
+
 
 @admin.register(Piece)
 class PieceAdmin(SimpleHistoryAdmin):
-    list_display = ('website', 'manufacturer', 'manufacturer_part_number', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic',)
+    list_display = ('equivalence', 'website', 'manufacturer', 'manufacturer_part_number', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic',)
     inlines = [PieceInstanceInline]
 
 @admin.register(PieceInstance)
