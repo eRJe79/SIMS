@@ -32,7 +32,7 @@ action="{%url 'search-piece-database' %}">
       <td>{{ piece.manufacturer }}</td>
       <td>{{ piece.provider }}</td>
       <td>{{ piece.provider_part_number }}</td>
-      <td>{{ piece.documentation }}</td>
+      <td><a href="{{MEDIA_URL}}{{ piece.documentation }}">{{ piece.documentation }}</a></td>
       <td>{{ piece.item_type }}</td>
       <td>{{ piece.item_characteristic }}</td>
     </tr>
