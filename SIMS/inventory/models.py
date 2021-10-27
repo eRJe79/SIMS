@@ -99,6 +99,15 @@ class Eighth_location(models.Model):
     def __str__(self):
         return self.name
 
+# Used to create groups of Pieces that will be equivalent between them
+class Equivalence(models.Model):
+    name = models.CharField(max_length=120, null=True, blank=True)
+    # This is a default return method to access Piece
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.name
+
+
 # Class describing main categories with their specific attribute and pieces
 # Example of category : a 500GB Seagate Hard Drive and a 1TB Seagate Hard Drive are 2 different categories
 class Piece(models.Model):
@@ -122,6 +131,9 @@ class Piece(models.Model):
     # For new row feature
     related_name = 'instance_reverse',
 
+    # Equivalence management
+    equivalence = models.ForeignKey(Equivalence, on_delete=models.SET_NULL, null=True, blank=True, related_name="equivalence")
+
     manufacturer = models.CharField(max_length=120, null=True, blank=True)
     manufacturer_part_number = models.CharField(max_length=200, null=True, blank=True)
     provider = models.CharField(max_length=120, null=True, blank=True)
@@ -130,6 +142,8 @@ class Piece(models.Model):
     name = models.CharField(max_length=120, null=True, blank=True)
     website = models.URLField(max_length=254, null=True, blank=True)
     piece_model = models.CharField(max_length=200, null=True, blank=True)
+
+    is_obsolete = models.BooleanField(default=False)  # Franck's account
 
     description = models.TextField(max_length=1000, null=True, blank=True)
     documentation = models.FileField(upload_to='documents/documentation/', blank=True, null=True)
@@ -160,6 +174,9 @@ class Piece(models.Model):
     def get_calibration_recurrence(self):
         """Returns the calibration reccurence days this piece."""
         return self.calibration_recurrence
+
+    def add_piece_equivalent(self, attr):
+        setattr(self, 'piece_equivalent', attr)
 
     def get_history(self):
         history = self.history.all()

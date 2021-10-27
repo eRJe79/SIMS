@@ -17,6 +17,7 @@ from django.db.models import Q
 
 
 from .models import (
+    Equivalence,
     Piece,
     PieceInstance,
     GroupAssembly,
@@ -208,15 +209,25 @@ class PieceListView(ListView):
 
 # Display a specific Piece
 def show_piece(request, primary_key):
+    mypieces = Piece.objects.all()
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
+    # Instance management
     instance_installed = PieceInstance.objects.filter(status='Installed', piece=piece).count()
     instance_in_stock = PieceInstance.objects.filter(status='In Stock', piece=piece).count()
     instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
     instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
+    # Equivalence management
+    equivalences = Equivalence.objects.get(name=piece.equivalence.name)
+    piece_eq_list = []
+    for piece_eq in mypieces:
+        if piece_eq.equivalence.name == equivalences.name:
+            piece_eq_list.append(piece_eq)
+    print(piece.equivalence.name)
+    print(equivalences.name)
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
-               'instance_in_reparation': instance_in_reparation}
+               'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
     return render(request, 'inventory/piece_detail.html', context)
 
 class PieceInstanceCreate(CreateView):
@@ -372,7 +383,10 @@ def delete_instance(request, instance_id):
 def search_piece_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        results = Piece.objects.filter(Q(piece_model__contains=searched)
+        if searched == 'obsolete':
+            results = Piece.objects.filter(is_obsolete=True)
+        else:
+            results = Piece.objects.filter(Q(piece_model__contains=searched)
                                        | Q(manufacturer__contains=searched)
                                        | Q(manufacturer_part_number__contains=searched)
                                        | Q(cae_part_number__contains=searched)

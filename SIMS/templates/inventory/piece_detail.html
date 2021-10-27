@@ -6,7 +6,7 @@
     Piece Detail
   </div>
   <div class="card-body">
-    <h5 class="card-title"> Manufacturer part model : {{ piece.manufacturer_piece_model }}</h5>
+    <h5 class="card-title"> Name : {{ piece.name }}</h5>
     <p class="card-text">
     	<ul>
   <p><strong>Manufacturer:</strong> {{piece.manufacturer}}</p>
@@ -15,8 +15,18 @@
   <p><strong>CAE Part Number:</strong> {{piece.cae_part_number}}</p>
   <p><strong>Piece model:</strong> {{piece.piece_model}}</p>
   <p><strong>Description:</strong> {{ piece.description }}</p>
+  <p><strong>Equivalence:</strong> {{ piece.piece_equivalent }}</p>
   {% if piece.image %}
   <p><img src="{{ piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
+  {% endif %}
+  {% if piece.is_obsoleted %}
+  <p><strong>Piece is obsolete</strong></p>
+  {% endif %}
+  {% if piece.equivalence %}
+	  <p><strong>Pieces equivalent:</strong></p>
+		  {% for piece_eq in piece_eq_list %}
+	  		<td><a href="{{ piece_eq.get_absolute_url }}">{{  piece_eq.name }}</a></td>
+	      {% endfor %}
   {% endif %}
   <p><strong>Documentation:</strong> <a href="{{MEDIA_URL}}{{ piece.documentation }}">{{ piece.documentation }}</a></p>
   <p><strong>Calibration Recurrence (days):</strong> {{piece.calibration_recurrence}}</p>
