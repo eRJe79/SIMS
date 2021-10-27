@@ -383,7 +383,10 @@ def delete_instance(request, instance_id):
 def search_piece_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        results = Piece.objects.filter(Q(piece_model__contains=searched)
+        if searched == 'obsolete':
+            results = Piece.objects.filter(is_obsolete=True)
+        else:
+            results = Piece.objects.filter(Q(piece_model__contains=searched)
                                        | Q(manufacturer__contains=searched)
                                        | Q(manufacturer_part_number__contains=searched)
                                        | Q(cae_part_number__contains=searched)
