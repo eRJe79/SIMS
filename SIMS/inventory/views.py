@@ -624,86 +624,32 @@ def update_kit(request, kit_id):
     kit = Kit.objects.get(pk=kit_id)
     kit.date_update = timezone.now()
     kit.update_comment = ''
+    piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                      kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                      kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
     form = KitForm(request.POST or None, instance=kit)
-    PieceInstanceFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=0)
-    qs = kit.pieceinstance_set.all()
-    formset = PieceInstanceFormset(request.POST or None, request.FILES or None, queryset=qs)
     context = {
         'kit': kit,
-        'formset': formset,
         'form': form,
     }
-    if all([form.is_valid() and formset.is_valid()]):
-        print("form and formset valid")
+    if form.is_valid():
         parent = form.save(commit=False)
+        for item in piece_instance:
+            if item is not None:
+                item.update_comment = kit.update_comment
+                item.first_location = kit.first_location
+                item.second_location = kit.second_location
+                item.third_location = kit.third_location
+                item.fourth_location = kit.fourth_location
+                item.fifth_location = kit.fifth_location
+                item.sixth_location = kit.sixth_location
+                item.seventh_location = kit.seventh_location
+                item.eighth_location = kit.eighth_location
+                item.status = kit.kit_status
+                item.save()
         parent.save()
-        for form in formset:
-            child = form.save(commit=False)
-            if child.serial_number is not None:
-                if child.kit is None:
-                    print("Added new assembly")
-                    child.kit = parent
-                child.update_comment = kit.update_comment
-                child.first_location = kit.first_location
-                child.second_location = kit.second_location
-                child.third_location = kit.third_location
-                child.fourth_location = kit.fourth_location
-                child.fifth_location = kit.fifth_location
-                child.sixth_location = kit.sixth_location
-                child.seventh_location = kit.seventh_location
-                child.eighth_location = kit.eighth_location
-                child.status = kit.kit_status
-                child.save()
         return redirect(kit.get_absolute_url())
     return render(request, 'inventory/kit_update.html', context)
-
-
-def update_computer_assembly(request, kit_id):
-    kit = Kit.objects.get(pk=kit_id)
-    kit.date_update = timezone.now()
-    kit.update_comment = ''
-    print(kit.name)
-    form = KitForm(request.POST or None, instance=kit)
-    qs = kit.pieceinstance_set.all()
-    # We have 1 CPU, 2 Memory Disk, 1 GPU and 1 RAM per computer = 5 components
-    print(qs)
-    if qs:
-        ComputerFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=0)
-    else:
-        ComputerFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=5)
-    formset_computer = ComputerFormset(request.POST or None, request.FILES or None, queryset=qs)
-    context = {
-        'kit': kit,
-        'formset_computer': formset_computer,
-        'form': form,
-    }
-    if all([form.is_valid() and formset_computer.is_valid()]):
-        print("form and formsets valid")
-        parent = form.save(commit=False)
-        parent.save()
-        for form in formset_computer:
-            child = form.save(commit=False)
-            print(child)
-            if child.kit is None:
-                print("Added new cpu")
-                child.kit = parent
-            child.update_comment = kit.update_comment
-            child.first_location = kit.first_location
-            child.second_location = kit.second_location
-            child.third_location = kit.third_location
-            child.fourth_location = kit.fourth_location
-            child.fifth_location = kit.fifth_location
-            child.sixth_location = kit.sixth_location
-            child.seventh_location = kit.seventh_location
-            child.eighth_location = kit.eighth_location
-            child.status = kit.kit_status
-            child.save()
-        print(child)
-        return redirect(kit.get_absolute_url())
-    else:
-        print(form.errors)
-        print(formset_computer.errors)
-    return render(request, 'inventory/computer_update.html', context)
 
 
 # Display Kit List
