@@ -341,6 +341,7 @@ class KitForm(ModelForm):
             'piece_kit_15': 'Choose Instance',
         }
         widgets = {
+            'group_assembly': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Select Group Assembly'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Name'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Description'}),
             'kit_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Assembly Serial Number'}),

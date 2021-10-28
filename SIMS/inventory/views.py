@@ -722,8 +722,11 @@ class KitList(ListView):
 # Display a specific Kit
 def show_kit(request, primary_key):
     kit = Kit.objects.get(pk=primary_key)
-    piece_instance = PieceInstance.objects.all().order_by('status')
-    context = {'kit': kit, 'piece_instance': piece_instance}
+    piece_instance=[kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                    kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                    kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+    print(piece_instance)
+    context = {'kit': kit, 'piece_instance':piece_instance}
     return render(request, 'inventory/kit_detail.html', context)
 
 
