@@ -218,15 +218,15 @@ def show_piece(request, primary_key):
     instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
     instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
     # Equivalence management
-    equivalences = Equivalence.objects.get(Q(pieceeq_1=piece) | Q(pieceeq_2=piece) | Q(pieceeq_3=piece)| Q(pieceeq_4=piece)
+    try:
+        equivalences = Equivalence.objects.get(Q(pieceeq_1=piece) | Q(pieceeq_2=piece) | Q(pieceeq_3=piece)| Q(pieceeq_4=piece)
                                        | Q(pieceeq_5=piece) | Q(pieceeq_6=piece) | Q(pieceeq_7=piece)| Q(pieceeq_8=piece)
                                        | Q(pieceeq_9=piece) | Q(pieceeq_10=piece) | Q(pieceeq_11=piece)| Q(pieceeq_12=piece)
                                        | Q(pieceeq_13=piece) | Q(pieceeq_14=piece) | Q(pieceeq_15=piece))
+    except:
+        equivalences = None
     print(equivalences)
-    if equivalences is not None:
-        piece_eq_list = equivalences
-    else:
-        piece_eq_list = None
+    piece_eq_list = equivalences
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
@@ -813,7 +813,7 @@ def create_equivalence(request):
         forms = EquivalenceForm(request.POST)
         if forms.is_valid():
             forms.save()
-            #return redirect('equivalence-list')
+            return redirect('equivalence-list')
     context = {
         'form': forms
     }
@@ -836,6 +836,19 @@ def equivalence_detail(request, primary_key):
     equivalence = Equivalence.objects.get(pk=primary_key)
     context = {'equivalence': equivalence}
     return render(request, 'inventory/equivalence_detail.html', context)
+
+# Update an instance
+def update_equivalence(request, equivalence_id):
+    equivalence = Equivalence.objects.get(pk=equivalence_id)
+    if request.method == "POST":
+        form = Equivalence(request.POST, instance=equivalence)
+        if form.is_valid():
+            form.save()
+            return equivalence.get_absolute_url(equivalence)
+    else:
+        form = PieceInstanceForm(instance=equivalence)
+    context = {'equivalence': equivalence, 'form': form}
+    return render(request, 'inventory/update_equivalence.html', context)
 
 # Display a specific Piece
 def show_piece_history(request, primary_key):
