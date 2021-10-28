@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Piece List</h1>
+  <br/>
+  {% if equivalence %}
+  <p>You have equivalences registered.</p>
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Name</th>
+	</tr>
+  </thead>
+    {% for eq in equivalence %}
+    <tr class="datarow">
+      <td><a href="{{ eq.get_absolute_url }}">{{ eq.name }}</a></td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>There are no equivalence registered.</p>
+  {% endif %} 
+{% endblock %}

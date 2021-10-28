@@ -43,6 +43,7 @@ from .forms import (
     GroupAssemblyForm,
     KitForm,
     MovementForm,
+    EquivalenceForm,
 )
 
 # Movement dependencies management
@@ -209,7 +210,6 @@ class PieceListView(ListView):
 
 # Display a specific Piece
 def show_piece(request, primary_key):
-    mypieces = Piece.objects.all()
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
     # Instance management
@@ -218,15 +218,15 @@ def show_piece(request, primary_key):
     instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
     instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
     # Equivalence management
-    print(piece.equivalence)
-    if piece.equivalence is not None:
-        equivalences = Equivalence.objects.get(name=piece.equivalence.name)
-        print(equivalences)
-        piece_eq_list = []
-        for piece_eq in mypieces:
-            if piece_eq.equivalence == equivalences:
-                piece_eq_list.append(piece_eq)
-    else: piece_eq_list = None
+    equivalences = Equivalence.objects.get(Q(pieceeq_1=piece) | Q(pieceeq_2=piece) | Q(pieceeq_3=piece)| Q(pieceeq_4=piece)
+                                       | Q(pieceeq_5=piece) | Q(pieceeq_6=piece) | Q(pieceeq_7=piece)| Q(pieceeq_8=piece)
+                                       | Q(pieceeq_9=piece) | Q(pieceeq_10=piece) | Q(pieceeq_11=piece)| Q(pieceeq_12=piece)
+                                       | Q(pieceeq_13=piece) | Q(pieceeq_14=piece) | Q(pieceeq_15=piece))
+    print(equivalences)
+    if equivalences is not None:
+        piece_eq_list = equivalences
+    else:
+        piece_eq_list = None
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
@@ -813,6 +813,37 @@ def mount_piece_instance(request, item_id):
 def dismount_piece_instance(request, item_id):
     context = {}
     return render(request, 'inventory/movement_dismount.html', context)
+
+# Equivalence Management
+def create_equivalence(request):
+    forms = EquivalenceForm()
+    if request.method == 'POST':
+        forms = EquivalenceForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            #return redirect('equivalence-list')
+    context = {
+        'form': forms
+    }
+    return render(request, 'inventory/create_equivalence.html', context)
+
+# Display a list of all the Pieces in the inventory
+class EquivalenceListView(ListView):
+    model = Equivalence
+    paginate_by = 10
+    template_name = 'inventory/equivalence_list.html'  # Template location
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(EquivalenceListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['equivalence'] = Equivalence.objects.all().order_by('-id')
+        return context
+
+def equivalence_detail(request, primary_key):
+    equivalence = Equivalence.objects.get(pk=primary_key)
+    context = {'equivalence': equivalence}
+    return render(request, 'inventory/equivalence_detail.html', context)
 
 # Display a specific Piece
 def show_piece_history(request, primary_key):

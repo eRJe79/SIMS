@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-  <h1>Piece List</h1>
+  <h1>Equivalence List</h1>
   <br/>
   {% if piece_list %}
   <p>There are pieces in the inventory.</p>
@@ -42,5 +42,5 @@ action="{%url 'search-piece-database' %}">
 </table>
   {% else %}
     <p>There are no pieces in the inventory.</p>
-  {% endif %} 
+  {% endif %}
 {% endblock %}

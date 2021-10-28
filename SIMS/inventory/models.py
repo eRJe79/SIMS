@@ -99,14 +99,6 @@ class Eighth_location(models.Model):
     def __str__(self):
         return self.name
 
-# Used to create groups of Pieces that will be equivalent between them
-class Equivalence(models.Model):
-    name = models.CharField(max_length=120, null=True, blank=True)
-    # This is a default return method to access Piece
-    def __str__(self):
-        """String for representing the Model object."""
-        return self.name
-
 
 # Class describing main categories with their specific attribute and pieces
 # Example of category : a 500GB Seagate Hard Drive and a 1TB Seagate Hard Drive are 2 different categories
@@ -130,9 +122,6 @@ class Piece(models.Model):
     )
     # For new row feature
     related_name = 'instance_reverse',
-
-    # Equivalence management
-    equivalence = models.ForeignKey(Equivalence, on_delete=models.SET_NULL, null=True, blank=True, related_name="equivalence")
 
     manufacturer = models.CharField(max_length=120, null=True, blank=True)
     manufacturer_part_number = models.CharField(max_length=200, null=True, blank=True)
@@ -190,10 +179,43 @@ class Piece(models.Model):
         print(len(history))
         return myhistory
 
+# Used to create groups of Pieces that will be equivalent between them
+class Equivalence(models.Model):
+    name = models.CharField(max_length=120, null=True, blank=True)
+    pieceeq_1 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_1', null=True, blank=True)
+    pieceeq_2 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_2',  null=True, blank=True)
+    pieceeq_3 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_3',  null=True, blank=True)
+    pieceeq_4 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_4',  null=True, blank=True)
+    pieceeq_5 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_5',  null=True, blank=True)
+    pieceeq_6 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_6',  null=True, blank=True)
+    pieceeq_7 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_7',  null=True, blank=True)
+    pieceeq_8 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_8',  null=True, blank=True)
+    pieceeq_9 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_9',  null=True, blank=True)
+    pieceeq_10 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_10',  null=True, blank=True)
+    pieceeq_11 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_11',  null=True, blank=True)
+    pieceeq_12 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_12',  null=True, blank=True)
+    pieceeq_13 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_13',  null=True, blank=True)
+    pieceeq_14 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_14',  null=True, blank=True)
+    pieceeq_15 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_15',  null=True, blank=True)
+    # This is a default return method to access Piece
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.name
+
+    # This method is used  to have link directed to the equivalence detail
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this piece."""
+        return reverse('equivalence-detail', args=[str(self.id)])
+
+
 class GroupAssembly(models.Model):
     name = models.CharField(max_length=250, blank=False, null=False)
     # Part number is mandatory
     kit_partnumber = models.CharField(max_length=250, blank=False, null=False)
+    manufacturer = models.CharField(max_length=120, null=True, blank=True)
+    manufacturer_part_number = models.CharField(max_length=200, null=True, blank=True)
+    provider = models.CharField(max_length=120, null=True, blank=True)
+    provider_part_number = models.CharField(max_length=200, null=True, blank=True)
     # Date where the GA is created (set at creation and never updated then)
     date_created = models.DateField(auto_now_add=True)
 
@@ -242,6 +264,10 @@ class Kit(models.Model):
     description = models.TextField(max_length=1000, blank=True, null=True)
     # Serial number is mandatory
     kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
+    # Manufacturer and S/N
+    manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
+    # Provider information - an instance of a piece can be bought from different providers
+    provider_serialnumber = models.CharField(max_length=120, null=True, blank=True)
     # Status
     kit_status = models.CharField(
         max_length=20,

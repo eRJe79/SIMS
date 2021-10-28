@@ -194,29 +194,48 @@ class PieceInstanceForm(forms.ModelForm):
         elif self.instance.pk and self.instance.seventh_location:
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by('name')
 
-
-#admin.py
-class EquivalenceForm(forms.ModelForm):
+class EquivalenceForm(ModelForm):
     class Meta:
         model = Equivalence
-        fields = '__all__'
-
-    pieces = forms.ModelMultipleChoiceField(queryset=Piece.objects.all())
-
-    def __init__(self, *args, **kwargs):
-        super(EquivalenceForm, self).__init__(*args, **kwargs)
-        if self.instance:
-            if self.instance.equivalence:
-                self.fields['pieces'].initial = self.instance.equivalence.all()
-            else:
-                self.fields['pieces'].initial = []
-
-    def save(self, *args, **kwargs):
-        instance = super(EquivalenceForm, self).save(commit=False)
-        self.fields['pieces'].initial.update(equivalence=None)
-        instance.save()
-        self.cleaned_data['pieces'].update(equivalence=instance)
-        return instance
+        fields = ['name', 'pieceeq_1', 'pieceeq_2', 'pieceeq_3', 'pieceeq_4', 'pieceeq_5', 'pieceeq_6',
+    'pieceeq_7', 'pieceeq_8', 'pieceeq_9', 'pieceeq_10', 'pieceeq_11', 'pieceeq_12', 'pieceeq_13', 'pieceeq_14', 'pieceeq_15']
+        labels = {
+            'name': 'name',
+            'pieceeq_1': 'Choose Piece',
+            'pieceeq_2': 'Choose Piece',
+            'pieceeq_3': 'Choose Piece',
+            'pieceeq_4': 'Choose Piece',
+            'pieceeq_5': 'Choose Piece',
+            'pieceeq_6': 'Choose Piece',
+            'pieceeq_7': 'Choose Piece',
+            'pieceeq_8': 'Choose Piece',
+            'pieceeq_9': 'Choose Piece',
+            'pieceeq_10': 'Choose Piece',
+            'pieceeq_11': 'Choose Piece',
+            'pieceeq_12': 'Choose Piece',
+            'pieceeq_13': 'Choose Piece',
+            'pieceeq_14': 'Choose Piece',
+            'pieceeq_15': 'Choose Piece',
+        }
+        widgets = {
+            'name': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Enter Name'}),
+            'pieceeq_1': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_2': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_3': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_4': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_5': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_6': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_7': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_8': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_9': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_10': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_11': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_12': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_13': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_14': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pieceeq_15': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+        }
 
 class MovementForm(ModelForm):
     class Meta:
