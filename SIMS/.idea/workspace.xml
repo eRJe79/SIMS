@@ -36,6 +36,7 @@
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/equivalence_detail.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/equivalence_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/equivalence_update.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/formset.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/general_list.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/groupassembly_detail.html" afterDir="false" />
@@ -235,5 +236,16 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/inventory/views.py</url>
+          <line>671</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

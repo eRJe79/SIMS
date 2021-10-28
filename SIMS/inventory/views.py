@@ -218,15 +218,15 @@ def show_piece(request, primary_key):
     instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
     instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
     # Equivalence management
-    equivalences = Equivalence.objects.get(Q(pieceeq_1=piece) | Q(pieceeq_2=piece) | Q(pieceeq_3=piece)| Q(pieceeq_4=piece)
+    try:
+        equivalences = Equivalence.objects.get(Q(pieceeq_1=piece) | Q(pieceeq_2=piece) | Q(pieceeq_3=piece)| Q(pieceeq_4=piece)
                                        | Q(pieceeq_5=piece) | Q(pieceeq_6=piece) | Q(pieceeq_7=piece)| Q(pieceeq_8=piece)
                                        | Q(pieceeq_9=piece) | Q(pieceeq_10=piece) | Q(pieceeq_11=piece)| Q(pieceeq_12=piece)
                                        | Q(pieceeq_13=piece) | Q(pieceeq_14=piece) | Q(pieceeq_15=piece))
+    except:
+        equivalences = None
     print(equivalences)
-    if equivalences is not None:
-        piece_eq_list = equivalences
-    else:
-        piece_eq_list = None
+    piece_eq_list = equivalences
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
@@ -314,7 +314,7 @@ def show_instance_assembly_list(request):
     context = {'mylist': mylist}
     return render(request, 'inventory/general_list.html', context)
 
-# Update an instance
+# Update a piece
 def update_piece(request, piece_id):
     piece = Piece.objects.get(pk=piece_id)
     piece.update_comment = ''
@@ -322,7 +322,7 @@ def update_piece(request, piece_id):
         form = PieceForm(request.POST, request.FILES, instance=piece)
         if form.is_valid():
             form.save()
-            return redirect('piece')
+            return redirect(piece.get_absolute_url())
     else:
         form = PieceForm(instance=piece)
     context = {'piece': piece, 'form': form}
@@ -337,7 +337,7 @@ def clone_piece(request, piece_id):
         form = PieceForm(request.POST, request.FILES, instance=piece)
         if form.is_valid():
             form.save()
-            return redirect('piece')
+            return redirect(piece.get_absolute_url())
     else:
         form = PieceForm(instance=piece)
     context = {'piece': piece, 'form': form}
@@ -352,7 +352,7 @@ def update_instance(request, instance_id):
         form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
         if form.is_valid():
             form.save()
-            return redirect('piece-instance-list')
+            return redirect(piece_instance.get_absolute_url())
     else:
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form': form}
@@ -367,7 +367,7 @@ def clone_instance(request, instance_id):
         piece_instance.pk=None
         if form.is_valid():
             form.save()
-            return redirect('piece-instance-list')
+            return redirect(piece_instance.get_absolute_url())
     else:
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form': form}
@@ -665,7 +665,7 @@ def update_kit(request, kit_id):
                 child.eighth_location = kit.eighth_location
                 child.status = kit.kit_status
                 child.save()
-        return redirect('kit-list')
+        return redirect(kit.get_absolute_url())
     return render(request, 'inventory/kit_update.html', context)
 
 
@@ -710,7 +710,7 @@ def update_computer_assembly(request, kit_id):
             child.status = kit.kit_status
             child.save()
         print(child)
-        return redirect('kit-list')
+        return redirect(kit.get_absolute_url())
     else:
         print(form.errors)
         print(formset_computer.errors)
@@ -806,14 +806,6 @@ def movement_list(request):
     context = {'movements': movements}
     return render(request, 'inventory/movement_list.html', context)
 
-def mount_piece_instance(request, item_id):
-    context = {}
-    return render(request, 'inventory/movement_mount.html', context)
-
-def dismount_piece_instance(request, item_id):
-    context = {}
-    return render(request, 'inventory/movement_dismount.html', context)
-
 # Equivalence Management
 def create_equivalence(request):
     forms = EquivalenceForm()
@@ -821,7 +813,7 @@ def create_equivalence(request):
         forms = EquivalenceForm(request.POST)
         if forms.is_valid():
             forms.save()
-            #return redirect('equivalence-list')
+            return redirect('equivalence-list')
     context = {
         'form': forms
     }
@@ -844,6 +836,19 @@ def equivalence_detail(request, primary_key):
     equivalence = Equivalence.objects.get(pk=primary_key)
     context = {'equivalence': equivalence}
     return render(request, 'inventory/equivalence_detail.html', context)
+
+# Update an instance
+def update_equivalence(request, equivalence_id):
+    equivalence = Equivalence.objects.get(pk=equivalence_id)
+    if request.method == "POST":
+        form = EquivalenceForm(request.POST, instance=equivalence)
+        if form.is_valid():
+            form.save()
+            return redirect(equivalence.get_absolute_url())
+    else:
+        form = EquivalenceForm(instance=equivalence)
+    context = {'equivalence': equivalence, 'form': form}
+    return render(request, 'inventory/equivalence_update.html', context)
 
 # Display a specific Piece
 def show_piece_history(request, primary_key):

@@ -48,6 +48,7 @@ from .views import (
     create_equivalence,
     EquivalenceListView,
     equivalence_detail,
+    update_equivalence,
 )
 
 urlpatterns = [
@@ -90,6 +91,7 @@ urlpatterns = [
     path('create_equivalence/', create_equivalence, name='equivalence-create'),
     path('equivalence_list/', EquivalenceListView.as_view(), name='equivalence-list'),
     path('equivalence_detail/<primary_key>', equivalence_detail, name='equivalence-detail'),
+    path('equivalence_update/<equivalence_id>', update_equivalence, name='equivalence-update'),
 
     path('movement_choice/', movement_exchange, name='movement-choice'),
     path('movement_detail/<primary_key>', movement_detail, name='movement-detail'),
