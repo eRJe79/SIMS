@@ -437,9 +437,12 @@ class PieceInstance(models.Model):
     @property
     def next_calibration(self):
         mytemp = date.today() - self.date_created
-        days = datetime.timedelta(days=self.piece.calibration_recurrence) - mytemp
-        next_calibration = date.today() + days
-        return next_calibration
+        if (self.piece.calibration_recurrence):
+            days = datetime.timedelta(days=self.piece.calibration_recurrence) - mytemp
+            next_calibration = date.today() + days
+            return next_calibration
+        else:
+            pass
 
     def calibration_days(self):
         delta = self.date_calibration - date.today()
