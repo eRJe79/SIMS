@@ -210,7 +210,6 @@ class PieceListView(ListView):
 
 # Display a specific Piece
 def show_piece(request, primary_key):
-    mypieces = Piece.objects.all()
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
     # Instance management
@@ -219,15 +218,15 @@ def show_piece(request, primary_key):
     instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
     instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
     # Equivalence management
-    print(piece.equivalence)
-    if piece.equivalence is not None:
-        equivalences = Equivalence.objects.get(name=piece.equivalence.name)
-        print(equivalences)
-        piece_eq_list = []
-        for piece_eq in mypieces:
-            if piece_eq.equivalence == equivalences:
-                piece_eq_list.append(piece_eq)
-    else: piece_eq_list = None
+    equivalences = Equivalence.objects.get(Q(pieceeq_1=piece) | Q(pieceeq_2=piece) | Q(pieceeq_3=piece)| Q(pieceeq_4=piece)
+                                       | Q(pieceeq_5=piece) | Q(pieceeq_6=piece) | Q(pieceeq_7=piece)| Q(pieceeq_8=piece)
+                                       | Q(pieceeq_9=piece) | Q(pieceeq_10=piece) | Q(pieceeq_11=piece)| Q(pieceeq_12=piece)
+                                       | Q(pieceeq_13=piece) | Q(pieceeq_14=piece) | Q(pieceeq_15=piece))
+    print(equivalences)
+    if equivalences is not None:
+        piece_eq_list = equivalences
+    else:
+        piece_eq_list = None
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
