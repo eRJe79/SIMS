@@ -24,7 +24,6 @@ from .views import (
     GroupAssemblyCreate,
     GroupAssemblyListView,
     show_groupassembly,
-    update_computer_assembly,
     KitCreate,
     KitList,
     show_kit,
@@ -81,7 +80,6 @@ urlpatterns = [
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
     path('kit_update/<kit_id>', update_kit, name='kit-update'),
-    path('computer_update/<kit_id>', update_computer_assembly, name='computer-update'),
     path('assembly_history/<primary_key>', show_assembly_history, name='assembly-history'),
 
     path('general_list', show_instance_assembly_list, name="assembly-instance-list"),

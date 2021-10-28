@@ -26,8 +26,7 @@ action="{%url 'search-assembly-database' %}">
       <td><a href="{{ kit.get_absolute_url }}">{{ kit.name }}</a></td>
       <td>{{ kit.kit_serialnumber }}</td>
       <td>{{ kit.description }}</td>
-	  <td><a href="{% url 'kit-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update to Custom</a></td>
-	  <td><a href="{% url 'computer-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update to Computer</a></td>
+	  <td><a href="{% url 'kit-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update</a></td>
     </tr>
     {% endfor %}
 </table>

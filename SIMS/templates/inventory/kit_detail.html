@@ -70,8 +70,7 @@
 		</table>
     </p>
 	  <td><a href="{% url 'assembly-history' kit.id %}" class="btn btn-outline-secondary btn-sm">Full History</a>
-	  <td><a href="{% url 'kit-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update to Custom</a></td>
-	  <td><a href="{% url 'computer-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update to Computer</a></td>
+	  <td><a href="{% url 'kit-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update</a></td>
   </div>
 </div>
 
@@ -90,7 +89,7 @@
         </tr>
 		</thead>
       {% for copy in piece_instance %}
-      {% if copy.kit.name == kit.name %}
+		{% if copy %}
       <tr class="datarow">
         <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
         <td>{{copy.piece.piece_model}}</td>
@@ -107,7 +106,7 @@
         <td><a href="{% url 'update-piece-instance' copy.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
         <td><a href="{% url 'instance-clone' copy.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
       </tr>
-	{% endif %}
+		{% endif %}
 	{% endfor %}
 	</table>
     {% endif %}

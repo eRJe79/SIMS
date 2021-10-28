@@ -38,7 +38,6 @@ from .forms import (
     PieceForm,
     PieceInstanceForm,
     PieceInstancePieceFormSet,
-    PieceInstanceKitFormSet,
     KitGroupAssemblyFormSet,
     GroupAssemblyForm,
     KitForm,
@@ -225,7 +224,6 @@ def show_piece(request, primary_key):
                                        | Q(pieceeq_13=piece) | Q(pieceeq_14=piece) | Q(pieceeq_15=piece))
     except:
         equivalences = None
-    print(equivalences)
     piece_eq_list = equivalences
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
@@ -295,7 +293,15 @@ def all_piece_instance(request):
 # Display specific instance information
 def show_instance_form(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
-    context = {'piece_instance': piece_instance}
+    try:
+        kit = Kit.objects.get(
+            Q(piece_kit_1=piece_instance) | Q(piece_kit_2=piece_instance) | Q(piece_kit_3=piece_instance) | Q(piece_kit_4=piece_instance)
+            | Q(piece_kit_5=piece_instance) | Q(piece_kit_6=piece_instance) | Q(piece_kit_7=piece_instance) | Q(piece_kit_8=piece_instance)
+            | Q(piece_kit_9=piece_instance) | Q(piece_kit_10=piece_instance) | Q(piece_kit_11=piece_instance) | Q(piece_kit_12=piece_instance)
+            | Q(piece_kit_13=piece_instance) | Q(piece_kit_14=piece_instance) | Q(piece_kit_15=piece_instance))
+    except:
+        equivalences = None
+    context = {'piece_instance': piece_instance, 'kit': kit}
     return render(request, 'inventory/piece_instance_detail.html', context)
 
 # Display instances and assembly as list
@@ -605,16 +611,6 @@ class KitCreate(CreateView):
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
         # because this is not the form submission
-        if request.is_ajax():
-            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
-            value = int(cp['wtd'])  # figure out if the process is addition or deletion
-            prefix = "instance_reverse"
-            cp[f'{prefix}-TOTAL_FORMS'] = int(
-                cp[f'{prefix}-TOTAL_FORMS']) + value
-            formset = PieceInstanceKitFormSet(
-                cp)  # catch any data which were in the previous formsets and deliver to-
-            # the new formsets again -> if the process is addition!
-            return render(request, 'inventory/formset.html', {'formset': formset})
         self.object = None
         form = KitForm(request.POST)
         if form.is_valid():
@@ -635,86 +631,36 @@ def update_kit(request, kit_id):
     kit = Kit.objects.get(pk=kit_id)
     kit.date_update = timezone.now()
     kit.update_comment = ''
+    instances=PieceInstance.objects.all()
     form = KitForm(request.POST or None, instance=kit)
-    PieceInstanceFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=0)
-    qs = kit.pieceinstance_set.all()
-    formset = PieceInstanceFormset(request.POST or None, request.FILES or None, queryset=qs)
     context = {
         'kit': kit,
-        'formset': formset,
         'form': form,
     }
-    if all([form.is_valid() and formset.is_valid()]):
-        print("form and formset valid")
+    if form.is_valid():
         parent = form.save(commit=False)
         parent.save()
-        for form in formset:
-            child = form.save(commit=False)
-            if child.serial_number is not None:
-                if child.kit is None:
-                    print("Added new assembly")
-                    child.kit = parent
-                child.update_comment = kit.update_comment
-                child.first_location = kit.first_location
-                child.second_location = kit.second_location
-                child.third_location = kit.third_location
-                child.fourth_location = kit.fourth_location
-                child.fifth_location = kit.fifth_location
-                child.sixth_location = kit.sixth_location
-                child.seventh_location = kit.seventh_location
-                child.eighth_location = kit.eighth_location
-                child.status = kit.kit_status
-                child.save()
+        print(parent)
+        piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                          kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+        for item in piece_instance:
+            if item is not None:
+                for instance in instances:
+                    if instance == item:
+                        instance.update_comment = kit.update_comment
+                        instance.first_location = kit.first_location
+                        instance.second_location = kit.second_location
+                        instance.third_location = kit.third_location
+                        instance.fourth_location = kit.fourth_location
+                        instance.fifth_location = kit.fifth_location
+                        instance.sixth_location = kit.sixth_location
+                        instance.seventh_location = kit.seventh_location
+                        instance.eighth_location = kit.eighth_location
+                        instance.status = kit.kit_status
+                        instance.save()
         return redirect(kit.get_absolute_url())
     return render(request, 'inventory/kit_update.html', context)
-
-
-def update_computer_assembly(request, kit_id):
-    kit = Kit.objects.get(pk=kit_id)
-    kit.date_update = timezone.now()
-    kit.update_comment = ''
-    print(kit.name)
-    form = KitForm(request.POST or None, instance=kit)
-    qs = kit.pieceinstance_set.all()
-    # We have 1 CPU, 2 Memory Disk, 1 GPU and 1 RAM per computer = 5 components
-    print(qs)
-    if qs:
-        ComputerFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=0)
-    else:
-        ComputerFormset = modelformset_factory(PieceInstance, form=PieceInstanceForm, extra=5)
-    formset_computer = ComputerFormset(request.POST or None, request.FILES or None, queryset=qs)
-    context = {
-        'kit': kit,
-        'formset_computer': formset_computer,
-        'form': form,
-    }
-    if all([form.is_valid() and formset_computer.is_valid()]):
-        print("form and formsets valid")
-        parent = form.save(commit=False)
-        parent.save()
-        for form in formset_computer:
-            child = form.save(commit=False)
-            print(child)
-            if child.kit is None:
-                print("Added new cpu")
-                child.kit = parent
-            child.update_comment = kit.update_comment
-            child.first_location = kit.first_location
-            child.second_location = kit.second_location
-            child.third_location = kit.third_location
-            child.fourth_location = kit.fourth_location
-            child.fifth_location = kit.fifth_location
-            child.sixth_location = kit.sixth_location
-            child.seventh_location = kit.seventh_location
-            child.eighth_location = kit.eighth_location
-            child.status = kit.kit_status
-            child.save()
-        print(child)
-        return redirect(kit.get_absolute_url())
-    else:
-        print(form.errors)
-        print(formset_computer.errors)
-    return render(request, 'inventory/computer_update.html', context)
 
 
 # Display Kit List
@@ -733,8 +679,10 @@ class KitList(ListView):
 # Display a specific Kit
 def show_kit(request, primary_key):
     kit = Kit.objects.get(pk=primary_key)
-    piece_instance = PieceInstance.objects.all().order_by('status')
-    context = {'kit': kit, 'piece_instance': piece_instance}
+    piece_instance=[kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                    kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                    kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+    context = {'kit': kit, 'piece_instance':piece_instance}
     return render(request, 'inventory/kit_detail.html', context)
 
 
@@ -747,18 +695,6 @@ def movement_exchange(request):
         'form': form,
         #'items': items,
     }
-    if request.is_ajax():
-        print('ajax')
-        cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
-        value = int(cp['wtd'])  # figure out if the process is addition or deletion
-        prefix = "instance_reverse"
-        cp[f'{prefix}-TOTAL_FORMS'] = int(
-            cp[f'{prefix}-TOTAL_FORMS']) + value
-        formset = PieceInstanceKitFormSet(
-            cp)  # catch any data which were in the previous formsets and deliver to-
-        # the new formsets again -> if the process is addition!
-        return render(request, 'inventory/formset.html', {'formset': formset})
-
     if form.is_valid():
         obj = form.save(commit=False)
         # Update location of the item being replaced with the item it replaces

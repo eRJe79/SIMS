@@ -2,7 +2,7 @@
 
 {% block content %}
 	<style>
-		.pieceinstance-form {
+		.form-piece_kit-group{
 			border-bottom: 1px solid black;
 		}
 		.hidden {
@@ -21,33 +21,138 @@
 		  data-eighth_location-url="{% url 'ajax_load_eighth_location' %}"
 		  enctype="multipart/form-data">
 		{% csrf_token %}
-		<h3>Assembly</h3>
-		{{ form.as_p }}
-		{% if formset %}
-			{{ formset.management_form }}
-			<h3>Instance</h3>
-			<div id="pieceinstance-form-list">
-			{% for form in formset %}
-			<div class="pieceinstance-form">
-				{{ form.as_p }}
-			</div>
-			{% endfor %}
-			</div>
-		<div id="empty-form" class="hidden">
-			{{ formset.empty_form.as_p }}
-		</div>
-		<button id="add-more" type="button"> Add more </button>
-		{% endif %}
-		<button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+		<h3>General Information</h3>
+    <div class="form-general-group">
+      <label for="group_assembly" class="control-label mb-1">Group Assembly</label>
+      {{ form.group_assembly }}
+    </div>
+    <div class="form-general-group">
+      <label for="name" class="control-label mb-1">Name</label>
+      {{ form.name }}
+    </div>
+    <div class="form-general-group">
+      <label for="description" class="control-label mb-1">Description</label>
+      {{ form.description }}
+    </div>
+    <div class="form-general-group">
+      <label for="kit_serialnumber" class="control-label mb-1">CAE Serial Number</label>
+      {{ form.kit_serialnumber }}
+    </div>
+    <div class="form-general-group">
+      <label for="update_comment" class="control-label mb-1">Comment</label>
+      {{ form.update_comment }}
+    </div>
+    <div class="form-general-group">
+      <label for="kit_status" class="control-label mb-1">Status</label>
+      {{ form.kit_status }}
+    </div>
+    <h3>Location management</h3>
+    <div class="form-general-group">
+      <label for="first_location" class="control-label mb-1">Level 1</label>
+      {{ form.first_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="second_location" class="control-label mb-1">Level 2</label>
+      {{ form.second_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="third_location" class="control-label mb-1">Level 3</label>
+      {{ form.third_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="fourth_location" class="control-label mb-1">Level 4</label>
+      {{ form.fourth_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="fifth_location" class="control-label mb-1">Level 5</label>
+      {{ form.fifth_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="sixth_location" class="control-label mb-1">Level 6</label>
+      {{ form.sixth_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="seventh_location" class="control-label mb-1">Level 7</label>
+      {{ form.seventh_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="eighth_location" class="control-label mb-1">Level 8</label>
+      {{ form.eighth_location }}
+    </div>
+    <h3>Instance management</h3>
+    <div id="piece_kit-1" class="form-piece_kit-group">
+      <label for="piece_kit_1" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_1 }}
+    </div>
+    <div id="piece_kit-2" class="form-piece_kit-group">
+      <label for="piece_kit_2" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_2 }}
+    </div>
+    <div id="piece_kit-3" class="hidden">
+      <label for="piece_kit_3" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_3 }}
+    </div>
+    <div id="piece_kit-4"  class="hidden">
+      <label for="piece_kit_4" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_4 }}
+    </div>
+    <div id="piece_kit-5"  class="hidden">
+      <label for="piece_kit_5" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_5 }}
+    </div>
+    <div id="piece_kit-6"  class="hidden">
+      <label for="piece_kit_6" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_6 }}
+    </div>
+    <div id="piece_kit-7"  class="hidden">
+      <label for="piece_kit_7" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_7 }}
+    </div>
+    <div id="pieceeq-8"  class="hidden">
+      <label for="piece_kit_8" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_8 }}
+    </div>
+    <div id="piece_kit-9"  class="hidden">
+      <label for="piece_kit_9" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_9 }}
+    </div>
+    <div id="piece_kit-10"  class="hidden">
+      <label for="piece_kit_10" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_10 }}
+    </div>
+    <div id="piece_kit-11"  class="hidden">
+      <label for="piece_kit_11" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_11 }}
+    </div>
+    <div id="piece_kit-12"  class="hidden">
+      <label for="piece_kit_12" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_12 }}
+    </div>
+    <div id="piece_kit-13"  class="hidden">
+      <label for="piece_kit_13" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_13 }}
+    </div>
+    <div id="piece_kit-14"  class="hidden">
+      <label for="piece_kit_14" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_14 }}
+    </div>
+    <div id="piece_kit-15"  class="hidden">
+      <label for="piece_kit_15" class="control-label mb-1">Choose Instance</label>
+      {{ form.piece_kit_15 }}
+    </div>
+    <div>
+      <button id="add-more" type="button"> Add more </button>
+      <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
         <span id="submit-button-amount">Update Assembly</span>
       </button>
-	</form>
+    </div>
+  </form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
 	// To understand this section : https://www.youtube.com/watch?v=s3T-w2jhDHE&list=PLEsfXFp6DpzRMby_cSoWTFw8zaMdTEXgL&index=64
 	const addMoreBtn = document.getElementById("add-more")
-	const totalNewForms = document.getElementById("id_form-TOTAL_FORMS")
+	const totalNewForms = document.getElementById("piece_kit-TOTAL_FORMS")
 	addMoreBtn.addEventListener('click', add_new_form)
 
 	function add_new_form(event) {
@@ -55,22 +160,17 @@
 		if (event) {
 			event.preventDefault()
 		}
-		const currentPieceinstanceForms = document.getElementsByClassName("pieceinstance-form")
+		const currentPieceinstanceForms = document.getElementsByClassName("form-piece_kit-group")
+		console.log(currentPieceinstanceForms)
 		let currentFormCount = currentPieceinstanceForms.length
 		// we want the new form to appear after the last loaded form
-		const formCopyTarget = document.getElementById("pieceinstance-form-list")
+		const formCopyTarget = document.getElementById(`piece_kit-${currentFormCount+1}`)
+		console.log(formCopyTarget)
 		// now add new empty form element to our html form
-		const copyemptyFormEl = document.getElementById("empty-form").cloneNode(true)
-		// we reset the new empty form class to have the same as the form (pieceinstance-form)
-		copyemptyFormEl.setAttribute('class', 'pieceinstance-form')
-		copyemptyFormEl.setAttribute('id', `form-${currentFormCount}`)
-		const regex = new RegExp('__prefix__', 'g')
-		copyemptyFormEl.innerHTML = copyemptyFormEl.innerHTML.replace(regex,
-		currentFormCount)
-		totalNewForms.setAttribute('value', currentFormCount + 1)
-		formCopyTarget.append(copyemptyFormEl)
+		formCopyTarget.setAttribute('class', 'form-piece_kit-group')
 	}
-</script>
+  </script>
+
 
 <script>
     $("#id_first_location").change(function () {
