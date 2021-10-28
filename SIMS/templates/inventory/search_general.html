@@ -9,6 +9,7 @@
   <thead>
     <tr>
 	<th>Name</th>
+	<th>Piece/Group Assembly</th>
     <th>Part Number</th>
     <th>Serial Number</th>
 	<th>Status</th>
@@ -18,7 +19,8 @@
     {% for item in results %}
     <tr class="datarow">
 		{% if item.group_assembly %}
-            <td><a href="{{ item.get_absolute_url }}">{{ item.group_assembly }}</a> <a href="{{ item.get_absolute_url }}">{{ item.piece }}</a></td>
+            <td><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></td>
+            <td><a href="{{ item.group_assembly.get_absolute_url }}">{{ item.group_assembly }}</a></td>
             <td>{{ item.group_assembly.kit_partnumber }} {{ item.piece.cae_part_number }} </td>
             <td>{{ item.kit_serialnumber }}</td>
             <td>{{ item.status }}</td>
@@ -37,10 +39,10 @@
 	        {% else %}
 	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}</td>
 	        {% endif %}
-	  		<td><a href="{% url 'kit-update' item.id %}" class="btn btn-outline-secondary btn-sm">Update to Custom</a></td>
-	  		<td><a href="{% url 'computer-update' item.id %}" class="btn btn-outline-secondary btn-sm">Update to Computer</a></td>
+	  		<td><a href="{% url 'kit-update' item.id %}" class="btn btn-outline-secondary btn-sm">Update</a></td>
         {% elif item.piece %}
-            <td><a href="{{ item.get_absolute_url }}">{{ item.piece }}</a></td>
+            <td><a href="{{ item.get_absolute_url }}">{{ item.piece.name }}</a></td>
+            <td><a href="{{ item.piece.get_absolute_url }}">{{ item.piece }}</a></td>
             <td>{{ item.piece.cae_part_number }}</td>
             <td>{{ item.serial_number }}</td>
             <td>{{ item.status }}</td>

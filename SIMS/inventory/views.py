@@ -300,7 +300,7 @@ def show_instance_form(request, primary_key):
             | Q(piece_kit_9=piece_instance) | Q(piece_kit_10=piece_instance) | Q(piece_kit_11=piece_instance) | Q(piece_kit_12=piece_instance)
             | Q(piece_kit_13=piece_instance) | Q(piece_kit_14=piece_instance) | Q(piece_kit_15=piece_instance))
     except:
-        equivalences = None
+        kit = None
     context = {'piece_instance': piece_instance, 'kit': kit}
     return render(request, 'inventory/piece_instance_detail.html', context)
 
