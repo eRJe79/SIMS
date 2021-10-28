@@ -378,11 +378,13 @@ class PieceInstance(models.Model):
         return delta.days
 
     def is_calibration_due(self):
-        due_days = self.date_calibration - date.today() - datetime.timedelta(days=self.piece.calibration_recurrence)
-        if due_days < datetime.timedelta(days=0):
-            calibration_is_due = True
-        else:
-            calibration_is_due = False
+        calibration_is_due = False
+        if(self.date_calibration):
+            due_days = self.date_calibration - date.today()
+            if due_days < datetime.timedelta(days=0):
+                calibration_is_due = True
+            else:
+                calibration_is_due = False
         return calibration_is_due
 
     def is_in_reparation(self):
