@@ -806,14 +806,6 @@ def movement_list(request):
     context = {'movements': movements}
     return render(request, 'inventory/movement_list.html', context)
 
-def mount_piece_instance(request, item_id):
-    context = {}
-    return render(request, 'inventory/movement_mount.html', context)
-
-def dismount_piece_instance(request, item_id):
-    context = {}
-    return render(request, 'inventory/movement_dismount.html', context)
-
 # Equivalence Management
 def create_equivalence(request):
     forms = EquivalenceForm()
