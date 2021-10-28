@@ -393,7 +393,7 @@ class PieceInstance(models.Model):
         return reparation
 
     def is_in_waiting(self):
-        if self.first_location.name == 'Waiting':
+        if (self.first_location and self.first_location.name == 'Waiting'):
             waiting = True
         else:
             waiting = False

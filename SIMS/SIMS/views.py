@@ -22,7 +22,7 @@ def index(request):
 
 def dashboard(request):
     mypieces = Piece.objects.all()
-    my_piece_instances = PieceInstance.objects.all().order_by('date_calibration')# This function is to check if the FMS1/2 (second_location_) have no missing piece
+    my_piece_instances = PieceInstance.objects.all()
     # We just check the fourth_location attribute since the specific FMS location are at this level
     fms1_number_seat=0
     fms1_number_front=0
