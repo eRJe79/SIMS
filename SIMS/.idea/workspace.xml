@@ -34,6 +34,8 @@
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_equivalence.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_groupassembly.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/equivalence_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/equivalence_list.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/formset.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/general_list.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/groupassembly_detail.html" afterDir="false" />

@@ -202,6 +202,12 @@ class Equivalence(models.Model):
         """String for representing the Model object."""
         return self.name
 
+    # This method is used  to have link directed to the equivalence detail
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this piece."""
+        return reverse('equivalence-detail', args=[str(self.id)])
+
+
 class GroupAssembly(models.Model):
     name = models.CharField(max_length=250, blank=False, null=False)
     # Part number is mandatory

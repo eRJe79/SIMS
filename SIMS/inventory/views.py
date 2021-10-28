@@ -827,6 +827,24 @@ def create_equivalence(request):
     }
     return render(request, 'inventory/create_equivalence.html', context)
 
+# Display a list of all the Pieces in the inventory
+class EquivalenceListView(ListView):
+    model = Equivalence
+    paginate_by = 10
+    template_name = 'inventory/equivalence_list.html'  # Template location
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(EquivalenceListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['equivalence'] = Equivalence.objects.all().order_by('-id')
+        return context
+
+def equivalence_detail(request, primary_key):
+    equivalence = Equivalence.objects.get(pk=primary_key)
+    context = {'equivalence': equivalence}
+    return render(request, 'inventory/equivalence_detail.html', context)
+
 # Display a specific Piece
 def show_piece_history(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)

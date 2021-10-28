@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    Equivalence Detail
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"> Name : {{ equivalence.name }}</h5>
+    <p class="card-text">
+    	<ul>
+  <p><strong>Piece equivalent:</strong></p>
+  <p><a href="{{ equivalence.pieceeq_1.get_absolute_url }}">{{  equivalence.pieceeq_1.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_2.get_absolute_url }}">{{  equivalence.pieceeq_2.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_3.get_absolute_url }}">{{  equivalence.pieceeq_3.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_4.get_absolute_url }}">{{  equivalence.pieceeq_4.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_5.get_absolute_url }}">{{  equivalence.pieceeq_5.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_6.get_absolute_url }}">{{  equivalence.pieceeq_6.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_7.get_absolute_url }}">{{  equivalence.pieceeq_7.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_8.get_absolute_url }}">{{  equivalence.pieceeq_8.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_9.get_absolute_url }}">{{  equivalence.pieceeq_9.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_10.get_absolute_url }}">{{  equivalence.pieceeq_10.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_11.get_absolute_url }}">{{  equivalence.pieceeq_11.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_12.get_absolute_url }}">{{  equivalence.pieceeq_12.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_13.get_absolute_url }}">{{  equivalence.pieceeq_13.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_14.get_absolute_url }}">{{  equivalence.pieceeq_14.name }}</a></p>
+	  		<p><a href="{{ equivalence.pieceeq_15.get_absolute_url }}">{{  equivalence.pieceeq_15.name }}</a></p>
+	</ul>
+  </div>
+</div>
+
+{% endblock %}
