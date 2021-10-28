@@ -109,37 +109,71 @@ def database_csv(request):
     # Create a csv writer
     writer = csv.writer(response)
 
-    # Designate The Model
-    instances = PieceInstance.objects.all().order_by('piece')
+    myinstancelist = []
+    myassemblylist = []
+    for i in PieceInstance.objects.all():
+        myinstancelist.append(i)
+    for i in Kit.objects.all():
+        myassemblylist.append(i)
+    mylist = (myinstancelist + myassemblylist)
+    print(mylist)
 
     # Add column headings to the csv file
-    writer.writerow(['Piece model', 'Manufacturer', 'Manufacturer Part Number', 'Manufacturer Serial Number',
+    writer.writerow(['Piece/Assembly', 'Piece model', 'Manufacturer', 'Manufacturer Part Number', 'Manufacturer Serial Number',
                        'Website',
                      'Description', 'Documentation', 'Calibration Recurrence', 'Type', 'Characteristic', 'Owner',
-                     'Restriction', 'RSPL', 'Assembly Name', 'CAE Part Number', 'CAE Serial Number', 'OEM',
+                     'Restriction', 'RSPL', 'Obsolete', 'Assembly Name','Group Assembly Name', 'CAE Part Number', 'CAE Serial Number', 'OEM',
                      'OEM Part Number', 'Provider Serial Number',
                      'First Location', 'Second Location', 'Third Location', 'Fourth Location', 'Fifth Location',
                      'Sixth Location', 'Seventh Location', 'Eighth Location',
-                     'Status', 'Date created', 'Last Update',
+                     'Status', 'Date created',
                      'Next calibration date', 'End of life', 'End of guarantee'])
 
     # Loop Through instance and output
-    for instance in instances:
-        if instance.is_rspl:
-            rspl = 'RSPL'
-        elif not instance.is_rspl:
-            rspl = 'Not RSPL'
+    for item in mylist:
+        # We check if item has group_assembly attribute hence it is an Assembly
+        if hasattr(item, 'group_assembly'):
+            writer.writerow(
+                [item.name, None,  item.group_assembly.manufacturer, item.group_assembly.manufacturer_part_number,
+                 item.manufacturer_serialnumber, None, item.description,
+                 None, None,
+                 None, None, None,
+                 None, None, None, item.name, item.group_assembly.name, item.group_assembly.kit_partnumber, item.kit_serialnumber,
+                 item.group_assembly.provider, item.group_assembly.provider_part_number, item.provider_serialnumber,
+                 item.first_location, item.second_location, item.third_location, item.fourth_location,
+                 item.fifth_location, item.sixth_location, item.seventh_location, item.eighth_location,
+                 item.kit_status, item.date_created, None,
+                 None, None, None])
+        else:
+            if item.is_rspl:
+                rspl = 'RSPL'
+            elif not item.is_rspl:
+                rspl = 'Not RSPL'
+            if item.piece.is_obsolete:
+                obsolete = 'YES'
+            elif not item.piece.is_obsolete:
+                obsolete = 'NO'
+            try:
+                kit = Kit.objects.get(
+                    Q(piece_kit_1=item) | Q(piece_kit_2=item) | Q(piece_kit_3=item) | Q(piece_kit_4=item)
+                    | Q(piece_kit_5=item) | Q(piece_kit_6=item) | Q(piece_kit_7=item) | Q(piece_kit_8=item)
+                    | Q(piece_kit_9=item) | Q(piece_kit_10=item) | Q(piece_kit_11=item) | Q(piece_kit_12=item)
+                    | Q(piece_kit_13=item) | Q(piece_kit_14=item) | Q(piece_kit_15=item))
+                groupassembly = kit.group_assembly.name
+            except:
+                kit = None
+                groupassembly = None
 
-        writer.writerow([instance.piece.piece_model, instance.piece.manufacturer, instance.piece.manufacturer_part_number,
-                         instance.manufacturer_serialnumber, instance.piece.website, instance.piece.description,
-                         instance.piece.documentation, instance.piece.calibration_recurrence,
-                         instance.piece.item_type, instance.piece.item_characteristic, instance.owner,
-                         instance.restriction, rspl, instance.kit, instance.piece.cae_part_number, instance.serial_number,
-                         instance.piece.provider, instance.piece.provider_part_number,  instance.provider_serialnumber,
-                         instance.first_location, instance.second_location, instance.third_location, instance.fourth_location,
-                         instance.fifth_location, instance.sixth_location, instance.seventh_location, instance.eighth_location,
-                         instance.status, instance.date_created, instance.date_update,
-                         instance.date_calibration, instance.date_end_of_life, instance.date_guarantee])
+            writer.writerow([item.piece.name, item.piece.piece_model, item.piece.manufacturer, item.piece.manufacturer_part_number,
+                            item.manufacturer_serialnumber, item.piece.website, item.piece.description,
+                            item.piece.documentation, item.piece.calibration_recurrence,
+                            item.piece.item_type, item.piece.item_characteristic, item.owner,
+                            item.restriction, rspl, obsolete, kit, groupassembly,  item.piece.cae_part_number, item.serial_number,
+                            item.piece.provider, item.piece.provider_part_number,  item.provider_serialnumber,
+                            item.first_location, item.second_location, item.third_location, item.fourth_location,
+                            item.fifth_location, item.sixth_location, item.seventh_location, item.eighth_location,
+                            item.status, item.date_created,
+                            item.date_calibration, item.date_end_of_life, item.date_guarantee])
     return response
 
 def tree(request):
@@ -300,7 +334,7 @@ def show_instance_form(request, primary_key):
             | Q(piece_kit_9=piece_instance) | Q(piece_kit_10=piece_instance) | Q(piece_kit_11=piece_instance) | Q(piece_kit_12=piece_instance)
             | Q(piece_kit_13=piece_instance) | Q(piece_kit_14=piece_instance) | Q(piece_kit_15=piece_instance))
     except:
-        equivalences = None
+        kit = None
     context = {'piece_instance': piece_instance, 'kit': kit}
     return render(request, 'inventory/piece_instance_detail.html', context)
 

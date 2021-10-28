@@ -34,6 +34,7 @@
       {% block sidebar %}
         <ul class="sidebar-nav">
           <li><a href="{% url 'index' %}">Home</a></li>
+          <td><strong>List Section: </strong></td>
           <li><a href="{% url 'assembly-instance-list' %}">General List</a></li>
           <li><a href="{% url 'piece' %}">Pieces List</a></li>
           <li><a href="{% url 'groupassembly-list' %}">Group Assemblies List</a></li>
@@ -41,6 +42,7 @@
           <li><a href="{% url 'piece-instance-list' %}">Instances List</a></li>
           <li><a href="{% url 'movement-list' %}">Movements List</a></li>
           <li><a href="{% url 'equivalence-list' %}">Equivalence List</a></li>
+          <td><strong>Creation Section: </strong></td>
           <li><a href="{% url 'groupassembly-create' %}">Add New Group Assembly</a></li>
           <li><a href="{% url 'kit-create' %}">Add New Assembly</a></li>
           <li><a href="{% url 'piece-create' %}">Add Piece</a></li>

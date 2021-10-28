@@ -16,16 +16,36 @@ action="{%url 'search-assembly-database' %}">
 <table class="table table-light table-striped">
   <thead>
     <tr>
-	<th>Assembly Name</th>
-    <th>Assembly Serial Number</th>
-	<th>Assembly Description</th>
+	<th>Name</th>
+	<th>Group Assembly</th>
+	<th>Part Number</th>
+	<th>Serial Number</th>
+	<th>Location</th>
+	<th>Status</th>
 	</tr>
   </thead>
     {% for kit in kit_list %}
     <tr class="datarow">
       <td><a href="{{ kit.get_absolute_url }}">{{ kit.name }}</a></td>
+      <td><a href="{{ kit.group_assembly.get_absolute_url }}">{{ kit.group_assembly.name }}</a></td>
+      <td>{{ kit.group_assembly.kit_partnumber }}</td>
       <td>{{ kit.kit_serialnumber }}</td>
-      <td>{{ kit.description }}</td>
+        {% if kit.eighth_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}-{{kit.sixth_location|default_if_none:""}}-{{kit.seventh_location|default_if_none:""}}-{{kit.eighth_location|default_if_none:""}}</td>
+        {% elif kit.seventh_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}-{{kit.sixth_location|default_if_none:""}}-{{kit.seventh_location|default_if_none:""}}</td>
+        {% elif kit.sixth_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}-{{kit.sixth_location|default_if_none:""}}</td>
+        {% elif kit.fifth_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}-{{kit.fifth_location|default_if_none:""}}</td>
+        {% elif kit.fourth_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}-{{kit.fourth_location|default_if_none:""}}</td>
+        {% elif kit.third_location %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}-{{kit.third_location|default_if_none:""}}</td>
+        {% else %}
+            <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}</td>
+        {% endif %}
+      <td>{{ kit.kit_status }}</td>
 	  <td><a href="{% url 'kit-update' kit.id %}" class="btn btn-outline-secondary btn-sm">Update</a></td>
     </tr>
     {% endfor %}
