@@ -19,75 +19,76 @@
             <div class="card-body">
                 <div id="equivalence-list">
                     <div class="card-body">
-                        <form action="#" method="post" novalidate="novalidate">
+                        <form class="myequivalence" action="#" method="post" novalidate="novalidate">
                             {% csrf_token %}
-                            <div class="form-group">
+                            <div class="form-name-group">
                                 <label for="name" class="control-label mb-1">Name</label>
                                 {{ form.name }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-1" class="form-pieceeq-group">
                                 <label for="pieceeq_1" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_1 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-2" class="form-pieceeq-group">
                                 <label for="pieceeq_2" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_2 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-3" class="hidden">
                                 <label for="pieceeq_3" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_3 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-4"  class="hidden">
                                 <label for="pieceeq_4" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_4 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-5"  class="hidden">
                                 <label for="pieceeq_5" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_5 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-6"  class="hidden">
                                 <label for="pieceeq_6" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_6 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-7"  class="hidden">
                                 <label for="pieceeq_7" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_7 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-8"  class="hidden">
                                 <label for="pieceeq_8" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_8 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-9"  class="hidden">
                                 <label for="pieceeq_9" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_9 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-10"  class="hidden">
                                 <label for="pieceeq_10" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_10 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-11"  class="hidden">
                                 <label for="pieceeq_11" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_11 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-12"  class="hidden">
                                 <label for="pieceeq_12" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_12 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-13"  class="hidden">
                                 <label for="pieceeq_13" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_13 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-14"  class="hidden">
                                 <label for="pieceeq_14" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_14 }}
                             </div>
-                            <div class="form-group">
+                            <div id="pieceeq-15"  class="hidden">
                                 <label for="pieceeq_15" class="control-label mb-1">Choose Piece</label>
                                 {{ form.pieceeq_15 }}
                             </div>
                             <div>
-                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-                                    <span id="payment-button-amount">Create Item</span>
+                                <button id="add-more" type="button"> Add more </button>
+                                <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                    <span id="submit-button-amount">Create Equivalence</span>
                                 </button>
                             </div>
                         </form>
@@ -99,4 +100,27 @@
 
     </div><!--/.col-->
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+	// To understand this section : https://www.youtube.com/watch?v=s3T-w2jhDHE&list=PLEsfXFp6DpzRMby_cSoWTFw8zaMdTEXgL&index=64
+	const addMoreBtn = document.getElementById("add-more")
+	const totalNewForms = document.getElementById("pieceeq-TOTAL_FORMS")
+	addMoreBtn.addEventListener('click', add_new_form)
+
+	function add_new_form(event) {
+		// we prevent java console from populating (adding traffic)
+		if (event) {
+			event.preventDefault()
+		}
+		const currentPieceinstanceForms = document.getElementsByClassName("form-pieceeq-group")
+		console.log(currentPieceinstanceForms)
+		let currentFormCount = currentPieceinstanceForms.length
+		// we want the new form to appear after the last loaded form
+		const formCopyTarget = document.getElementById(`pieceeq-${currentFormCount+1}`)
+		console.log(formCopyTarget)
+		// now add new empty form element to our html form
+		formCopyTarget.setAttribute('class', 'form-pieceeq-group')
+	}
+</script>
+
 {% endblock content %}
