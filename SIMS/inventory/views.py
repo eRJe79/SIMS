@@ -38,7 +38,6 @@ from .forms import (
     PieceForm,
     PieceInstanceForm,
     PieceInstancePieceFormSet,
-    PieceInstanceKitFormSet,
     KitGroupAssemblyFormSet,
     GroupAssemblyForm,
     KitForm,
@@ -605,16 +604,6 @@ class KitCreate(CreateView):
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
         # because this is not the form submission
-        if request.is_ajax():
-            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
-            value = int(cp['wtd'])  # figure out if the process is addition or deletion
-            prefix = "instance_reverse"
-            cp[f'{prefix}-TOTAL_FORMS'] = int(
-                cp[f'{prefix}-TOTAL_FORMS']) + value
-            formset = PieceInstanceKitFormSet(
-                cp)  # catch any data which were in the previous formsets and deliver to-
-            # the new formsets again -> if the process is addition!
-            return render(request, 'inventory/formset.html', {'formset': formset})
         self.object = None
         form = KitForm(request.POST)
         if form.is_valid():
@@ -747,18 +736,6 @@ def movement_exchange(request):
         'form': form,
         #'items': items,
     }
-    if request.is_ajax():
-        print('ajax')
-        cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
-        value = int(cp['wtd'])  # figure out if the process is addition or deletion
-        prefix = "instance_reverse"
-        cp[f'{prefix}-TOTAL_FORMS'] = int(
-            cp[f'{prefix}-TOTAL_FORMS']) + value
-        formset = PieceInstanceKitFormSet(
-            cp)  # catch any data which were in the previous formsets and deliver to-
-        # the new formsets again -> if the process is addition!
-        return render(request, 'inventory/formset.html', {'formset': formset})
-
     if form.is_valid():
         obj = form.save(commit=False)
         # Update location of the item being replaced with the item it replaces

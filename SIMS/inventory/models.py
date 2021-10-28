@@ -248,74 +248,6 @@ class GroupAssembly(models.Model):
         return myhistory
 
 
-
-# A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
-class Kit(models.Model):
-    STATUS_CHOICE = (
-        ('In Use', 'In Use'),
-        ('In Stock', 'In Stock'),
-        ('Installed', 'Installed'),
-        ('On Test', 'On Test'),
-        ('Waiting', 'Waiting'),
-    )
-    group_assembly = models.ForeignKey(GroupAssembly, on_delete=models.CASCADE, null=True, blank=False)
-    #Name is mandatory
-    name = models.CharField(max_length=250, blank=False, null=False)
-    description = models.TextField(max_length=1000, blank=True, null=True)
-    # Serial number is mandatory
-    kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
-    # Manufacturer and S/N
-    manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
-    # Provider information - an instance of a piece can be bought from different providers
-    provider_serialnumber = models.CharField(max_length=120, null=True, blank=True)
-    # Status
-    kit_status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICE,
-        blank=True,
-        default='',
-    )
-    # Date where the assembly is created (set at creation and never updated then)
-    date_created = models.DateField(auto_now_add=True)
-
-    first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
-    second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)
-    third_location = models.ForeignKey(Third_location, on_delete=models.SET_NULL, null=True, blank=True)
-    fourth_location = models.ForeignKey(Fourth_location, on_delete=models.SET_NULL, null=True, blank=True)
-    fifth_location = models.ForeignKey(Fifth_location, on_delete=models.SET_NULL, null=True, blank=True)
-    sixth_location = models.ForeignKey(Sixth_location, on_delete=models.SET_NULL, null=True, blank=True)
-    seventh_location = models.ForeignKey(Seventh_location, on_delete=models.SET_NULL, null=True, blank=True)
-    eighth_location = models.ForeignKey(Eighth_location, on_delete=models.SET_NULL, null=True, blank=True)
-
-    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
-    # History log
-    history = HistoricalRecords()
-    # Default method to access the Kit
-    def __str__(self):
-        return self.name
-
-    # This method is used is some templates to have link directed to the kit detail
-    def get_absolute_url(self):
-        """Returns the url to access a detail record for this kit."""
-        return reverse('kit-detail', args=[str(self.id)])
-
-    def get_pieceinstance_children(self):
-        return self.pieceinstance_set.all()
-
-    def get_history(self):
-        history = self.history.all()
-        # we get only the three last history iterations
-        if len(history) == 1:
-            myhistory = history
-        elif len(history) == 2:
-             myhistory = (history[0], history[1])
-        else:
-             myhistory = (history[0], history[1], history[2])
-        print(len(history))
-        return myhistory
-
-
-
 # Class describing the instance of pieces with their specific attributes and methods
 class PieceInstance(models.Model):
     """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
@@ -353,9 +285,6 @@ class PieceInstance(models.Model):
 
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
     piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
-    # Foreign Key used because instance can only have one kit, but kits can have multiple instances from different piece
-    # It can be left empty as an instance doesn't necessarily belongs to a kit
-    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, null=True, blank=True)
     # Manufacturer and S/N
     manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
     # Instance specific serial number, setting blank=True as it might not be required
@@ -482,6 +411,86 @@ class PieceInstance(models.Model):
         print(len(history))
         return myhistory
 
+# A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
+class Kit(models.Model):
+    STATUS_CHOICE = (
+        ('In Use', 'In Use'),
+        ('In Stock', 'In Stock'),
+        ('Installed', 'Installed'),
+        ('On Test', 'On Test'),
+        ('Waiting', 'Waiting'),
+    )
+    group_assembly = models.ForeignKey(GroupAssembly, on_delete=models.CASCADE, null=True, blank=False)
+    #Name is mandatory
+    name = models.CharField(max_length=250, blank=False, null=False)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+    # Serial number is mandatory
+    kit_serialnumber = models.CharField(max_length=250, blank=False, null=False)
+    # Manufacturer and S/N
+    manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
+    # Provider information - an instance of a piece can be bought from different providers
+    provider_serialnumber = models.CharField(max_length=120, null=True, blank=True)
+    # Status
+    kit_status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICE,
+        blank=True,
+        default='',
+    )
+    # Date where the assembly is created (set at creation and never updated then)
+    date_created = models.DateField(auto_now_add=True)
+
+    piece_kit_1 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_1', null=True, blank=True)
+    piece_kit_2 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_2', null=True, blank=True)
+    piece_kit_3 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_3', null=True, blank=True)
+    piece_kit_4 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_4', null=True, blank=True)
+    piece_kit_5 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_5', null=True, blank=True)
+    piece_kit_6 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_6', null=True, blank=True)
+    piece_kit_7 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_7', null=True, blank=True)
+    piece_kit_8 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_8', null=True, blank=True)
+    piece_kit_9 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_9', null=True, blank=True)
+    piece_kit_10 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_10', null=True, blank=True)
+    piece_kit_11 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_11', null=True, blank=True)
+    piece_kit_12 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_12', null=True, blank=True)
+    piece_kit_13 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_13', null=True, blank=True)
+    piece_kit_14 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_14', null=True, blank=True)
+    piece_kit_15 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_15', null=True, blank=True)
+
+    first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
+    second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)
+    third_location = models.ForeignKey(Third_location, on_delete=models.SET_NULL, null=True, blank=True)
+    fourth_location = models.ForeignKey(Fourth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    fifth_location = models.ForeignKey(Fifth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    sixth_location = models.ForeignKey(Sixth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    seventh_location = models.ForeignKey(Seventh_location, on_delete=models.SET_NULL, null=True, blank=True)
+    eighth_location = models.ForeignKey(Eighth_location, on_delete=models.SET_NULL, null=True, blank=True)
+
+    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    # History log
+    history = HistoricalRecords()
+    # Default method to access the Kit
+    def __str__(self):
+        return self.name
+
+    # This method is used is some templates to have link directed to the kit detail
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this kit."""
+        return reverse('kit-detail', args=[str(self.id)])
+
+    def get_pieceinstance_children(self):
+        return self.pieceinstance_set.all()
+
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+             myhistory = (history[0], history[1])
+        else:
+             myhistory = (history[0], history[1], history[2])
+        print(len(history))
+        return myhistory
 
 class MovementExchange(models.Model):
     # Items exchanged is mandatory

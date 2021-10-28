@@ -65,13 +65,12 @@ class PieceAdmin(SimpleHistoryAdmin):
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(SimpleHistoryAdmin):
-    list_display = ('serial_number', 'piece', 'kit', 'manufacturer_serialnumber', 'owner', 'restriction', 'first_location', 'second_location', 'third_location', 'fourth_location', 'fifth_location',
+    list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'owner', 'restriction', 'first_location', 'second_location', 'third_location', 'fourth_location', 'fifth_location',
                     'sixth_location', 'seventh_location', 'eighth_location', 'status', 'history')
 
 @admin.register(Kit)
 class KitAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'kit_serialnumber', 'group_assembly', 'description')
-    inlines = [PieceInstanceInline]
 
 @admin.register(GroupAssembly)
 class GroupAssemblyAdmin(SimpleHistoryAdmin):

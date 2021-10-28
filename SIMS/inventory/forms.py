@@ -63,14 +63,13 @@ class PieceForm(forms.ModelForm):
 class PieceInstanceForm(forms.ModelForm):
     class Meta:
         model = PieceInstance
-        fields = ['piece', 'kit', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
+        fields = ['piece', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
                   'restriction', 'update_comment','update_document', 'is_rspl', 'calibration_document', 'date_calibration',
                   'date_end_of_life', 'date_guarantee', 'first_location', 'second_location', 'third_location',
                   'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location', 'eighth_location',
                   'status', 'condition']
         labels = {
             'piece': 'Piece',
-            'kit': 'Kit',
             'serial_number': 'CAE Serial Number',
             'manufacturer_serialnumber': 'Manufacturer Serial Number',
             'provider_serialnumber': 'OEM Serial Number',
@@ -96,7 +95,6 @@ class PieceInstanceForm(forms.ModelForm):
         }
         widgets = {
             'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Piece'}),
-            'kit': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Kit'}),
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
             'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),
@@ -306,7 +304,11 @@ class KitForm(ModelForm):
         model = Kit
         fields = ['group_assembly', 'name', 'description', 'kit_serialnumber', 'update_comment', 'kit_status', 'first_location',
                   'second_location', 'third_location', 'fourth_location', 'fifth_location', 'sixth_location',
-                  'seventh_location', 'eighth_location']
+                  'seventh_location', 'eighth_location',
+                  'piece_kit_1', 'piece_kit_2', 'piece_kit_3', 'piece_kit_4', 'piece_kit_5', 'piece_kit_6',
+                  'piece_kit_7', 'piece_kit_8', 'piece_kit_9', 'piece_kit_10', 'piece_kit_11', 'piece_kit_12', 'piece_kit_13',
+                  'piece_kit_14', 'piece_kit_15'
+                  ]
         labels = {
             'group_assembly': 'Group Assembly',
             'name': 'Name',
@@ -322,6 +324,21 @@ class KitForm(ModelForm):
             'sixth_location': 'Sixth Location',
             'seventh_location': 'Seventh Location',
             'eighth_location': 'Eighth Location',
+            'piece_kit_1': 'Choose Instance',
+            'piece_kit_2': 'Choose Instance',
+            'piece_kit_3': 'Choose Instance',
+            'piece_kit_4': 'Choose Instance',
+            'piece_kit_5': 'Choose Instance',
+            'piece_kit_6': 'Choose Instance',
+            'piece_kit_7': 'Choose Instance',
+            'piece_kit_8': 'Choose Instance',
+            'piece_kit_9': 'Choose Instance',
+            'piece_kit_10': 'Choose Instance',
+            'piece_kit_11': 'Choose Instance',
+            'piece_kit_12': 'Choose Instance',
+            'piece_kit_13': 'Choose Instance',
+            'piece_kit_14': 'Choose Instance',
+            'piece_kit_15': 'Choose Instance',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Assembly Name'}),
@@ -337,6 +354,21 @@ class KitForm(ModelForm):
             'sixth_location': forms.Select(attrs={'class': 'form-select'}),
             'seventh_location': forms.Select(attrs={'class': 'form-select'}),
             'eighth_location': forms.Select(attrs={'class': 'form-select'}),
+            'piece_kit_1': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_2': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_3': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_4': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_5': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_6': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_7': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_8': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_9': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_10': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_11': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_12': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_13': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_14': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'piece_kit_15': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
         }
 
         # We override the init method to have location choices dependent on each other
@@ -425,7 +457,6 @@ class KitForm(ModelForm):
 
 KitGroupAssemblyFormSet = inlineformset_factory(GroupAssembly, Kit, form=KitForm, extra=1)
 PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=1)
-PieceInstanceKitFormSet = inlineformset_factory(Kit, PieceInstance, form=PieceInstanceForm, extra=1)
 
 
 
