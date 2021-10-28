@@ -224,7 +224,6 @@ def show_piece(request, primary_key):
                                        | Q(pieceeq_13=piece) | Q(pieceeq_14=piece) | Q(pieceeq_15=piece))
     except:
         equivalences = None
-    print(equivalences)
     piece_eq_list = equivalences
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
@@ -294,7 +293,15 @@ def all_piece_instance(request):
 # Display specific instance information
 def show_instance_form(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
-    context = {'piece_instance': piece_instance}
+    try:
+        kit = Kit.objects.get(
+            Q(piece_kit_1=piece_instance) | Q(piece_kit_2=piece_instance) | Q(piece_kit_3=piece_instance) | Q(piece_kit_4=piece_instance)
+            | Q(piece_kit_5=piece_instance) | Q(piece_kit_6=piece_instance) | Q(piece_kit_7=piece_instance) | Q(piece_kit_8=piece_instance)
+            | Q(piece_kit_9=piece_instance) | Q(piece_kit_10=piece_instance) | Q(piece_kit_11=piece_instance) | Q(piece_kit_12=piece_instance)
+            | Q(piece_kit_13=piece_instance) | Q(piece_kit_14=piece_instance) | Q(piece_kit_15=piece_instance))
+    except:
+        equivalences = None
+    context = {'piece_instance': piece_instance, 'kit': kit}
     return render(request, 'inventory/piece_instance_detail.html', context)
 
 # Display instances and assembly as list

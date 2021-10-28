@@ -14,10 +14,10 @@
   		{% if piece_instance.piece.image %}
   			<p><img src="{{ piece_instance.piece.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
   		{% endif %}
-		{% if piece_instance.kit %}
-			<p><strong>Assembly: </strong> <a href="{{ piece_instance.kit.get_absolute_url }}">{{ piece_instance.kit }}</a></p>
+		{% if kit %}
+			<p><strong>Assembly: </strong> <a href="{{ kit.get_absolute_url }}">{{ kit }}</a></p>
 		{% else %}
-			<p><strong>Assembly: </strong> {{ piece_instance.kit }}</p>
+			<p><strong>Assembly: </strong> {{ kit }}</p>
 		{% endif %}
 		<p><strong>Calibration document: </strong> <a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}">{{ piece_instance.calibration_document }}</a></p>
   		<p><strong>Provider: </strong> {{ piece_instance.piece.provider }}</p>
