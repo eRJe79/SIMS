@@ -10,8 +10,6 @@ from .models import (
     Mptt,
 )
 
-from .forms import (EquivalenceForm)
-
 # This is to register the models in the admin website
 
 class PieceInstanceInline(admin.TabularInline):
@@ -57,13 +55,12 @@ class Eighth_LocationAdmin(SimpleHistoryAdmin):
 
 @admin.register(Equivalence)
 class EquivalenceAdmin(admin.ModelAdmin):
-    form = EquivalenceForm
-    inlines = [PieceAdminInline]
-
+    list_display = ('name', 'pieceeq_1', 'pieceeq_2', 'pieceeq_3', 'pieceeq_4', 'pieceeq_5', 'pieceeq_6',
+    'pieceeq_7', 'pieceeq_8', 'pieceeq_9', 'pieceeq_10', 'pieceeq_11', 'pieceeq_12', 'pieceeq_13', 'pieceeq_14', 'pieceeq_15')
 
 @admin.register(Piece)
 class PieceAdmin(SimpleHistoryAdmin):
-    list_display = ('equivalence', 'website', 'manufacturer', 'manufacturer_part_number', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic',)
+    list_display = ('name', 'website', 'manufacturer', 'manufacturer_part_number', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic',)
     inlines = [PieceInstanceInline]
 
 @admin.register(PieceInstance)

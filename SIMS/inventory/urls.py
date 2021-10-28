@@ -45,6 +45,7 @@ from .views import (
     movement_detail,
     movement_list,
     show_instance_assembly_list,
+    create_equivalence,
 )
 
 urlpatterns = [
@@ -83,6 +84,8 @@ urlpatterns = [
     path('general_list', show_instance_assembly_list, name="assembly-instance-list"),
 
     path('database_csv', database_csv, name='database_csv'),
+
+    path('create_equivalence/', create_equivalence, name='equivalence-create'),
 
     path('movement_choice/', movement_exchange, name='movement-choice'),
     path('movement_detail/<primary_key>', movement_detail, name='movement-detail'),

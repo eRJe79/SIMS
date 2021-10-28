@@ -43,6 +43,7 @@ from .forms import (
     GroupAssemblyForm,
     KitForm,
     MovementForm,
+    EquivalenceForm,
 )
 
 # Movement dependencies management
@@ -813,6 +814,19 @@ def mount_piece_instance(request, item_id):
 def dismount_piece_instance(request, item_id):
     context = {}
     return render(request, 'inventory/movement_dismount.html', context)
+
+# Equivalence Management
+def create_equivalence(request):
+    forms = EquivalenceForm()
+    if request.method == 'POST':
+        forms = EquivalenceForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            #return redirect('equivalence-list')
+    context = {
+        'form': forms
+    }
+    return render(request, 'inventory/create_equivalence.html', context)
 
 # Display a specific Piece
 def show_piece_history(request, primary_key):

@@ -31,6 +31,7 @@
       <change afterPath="$PROJECT_DIR$/templates/inventory/clone_existing_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/clone_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/computer_update.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/create_equivalence.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_groupassembly.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_instance_piece.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/formset.html" afterDir="false" />
