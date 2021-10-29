@@ -274,6 +274,7 @@ class PieceInstance(models.Model):
         ('Discarded', 'Discarded'),
         ('On Test', 'On Test'),
         ('Received', 'Received'),
+        ('Shipped', 'Shipped'),
         ('Waiting', 'Waiting'),
     )
     # Choices for the piece condition

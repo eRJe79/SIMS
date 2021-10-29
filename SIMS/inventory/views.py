@@ -176,6 +176,67 @@ def database_csv(request):
                             item.date_calibration, item.date_end_of_life, item.date_guarantee])
     return response
 
+# Generate reports
+def shipped_received_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'
+    location = ''
+
+    # Create a csv writer
+    writer = csv.writer(response)
+    history = []
+    instances = PieceInstance.objects.all()
+
+    for instance in instances:
+        myhistory = instance.history.all()
+        for h in myhistory:
+            if h.status == 'Shipped' or h.status == 'Received':
+                history.append(h)
+    #list of all the history of the objects
+
+    # Add column headings to the csv file
+    writer.writerow(['Date', 'Status', 'Piece/Assembly', 'CAE Part Number', 'CAE Serial Number', 'Documentation',
+                     'Description', 'Comment'])
+    print(history)
+    # Loop Through instance and output
+    for item in history:
+        writer.writerow([item.history_date, item.status, item.piece, item.piece.cae_part_number, item.serial_number,
+                         item.update_document, item.piece.description, item.update_comment])
+    return response
+
+def movement_record_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'
+    location = ''
+
+    # Create a csv writer
+    writer = csv.writer(response)
+    history = []
+    movements = MovementExchange.objects.all()
+
+    for movement in movements:
+        myhistory = movement.history.all()
+        for h in myhistory:
+            history.append(h)
+    #list of all the history of the objects
+
+    # Add column headings to the csv file
+    writer.writerow(['Date', 'Reference Number',
+                     'Piece Exchanged', 'PE CAE Part Number', 'PE CAE Serial Number', 'PE Comment',
+                     'Replacing Piece', 'PE CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
+                     ])
+    print(history)
+    # Loop Through instance and output
+    for item in history:
+        writer.writerow([item.history_date, item.reference_number,
+                         item.piece_1, item.piece_1.cae_part_number, item.item_1.serial_number,
+                         item.update_comment_item1,
+                         item.piece_2, item.piece_2.cae_part_number, item.item_2.serial_number,
+                         item.update_comment_item2,
+                         ])
+    return response
+
+
 def tree(request):
     tree_level = Mptt.objects.all()
     context = {'tree_level': tree_level}
