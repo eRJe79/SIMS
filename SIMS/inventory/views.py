@@ -286,7 +286,7 @@ def low_stock_record_csv(request):
                      'Provider', 'Provider Part Number', 'Provider Serial Number',
                      'Website',
                      'Description', 'Documentation', 'Type', 'Characteristic', 'RSPL',
-                     'Quantity',
+                     'Quantity', 'Threshold',
                      'First Location', 'Second Location', 'Third Location', 'Fourth Location', 'Fifth Location',
                      'Sixth Location', 'Seventh Location', 'Eighth Location',
                      'Status', 'Date created', 'Owner', 'Restriction'])
@@ -303,6 +303,7 @@ def low_stock_record_csv(request):
                         item.provider, item.provider_part_number, item.provider_serialnumber,
                         item.website,
                         item.description, item.documentation, item.item_type, item.item_characteristic, rspl,
+                        item.quantity, item.low_stock_value,
                         item.first_location, item.second_location, item.third_location, item.fourth_location,
                         item.fifth_location, item.sixth_location, item.seventh_location, item.eighth_location,
                         item.status, item.date_created, item.owner, item.restriction])
