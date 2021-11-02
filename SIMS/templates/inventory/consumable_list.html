@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	
+	<h1>Consumables</h1>
+	<br/>
+
+{% if consumable_list %}
+
+<form class="d-flex" method="POST"
+action="{%url 'search-consumable-database' %}">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search"
+           placeholder="Search For Inventory Consumables" aria-label="Search" name="searched">
+    <button class="btn btn-outline-secondary" type="submit"> Search </button>
+</form>
+
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Name</th>
+	<th>CAE Serial Number</th>
+	<th>CAE Part Number</th>
+	<th>Quantity</th>
+	<th>Location</th>
+	<th>Status</th>
+	</tr>
+  </thead>
+    {% for consumable in consumable_list %}
+    <tr class="datarow">
+      <td><a href="{{ consumable.get_absolute_url }}">{{ consumable.name }}</a></td>
+      <td>{{ consumable.cae_part_number }}</td>
+      <td>{{ consumable.serial_number }}</td>
+	  <td>{{consumable.quantity}}</td>
+	  {% if consumable.eighth_location %}
+	  	<td>{{consumable.first_location}}-{{consumable.second_location|default_if_none:""}}-{{consumable.third_location|default_if_none:""}}-{{consumable.fourth_location|default_if_none:""}}-{{consumable.fifth_location|default_if_none:""}}-{{consumable.sixth_location|default_if_none:""}}-{{consumable.seventh_location|default_if_none:""}}-{{consumable.eighth_location|default_if_none:""}}</td>
+	  {% elif consumable.seventh_location %}
+	  	<td>{{consumable.first_location}}-{{consumable.second_location|default_if_none:""}}-{{consumable.third_location|default_if_none:""}}-{{consumable.fourth_location|default_if_none:""}}-{{consumable.fifth_location|default_if_none:""}}-{{consumable.sixth_location|default_if_none:""}}-{{consumable.seventh_location|default_if_none:""}}</td>
+	  {% elif consumable.sixth_location %}
+	  	<td>{{consumable.first_location}}-{{consumable.second_location|default_if_none:""}}-{{consumable.third_location|default_if_none:""}}-{{consumable.fourth_location|default_if_none:""}}-{{consumable.fifth_location|default_if_none:""}}-{{consumable.sixth_location|default_if_none:""}}</td>
+	  {% elif consumable.fifth_location %}
+	  	<td>{{consumable.first_location}}-{{consumable.second_location|default_if_none:""}}-{{consumable.third_location|default_if_none:""}}-{{consumable.fourth_location|default_if_none:""}}-{{consumable.fifth_location|default_if_none:""}}</td>
+	  {% elif consumable.fourth_location %}
+	  	<td>{{consumable.first_location}}-{{consumable.second_location|default_if_none:""}}-{{consumable.third_location|default_if_none:""}}-{{consumable.fourth_location|default_if_none:""}}</td>
+	  {% elif consumable.third_location %}
+	  	<td>{{consumable.first_location}}-{{consumable.second_location|default_if_none:""}}-{{consumable.third_location|default_if_none:""}}</td>
+	  {% else %}
+	  	<td>{{consumable.first_location}}-{{consumable.second_location|default_if_none:""}}</td>
+	  {% endif %}
+      <td>{{ consumable.status }}</td>
+      <td><a href="{% url 'consumable-update' consumable.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+      <td><a href="{% url 'consumable-clone' consumable.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>There are no instance in the inventory.</p>
+  {% endif %}
+{% endblock %}

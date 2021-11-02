@@ -322,6 +322,10 @@ def show_consumable(request, primary_key):
     context = {'consumable': consumable}
     return render(request, 'inventory/consumable_detail.html', context)
 
+def consumable_list(request):
+    consumable_list = Consumable.objects.all().order_by('name')
+    return render(request, 'inventory/consumable_list.html', {'consumable_list': consumable_list})
+
 # Update a piece
 def update_consumable(request, consumable_id):
     consumable = Consumable.objects.get(pk=consumable_id)

@@ -34,6 +34,7 @@
       <change afterPath="$PROJECT_DIR$/templates/inventory/computer_update.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/consumable_detail.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/consumable_history.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/inventory/consumable_list.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_consumable.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_equivalence.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/inventory/create_groupassembly.html" afterDir="false" />
