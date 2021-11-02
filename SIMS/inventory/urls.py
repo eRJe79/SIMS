@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from .views import (
     ConsumableCreate,
     show_consumable,
+    show_consumable_history,
     PieceListView,
     show_instance_form,
     delete_instance,
@@ -64,6 +65,7 @@ urlpatterns = [
 
     path('create_consumable/', ConsumableCreate.as_view(), name='consumable-create'),
     path('consumable_detail/<primary_key>', show_consumable, name='consumable-detail'),
+    path('consumable_history/<primary_key>', show_consumable_history, name='consumable-history'),
 
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),

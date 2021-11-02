@@ -322,6 +322,35 @@ def show_consumable(request, primary_key):
     context = {'consumable': consumable}
     return render(request, 'inventory/consumable_detail.html', context)
 
+# Update a piece
+def update_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    piece.update_comment = ''
+    if request.method == "POST":
+        form = PieceForm(request.POST, request.FILES, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect(piece.get_absolute_url())
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form': form}
+    return render(request, 'inventory/update_piece.html', context)
+
+# clone a piece
+def clone_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    piece.pk=None
+    piece.update_comment = ''
+    if request.method == "POST":
+        form = PieceForm(request.POST, request.FILES, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect(piece.get_absolute_url())
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form': form}
+    return render(request, 'inventory/clone_piece.html', context)
+
 
 class PieceCreate(CreateView):
     template_name = 'inventory/create_piece.html'
@@ -961,21 +990,28 @@ def update_equivalence(request, equivalence_id):
     context = {'equivalence': equivalence, 'form': form}
     return render(request, 'inventory/equivalence_update.html', context)
 
-# Display a specific Piece
+# Display history of specific Consumable
+def show_consumable_history(request, primary_key):
+    consumable = Consumable.objects.get(pk=primary_key)
+    history = consumable.history.all()
+    context = {'history': history, 'consumable': consumable}
+    return render(request, 'inventory/consumable_history.html', context)
+
+# Display history of a specific Piece
 def show_piece_history(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     history = piece.history.all()
     context = {'history': history, 'piece': piece}
     return render(request, 'inventory/piece_history.html', context)
 
-# Display a specific Instance
+# Display history of a specific Instance
 def show_instance_history(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
     history = piece_instance.history.all()
     context = {'history': history, 'piece_instance': piece_instance}
     return render(request, 'inventory/instance_history.html', context)
 
-# Display a specific Assembly
+# Display history of a specific Assembly
 def show_assembly_history(request, primary_key):
     assembly = Kit.objects.get(pk=primary_key)
     history = assembly.history.all()
