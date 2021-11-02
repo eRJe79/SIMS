@@ -266,6 +266,48 @@ def movement_record_csv(request):
                          ])
     return response
 
+# Generate Low Stock record
+def low_stock_record_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=low_stock_database.csv'
+    location = ''
+
+    # Create a csv writer
+    writer = csv.writer(response)
+
+    myconsumablelist = []
+    for item in Consumable.objects.all():
+        if item.is_low_stock():
+            myconsumablelist.append(item)
+
+    # Add column headings to the csv file
+    writer.writerow(['Name', 'CAE PArt Number', 'CAE Serial Number',
+                     'Manufacturer', 'Manufacturer Part Number', 'Manufacturer Serial Number',
+                     'Provider', 'Provider Part Number', 'Provider Serial Number',
+                     'Website',
+                     'Description', 'Documentation', 'Type', 'Characteristic', 'RSPL',
+                     'Quantity', 'Threshold',
+                     'First Location', 'Second Location', 'Third Location', 'Fourth Location', 'Fifth Location',
+                     'Sixth Location', 'Seventh Location', 'Eighth Location',
+                     'Status', 'Date created', 'Owner', 'Restriction'])
+
+    # Loop Through instance and output
+    for item in myconsumablelist:
+        # We check if item has group_assembly attribute hence it is an Assembly
+        if item.is_rspl:
+            rspl = 'RSPL'
+        elif not item.is_rspl:
+            rspl = 'Not RSPL'
+        writer.writerow([item.name, item.cae_part_number, item.serial_number,
+                        item.manufacturer, item.manufacturer_part_number, item.manufacturer_serialnumber,
+                        item.provider, item.provider_part_number, item.provider_serialnumber,
+                        item.website,
+                        item.description, item.documentation, item.item_type, item.item_characteristic, rspl,
+                        item.quantity, item.low_stock_value,
+                        item.first_location, item.second_location, item.third_location, item.fourth_location,
+                        item.fifth_location, item.sixth_location, item.seventh_location, item.eighth_location,
+                        item.status, item.date_created, item.owner, item.restriction])
+    return response
 
 def tree(request):
     tree_level = Mptt.objects.all()
