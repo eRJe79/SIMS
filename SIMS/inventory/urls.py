@@ -50,6 +50,7 @@ from .views import (
     update_equivalence,
     shipped_received_csv,
     movement_record_csv,
+    reparation_record_csv,
 )
 
 urlpatterns = [
@@ -86,9 +87,11 @@ urlpatterns = [
 
     path('general_list', show_instance_assembly_list, name="assembly-instance-list"),
 
+    # Reporting tool
     path('database_csv', database_csv, name='database_csv'),
     path('shipped_received_csv', shipped_received_csv, name='shipped_received_csv'),
     path('movement_record_csv', movement_record_csv, name='movement_record_csv'),
+    path('reparation_record_csv', reparation_record_csv, name='reparation_record_csv'),
 
     path('create_equivalence/', create_equivalence, name='equivalence-create'),
     path('equivalence_list/', EquivalenceListView.as_view(), name='equivalence-list'),

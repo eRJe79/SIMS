@@ -411,16 +411,10 @@ class PieceInstance(models.Model):
         for i in range(mysize):
             myhistory.append(history[mysize-i-1])
         for h in myhistory:
-            print("Step")
-            print(h.status)
             if h.status == 'In Repair':
                 initial_time = h.history_date.date()
-                print(initial_time)
             else:
-                print(initial_time)
-                print(h.history_date.date())
                 amount_spent_in_r = h.history_date.date() - initial_time
-                print(amount_spent_in_r.days)
         return amount_spent_in_r.days
 
     def get_history(self):
