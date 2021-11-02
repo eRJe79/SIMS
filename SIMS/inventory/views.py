@@ -597,6 +597,41 @@ def delete_instance(request, instance_id):
 
 
 # Search feature
+# Specific to Consumable
+def search_consumable_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        if searched == 'RSPL' or searched == 'rspl':
+            results = Consumable.objects.filter(is_rspl=True)
+        else:
+            results = Consumable.objects.filter(Q(name__contains=searched)
+                                       | Q(manufacturer__contains=searched)
+                                       | Q(manufacturer_part_number__contains=searched)
+                                       | Q(cae_part_number__contains=searched)
+                                       | Q(provider_part_number__contains=searched)
+                                       | Q(provider__contains=searched)
+                                       | Q(item_type__contains=searched)
+                                       | Q(item_characteristic__contains=searched)
+                                       | Q(item_characteristic__contains=searched)
+                                       | Q(first_location__name__contains=searched)
+                                       | Q(second_location__name__contains=searched)
+                                       | Q(third_location__name__contains=searched)
+                                       | Q(fourth_location__name__contains=searched)
+                                       | Q(fifth_location__name__contains=searched)
+                                       | Q(sixth_location__name__contains=searched)
+                                       | Q(seventh_location__name__contains=searched)
+                                       | Q(eighth_location__name__contains=searched)
+                                       | Q(manufacturer_part_number__contains=searched)
+                                       | Q(status__contains=searched)
+                                       | Q(serial_number__contains=searched)
+                                       | Q(manufacturer_serialnumber__contains=searched)
+                                       | Q(owner__contains=searched)
+                                       | Q(provider_serialnumber__contains=searched)
+                                       )
+        context = {'searched': searched, 'results': results}
+        return render(request, 'inventory/search_consumable.html', context)
+    else:
+        return render(request, 'inventory/search_consumable.html', {})
 # Specific to piece
 def search_piece_database(request):
     if request.method == "POST":
@@ -611,7 +646,6 @@ def search_piece_database(request):
                                        | Q(provider_part_number__contains=searched)
                                        | Q(provider__contains=searched)
                                        | Q(item_type__contains=searched)
-                                       | Q(item_characteristic__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
         return render(request, 'inventory/search.html', context)
