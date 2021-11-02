@@ -83,7 +83,7 @@
             {% elif instance.third_location %}
                 <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
             {% else %}
-                td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}</td>
+                <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}</td>
             {% endif %}
     </tr>
     {% endfor %}
