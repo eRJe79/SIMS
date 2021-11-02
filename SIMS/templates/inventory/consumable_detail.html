@@ -60,7 +60,7 @@
 				<th>Time</th>
     			<th>Update Comment</th>
 				<th>Update Document</th>
-    			<th>Status</th>
+    			<th>Quantity</th>
 				<th>Location</th>
 				</tr>
 			</thead>
@@ -71,7 +71,7 @@
 				<td>{{ h.history_date }}</td>
 				<td>{{ h.update_comment }} </td>
 				<td><a href="{{MEDIA_URL}}{{ h.update_document }}">{{ h.update_document }}</a></td>
-				<td>{{ h.status }}</td>
+				<td>{{ h.quantity }}</td>
 				{% if h.eighth_location %}
 	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}-{{h.eighth_location|default_if_none:""}}</td>
 	  			{% elif h.seventh_location %}
