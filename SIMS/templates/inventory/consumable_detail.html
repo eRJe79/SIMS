@@ -91,6 +91,8 @@
 			{% endfor %}
 		</table>
 	<td><a href="{% url 'consumable-history' consumable.id %}" class="btn btn-outline-secondary btn-sm">Full History</a>
+	<td><a href="{% url 'consumable-update' consumable.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+    <td><a href="{% url 'consumable-clone' consumable.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
   	</div>
 	</div>
 {% endblock %}

@@ -323,33 +323,33 @@ def show_consumable(request, primary_key):
     return render(request, 'inventory/consumable_detail.html', context)
 
 # Update a piece
-def update_piece(request, piece_id):
-    piece = Piece.objects.get(pk=piece_id)
-    piece.update_comment = ''
+def update_consumable(request, consumable_id):
+    consumable = Consumable.objects.get(pk=consumable_id)
+    consumable.update_comment = ''
     if request.method == "POST":
-        form = PieceForm(request.POST, request.FILES, instance=piece)
+        form = ConsumableForm(request.POST, request.FILES, instance=consumable)
         if form.is_valid():
             form.save()
-            return redirect(piece.get_absolute_url())
+            return redirect(consumable.get_absolute_url())
     else:
-        form = PieceForm(instance=piece)
-    context = {'piece': piece, 'form': form}
-    return render(request, 'inventory/update_piece.html', context)
+        form = ConsumableForm(instance=consumable)
+    context = {'consumable': consumable, 'form': form}
+    return render(request, 'inventory/update_consumable.html', context)
 
 # clone a piece
-def clone_piece(request, piece_id):
-    piece = Piece.objects.get(pk=piece_id)
-    piece.pk=None
-    piece.update_comment = ''
+def clone_consumable(request, consumable_id):
+    consumable = Consumable.objects.get(pk=consumable_id)
+    consumable.pk=None
+    consumable.update_comment = ''
     if request.method == "POST":
-        form = PieceForm(request.POST, request.FILES, instance=piece)
+        form = ConsumableForm(request.POST, request.FILES, instance=consumable)
         if form.is_valid():
             form.save()
-            return redirect(piece.get_absolute_url())
+            return redirect(consumable.get_absolute_url())
     else:
-        form = PieceForm(instance=piece)
-    context = {'piece': piece, 'form': form}
-    return render(request, 'inventory/clone_piece.html', context)
+        form = ConsumableForm(instance=consumable)
+    context = {'consumable': consumable, 'form': form}
+    return render(request, 'inventory/clone_consumable.html', context)
 
 
 class PieceCreate(CreateView):
