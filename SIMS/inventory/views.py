@@ -322,6 +322,10 @@ def show_consumable(request, primary_key):
     context = {'consumable': consumable}
     return render(request, 'inventory/consumable_detail.html', context)
 
+def consumable_list(request):
+    consumable_list = Consumable.objects.all().order_by('name')
+    return render(request, 'inventory/consumable_list.html', {'consumable_list': consumable_list})
+
 # Update a piece
 def update_consumable(request, consumable_id):
     consumable = Consumable.objects.get(pk=consumable_id)
@@ -513,13 +517,15 @@ def show_instance_assembly_list(request):
     # We create 2 lists to regroup objects from pieceInstance and Kit
     myinstancelist=[]
     myassemblylist=[]
+    myconsumablelist=[]
     for i in PieceInstance.objects.all():
         myinstancelist.append(i)
     for i in Kit.objects.all():
         myassemblylist.append(i)
-    print(myinstancelist, myassemblylist)
+    for i in Consumable.objects.all():
+        myconsumablelist.append(i)
     # We assemble one list under one for display purpose
-    mylist = (myinstancelist + myassemblylist)
+    mylist = (myinstancelist + myassemblylist + myconsumablelist)
     print(mylist)
     context = {'mylist': mylist}
     return render(request, 'inventory/general_list.html', context)
@@ -591,6 +597,41 @@ def delete_instance(request, instance_id):
 
 
 # Search feature
+# Specific to Consumable
+def search_consumable_database(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        if searched == 'RSPL' or searched == 'rspl':
+            results = Consumable.objects.filter(is_rspl=True)
+        else:
+            results = Consumable.objects.filter(Q(name__contains=searched)
+                                       | Q(manufacturer__contains=searched)
+                                       | Q(manufacturer_part_number__contains=searched)
+                                       | Q(cae_part_number__contains=searched)
+                                       | Q(provider_part_number__contains=searched)
+                                       | Q(provider__contains=searched)
+                                       | Q(item_type__contains=searched)
+                                       | Q(item_characteristic__contains=searched)
+                                       | Q(item_characteristic__contains=searched)
+                                       | Q(first_location__name__contains=searched)
+                                       | Q(second_location__name__contains=searched)
+                                       | Q(third_location__name__contains=searched)
+                                       | Q(fourth_location__name__contains=searched)
+                                       | Q(fifth_location__name__contains=searched)
+                                       | Q(sixth_location__name__contains=searched)
+                                       | Q(seventh_location__name__contains=searched)
+                                       | Q(eighth_location__name__contains=searched)
+                                       | Q(manufacturer_part_number__contains=searched)
+                                       | Q(status__contains=searched)
+                                       | Q(serial_number__contains=searched)
+                                       | Q(manufacturer_serialnumber__contains=searched)
+                                       | Q(owner__contains=searched)
+                                       | Q(provider_serialnumber__contains=searched)
+                                       )
+        context = {'searched': searched, 'results': results}
+        return render(request, 'inventory/search_consumable.html', context)
+    else:
+        return render(request, 'inventory/search_consumable.html', {})
 # Specific to piece
 def search_piece_database(request):
     if request.method == "POST":
@@ -605,7 +646,6 @@ def search_piece_database(request):
                                        | Q(provider_part_number__contains=searched)
                                        | Q(provider__contains=searched)
                                        | Q(item_type__contains=searched)
-                                       | Q(item_characteristic__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
         return render(request, 'inventory/search.html', context)
