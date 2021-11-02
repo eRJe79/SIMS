@@ -18,6 +18,7 @@ from django.db.models import Q
 
 
 from .models import (
+    Consumable,
     Equivalence,
     Piece,
     PieceInstance,
@@ -36,6 +37,7 @@ from .models import (
 )
 
 from .forms import (
+    ConsumableForm,
     PieceForm,
     PieceInstanceForm,
     PieceInstancePieceFormSet,
@@ -269,6 +271,56 @@ def tree(request):
     tree_level = Mptt.objects.all()
     context = {'tree_level': tree_level}
     return render(request, 'inventory/tree.html', context)
+
+class ConsumableCreate(CreateView):
+    template_name = 'inventory/create_consumable.html'
+    model = Consumable
+    form_class = ConsumableForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = ConsumableForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'inventory/create_consumable.html', context)
+
+    def post(self, request, *args, **kwargs):
+        # # if our ajax is calling so we have to take action
+        # # because this is not the form submission
+        # if request.is_ajax():
+        #     cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+        #     value = int(cp['wtd'])  # figure out if the process is addition or deletion
+        #     prefix = "instance_reverse"
+        #     cp[f'{prefix}-TOTAL_FORMS'] = int(
+        #         cp[f'{prefix}-TOTAL_FORMS']) + value
+        #     formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+        #     # the new formsets again -> if the process is addition!
+        #     return render(request, 'inventory/formset.html', {'formset': formset})
+
+        self.object = None
+        form_class = self.get_form_class()
+        form = ConsumableForm(request.POST, request.FILES)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        # instance_form.instance = self.object
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(
+            self.get_context_data(form=form))
+
+# Display specific consumable
+def show_consumable(request, primary_key):
+    consumable = Consumable.objects.get(pk=primary_key)
+    context = {'consumable': consumable}
+    return render(request, 'inventory/consumable_detail.html', context)
 
 
 class PieceCreate(CreateView):
