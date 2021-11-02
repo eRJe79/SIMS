@@ -513,13 +513,15 @@ def show_instance_assembly_list(request):
     # We create 2 lists to regroup objects from pieceInstance and Kit
     myinstancelist=[]
     myassemblylist=[]
+    myconsumablelist=[]
     for i in PieceInstance.objects.all():
         myinstancelist.append(i)
     for i in Kit.objects.all():
         myassemblylist.append(i)
-    print(myinstancelist, myassemblylist)
+    for i in Consumable.objects.all():
+        myconsumablelist.append(i)
     # We assemble one list under one for display purpose
-    mylist = (myinstancelist + myassemblylist)
+    mylist = (myinstancelist + myassemblylist + myconsumablelist)
     print(mylist)
     context = {'mylist': mylist}
     return render(request, 'inventory/general_list.html', context)

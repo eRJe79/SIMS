@@ -71,6 +71,29 @@ action="{%url 'search-general-database' %}">
 	        {% endif %}
 	        <td><a href="{% url 'update-piece-instance' item.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
             <td><a href="{% url 'instance-clone' item.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
+		 {% elif item.quantity %}
+            <td><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></td>
+            <td>{{ NA }}</td>
+            <td>{{ item.cae_part_number }}</td>
+            <td>{{ item.serial_number }}</td>
+            <td>{{ item.status }}</td>
+            {% if item.eighth_location %}
+	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}-{{item.sixth_location|default_if_none:""}}-{{item.seventh_location|default_if_none:""}}-{{item.eighth_location|default_if_none:""}}</td>
+	        {% elif item.seventh_location %}
+	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}-{{item.sixth_location|default_if_none:""}}-{{item.seventh_location|default_if_none:""}}</td>
+	        {% elif item.sixth_location %}
+	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}-{{item.sixth_location|default_if_none:""}}</td>
+	        {% elif item.fifth_location %}
+	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}</td>
+	        {% elif item.fourth_location %}
+	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}</td>
+	        {% elif item.third_location %}
+	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}</td>
+	        {% else %}
+	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}</td>
+	        {% endif %}
+			<td><a href="{% url 'consumable-update' item.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+    		<td><a href="{% url 'consumable-clone' item.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
         {% endif %}
     </tr>
     {% endfor %}
