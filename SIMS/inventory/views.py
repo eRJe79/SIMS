@@ -202,12 +202,39 @@ def shipped_received_csv(request):
     # Loop Through instance and output
     for item in history:
         writer.writerow([item.history_date, item.status, item.piece, item.piece.cae_part_number, item.serial_number,
-                         item.update_document, item.piece.description, item.update_comment])
+                         item.piece.documentation, item.piece.description, item.update_comment])
+    return response
+
+def reparation_record_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=reparation_report.csv'
+    location = ''
+
+    # Create a csv writer
+    writer = csv.writer(response)
+    history = []
+    instances = PieceInstance.objects.all()
+
+    for instance in instances:
+        print(instance.time_spent_in_r_instance())
+        if instance.time_spent_in_r_instance():
+            history.append(instance)
+    print(history)
+    #list of all the history of the objects
+
+    # Add column headings to the csv file
+    writer.writerow(['Instance', 'CAE Part Number', 'CAE Serial Number', 'Documentation',
+                     'Description', 'Status',  'Time Spent in Reparation'])
+    # Loop Through instance and output
+    for item in history:
+        print(item.serial_number)
+        writer.writerow([item.piece, item.piece.cae_part_number, item.serial_number, item.piece.documentation,
+                         item.piece.description, item.status, item.time_spent_in_r_instance()])
     return response
 
 def movement_record_csv(request):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'
+    response['Content-Disposition'] = 'attachment; filename=movement_report.csv'
     location = ''
 
     # Create a csv writer
