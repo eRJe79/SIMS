@@ -3,6 +3,8 @@ from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
 
 from .views import (
+    ConsumableCreate,
+    show_consumable,
     PieceListView,
     show_instance_form,
     delete_instance,
@@ -59,6 +61,9 @@ urlpatterns = [
     path('search_groupassembly/', search_groupassembly_database, name='search-groupassembly-database'),
     path('search_assembly/', search_assembly_database, name='search-assembly-database'),
     path('search_general/', search_general_database, name='search-general-database'),
+
+    path('create_consumable/', ConsumableCreate.as_view(), name='consumable-create'),
+    path('consumable_detail/<primary_key>', show_consumable, name='consumable-detail'),
 
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),

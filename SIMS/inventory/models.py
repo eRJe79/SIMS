@@ -553,4 +553,167 @@ class Mptt(MPTTModel):
 
 
 
+# Class describing the instance of pieces with their specific attributes and methods
+class Consumable(models.Model):
+    """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
 
+    # Choices for the item owner
+    OWNER_CHOICE = (
+        ('CAE', 'CAE'),
+        ('Customer', 'RSAF'),
+        ('Other', 'other'),
+    )
+    # Choices for the restriction
+    RESTRICTION_CHOICE = (
+        ('ITAR', 'ITAR'),
+        ('Controlled', 'Controlled'),
+        ('None', 'Not Application')
+    )
+
+    # Choices for the piece status
+    STATUS_CHOICE = (
+        ('In Use', 'In Use'),
+        ('In Repair', 'In Repair'),
+        ('In Stock', 'In Stock'),
+        ('Installed', 'Installed'),
+        ('Discarded', 'Discarded'),
+        ('On Test', 'On Test'),
+        ('Received', 'Received'),
+        ('Shipped', 'Shipped'),
+        ('Waiting', 'Waiting'),
+    )
+    # Choices for the piece condition
+    CONDITIONS_CHOICE = (
+        ('Damaged', 'Damaged'),
+        ('New', 'New'),
+        ('Repaired', 'Repaired')
+    )
+
+    # Choices for the item type
+    TYPE_CHOICE = (
+        ('Original', 'original'),
+        ('Simulated', 'simulated'),
+        ('Modified', 'modified'),
+    )
+    # Choices for the item characteristic
+    CHARACTERISTIC_CHOICE = (
+        ('Sim Part', 'Sim part'),
+        ('Consumable', 'consumable'),
+        ('Tool', 'tool'),
+        ('PPE', 'ppe'),
+        ('Office', 'office'),
+        ('Building', 'building'),
+    )
+
+    name = models.CharField(max_length=120, null=True, blank=True)
+    piece_model = models.CharField(max_length=200, null=True, blank=True)
+
+    cae_part_number = models.CharField(max_length=200)
+    # Instance specific serial number, setting blank=True as it might not be required
+    serial_number = models.CharField(max_length=200, null=True, blank=False)
+
+    manufacturer = models.CharField(max_length=120, null=True, blank=True)
+    manufacturer_part_number = models.CharField(max_length=200, null=True, blank=True)
+    # Manufacturer and S/N
+    manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
+
+    provider = models.CharField(max_length=120, null=True, blank=True)
+    provider_part_number = models.CharField(max_length=200, null=True, blank=True)
+    # Provider information - an instance of a piece can be bought from different providers
+    provider_serialnumber = models.CharField(max_length=120, null=True, blank=True)
+
+    website = models.URLField(max_length=254, null=True, blank=True)
+
+    description = models.TextField(max_length=1000, null=True, blank=True)
+    documentation = models.FileField(upload_to='documents/documentation/', blank=True, null=True)
+
+    image = models.ImageField(upload_to='images', null=True, blank=True)
+
+    item_type = models.CharField(max_length=20, null=True, blank=True, choices=TYPE_CHOICE)
+    item_characteristic = models.CharField(max_length=20, null=True, blank=True, choices=CHARACTERISTIC_CHOICE)
+
+    is_rspl = models.BooleanField(default=False)  # Franck's account
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    # Quantity management
+    quantity = models.BigIntegerField(default=0)
+    low_stock_value = models.BigIntegerField(default=0)
+
+    # Date management
+    # Date where the instance is created (set at creation and never updated then)
+    date_created = models.DateField(auto_now_add=True)
+    # Date of update: this date changes at update and the history is kept - automatic set
+    date_update = models.DateField(auto_now=True)
+
+    update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
+    update_document = models.FileField(upload_to='documents/update/', blank=True, null=True)
+
+    first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
+    second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)
+    third_location = models.ForeignKey(Third_location, on_delete=models.SET_NULL, null=True, blank=True)
+    fourth_location = models.ForeignKey(Fourth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    fifth_location = models.ForeignKey(Fifth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    sixth_location = models.ForeignKey(Sixth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    seventh_location = models.ForeignKey(Seventh_location, on_delete=models.SET_NULL, null=True, blank=True)
+    eighth_location = models.ForeignKey(Eighth_location, on_delete=models.SET_NULL, null=True, blank=True)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICE,
+        blank=True,
+        default='',
+    )
+
+    condition = models.CharField(
+        max_length=20,
+        choices=CONDITIONS_CHOICE,
+        blank=True,
+        default='New',
+    )
+
+    restriction = models.CharField(
+        max_length=20,
+        choices=RESTRICTION_CHOICE,
+        blank=True,
+        default='None',
+        help_text='Piece restriction access',
+    )
+
+    owner = models.CharField(
+        max_length=20,
+        choices=OWNER_CHOICE,
+        blank=True,
+        default='CAE',
+        help_text='Piece owner',
+    )
+
+    # History log
+    history = HistoricalRecords()
+
+    # Default method to access the PieceInstance
+    def __str__(self):
+        return self.name
+
+    # This method is used is some templates to have link directed to the piece instance detail
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this piece instance."""
+        return reverse('consumable-detail', args=[str(self.id)])
+
+    # We check if we have less consumables than the recommended stock
+    def is_low_stock(self):
+        if self.quantity <= self.low_stock_value:
+            return True
+        else:
+            return False
+
+    def get_history(self):
+        history = self.history.all()
+        # we get only the three last history iterations
+        if len(history) == 1:
+            myhistory = history
+        elif len(history) == 2:
+             myhistory = (history[0], history[1])
+        else:
+             myhistory = (history[0], history[1], history[2])
+        print(len(history))
+        return myhistory

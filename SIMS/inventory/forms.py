@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 
-from .models import Piece, PieceInstance, Kit, MovementExchange, GroupAssembly, Equivalence, Mptt, First_location,\
+from .models import Piece, PieceInstance, Kit, MovementExchange, GroupAssembly, Equivalence, Consumable,\
     Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location, Eighth_location
 
 class PieceForm(forms.ModelForm):
@@ -455,6 +455,157 @@ class KitForm(ModelForm):
         elif self.instance.pk and self.instance.seventh_location:
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by(
                 'name')
+
+class ConsumableForm(forms.ModelForm):
+    class Meta:
+        model = Consumable
+        fields = ['name', 'cae_part_number', 'serial_number', 'manufacturer', 'manufacturer_part_number',
+                  'manufacturer_serialnumber', 'provider', 'provider_part_number', 'provider_serialnumber',
+                  'quantity', 'low_stock_value', 'website',
+                  'description', 'documentation', 'image',  'item_type', 'item_characteristic', 'is_rspl',
+                  'first_location', 'second_location', 'third_location', 'fourth_location', 'fifth_location',
+                  'sixth_location', 'seventh_location', 'eighth_location', 'status', 'condition', 'restriction',
+                  'owner', 'update_comment', 'update_document']
+        labels = {
+            'name': 'Name',
+            'cae_part_number': 'CAE Part Number',
+            'serial_number': 'CAE Serial Number',
+            'manufacturer': 'Manufacturer',
+            'manufacturer_part_number': 'Manufacturer Part Number',
+            'manufacturer_serialnumber': 'Manufacturer Serial Number',
+            'provider': 'OEM',
+            'provider_part_number': 'OEM Part Number',
+            'provider_serialnumber': 'OEM Serial Number',
+            'quantity': 'Quantity available',
+            'low_stock_value': 'Recommended stock',
+            'website': 'Website',
+            'description': 'Description',
+            'documentation': 'Documentation',
+            'item_type': 'Type',
+            'item_characteristic': 'Characteristic',
+            'is_rspl': 'RSPL',
+            'first_location': 'First Location',
+            'second_location': 'Second Location',
+            'third_location': 'Third Location',
+            'fourth_location': 'Fourth Location',
+            'fifth_location': 'Fifth Location',
+            'sixth_location': 'Sixth Location',
+            'seventh_location': 'Seventh Location',
+            'eighth_location': 'Eighth Location',
+            'status': 'Status',
+            'condition': 'Condition',
+            'owner': 'Owner',
+            'restriction': 'Restriction',
+            'update_comment': 'Update Comment',
+            'update_document': 'Additional/Update Document'
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Name'}),
+            'cae_part_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Part Number'}),
+            'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
+            'manufacturer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Manufacturer name'}),
+            'manufacturer_part_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Manufacturer Part Number'}),
+            'manufacturer_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Manufacturer Serial Number'}),
+            'provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the OEM name'}),
+            'provider_part_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the OEM Part Number'}),
+            'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the OEM Serial Number'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the available quantity'}),
+            'low_stock_value': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the recommended stock'}),
+            'website': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://www.website.com'}),
+            'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter a brief description of the piece'}),
+            'documentation': forms.ClearableFileInput(attrs={'multiple': True}),
+            'item_type': forms.Select(attrs={'class': 'form-select'}),
+            'item_characteristic': forms.Select(attrs={'class': 'form-select'}),
+            'is_rspl': forms.CheckboxInput(),
+            'first_location': forms.Select(attrs={'class': 'form-select'}),
+            'second_location': forms.Select(attrs={'class': 'form-select'}),
+            'third_location': forms.Select(attrs={'class': 'form-select'}),
+            'fourth_location': forms.Select(attrs={'class': 'form-select'}),
+            'fifth_location': forms.Select(attrs={'class': 'form-select'}),
+            'sixth_location': forms.Select(attrs={'class': 'form-select'}),
+            'seventh_location': forms.Select(attrs={'class': 'form-select'}),
+            'eighth_location': forms.Select(attrs={'class': 'form-select'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
+            'condition': forms.Select(attrs={'class': 'form-select'}),
+            'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),
+            'restriction': forms.Select(attrs={'class': 'form-select', 'id': 'restriction'}),
+            'update_comment': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment'}),
+            'update_document': forms.ClearableFileInput(attrs={'multiple': True, 'id': 'update_document'}),
+        }
+
+        # We override the init method to have location choices dependent on each other
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['second_location'].queryset = Second_location.objects.none()
+        self.fields['third_location'].queryset = Third_location.objects.none()
+        self.fields['fourth_location'].queryset = Fourth_location.objects.none()
+        self.fields['fifth_location'].queryset = Fifth_location.objects.none()
+        self.fields['sixth_location'].queryset = Sixth_location.objects.none()
+        self.fields['seventh_location'].queryset = Seventh_location.objects.none()
+        self.fields['eighth_location'].queryset = Eighth_location.objects.none()
+
+        if 'first_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('first_location'))
+                self.fields['second_location'].queryset = Second_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk and self.instance.first_location:
+            self.fields['second_location'].queryset = self.instance.first_location.second_location_set.order_by('name')
+
+        if 'second_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('second_location'))
+                self.fields['third_location'].queryset = Third_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk and self.instance.second_location:
+            self.fields['third_location'].queryset = self.instance.second_location.third_location_set.order_by('name')
+
+        if 'third_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('third_location'))
+                self.fields['fourth_location'].queryset = Fourth_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk and self.instance.third_location:
+            self.fields['fourth_location'].queryset = self.instance.third_location.fourth_location_set.order_by('name')
+
+        if 'fourth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('fourth_location'))
+                self.fields['fifth_location'].queryset = Fifth_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk and self.instance.fourth_location:
+            self.fields['fifth_location'].queryset = self.instance.fourth_location.fifth_location_set.order_by('name')
+
+        if 'fifth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('fifth_location'))
+                self.fields['sixth_location'].queryset = Sixth_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk and self.instance.fifth_location:
+            self.fields['sixth_location'].queryset = self.instance.fifth_location.sixth_location_set.order_by('name')
+
+        if 'sixth_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('sixth_location'))
+                self.fields['seventh_location'].queryset = Seventh_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk and self.instance.sixth_location:
+            self.fields['seventh_location'].queryset = self.instance.sixth_location.seventh_location_set.order_by('name')
+
+        if 'seventh_location' in self.data:
+            try:
+                previous_loc_id = int(self.data.get('seventh_location'))
+                self.fields['eighth_location'].queryset = Eighth_location.objects.filter(previous_loc_id=previous_loc_id).order_by('name')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk and self.instance.seventh_location:
+            self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by('name')
 
 KitGroupAssemblyFormSet = inlineformset_factory(GroupAssembly, Kit, form=KitForm, extra=1)
 PieceInstancePieceFormSet = inlineformset_factory(Piece, PieceInstance, form=PieceInstanceForm, extra=1)
