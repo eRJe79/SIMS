@@ -402,6 +402,27 @@ class PieceInstance(models.Model):
             waiting = False
         return waiting
 
+    def time_spent_in_r_instance(self):
+        history = self.history.all()
+        initial_time = self.date_created
+        amount_spent_in_r = 0
+        mysize = len(history)
+        myhistory = []
+        for i in range(mysize):
+            myhistory.append(history[mysize-i-1])
+        for h in myhistory:
+            print("Step")
+            print(h.status)
+            if h.status == 'In Repair':
+                initial_time = h.history_date.date()
+                print(initial_time)
+            else:
+                print(initial_time)
+                print(h.history_date.date())
+                amount_spent_in_r = h.history_date.date() - initial_time
+                print(amount_spent_in_r.days)
+        return amount_spent_in_r.days
+
     def get_history(self):
         history = self.history.all()
         # we get only the three last history iterations

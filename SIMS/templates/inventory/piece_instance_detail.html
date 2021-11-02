@@ -27,6 +27,7 @@
   		<p><strong>Date Created: </strong> {{ piece_instance.date_created }}</p>
   		<p><strong>Next Calibration: </strong> {{ piece_instance.next_calibration }}</p>
   		<p><strong>End of Life: </strong> {{ piece_instance.date_end_of_life }}</p>
+  		<p><strong>Time spent in reparation: </strong> {{ piece_instance.time_spent_in_r_instance }} days</p>
         <p><strong>Location: </strong>{% if piece_instance.eighth_location %}
             <td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}-{{piece_instance.sixth_location|default_if_none:""}}-{{piece_instance.seventh_location|default_if_none:""}}-{{piece_instance.eighth_location|default_if_none:""}}</td>
         {% elif piece_instance.seventh_location %}
