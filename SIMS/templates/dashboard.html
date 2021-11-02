@@ -48,6 +48,47 @@
     </tr>
     {% endfor %}
 </table>
+
+<table class="table table-light table-striped">
+    <div class="card-header">
+    <strong>Low stock</strong>
+  	</div>
+    <thead>
+    <tr>
+    <th><p>Name</p></th>
+    <th><p>Quantity</p></th>
+    <th><p>Threshold</p></th>
+    <th><p>Part Number</p></th>
+    <th><p>Serial Number</p></th>
+    <th><p>Location</p></th>
+    </tr>
+    </thead>
+    {% for instance in consumable_list %}
+    <tr class="datarow">
+            <td>{{ instance.name }}</td>
+            <td>{{ instance.quantity }}</td>
+            <td>{{ instance.low_stock_value}}</td>
+            <td>{{ instance.cae_part_number}}</td>
+            <td>{{ instance.serial_number}}</td>
+            {% if instance.eighth_location %}
+                <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}-{{instance.sixth_location|default_if_none:""}}-{{instance.seventh_location|default_if_none:""}}-{{instance.eighth_location|default_if_none:""}}</td>
+            {% elif instance.seventh_location %}
+                <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}-{{instance.sixth_location|default_if_none:""}}-{{instance.seventh_location|default_if_none:""}}</td>
+            {% elif instance.sixth_location %}
+                <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}-{{instance.sixth_location|default_if_none:""}}</td>
+            {% elif instance.fifth_location %}
+                <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}-{{instance.fifth_location|default_if_none:""}}</td>
+            {% elif instance.fourth_location %}
+                <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}-{{instance.fourth_location|default_if_none:""}}</td>
+            {% elif instance.third_location %}
+                <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}-{{instance.third_location|default_if_none:""}}</td>
+            {% else %}
+                <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}</td>
+            {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
 <table class="table table-light table-striped">
     <div class="card-header">
     <strong>Pieces in reparation</strong>
@@ -86,6 +127,7 @@
     </tr>
     {% endfor %}
 </table>
+
 <table class="table table-light table-striped">
     <div class="card-header">
     <strong>Pieces in Waiting Zone</strong>
