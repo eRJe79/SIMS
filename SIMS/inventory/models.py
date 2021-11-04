@@ -516,7 +516,15 @@ class MovementExchange(models.Model):
     piece_2 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='piece_2', null=True, blank=False)
     item_1 = models.ForeignKey(PieceInstance, on_delete=models.SET_NULL, related_name='item_1', null=True, blank=False)
     item_2 = models.ForeignKey(PieceInstance, on_delete=models.SET_NULL, related_name='item_2', null=True, blank=False)
-
+    old_first_location = models.ForeignKey(First_location, on_delete=models.SET_NULL, null=True, blank=True)
+    old_second_location = models.ForeignKey(Second_location, on_delete=models.SET_NULL, null=True, blank=True)
+    old_third_location = models.ForeignKey(Third_location, on_delete=models.SET_NULL, null=True, blank=True)
+    old_fourth_location = models.ForeignKey(Fourth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    old_fifth_location = models.ForeignKey(Fifth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    old_sixth_location = models.ForeignKey(Sixth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    old_seventh_location = models.ForeignKey(Seventh_location, on_delete=models.SET_NULL, null=True, blank=True)
+    old_eighth_location = models.ForeignKey(Eighth_location, on_delete=models.SET_NULL, null=True, blank=True)
+    old_status = models.CharField(max_length=120, blank=True, null=False)
     # Reference number of the Exchange
     reference_number = models.CharField(max_length=120, blank=True, null=False)
 

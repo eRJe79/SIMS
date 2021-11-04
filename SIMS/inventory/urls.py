@@ -50,6 +50,7 @@ from .views import (
     movement_exchange,
     movement_detail,
     movement_list,
+    movement_revert,
     show_instance_assembly_list,
     create_equivalence,
     EquivalenceListView,
@@ -118,6 +119,7 @@ urlpatterns = [
     path('movement_choice/', movement_exchange, name='movement-choice'),
     path('movement_detail/<primary_key>', movement_detail, name='movement-detail'),
     path('movement_list', movement_list, name="movement-list"),
+    path('movement_revert/<movement_id>', movement_revert, name='movement_revert'),
 
     path('tree', tree, name='tree'),
 

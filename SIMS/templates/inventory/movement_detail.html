@@ -18,4 +18,11 @@
   </div>
 </div>
 
+{% if show_button %}
+<form class="d-flex" method="POST"
+action="{%url 'movement_revert' movement.id %}">
+    {% csrf_token %}
+    <button class="btn btn-outline-secondary" type="submit"> Revert </button>
+</form>
+{% endif %}
 {% endblock %}
