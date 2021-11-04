@@ -186,26 +186,30 @@ def shipped_received_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'
     location = ''
+    if request.method == "POST":
+        date1 = request.POST.get('sr_start_date')
+        date2 = request.POST.get('sr_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        # Create a csv writer
+        writer = csv.writer(response)
+        history = []
+        instances = PieceInstance.objects.all()
 
-    # Create a csv writer
-    writer = csv.writer(response)
-    history = []
-    instances = PieceInstance.objects.all()
+        for instance in instances:
+            myhistory = instance.history.all()
+            for h in myhistory:
+                if start_date <= h.history_date.date() <= end_date:
+                    if h.status == 'Shipped' or h.status == 'Received':
+                        history.append(h)
+        #list of all the history of the objects
 
-    for instance in instances:
-        myhistory = instance.history.all()
-        for h in myhistory:
-            if h.status == 'Shipped' or h.status == 'Received':
-                history.append(h)
-    #list of all the history of the objects
-
-    # Add column headings to the csv file
-    writer.writerow(['Date', 'Status', 'Piece/Assembly', 'CAE Part Number', 'CAE Serial Number', 'Documentation',
-                     'Description', 'Comment'])
-    print(history)
-    # Loop Through instance and output
-    for item in history:
-        writer.writerow([item.history_date, item.status, item.piece, item.piece.cae_part_number, item.serial_number,
+        # Add column headings to the csv file
+        writer.writerow(['Date', 'Status', 'Piece/Assembly', 'CAE Part Number', 'CAE Serial Number', 'Documentation',
+                        'Description', 'Comment'])
+        # Loop Through instance and output
+        for item in history:
+            writer.writerow([item.history_date, item.status, item.piece, item.piece.cae_part_number, item.serial_number,
                          item.piece.documentation, item.piece.description, item.update_comment])
     return response
 
