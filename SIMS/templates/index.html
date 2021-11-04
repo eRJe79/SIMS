@@ -8,11 +8,10 @@
   <ul>
     <li><strong>Pieces:</strong> {{ num_pieces }}</li>
   </ul>
+<br></br>
+<h4>Reporting section</h4>
   <p><a class="nav-link" href="{% url 'database_csv' %}">Generate Database CSV File</a></p>
-  <p><a class="nav-link" href="{% url 'shipped_received_csv' %}"></a></p>
   <p><a class="nav-link" href="{% url 'low_stock_record_csv' %}">Low Stock Report</a></p>
-
-
 <br>
 <h5>Shipped-Received Report</h5>
 <form class="d-flex" method="POST" action="{%url 'shipped_received_csv' %}">
