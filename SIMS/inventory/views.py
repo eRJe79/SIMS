@@ -16,7 +16,9 @@ from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineForm
 from django.utils.translation import ugettext as _
 from django.db.models import Q
 
+import pandas as pd
 
+from . import models
 from .models import (
     Consumable,
     Equivalence,
@@ -211,59 +213,68 @@ def reparation_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=reparation_report.csv'
     location = ''
+    if request.method == "POST":
+        date1 = request.POST.get('rep_start_date')
+        date2 = request.POST.get('rep_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        # Create a csv writer
+        writer = csv.writer(response)
+        history = []
+        instances = PieceInstance.objects.all()
+        for instance in instances:
+            if instance.time_spent_in_r_instance():
+                myhistory = instance.history.all()
+                # We check that the hitory is between the start and end date
+                for h in myhistory:
+                    if start_date <= h.history_date.date() <= end_date:
+                        history.append(h)
+        #list of all the history of the objects
 
-    # Create a csv writer
-    writer = csv.writer(response)
-    history = []
-    instances = PieceInstance.objects.all()
-
-    for instance in instances:
-        print(instance.time_spent_in_r_instance())
-        if instance.time_spent_in_r_instance():
-            history.append(instance)
-    print(history)
-    #list of all the history of the objects
-
-    # Add column headings to the csv file
-    writer.writerow(['Instance', 'CAE Part Number', 'CAE Serial Number', 'Documentation',
-                     'Description', 'Status',  'Time Spent in Reparation'])
-    # Loop Through instance and output
-    for item in history:
-        print(item.serial_number)
-        writer.writerow([item.piece, item.piece.cae_part_number, item.serial_number, item.piece.documentation,
-                         item.piece.description, item.status, item.time_spent_in_r_instance()])
+        # Add column headings to the csv file
+        writer.writerow(['Instance', 'CAE Part Number', 'CAE Serial Number', 'Documentation',
+                     'Description', 'Date Sent to Reparation'])
+        # Loop Through instance and output
+        for item in history:
+            writer.writerow([item.piece, item.piece.cae_part_number, item.serial_number, item.piece.documentation,
+                            item.piece.description, item.history_date.date()])
     return response
 
 def movement_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=movement_report.csv'
     location = ''
+    if request.method == "POST":
+        date1 = request.POST.get('mov_start_date')
+        date2 = request.POST.get('mov_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
 
-    # Create a csv writer
-    writer = csv.writer(response)
-    history = []
-    movements = MovementExchange.objects.all()
+        # Create a csv writer
+        writer = csv.writer(response)
+        history = []
+        movements = MovementExchange.objects.all()
 
-    for movement in movements:
-        myhistory = movement.history.all()
-        for h in myhistory:
-            history.append(h)
-    #list of all the history of the objects
+        for movement in movements:
+            myhistory = movement.history.all()
+            for h in myhistory:
+                if start_date <= h.history_date.date() <= end_date:
+                    history.append(h)
+        #list of all the history of the objects
 
-    # Add column headings to the csv file
-    writer.writerow(['Date', 'Reference Number',
-                     'Piece Exchanged', 'PE CAE Part Number', 'PE CAE Serial Number', 'PE Comment',
-                     'Replacing Piece', 'PE CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
-                     ])
-    print(history)
-    # Loop Through instance and output
-    for item in history:
-        writer.writerow([item.history_date, item.reference_number,
-                         item.piece_1, item.piece_1.cae_part_number, item.item_1.serial_number,
-                         item.update_comment_item1,
-                         item.piece_2, item.piece_2.cae_part_number, item.item_2.serial_number,
-                         item.update_comment_item2,
-                         ])
+        # Add column headings to the csv file
+        writer.writerow(['Date', 'Reference Number',
+                        'Piece Exchanged', 'PE CAE Part Number', 'PE CAE Serial Number', 'PE Comment',
+                        'Replacing Piece', 'PE CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
+                        ])
+        # Loop Through instance and output
+        for item in history:
+            writer.writerow([item.history_date, item.reference_number,
+                            item.piece_1, item.piece_1.cae_part_number, item.item_1.serial_number,
+                            item.update_comment_item1,
+                            item.piece_2, item.piece_2.cae_part_number, item.item_2.serial_number,
+                            item.update_comment_item2,
+                            ])
     return response
 
 # Generate Low Stock record
@@ -674,6 +685,7 @@ def search_consumable_database(request):
         return render(request, 'inventory/search_consumable.html', context)
     else:
         return render(request, 'inventory/search_consumable.html', {})
+
 # Specific to piece
 def search_piece_database(request):
     if request.method == "POST":

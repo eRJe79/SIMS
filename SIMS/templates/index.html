@@ -10,7 +10,29 @@
   </ul>
   <p><a class="nav-link" href="{% url 'database_csv' %}">Generate Database CSV File</a></p>
   <p><a class="nav-link" href="{% url 'shipped_received_csv' %}">Generate Database Shipped-Received Report</a></p>
-  <p><a class="nav-link" href="{% url 'movement_record_csv' %}">Generate Movement Report</a></p>
-  <p><a class="nav-link" href="{% url 'reparation_record_csv' %}">Piece in Reparation Report</a></p>
   <p><a class="nav-link" href="{% url 'low_stock_record_csv' %}">Low Stock Report</a></p>
+
+<br>
+<h5>Reparation Report</h5>
+<form class="d-flex" method="POST" action="{%url 'reparation_record_csv' %}">
+  {% csrf_token %}
+       <label for="rep_start_date">From: </label>
+	        <input type="date" name="rep_start_date" id="rep_start_date">
+       <label for="rep_end_date">To: </label>
+	        <input type="date" name="rep_end_date" id="rep_end_date">
+      <button class="btn btn-outline-secondary" type="submit"> Generate Reparation Report </button>
+</form>
+</br>
+<br>
+<h5>Movement Report</h5>
+<form class="d-flex" method="POST" action="{%url 'movement_record_csv' %}">
+  {% csrf_token %}
+       <label for="mov_start_date">From: </label>
+	        <input type="date" name="mov_start_date" id="mov_start_date">
+       <label for="mov_end_date">To: </label>
+	        <input type="date" name="mov_end_date" id="mov_end_date">
+      <button class="btn btn-outline-secondary" type="submit"> Generate Movement Report</button>
+</form>
+</br>
+
 {% endblock %}
