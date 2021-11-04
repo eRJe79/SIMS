@@ -999,6 +999,16 @@ def movement_exchange(request):
     }
     if form.is_valid():
         obj = form.save(commit=False)
+        # Store old location and status
+        obj.old_first_location = obj.item_2.first_location
+        obj.old_second_location = obj.item_2.second_location
+        obj.old_third_location = obj.item_2.third_location
+        obj.old_fourth_location = obj.item_2.fourth_location
+        obj.old_fifth_location = obj.item_2.fifth_location
+        obj.old_sixth_location = obj.item_2.sixth_location
+        obj.old_seventh_location = obj.item_2.seventh_location
+        obj.old_eighth_location = obj.item_2.eighth_location
+        obj.old_status = obj.item_2.status
         # Update location of the item being replaced with the item it replaces
         obj.item_2.first_location = obj.item_1.first_location
         obj.item_2.second_location = obj.item_1.second_location
@@ -1043,6 +1053,37 @@ def movement_list(request):
     movements = MovementExchange.objects.order_by('date_created')
     context = {'movements': movements}
     return render(request, 'inventory/movement_list.html', context)
+
+def movement_revert(request, movement_id):
+    movement = MovementExchange.objects.get(id=movement_id)
+    print(movement.item_1.first_location )
+    movement.item_1.first_location = movement.item_2.first_location
+    movement.item_1.second_location = movement.item_2.second_location
+    movement.item_1.third_location = movement.item_2.third_location
+    movement.item_1.fourth_location = movement.item_2.fourth_location
+    movement.item_1.fifth_location = movement.item_2.fifth_location
+    movement.item_1.sixth_location = movement.item_2.sixth_location
+    movement.item_1.seventh_location = movement.item_2.seventh_location
+    movement.item_1.eighth_location = movement.item_2.eighth_location
+    movement.item_1.status = movement.item_2.status
+    movement.item_1.save()
+    print(movement.item_1.first_location)
+    movement.item_2.first_location = movement.old_first_location
+    movement.item_2.second_location = movement.old_second_location
+    movement.item_2.third_location = movement.old_third_location
+    movement.item_2.fourth_location = movement.old_fourth_location
+    movement.item_2.fifth_location = movement.old_fifth_location
+    movement.item_2.sixth_location = movement.old_sixth_location
+    movement.item_2.seventh_location = movement.old_seventh_location
+    movement.item_2.eighth_location = movement.old_eighth_location
+    movement.item_2.status = movement.old_status
+    movement.item_2.save()
+    movement.revert_button = False
+    movement.save()
+
+    context = {'movement': movement}
+    return render(request, 'inventory/movement_detail.html', context)
+
 
 # Equivalence Management
 def create_equivalence(request):
