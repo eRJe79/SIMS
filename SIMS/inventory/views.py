@@ -1045,9 +1045,8 @@ def movement_exchange(request):
     return render(request, 'inventory/movement_choice.html', context)
 
 def movement_detail(request, primary_key):
-    show_button = True
     movement = MovementExchange.objects.get(pk=primary_key)
-    context = {'movement': movement, 'show_button': show_button}
+    context = {'movement': movement}
     return render(request, 'inventory/movement_detail.html', context)
 
 def movement_list(request):
@@ -1056,7 +1055,6 @@ def movement_list(request):
     return render(request, 'inventory/movement_list.html', context)
 
 def movement_revert(request, movement_id):
-    show_button = True
     movement = MovementExchange.objects.get(id=movement_id)
     print(movement.item_1.first_location )
     movement.item_1.first_location = movement.item_2.first_location
@@ -1080,10 +1078,10 @@ def movement_revert(request, movement_id):
     movement.item_2.eighth_location = movement.old_eighth_location
     movement.item_2.status = movement.old_status
     movement.item_2.save()
+    movement.revert_button = False
     movement.save()
-    show_button = False
 
-    context = {'movement': movement, 'show_button': show_button}
+    context = {'movement': movement}
     return render(request, 'inventory/movement_detail.html', context)
 
 

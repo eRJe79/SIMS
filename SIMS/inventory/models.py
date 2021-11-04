@@ -528,6 +528,10 @@ class MovementExchange(models.Model):
     # Reference number of the Exchange
     reference_number = models.CharField(max_length=120, blank=True, null=False)
 
+    # setting revert button to True by default
+    # will be put at False after fist reversion since we can only revert once
+    revert_button = models.BooleanField(default=True)
+
     update_comment_item1 = models.TextField(max_length=1000, blank=True, null=True)
     update_comment_item2 = models.TextField(max_length=1000, blank=True, null=True)
     # History log

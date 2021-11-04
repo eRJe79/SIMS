@@ -18,7 +18,7 @@
   </div>
 </div>
 
-{% if show_button %}
+{% if movement.revert_button %}
 <form class="d-flex" method="POST"
 action="{%url 'movement_revert' movement.id %}">
     {% csrf_token %}
