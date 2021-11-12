@@ -95,6 +95,7 @@
   	</div>
     <thead>
     <tr>
+    <th><p>Name</p></th>
     <th><p>Instance</p></th>
     <th><p>Model</p></th>
     <th><p>Piece</p></th>
@@ -105,7 +106,8 @@
     {% for instance in my_piece_instances %}
     <tr class="datarow">
         {% if instance.is_in_reparation %}
-            <td>{{ instance}}</td>
+            <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ instance.piece.name }}</a></td>
+            <td><a href="{{ piece_instance.get_absolute_url }}">{{ instance }}</a></td>
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
             {% if instance.eighth_location %}
