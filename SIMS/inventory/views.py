@@ -50,20 +50,22 @@ from .forms import (
     EquivalenceForm,
 )
 
+
 # Movement dependencies management
 def load_item_1(request):
-    print("item 1")
     piece_id = request.GET.get('piece')
-    print(piece_id)
-    items = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
-    print(items)
+    myitems = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+    # We don't want items that are in stock
+    items=[]
+    for item in myitems:
+        if item.status != 'In Stock':
+            items.append(item)
     return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
+
 
 def load_item_2(request):
     piece_id = request.GET.get('piece')
     myitems = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
-    items_instock = myitems.filter(status='In Stock')
-    items_ontest = myitems.filter(status='On Test')
     items = myitems.filter(Q(status='In Stock') | Q(status = 'On Test'))
     return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
 
@@ -74,35 +76,42 @@ def load_second_location(request):
     second_loc = Second_location.objects.filter(previous_loc_id=first_loc_id).order_by('name')
     return render(request, 'hr/second_loc_dropdown_list_options.html', {'second_loc': second_loc})
 
+
 def load_third_location(request):
     second_loc_id = request.GET.get('previous_loc')
     third_loc = Third_location.objects.filter(previous_loc_id=second_loc_id).order_by('name')
     return render(request, 'hr/third_loc_dropdown_list_options.html', {'third_loc': third_loc})
+
 
 def load_fourth_location(request):
     third_loc_id = request.GET.get('previous_loc')
     fourth_loc = Fourth_location.objects.filter(previous_loc_id=third_loc_id).order_by('name')
     return render(request, 'hr/fourth_loc_dropdown_list_options.html', {'fourth_loc': fourth_loc})
 
+
 def load_fifth_location(request):
     fourth_loc_id = request.GET.get('previous_loc')
     fifth_loc = Fifth_location.objects.filter(previous_loc_id=fourth_loc_id).order_by('name')
     return render(request, 'hr/fifth_loc_dropdown_list_options.html', {'fifth_loc': fifth_loc})
+
 
 def load_sixth_location(request):
     fifth_loc_id = request.GET.get('previous_loc')
     sixth_loc = Sixth_location.objects.filter(previous_loc_id=fifth_loc_id).order_by('name')
     return render(request, 'hr/sixth_loc_dropdown_list_options.html', {'sixth_loc': sixth_loc})
 
+
 def load_seventh_location(request):
     sixth_loc_id = request.GET.get('previous_loc')
     seventh_loc = Seventh_location.objects.filter(previous_loc_id=sixth_loc_id).order_by('name')
     return render(request, 'hr/seventh_loc_dropdown_list_options.html', {'seventh_loc': seventh_loc})
 
+
 def load_eighth_location(request):
     seventh_loc_id = request.GET.get('previous_loc')
     eighth_loc = Eighth_location.objects.filter(previous_loc_id=seventh_loc_id).order_by('name')
     return render(request, 'hr/eighth_loc_dropdown_list_options.html', {'eighth_loc': eighth_loc})
+
 
 # Export database to csv
 # Generate CSV File Instance List
