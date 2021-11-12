@@ -243,10 +243,10 @@ class MovementForm(ModelForm):
         labels = {
             'reference_number': 'Reference Number',
             'piece_1': 'Piece filter',
-            'item_1': 'Item being replaced',
+            'item_1': 'OUT',
             'update_comment_item1': 'Reason for item being replaced',
             'piece_2': 'Piece filter',
-            'item_2': 'Replacing item',
+            'item_2': 'IN',
             'update_comment_item2': 'Reason for item replacing',
         }
         widgets = {
