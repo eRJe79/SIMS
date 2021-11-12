@@ -495,6 +495,7 @@ def show_piece(request, primary_key):
                'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
     return render(request, 'inventory/piece_detail.html', context)
 
+
 class PieceInstanceCreate(CreateView):
     template_name = 'inventory/create_instance_piece.html'
     model = PieceInstance
@@ -521,7 +522,6 @@ class PieceInstanceCreate(CreateView):
             formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
             # the new formsets again -> if the process is addition!
             return render(request, 'inventory/formset.html', {'formset': formset})
-
         self.object = None
         form_class = self.get_form_class()
         form = PieceInstanceForm(request.POST, request.FILES)
@@ -569,6 +569,7 @@ def show_instance_form(request, primary_key):
     context = {'piece_instance': piece_instance, 'kit': kit}
     return render(request, 'inventory/piece_instance_detail.html', context)
 
+
 # Display instances and assembly as list
 def show_instance_assembly_list(request):
     # We create 2 lists to regroup objects from pieceInstance and Kit
@@ -587,6 +588,7 @@ def show_instance_assembly_list(request):
     context = {'mylist': mylist}
     return render(request, 'inventory/general_list.html', context)
 
+
 # Update a piece
 def update_piece(request, piece_id):
     piece = Piece.objects.get(pk=piece_id)
@@ -600,6 +602,7 @@ def update_piece(request, piece_id):
         form = PieceForm(instance=piece)
     context = {'piece': piece, 'form': form}
     return render(request, 'inventory/update_piece.html', context)
+
 
 # clone a piece
 def clone_piece(request, piece_id):
@@ -616,10 +619,11 @@ def clone_piece(request, piece_id):
     context = {'piece': piece, 'form': form}
     return render(request, 'inventory/clone_piece.html', context)
 
+
 # Update an instance
 def update_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
-    piece_instance.date_update = timezone.now()
+    piece_instance.date_update = datetime.date.today()
     piece_instance.update_comment = ''
     if request.method == "POST":
         form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
@@ -630,6 +634,7 @@ def update_instance(request, instance_id):
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form': form}
     return render(request, 'inventory/update_piece_instance.html', context)
+
 
 # clone an instance
 def clone_instance(request, instance_id):
@@ -645,6 +650,7 @@ def clone_instance(request, instance_id):
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form': form}
     return render(request, 'inventory/clone_existing_piece.html', context)
+
 
 # Delete an instance
 def delete_instance(request, instance_id):
@@ -1034,6 +1040,8 @@ def movement_exchange(request):
         # Both objects update comments take the comment of the movement
         obj.item_1.update_comment = obj.update_comment_item1
         obj.item_2.update_comment = obj.update_comment_item2
+        obj.item_1.date_update = datetime.date.today()
+        obj.item_2.date_update = datetime.date.today()
         # Save the objects
         print('is_valid')
         print(obj.item_1)
@@ -1044,15 +1052,18 @@ def movement_exchange(request):
         return redirect(obj.get_absolute_url())
     return render(request, 'inventory/movement_choice.html', context)
 
+
 def movement_detail(request, primary_key):
     movement = MovementExchange.objects.get(pk=primary_key)
     context = {'movement': movement}
     return render(request, 'inventory/movement_detail.html', context)
 
+
 def movement_list(request):
     movements = MovementExchange.objects.order_by('date_created')
     context = {'movements': movements}
     return render(request, 'inventory/movement_list.html', context)
+
 
 def movement_revert(request, movement_id):
     movement = MovementExchange.objects.get(id=movement_id)
@@ -1066,6 +1077,7 @@ def movement_revert(request, movement_id):
     movement.item_1.seventh_location = movement.item_2.seventh_location
     movement.item_1.eighth_location = movement.item_2.eighth_location
     movement.item_1.status = movement.item_2.status
+    movement.item_1.date_update = datetime.date.today()
     movement.item_1.save()
     print(movement.item_1.first_location)
     movement.item_2.first_location = movement.old_first_location
@@ -1077,6 +1089,7 @@ def movement_revert(request, movement_id):
     movement.item_2.seventh_location = movement.old_seventh_location
     movement.item_2.eighth_location = movement.old_eighth_location
     movement.item_2.status = movement.old_status
+    movement.item_2.date_update = datetime.date.today()
     movement.item_2.save()
     movement.revert_button = False
     movement.save()
