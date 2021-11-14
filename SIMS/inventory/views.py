@@ -56,7 +56,7 @@ def load_item_1(request):
     piece_id = request.GET.get('piece')
     myitems = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
     # We don't want items that are in stock
-    items=[]
+    items = []
     for item in myitems:
         if item.status != 'In Stock':
             items.append(item)
