@@ -95,17 +95,20 @@
   	</div>
     <thead>
     <tr>
+    <th><p>Name</p></th>
     <th><p>Instance</p></th>
     <th><p>Model</p></th>
     <th><p>Piece</p></th>
     <th><p>Location</p></th>
+    <th><p>Date</p></th>
     </tr>
     </thead>
 
     {% for instance in my_piece_instances %}
     <tr class="datarow">
         {% if instance.is_in_reparation %}
-            <td>{{ instance}}</td>
+            <td><a href="{{ instance.piece.get_absolute_url }}">{{ instance.piece.name }}</a></td>
+            <td><a href="{{ instance.get_absolute_url }}">{{ instance }}</a></td>
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
             {% if instance.eighth_location %}
@@ -123,6 +126,7 @@
             {% else %}
                 <td>{{instance.first_location}}-{{instance.second_location|default_if_none:""}}</td>
             {% endif %}
+            <td>{{ instance.date_update }}</td>
         {% endif %}
     </tr>
     {% endfor %}
@@ -138,6 +142,7 @@
     <th><p>Instance CAE Part Number</p></th>
     <th><p>Instance Model</p></th>
     <th><p>Piece</p></th>
+    <th><p>Date</p></th>
     </tr>
     </thead>
 
@@ -148,6 +153,7 @@
             <td>{{ instance.piece.cae_part_number}}</td>
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
+            <td>{{ instance.date_update }}</td>
         {% endif %}
     </tr>
     {% endfor %}
