@@ -1,6 +1,7 @@
 import csv
 import datetime
 
+import django_tables2
 from django.db import transaction
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -48,8 +49,13 @@ from .forms import (
     KitForm,
     MovementForm,
     EquivalenceForm,
+    PieceTable,
 )
 
+
+def piece_table_list(request):
+    table = PieceTable(Piece.objects.all())
+    return render(request, 'inventory/piece_list.html', {'table': table})
 
 # Movement dependencies management
 def load_item_1(request):

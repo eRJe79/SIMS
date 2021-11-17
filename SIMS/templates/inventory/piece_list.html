@@ -1,8 +1,10 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-  <h1>Equivalence List</h1>
+  <h1>Piece List</h1>
   <br/>
+{% load django_tables2 %}
+{% render_table table %}
   {% if piece_list %}
   <p>There are pieces in the inventory.</p>
 <form class="d-flex" method="POST"
@@ -12,34 +14,35 @@ action="{%url 'search-piece-database' %}">
            placeholder="Search Database" aria-label="Search" name="searched">
     <button class="btn btn-outline-secondary" type="submit"> Search </button>
 </form>
-<table class="table table-light table-striped">
-  <thead>
-    <tr>
-	<th>Name</th>
-	<th>CAE Part Number</th>
-	<th>Piece Model</th>
-	<th>Manufacturer</th>
-	<th>OEM</th>
-	<th>OEM Part Number</th>
-	<th>Documentation</th>
-	<th>Type</th>
-	<th>Characteristic</th>
-	</tr>
-  </thead>
-    {% for piece in piece_list %}
-    <tr class="datarow">
-      <td><a href="{{ piece.get_absolute_url }}">{{ piece.name }}</a></td>
-      <td>{{ piece.cae_part_number }}</td>
-      <td>{{ piece.piece_model }}</td>
-      <td>{{ piece.manufacturer }}</td>
-      <td>{{ piece.provider }}</td>
-      <td>{{ piece.provider_part_number }}</td>
-      <td><a href="{{MEDIA_URL}}{{ piece.documentation }}">{{ piece.documentation }}</a></td>
-      <td>{{ piece.item_type }}</td>
-      <td>{{ piece.item_characteristic }}</td>
-    </tr>
-    {% endfor %}
-</table>
+
+<!--<table class="table table-light table-striped">-->
+<!--  <thead>-->
+<!--    <tr>-->
+<!--	<th>Name</th>-->
+<!--	<th>CAE Part Number</th>-->
+<!--	<th>Piece Model</th>-->
+<!--	<th>Manufacturer</th>-->
+<!--	<th>OEM</th>-->
+<!--	<th>OEM Part Number</th>-->
+<!--	<th>Documentation</th>-->
+<!--	<th>Type</th>-->
+<!--	<th>Characteristic</th>-->
+<!--	</tr>-->
+<!--  </thead>-->
+<!--    {% for piece in piece_list %}-->
+<!--    <tr class="datarow">-->
+<!--      <td><a href="{{ piece.get_absolute_url }}">{{ piece.name }}</a></td>-->
+<!--      <td>{{ piece.cae_part_number }}</td>-->
+<!--      <td>{{ piece.piece_model }}</td>-->
+<!--      <td>{{ piece.manufacturer }}</td>-->
+<!--      <td>{{ piece.provider }}</td>-->
+<!--      <td>{{ piece.provider_part_number }}</td>-->
+<!--      <td><a href="{{MEDIA_URL}}{{ piece.documentation }}">{{ piece.documentation }}</a></td>-->
+<!--      <td>{{ piece.item_type }}</td>-->
+<!--      <td>{{ piece.item_characteristic }}</td>-->
+<!--    </tr>-->
+<!--    {% endfor %}-->
+<!--</table>-->
   {% else %}
     <p>There are no pieces in the inventory.</p>
   {% endif %}

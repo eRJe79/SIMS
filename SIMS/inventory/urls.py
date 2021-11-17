@@ -10,6 +10,7 @@ from .views import (
     update_consumable,
     clone_consumable,
     PieceListView,
+    piece_table_list,
     show_instance_form,
     delete_instance,
     PieceCreate,
@@ -77,7 +78,7 @@ urlpatterns = [
     path('clone_consumable/<consumable_id>', clone_consumable, name='consumable-clone'),
     path('consumable_history/<primary_key>', show_consumable_history, name='consumable-history'),
 
-    path('piece_list/', PieceListView.as_view(), name='piece'),
+    path('piece_list/', piece_table_list, name='piece'),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),
     path('inventory/create/', PieceCreate.as_view(), name='piece-create'),
     path('update_piece/<piece_id>', update_piece, name='update-piece'),
