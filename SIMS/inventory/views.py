@@ -940,8 +940,28 @@ class KitCreate(CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        self.object = form.save()
-        return HttpResponseRedirect(self.get_success_url())
+        instances = PieceInstance.objects.all()
+        kit = form.save(commit=False)
+        kit.save()
+        piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                          kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+        for item in piece_instance:
+            if item is not None:
+                for instance in instances:
+                    if instance == item:
+                        instance.update_comment = kit.update_comment
+                        instance.first_location = kit.first_location
+                        instance.second_location = kit.second_location
+                        instance.third_location = kit.third_location
+                        instance.fourth_location = kit.fourth_location
+                        instance.fifth_location = kit.fifth_location
+                        instance.sixth_location = kit.sixth_location
+                        instance.seventh_location = kit.seventh_location
+                        instance.eighth_location = kit.eighth_location
+                        instance.status = kit.kit_status
+                        instance.save()
+        return redirect(kit.get_absolute_url())
 
     def form_invalid(self, form):
         return self.render_to_response(
@@ -953,7 +973,7 @@ def update_kit(request, kit_id):
     kit = Kit.objects.get(pk=kit_id)
     kit.date_update = timezone.now()
     kit.update_comment = ''
-    instances=PieceInstance.objects.all()
+    instances = PieceInstance.objects.all()
     form = KitForm(request.POST or None, instance=kit)
     context = {
         'kit': kit,
@@ -998,6 +1018,7 @@ class KitList(ListView):
         context['kit'] = Kit.objects.all().order_by('-id')
         return context
 
+
 # Display a specific Kit
 def show_kit(request, primary_key):
     kit = Kit.objects.get(pk=primary_key)
@@ -1012,10 +1033,10 @@ def show_kit(request, primary_key):
 
 def movement_exchange(request):
     form = MovementForm(request.POST or None)
-    #items = PieceInstance.objects.all().order_by('serial_number')
+    # items = PieceInstance.objects.all().order_by('serial_number')
     context = {
         'form': form,
-        #'items': items,
+        # 'items': items,
     }
     if form.is_valid():
         obj = form.save(commit=False)
