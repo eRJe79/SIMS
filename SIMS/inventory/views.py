@@ -846,6 +846,7 @@ def search_general_database(request):
     else:
         return render(request, 'inventory/search_general.html', {})
 
+
 # Assembly Management Section
 # Create Group Assembly
 class GroupAssemblyCreate(CreateView):
@@ -892,6 +893,7 @@ class GroupAssemblyCreate(CreateView):
         return self.render_to_response(
             self.get_context_data(form=form))
 
+
 # Display a list of all the Pieces in the inventory
 class GroupAssemblyListView(ListView):
     model = GroupAssembly
@@ -905,6 +907,7 @@ class GroupAssemblyListView(ListView):
         context['groupassembly'] = GroupAssembly.objects.all().order_by('-id')
         return context
 
+
 # Display a specific Group Assembly
 def show_groupassembly(request, primary_key):
     groupassembly = GroupAssembly.objects.get(pk=primary_key)
@@ -912,7 +915,8 @@ def show_groupassembly(request, primary_key):
     context = {'groupassembly': groupassembly, 'kit': kit}
     return render(request, 'inventory/groupassembly_detail.html', context)
 
-#Create new assembly
+
+# Create new assembly
 class KitCreate(CreateView):
     template_name = 'inventory/kit_form.html'
     model = Kit
@@ -942,6 +946,7 @@ class KitCreate(CreateView):
     def form_invalid(self, form):
         return self.render_to_response(
             self.get_context_data(form=form))
+
 
 # Update an assembly
 def update_kit(request, kit_id):
@@ -1120,6 +1125,7 @@ def create_equivalence(request):
     }
     return render(request, 'inventory/create_equivalence.html', context)
 
+
 # Display a list of all the Pieces in the inventory
 class EquivalenceListView(ListView):
     model = Equivalence
@@ -1133,10 +1139,12 @@ class EquivalenceListView(ListView):
         context['equivalence'] = Equivalence.objects.all().order_by('-id')
         return context
 
+
 def equivalence_detail(request, primary_key):
     equivalence = Equivalence.objects.get(pk=primary_key)
     context = {'equivalence': equivalence}
     return render(request, 'inventory/equivalence_detail.html', context)
+
 
 # Update an instance
 def update_equivalence(request, equivalence_id):
@@ -1151,12 +1159,14 @@ def update_equivalence(request, equivalence_id):
     context = {'equivalence': equivalence, 'form': form}
     return render(request, 'inventory/equivalence_update.html', context)
 
+
 # Display history of specific Consumable
 def show_consumable_history(request, primary_key):
     consumable = Consumable.objects.get(pk=primary_key)
     history = consumable.history.all()
     context = {'history': history, 'consumable': consumable}
     return render(request, 'inventory/consumable_history.html', context)
+
 
 # Display history of a specific Piece
 def show_piece_history(request, primary_key):
@@ -1165,12 +1175,14 @@ def show_piece_history(request, primary_key):
     context = {'history': history, 'piece': piece}
     return render(request, 'inventory/piece_history.html', context)
 
+
 # Display history of a specific Instance
 def show_instance_history(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
     history = piece_instance.history.all()
     context = {'history': history, 'piece_instance': piece_instance}
     return render(request, 'inventory/instance_history.html', context)
+
 
 # Display history of a specific Assembly
 def show_assembly_history(request, primary_key):
