@@ -3,6 +3,11 @@ from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
 
 from .views import (
+    FilteredSingleTableView,
+    PieceFilteredSingleTableView,
+    PieceSingleTableView,
+    FilteredTableView,
+    FilterExListView,
     ConsumableCreate,
     show_consumable,
     consumable_list,
@@ -64,6 +69,7 @@ from .views import (
 )
 
 urlpatterns = [
+
     path('search_consumable/', search_consumable_database, name='search-consumable-database'),
     path('search/', search_piece_database, name='search-piece-database'),
     path('search_instance/', search_instance_database, name='search-instance-database'),
@@ -78,7 +84,11 @@ urlpatterns = [
     path('clone_consumable/<consumable_id>', clone_consumable, name='consumable-clone'),
     path('consumable_history/<primary_key>', show_consumable_history, name='consumable-history'),
 
-    path('piece_list/', piece_table_list, name='piece'),
+    path('piece_list/', PieceSingleTableView.as_view(), name='piece'),
+    url(r'^$', PieceFilteredSingleTableView.as_view() ),
+    url(r'^nofilter/$', PieceSingleTableView.as_view() ),
+    url(r'^filter2/$', FilteredTableView.as_view() ),
+    url(r'^filter_ex/$', FilterExListView.as_view() ),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),
     path('inventory/create/', PieceCreate.as_view(), name='piece-create'),
     path('update_piece/<piece_id>', update_piece, name='update-piece'),

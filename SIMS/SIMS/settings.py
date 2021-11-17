@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'extra_views',
     'qr_code',
     'django_tables2',
+    'django_filters',
     'inventory.apps.InventoryConfig',
     'users.apps.UsersConfig',
     'simple_history',

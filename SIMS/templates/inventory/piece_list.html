@@ -3,17 +3,32 @@
 {% block content %}
   <h1>Piece List</h1>
   <br/>
-{% load django_tables2 %}
-{% render_table table %}
-  {% if piece_list %}
-  <p>There are pieces in the inventory.</p>
-<form class="d-flex" method="POST"
-action="{%url 'search-piece-database' %}">
-    {% csrf_token %}
-    <input class="form-control me-2" type="search"
-           placeholder="Search Database" aria-label="Search" name="searched">
-    <button class="btn btn-outline-secondary" type="submit"> Search </button>
+{% load render_table from django_tables2 %}
+<html>
+<body>
+<form method='GET'>
+    {{ filter.form }}
+<!--    <input type='submit' value='Filter' />-->
+<!--    |-->
+<!--    Displaying {{ filter.qs.count }} of {{ filter.queryset.count }} items.-->
+<!--    |-->
+    <a href='{{ request.path }}' >Clear filtering</a>
 </form>
+{% if table %}
+    {% render_table table %}
+{% endif %}
+
+</body>
+</html>
+<!--  {% if piece_list %}-->
+<!--  <p>There are pieces in the inventory.</p>-->
+<!--<form class="d-flex" method="POST"-->
+<!--action="{%url 'search-piece-database' %}">-->
+<!--    {% csrf_token %}-->
+<!--    <input class="form-control me-2" type="search"-->
+<!--           placeholder="Search Database" aria-label="Search" name="searched">-->
+<!--    <button class="btn btn-outline-secondary" type="submit"> Search </button>-->
+<!--</form>-->
 
 <!--<table class="table table-light table-striped">-->
 <!--  <thead>-->
@@ -43,7 +58,7 @@ action="{%url 'search-piece-database' %}">
 <!--    </tr>-->
 <!--    {% endfor %}-->
 <!--</table>-->
-  {% else %}
-    <p>There are no pieces in the inventory.</p>
-  {% endif %}
+<!--  {% else %}-->
+<!--    <p>There are no pieces in the inventory.</p>-->
+<!--  {% endif %}-->
 {% endblock %}

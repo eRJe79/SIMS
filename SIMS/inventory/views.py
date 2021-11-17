@@ -19,6 +19,14 @@ from django.db.models import Q
 
 import pandas as pd
 
+from .tables import (
+    PieceTable,
+)
+
+from .filters import (
+    PieceFilterEx,
+)
+
 from . import models
 from .models import (
     Consumable,
@@ -49,13 +57,69 @@ from .forms import (
     KitForm,
     MovementForm,
     EquivalenceForm,
-    PieceTable,
 )
+
+
+class FilteredSingleTableView(django_tables2.SingleTableView):
+    filter_class = None
+
+    def get_table_data(self):
+        data = super(FilteredSingleTableView, self).get_table_data()
+        self.filter = self.filter_class(self.request.GET, queryset=data)
+        return self.filter.qs
+
+    def get_context_data(self, **kwargs):
+        context = super(FilteredSingleTableView, self).get_context_data(**kwargs)
+        context['filter'] = self.filter
+        return context
+
+
+class PieceFilteredSingleTableView(FilteredSingleTableView):
+    model = Piece
+    table_class = PieceTable
+    filter_class = PieceFilterEx
+
+
+class PieceSingleTableView(django_tables2.SingleTableView):
+    model = Piece
+    table_class = PieceTable
+
+
+class FilteredTableView(ListView):
+    model = Piece
+
+    def get_context_data(self, **kwargs):
+        context = super(FilteredTableView, self).get_context_data(**kwargs)
+        filter = PieceFilterEx(self.request.GET, queryset=self.object_list)
+
+        table = PieceTable(filter.qs)
+        django_tables2.RequestConfig(self.request, ).configure(table)
+
+        context['filter'] = filter
+        context['table'] = table
+        return context
+
+
+class FilterExListView(ListView):
+    model = Piece
+
+    def get_context_data(self, **kwargs):
+        context = super(FilterExListView, self).get_context_data(**kwargs)
+        filter = PieceFilterEx(self.request.GET, queryset=self.object_list)
+
+        table = PieceTable(filter.qs)
+        django_tables2.RequestConfig(self.request, ).configure(table)
+
+        context['filter'] = filter
+        context['table'] = table
+
+        return context
 
 
 def piece_table_list(request):
     table = PieceTable(Piece.objects.all())
     return render(request, 'inventory/piece_list.html', {'table': table})
+
 
 # Movement dependencies management
 def load_item_1(request):

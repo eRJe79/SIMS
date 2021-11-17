@@ -3,8 +3,6 @@ import datetime
 from django import forms
 from django.conf import settings
 from django.forms import ModelForm, inlineformset_factory, CheckboxInput
-import django_tables2 as tables
-
 from .models import Piece, PieceInstance, Kit, MovementExchange, GroupAssembly, Equivalence, Consumable,\
     Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location, Eighth_location
 
@@ -617,14 +615,6 @@ class DateForm(forms.Form):
             'data-target': '#datetimepicker1'
         })
     )
-
-
-class PieceTable(tables.Table):
-    class Meta:
-        model = Piece
-        sequence = ("name", "cae_part_number", "piece_model", "manufacturer", "manufacturer_part_number", "provider",
-                    "provider_part_number", "documentation", "item_type", "item_characteristic",)
-        exclude = ("website", "description", "update_comment", "image", "calibration_recurrence", "history", "id", )
 
 
 KitGroupAssemblyFormSet = inlineformset_factory(GroupAssembly, Kit, form=KitForm, extra=1)
