@@ -7,6 +7,7 @@ from django.forms import ModelForm, inlineformset_factory, CheckboxInput
 from .models import Piece, PieceInstance, Kit, MovementExchange, GroupAssembly, Equivalence, Consumable,\
     Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location, Eighth_location
 
+
 class PieceForm(forms.ModelForm):
     class Meta:
         model = Piece
@@ -192,6 +193,7 @@ class PieceInstanceForm(forms.ModelForm):
         elif self.instance.pk and self.instance.seventh_location:
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by('name')
 
+
 class EquivalenceForm(ModelForm):
     class Meta:
         model = Equivalence
@@ -234,6 +236,7 @@ class EquivalenceForm(ModelForm):
             'pieceeq_14': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
             'pieceeq_15': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
         }
+
 
 class MovementForm(ModelForm):
     class Meta:
@@ -283,6 +286,7 @@ class MovementForm(ModelForm):
         elif self.instance.pk and self.instance.piece_2:
             self.fields['item_2'].queryset = self.instance.piece_2.item_2.order_by('serial_number')
 
+
 class GroupAssemblyForm(ModelForm):
     class Meta:
         model = GroupAssembly
@@ -305,6 +309,8 @@ class KitForm(ModelForm):
         fields = ['group_assembly', 'name', 'description', 'kit_serialnumber', 'update_comment', 'kit_status', 'first_location',
                   'second_location', 'third_location', 'fourth_location', 'fifth_location', 'sixth_location',
                   'seventh_location', 'eighth_location',
+                  'pn_1', 'pn_2', 'pn_3', 'pn_4', 'pn_5', 'pn_6', 'pn_7', 'pn_8', 'pn_9', 'pn_10', 'pn_11', 'pn_12',
+                  'pn_13', 'pn_14', 'pn_15',
                   'piece_kit_1', 'piece_kit_2', 'piece_kit_3', 'piece_kit_4', 'piece_kit_5', 'piece_kit_6',
                   'piece_kit_7', 'piece_kit_8', 'piece_kit_9', 'piece_kit_10', 'piece_kit_11', 'piece_kit_12', 'piece_kit_13',
                   'piece_kit_14', 'piece_kit_15'
@@ -324,21 +330,16 @@ class KitForm(ModelForm):
             'sixth_location': 'Sixth Location',
             'seventh_location': 'Seventh Location',
             'eighth_location': 'Eighth Location',
-            'piece_kit_1': 'Choose Instance',
-            'piece_kit_2': 'Choose Instance',
-            'piece_kit_3': 'Choose Instance',
-            'piece_kit_4': 'Choose Instance',
-            'piece_kit_5': 'Choose Instance',
-            'piece_kit_6': 'Choose Instance',
-            'piece_kit_7': 'Choose Instance',
-            'piece_kit_8': 'Choose Instance',
-            'piece_kit_9': 'Choose Instance',
-            'piece_kit_10': 'Choose Instance',
-            'piece_kit_11': 'Choose Instance',
-            'piece_kit_12': 'Choose Instance',
-            'piece_kit_13': 'Choose Instance',
-            'piece_kit_14': 'Choose Instance',
-            'piece_kit_15': 'Choose Instance',
+            'pn_1': 'Piece to filter', 'pn_2': 'Piece to filter', 'pn_3': 'Piece to filter',
+            'pn_4': 'Piece to filter', 'pn_5': 'Piece to filter', 'pn_6': 'Piece to filter',
+            'pn_7': 'Piece to filter', 'pn_8': 'Piece to filter', 'pn_9': 'Piece to filter',
+            'pn_10': 'Piece to filter', 'pn_11': 'Piece to filter', 'pn_12': 'Piece to filter',
+            'pn_13': 'Piece to filter', 'pn_14': 'Piece to filter', 'pn_15': 'Piece to filter',
+            'piece_kit_1': 'Choose Instance', 'piece_kit_2': 'Choose Instance', 'piece_kit_3': 'Choose Instance',
+            'piece_kit_4': 'Choose Instance', 'piece_kit_5': 'Choose Instance', 'piece_kit_6': 'Choose Instance',
+            'piece_kit_7': 'Choose Instance', 'piece_kit_8': 'Choose Instance', 'piece_kit_9': 'Choose Instance',
+            'piece_kit_10': 'Choose Instance', 'piece_kit_11': 'Choose Instance', 'piece_kit_12': 'Choose Instance',
+            'piece_kit_13': 'Choose Instance', 'piece_kit_14': 'Choose Instance', 'piece_kit_15': 'Choose Instance',
         }
         widgets = {
             'group_assembly': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Select Group Assembly'}),
@@ -355,6 +356,21 @@ class KitForm(ModelForm):
             'sixth_location': forms.Select(attrs={'class': 'form-select'}),
             'seventh_location': forms.Select(attrs={'class': 'form-select'}),
             'eighth_location': forms.Select(attrs={'class': 'form-select'}),
+            'pn_1': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_2': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_3': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_4': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_5': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_6': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_7': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_8': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_9': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_10': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_11': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_12': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_13': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pn_14': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
+            'pnt_15': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
             'piece_kit_1': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
             'piece_kit_2': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
             'piece_kit_3': forms.Select(attrs={'class': 'form-select', 'placeholder': '--------'}),
@@ -455,6 +471,7 @@ class KitForm(ModelForm):
         elif self.instance.pk and self.instance.seventh_location:
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by(
                 'name')
+
 
 class ConsumableForm(forms.ModelForm):
     class Meta:
