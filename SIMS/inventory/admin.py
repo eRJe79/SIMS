@@ -60,17 +60,26 @@ class EquivalenceAdmin(admin.ModelAdmin):
 
 @admin.register(Piece)
 class PieceAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'website', 'manufacturer', 'manufacturer_part_number', 'piece_model', 'description', 'documentation', 'item_type', 'item_characteristic',)
+    list_display = ('name', 'website', 'manufacturer', 'manufacturer_part_number', 'piece_model', 'description',
+                    'documentation', 'item_type', 'item_characteristic',)
     inlines = [PieceInstanceInline]
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(SimpleHistoryAdmin):
-    list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'owner', 'restriction', 'first_location', 'second_location', 'third_location', 'fourth_location', 'fifth_location',
-                    'sixth_location', 'seventh_location', 'eighth_location', 'status', 'history')
+    list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'owner', 'restriction', 'first_location',
+                    'second_location', 'third_location', 'fourth_location', 'fifth_location', 'sixth_location',
+                    'seventh_location', 'eighth_location', 'status', 'history')
 
 @admin.register(Kit)
 class KitAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'kit_serialnumber', 'group_assembly', 'description')
+    list_display = ('name', 'kit_serialnumber', 'group_assembly', 'description', 'kit_serialnumber',
+                    'manufacturer_serialnumber', 'provider_serialnumber', 'kit_status', 'pn_1', 'pn_2', 'pn_3', 'pn_4',
+                    'pn_5', 'pn_6', 'pn_7', 'pn_8', 'pn_9', 'pn_10', 'pn_11', 'pn_12', 'pn_13', 'pn_14', 'pn_15',
+                    'piece_kit_1', 'piece_kit_2', 'piece_kit_3', 'piece_kit_4', 'piece_kit_5', 'piece_kit_6',
+                    'piece_kit_7', 'piece_kit_8', 'piece_kit_9', 'piece_kit_10', 'piece_kit_11', 'piece_kit_12',
+                    'piece_kit_13', 'piece_kit_14', 'piece_kit_15', 'first_location', 'second_location', 'third_location',
+                    'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location', 'eighth_location',
+                    'update_comment')
 
 @admin.register(GroupAssembly)
 class GroupAssemblyAdmin(SimpleHistoryAdmin):
