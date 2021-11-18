@@ -846,6 +846,7 @@ def search_general_database(request):
     else:
         return render(request, 'inventory/search_general.html', {})
 
+
 # Assembly Management Section
 # Create Group Assembly
 class GroupAssemblyCreate(CreateView):
@@ -892,6 +893,7 @@ class GroupAssemblyCreate(CreateView):
         return self.render_to_response(
             self.get_context_data(form=form))
 
+
 # Display a list of all the Pieces in the inventory
 class GroupAssemblyListView(ListView):
     model = GroupAssembly
@@ -905,6 +907,7 @@ class GroupAssemblyListView(ListView):
         context['groupassembly'] = GroupAssembly.objects.all().order_by('-id')
         return context
 
+
 # Display a specific Group Assembly
 def show_groupassembly(request, primary_key):
     groupassembly = GroupAssembly.objects.get(pk=primary_key)
@@ -912,7 +915,8 @@ def show_groupassembly(request, primary_key):
     context = {'groupassembly': groupassembly, 'kit': kit}
     return render(request, 'inventory/groupassembly_detail.html', context)
 
-#Create new assembly
+
+# Create new assembly
 class KitCreate(CreateView):
     template_name = 'inventory/kit_form.html'
     model = Kit
@@ -936,19 +940,40 @@ class KitCreate(CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        self.object = form.save()
-        return HttpResponseRedirect(self.get_success_url())
+        instances = PieceInstance.objects.all()
+        kit = form.save(commit=False)
+        kit.save()
+        piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                          kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+        for item in piece_instance:
+            if item is not None:
+                for instance in instances:
+                    if instance == item:
+                        instance.update_comment = kit.update_comment
+                        instance.first_location = kit.first_location
+                        instance.second_location = kit.second_location
+                        instance.third_location = kit.third_location
+                        instance.fourth_location = kit.fourth_location
+                        instance.fifth_location = kit.fifth_location
+                        instance.sixth_location = kit.sixth_location
+                        instance.seventh_location = kit.seventh_location
+                        instance.eighth_location = kit.eighth_location
+                        instance.status = kit.kit_status
+                        instance.save()
+        return redirect(kit.get_absolute_url())
 
     def form_invalid(self, form):
         return self.render_to_response(
             self.get_context_data(form=form))
+
 
 # Update an assembly
 def update_kit(request, kit_id):
     kit = Kit.objects.get(pk=kit_id)
     kit.date_update = timezone.now()
     kit.update_comment = ''
-    instances=PieceInstance.objects.all()
+    instances = PieceInstance.objects.all()
     form = KitForm(request.POST or None, instance=kit)
     context = {
         'kit': kit,
@@ -993,6 +1018,7 @@ class KitList(ListView):
         context['kit'] = Kit.objects.all().order_by('-id')
         return context
 
+
 # Display a specific Kit
 def show_kit(request, primary_key):
     kit = Kit.objects.get(pk=primary_key)
@@ -1007,10 +1033,10 @@ def show_kit(request, primary_key):
 
 def movement_exchange(request):
     form = MovementForm(request.POST or None)
-    #items = PieceInstance.objects.all().order_by('serial_number')
+    # items = PieceInstance.objects.all().order_by('serial_number')
     context = {
         'form': form,
-        #'items': items,
+        # 'items': items,
     }
     if form.is_valid():
         obj = form.save(commit=False)
@@ -1120,6 +1146,7 @@ def create_equivalence(request):
     }
     return render(request, 'inventory/create_equivalence.html', context)
 
+
 # Display a list of all the Pieces in the inventory
 class EquivalenceListView(ListView):
     model = Equivalence
@@ -1133,10 +1160,12 @@ class EquivalenceListView(ListView):
         context['equivalence'] = Equivalence.objects.all().order_by('-id')
         return context
 
+
 def equivalence_detail(request, primary_key):
     equivalence = Equivalence.objects.get(pk=primary_key)
     context = {'equivalence': equivalence}
     return render(request, 'inventory/equivalence_detail.html', context)
+
 
 # Update an instance
 def update_equivalence(request, equivalence_id):
@@ -1151,12 +1180,14 @@ def update_equivalence(request, equivalence_id):
     context = {'equivalence': equivalence, 'form': form}
     return render(request, 'inventory/equivalence_update.html', context)
 
+
 # Display history of specific Consumable
 def show_consumable_history(request, primary_key):
     consumable = Consumable.objects.get(pk=primary_key)
     history = consumable.history.all()
     context = {'history': history, 'consumable': consumable}
     return render(request, 'inventory/consumable_history.html', context)
+
 
 # Display history of a specific Piece
 def show_piece_history(request, primary_key):
@@ -1165,12 +1196,14 @@ def show_piece_history(request, primary_key):
     context = {'history': history, 'piece': piece}
     return render(request, 'inventory/piece_history.html', context)
 
+
 # Display history of a specific Instance
 def show_instance_history(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
     history = piece_instance.history.all()
     context = {'history': history, 'piece_instance': piece_instance}
     return render(request, 'inventory/instance_history.html', context)
+
 
 # Display history of a specific Assembly
 def show_assembly_history(request, primary_key):
