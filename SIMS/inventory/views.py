@@ -12,33 +12,15 @@ from django.db.models import Q
 import pandas as pd
 
 from .models import (
-    Consumable,
-    Equivalence,
-    Piece,
-    PieceInstance,
-    GroupAssembly,
-    Kit,
-    First_location,
-    Second_location,
-    Third_location,
-    Fourth_location,
-    Fifth_location,
-    Sixth_location,
-    Seventh_location,
+    Consumable, Equivalence, Piece, PieceInstance, GroupAssembly, Kit,
+    First_location, Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location,
     Eighth_location,
     MovementExchange,
 )
 
 from .forms import (
-    ConsumableForm,
-    PieceForm,
-    PieceInstanceForm,
-    PieceInstancePieceFormSet,
-    KitGroupAssemblyFormSet,
-    GroupAssemblyForm,
-    KitForm,
-    MovementForm,
-    EquivalenceForm,
+    ConsumableForm, PieceForm, PieceInstanceForm, PieceInstancePieceFormSet, KitGroupAssemblyFormSet, GroupAssemblyForm,
+    KitForm, MovementForm, EquivalenceForm,
 )
 
 
