@@ -22,10 +22,10 @@
     {% for instance in my_piece_instances %}
     <tr class="datarow">
         {% if instance.piece.calibration_recurrence %}
-        {% if instance.is_calibration_due%}
+        {% if instance.is_calibration_due %}
             <td>{{ instance.calibration_days }} days</td>
             <td>{{ instance.date_calibration}}</td>
-            <td>{{ instance}}</td>
+            <td><a href="{{ instance.get_absolute_url }}">{{ instance }}</a></td>
             <td>{{ instance.piece.piece_model}}</td>
             <td>{{ instance.piece }}</td>
             {% if instance.eighth_location %}
@@ -65,7 +65,7 @@
     </thead>
     {% for instance in consumable_list %}
     <tr class="datarow">
-            <td>{{ instance.name }}</td>
+            <td><a href="{{ instance.get_absolute_url }}">{{ instance }}</a></td>
             <td>{{ instance.quantity }}</td>
             <td>{{ instance.low_stock_value}}</td>
             <td>{{ instance.cae_part_number}}</td>

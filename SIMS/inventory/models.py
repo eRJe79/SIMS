@@ -369,14 +369,14 @@ class PieceInstance(models.Model):
             pass
 
     def calibration_days(self):
-        delta = self.date_calibration - date.today()
+        delta = self.next_calibration - date.today()
         return delta.days
 
     def is_calibration_due(self):
         calibration_is_due = False
-        if(self.date_calibration):
-            due_days = self.date_calibration - date.today()
-            if due_days < datetime.timedelta(days=0):
+        if(self.next_calibration):
+            due_days = self.next_calibration - date.today()
+            if due_days < datetime.timedelta(days=10):
                 calibration_is_due = True
             else:
                 calibration_is_due = False
