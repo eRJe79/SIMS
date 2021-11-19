@@ -1,53 +1,26 @@
 import csv
 import datetime
 
-from django.db import transaction
-from django.http import Http404, HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.utils import timezone
-from simple_history.utils import update_change_reason
-from django.template import RequestContext
-from django.forms.models import modelformset_factory
 from django.contrib import messages
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.decorators import login_required
-from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
-from django.utils.translation import ugettext as _
+from django.views.generic import ListView,  CreateView
 from django.db.models import Q
 
 import pandas as pd
 
-from . import models
 from .models import (
-    Consumable,
-    Equivalence,
-    Piece,
-    PieceInstance,
-    GroupAssembly,
-    Kit,
-    First_location,
-    Second_location,
-    Third_location,
-    Fourth_location,
-    Fifth_location,
-    Sixth_location,
-    Seventh_location,
+    Consumable, Equivalence, Piece, PieceInstance, GroupAssembly, Kit,
+    First_location, Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location,
     Eighth_location,
-    Mptt,
     MovementExchange,
 )
 
 from .forms import (
-    ConsumableForm,
-    PieceForm,
-    PieceInstanceForm,
-    PieceInstancePieceFormSet,
-    KitGroupAssemblyFormSet,
-    GroupAssemblyForm,
-    KitForm,
-    MovementForm,
-    EquivalenceForm,
+    ConsumableForm, PieceForm, PieceInstanceForm, PieceInstancePieceFormSet, KitGroupAssemblyFormSet, GroupAssemblyForm,
+    KitForm, MovementForm, EquivalenceForm,
 )
 
 
@@ -339,13 +312,9 @@ def low_stock_record_csv(request):
                         item.status, item.date_created, item.owner, item.restriction])
     return response
 
-def tree(request):
-    tree_level = Mptt.objects.all()
-    context = {'tree_level': tree_level}
-    return render(request, 'inventory/tree.html', context)
 
 class ConsumableCreate(CreateView):
-    template_name = 'inventory/create_consumable.html'
+    template_name = 'inventory/consumable/create_consumable.html'
     model = Consumable
     form_class = ConsumableForm
 
@@ -356,7 +325,7 @@ class ConsumableCreate(CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'inventory/create_consumable.html', context)
+        return render(request, 'inventory/consumable/create_consumable.html', context)
 
     def post(self, request, *args, **kwargs):
         # # if our ajax is calling so we have to take action
@@ -388,17 +357,20 @@ class ConsumableCreate(CreateView):
         return self.render_to_response(
             self.get_context_data(form=form))
 
+
 # Display specific consumable
 def show_consumable(request, primary_key):
     consumable = Consumable.objects.get(pk=primary_key)
     context = {'consumable': consumable}
-    return render(request, 'inventory/consumable_detail.html', context)
+    return render(request, 'inventory/consumable/consumable_detail.html', context)
+
 
 def consumable_list(request):
     consumable_list = Consumable.objects.all().order_by('name')
-    return render(request, 'inventory/consumable_list.html', {'consumable_list': consumable_list})
+    return render(request, 'inventory/consumable/consumable_list.html', {'consumable_list': consumable_list})
 
-# Update a piece
+
+# Update a consumable
 def update_consumable(request, consumable_id):
     consumable = Consumable.objects.get(pk=consumable_id)
     consumable.update_comment = ''
@@ -410,9 +382,10 @@ def update_consumable(request, consumable_id):
     else:
         form = ConsumableForm(instance=consumable)
     context = {'consumable': consumable, 'form': form}
-    return render(request, 'inventory/update_consumable.html', context)
+    return render(request, 'inventory/consumable/update_consumable.html', context)
 
-# clone a piece
+
+# clone a consumable
 def clone_consumable(request, consumable_id):
     consumable = Consumable.objects.get(pk=consumable_id)
     consumable.pk=None
@@ -425,11 +398,12 @@ def clone_consumable(request, consumable_id):
     else:
         form = ConsumableForm(instance=consumable)
     context = {'consumable': consumable, 'form': form}
-    return render(request, 'inventory/clone_consumable.html', context)
+    return render(request, 'inventory/consumable/clone_consumable.html', context)
 
 
+# Piece Creation
 class PieceCreate(CreateView):
-    template_name = 'inventory/create_piece.html'
+    template_name = 'inventory/piece/create_piece.html'
     model = Piece
     form_class = PieceForm
 
@@ -440,7 +414,7 @@ class PieceCreate(CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'inventory/create_piece.html', context)
+        return render(request, 'inventory/piece/create_piece.html', context)
 
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
@@ -477,7 +451,7 @@ class PieceCreate(CreateView):
 class PieceListView(ListView):
     model = Piece
     paginate_by = 10
-    template_name = 'inventory/piece_list.html'  # Template location
+    template_name = 'inventory/piece/piece_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -508,11 +482,43 @@ def show_piece(request, primary_key):
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
-    return render(request, 'inventory/piece_detail.html', context)
+    return render(request, 'inventory/piece/piece_detail.html', context)
 
 
+# Update a piece
+def update_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    piece.update_comment = ''
+    if request.method == "POST":
+        form = PieceForm(request.POST, request.FILES, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect(piece.get_absolute_url())
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form': form}
+    return render(request, 'inventory/piece/update_piece.html', context)
+
+
+# clone a piece
+def clone_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    piece.pk=None
+    piece.update_comment = ''
+    if request.method == "POST":
+        form = PieceForm(request.POST, request.FILES, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect(piece.get_absolute_url())
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form': form}
+    return render(request, 'inventory/piece/clone_piece.html', context)
+
+
+# Instance creation
 class PieceInstanceCreate(CreateView):
-    template_name = 'inventory/create_instance_piece.html'
+    template_name = 'inventory/instance/create_instance_piece.html'
     model = PieceInstance
     form_class = PieceInstanceForm
 
@@ -523,7 +529,7 @@ class PieceInstanceCreate(CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'inventory/create_instance_piece.html', context)
+        return render(request, 'inventory/instance/create_instance_piece.html', context)
 
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
@@ -566,9 +572,11 @@ class PieceInstanceCreate(CreateView):
         return self.render_to_response(
             self.get_context_data(form=form))
 
+
 def all_piece_instance(request):
     piece_instance_list = PieceInstance.objects.all().order_by('piece')
-    return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
+    return render(request, 'inventory/instance/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
+
 
 # Display specific instance information
 def show_instance_form(request, primary_key):
@@ -582,7 +590,7 @@ def show_instance_form(request, primary_key):
     except:
         kit = None
     context = {'piece_instance': piece_instance, 'kit': kit}
-    return render(request, 'inventory/piece_instance_detail.html', context)
+    return render(request, 'inventory/instance/piece_instance_detail.html', context)
 
 
 # Display instances and assembly as list
@@ -604,37 +612,6 @@ def show_instance_assembly_list(request):
     return render(request, 'inventory/general_list.html', context)
 
 
-# Update a piece
-def update_piece(request, piece_id):
-    piece = Piece.objects.get(pk=piece_id)
-    piece.update_comment = ''
-    if request.method == "POST":
-        form = PieceForm(request.POST, request.FILES, instance=piece)
-        if form.is_valid():
-            form.save()
-            return redirect(piece.get_absolute_url())
-    else:
-        form = PieceForm(instance=piece)
-    context = {'piece': piece, 'form': form}
-    return render(request, 'inventory/update_piece.html', context)
-
-
-# clone a piece
-def clone_piece(request, piece_id):
-    piece = Piece.objects.get(pk=piece_id)
-    piece.pk=None
-    piece.update_comment = ''
-    if request.method == "POST":
-        form = PieceForm(request.POST, request.FILES, instance=piece)
-        if form.is_valid():
-            form.save()
-            return redirect(piece.get_absolute_url())
-    else:
-        form = PieceForm(instance=piece)
-    context = {'piece': piece, 'form': form}
-    return render(request, 'inventory/clone_piece.html', context)
-
-
 # Update an instance
 def update_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
@@ -648,7 +625,7 @@ def update_instance(request, instance_id):
     else:
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form': form}
-    return render(request, 'inventory/update_piece_instance.html', context)
+    return render(request, 'inventory/instance/update_piece_instance.html', context)
 
 
 # clone an instance
@@ -664,7 +641,7 @@ def clone_instance(request, instance_id):
     else:
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form': form}
-    return render(request, 'inventory/clone_existing_piece.html', context)
+    return render(request, 'inventory/instance/clone_existing_piece.html', context)
 
 
 # Delete an instance
@@ -707,9 +684,10 @@ def search_consumable_database(request):
                                        | Q(provider_serialnumber__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_consumable.html', context)
+        return render(request, 'inventory/search/search_consumable.html', context)
     else:
-        return render(request, 'inventory/search_consumable.html', {})
+        return render(request, 'inventory/search/search_consumable.html', {})
+
 
 # Specific to piece
 def search_piece_database(request):
@@ -727,9 +705,10 @@ def search_piece_database(request):
                                        | Q(item_type__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search.html', context)
+        return render(request, 'inventory/search/search.html', context)
     else:
-        return render(request, 'inventory/search.html', {})
+        return render(request, 'inventory/search/search.html', {})
+
 
 # Specific to instances
 def search_instance_database(request):
@@ -754,9 +733,10 @@ def search_instance_database(request):
                                                    | Q(provider_serialnumber__contains=searched)
                                                    )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_instance.html', context)
+        return render(request, 'inventory/search/search_instance.html', context)
     else:
-        return render(request, 'inventory/search_instance.html', {})
+        return render(request, 'inventory/search/search_instance.html', {})
+
 
 # Specific to Assemblies
 # Specific to Group Assemblies
@@ -768,9 +748,10 @@ def search_groupassembly_database(request):
                                        | Q(update_comment__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_groupassembly.html', context)
+        return render(request, 'inventory/search/search_groupassembly.html', context)
     else:
-        return render(request, 'inventory/search_groupassembly.html', {})
+        return render(request, 'inventory/search/search_groupassembly.html', {})
+
 
 # Specific to Assemblies
 def search_assembly_database(request):
@@ -792,9 +773,10 @@ def search_assembly_database(request):
                                        | Q(kit_serialnumber__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_assembly.html', context)
+        return render(request, 'inventory/search/search_assembly.html', context)
     else:
-        return render(request, 'inventory/search_assembly.html', {})
+        return render(request, 'inventory/search/search_assembly.html', {})
+
 
 # Specific to General List
 def search_general_database(request):
@@ -848,15 +830,15 @@ def search_general_database(request):
                 results_assemblies.append(i)
             results = (results_assemblies + results_instance)
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_general.html', context)
+        return render(request, 'inventory/search/search_general.html', context)
     else:
-        return render(request, 'inventory/search_general.html', {})
+        return render(request, 'inventory/search/search_general.html', {})
 
 
 # Assembly Management Section
 # Create Group Assembly
 class GroupAssemblyCreate(CreateView):
-    template_name = 'inventory/create_groupassembly.html'
+    template_name = 'inventory/group_assembly/create_groupassembly.html'
     model = GroupAssembly
     form_class = GroupAssemblyForm
 
@@ -867,7 +849,7 @@ class GroupAssemblyCreate(CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'inventory/create_groupassembly.html', context)
+        return render(request, 'inventory/group_assembly/create_groupassembly.html', context)
 
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
@@ -904,7 +886,7 @@ class GroupAssemblyCreate(CreateView):
 class GroupAssemblyListView(ListView):
     model = GroupAssembly
     paginate_by = 10
-    template_name = 'inventory/groupassembly_list.html'  # Template location
+    template_name = 'inventory/group_assembly/groupassembly_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -919,12 +901,12 @@ def show_groupassembly(request, primary_key):
     groupassembly = GroupAssembly.objects.get(pk=primary_key)
     kit = Kit.objects.all().order_by('name')
     context = {'groupassembly': groupassembly, 'kit': kit}
-    return render(request, 'inventory/groupassembly_detail.html', context)
+    return render(request, 'inventory/group_assembly/groupassembly_detail.html', context)
 
 
 # Create new assembly
 class KitCreate(CreateView):
-    template_name = 'inventory/kit_form.html'
+    template_name = 'inventory/assembly/kit_form.html'
     model = Kit
 
     def get(self, request, *args, **kwargs):
@@ -933,7 +915,7 @@ class KitCreate(CreateView):
         context = {
             'form': KitForm(),
         }
-        return render(request, 'inventory/kit_form.html', context)
+        return render(request, 'inventory/assembly/kit_form.html', context)
 
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
@@ -1008,14 +990,14 @@ def update_kit(request, kit_id):
                         instance.status = kit.kit_status
                         instance.save()
         return redirect(kit.get_absolute_url())
-    return render(request, 'inventory/kit_update.html', context)
+    return render(request, 'inventory/assembly/kit_update.html', context)
 
 
 # Display Kit List
 class KitList(ListView):
     model = Kit
     paginate_by = 10
-    template_name = 'inventory/kit_list.html'  # Template location
+    template_name = 'inventory/assembly/kit_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -1032,7 +1014,7 @@ def show_kit(request, primary_key):
                     kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
                     kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
     context = {'kit': kit, 'piece_instance':piece_instance}
-    return render(request, 'inventory/kit_detail.html', context)
+    return render(request, 'inventory/assembly/kit_detail.html', context)
 
 
 # Movement Management Section
@@ -1091,19 +1073,19 @@ def movement_exchange(request):
         # Save the movement
         obj.save()
         return redirect(obj.get_absolute_url())
-    return render(request, 'inventory/movement_choice.html', context)
+    return render(request, 'inventory/movement/movement_choice.html', context)
 
 
 def movement_detail(request, primary_key):
     movement = MovementExchange.objects.get(pk=primary_key)
     context = {'movement': movement}
-    return render(request, 'inventory/movement_detail.html', context)
+    return render(request, 'inventory/movement/movement_detail.html', context)
 
 
 def movement_list(request):
     movements = MovementExchange.objects.order_by('date_created')
     context = {'movements': movements}
-    return render(request, 'inventory/movement_list.html', context)
+    return render(request, 'inventory/movement/movement_list.html', context)
 
 
 def movement_revert(request, movement_id):
@@ -1136,7 +1118,7 @@ def movement_revert(request, movement_id):
     movement.save()
 
     context = {'movement': movement}
-    return render(request, 'inventory/movement_detail.html', context)
+    return render(request, 'inventory/movement/movement_detail.html', context)
 
 
 # Equivalence Management
@@ -1150,14 +1132,14 @@ def create_equivalence(request):
     context = {
         'form': forms
     }
-    return render(request, 'inventory/create_equivalence.html', context)
+    return render(request, 'inventory/equivalence/create_equivalence.html', context)
 
 
 # Display a list of all the Pieces in the inventory
 class EquivalenceListView(ListView):
     model = Equivalence
     paginate_by = 10
-    template_name = 'inventory/equivalence_list.html'  # Template location
+    template_name = 'inventory/equivalence/equivalence_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -1170,7 +1152,7 @@ class EquivalenceListView(ListView):
 def equivalence_detail(request, primary_key):
     equivalence = Equivalence.objects.get(pk=primary_key)
     context = {'equivalence': equivalence}
-    return render(request, 'inventory/equivalence_detail.html', context)
+    return render(request, 'inventory/equivalence/equivalence_detail.html', context)
 
 
 # Update an instance
@@ -1184,7 +1166,7 @@ def update_equivalence(request, equivalence_id):
     else:
         form = EquivalenceForm(instance=equivalence)
     context = {'equivalence': equivalence, 'form': form}
-    return render(request, 'inventory/equivalence_update.html', context)
+    return render(request, 'inventory/equivalence/equivalence_update.html', context)
 
 
 # Display history of specific Consumable
@@ -1192,7 +1174,7 @@ def show_consumable_history(request, primary_key):
     consumable = Consumable.objects.get(pk=primary_key)
     history = consumable.history.all()
     context = {'history': history, 'consumable': consumable}
-    return render(request, 'inventory/consumable_history.html', context)
+    return render(request, 'inventory/consumable/consumable_history.html', context)
 
 
 # Display history of a specific Piece
@@ -1200,7 +1182,7 @@ def show_piece_history(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     history = piece.history.all()
     context = {'history': history, 'piece': piece}
-    return render(request, 'inventory/piece_history.html', context)
+    return render(request, 'inventory/piece/piece_history.html', context)
 
 
 # Display history of a specific Instance
@@ -1208,7 +1190,7 @@ def show_instance_history(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
     history = piece_instance.history.all()
     context = {'history': history, 'piece_instance': piece_instance}
-    return render(request, 'inventory/instance_history.html', context)
+    return render(request, 'inventory/instance/instance_history.html', context)
 
 
 # Display history of a specific Assembly
@@ -1216,6 +1198,6 @@ def show_assembly_history(request, primary_key):
     assembly = Kit.objects.get(pk=primary_key)
     history = assembly.history.all()
     context = {'history': history, 'assembly': assembly}
-    return render(request, 'inventory/assembly_history.html', context)
+    return render(request, 'inventory/assembly/assembly_history.html', context)
 
 

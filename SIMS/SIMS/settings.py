@@ -48,9 +48,6 @@ INSTALLED_APPS = [
     'inventory.apps.InventoryConfig',
     'users.apps.UsersConfig',
     'simple_history',
-    'treewidget',
-    'mptt',
-    'treebeard',
     'widget_tweaks',
 ]
 
@@ -88,9 +85,6 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': os.path.join(BASE_DIR,'cache'),
-    },
-    'treenode': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     },
 }
 

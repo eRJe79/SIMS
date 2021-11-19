@@ -10,8 +10,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -28,9 +28,9 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/templates/users/login.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/templates/inventory/piece_detail.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/templates/inventory/piece_list.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/templates/inventory/create_piece.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/piece/piece_detail.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/piece/piece_list.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/piece/create_piece.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/users/views.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/base/sidebar.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/users/urls.py" root0="FORCE_HIGHLIGHTING" />
@@ -46,7 +46,7 @@
     <setting file="file://$PROJECT_DIR$/inventory/models.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SIMS/views.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SIMS/settings.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/templates/inventory/piece_instance_detail.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/instance/piece_instance_detail.html" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1tL8FfPk3UIE5XJUIyFu1hwMrCQ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -63,6 +63,15 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\search" />
+      <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\movement" />
+      <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\group_assembly" />
+      <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\instance" />
+      <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\piece" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
