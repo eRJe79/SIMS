@@ -314,7 +314,7 @@ def low_stock_record_csv(request):
 
 
 class ConsumableCreate(CreateView):
-    template_name = 'inventory/create_consumable.html'
+    template_name = 'inventory/consumable/create_consumable.html'
     model = Consumable
     form_class = ConsumableForm
 
@@ -325,7 +325,7 @@ class ConsumableCreate(CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'inventory/create_consumable.html', context)
+        return render(request, 'inventory/consumable/create_consumable.html', context)
 
     def post(self, request, *args, **kwargs):
         # # if our ajax is calling so we have to take action
@@ -357,17 +357,20 @@ class ConsumableCreate(CreateView):
         return self.render_to_response(
             self.get_context_data(form=form))
 
+
 # Display specific consumable
 def show_consumable(request, primary_key):
     consumable = Consumable.objects.get(pk=primary_key)
     context = {'consumable': consumable}
-    return render(request, 'inventory/consumable_detail.html', context)
+    return render(request, 'inventory/consumable/consumable_detail.html', context)
+
 
 def consumable_list(request):
     consumable_list = Consumable.objects.all().order_by('name')
-    return render(request, 'inventory/consumable_list.html', {'consumable_list': consumable_list})
+    return render(request, 'inventory/consumable/consumable_list.html', {'consumable_list': consumable_list})
 
-# Update a piece
+
+# Update a consumable
 def update_consumable(request, consumable_id):
     consumable = Consumable.objects.get(pk=consumable_id)
     consumable.update_comment = ''
@@ -379,9 +382,10 @@ def update_consumable(request, consumable_id):
     else:
         form = ConsumableForm(instance=consumable)
     context = {'consumable': consumable, 'form': form}
-    return render(request, 'inventory/update_consumable.html', context)
+    return render(request, 'inventory/consumable/update_consumable.html', context)
 
-# clone a piece
+
+# clone a consumable
 def clone_consumable(request, consumable_id):
     consumable = Consumable.objects.get(pk=consumable_id)
     consumable.pk=None
@@ -394,7 +398,7 @@ def clone_consumable(request, consumable_id):
     else:
         form = ConsumableForm(instance=consumable)
     context = {'consumable': consumable, 'form': form}
-    return render(request, 'inventory/clone_consumable.html', context)
+    return render(request, 'inventory/consumable/clone_consumable.html', context)
 
 
 class PieceCreate(CreateView):
@@ -893,7 +897,7 @@ def show_groupassembly(request, primary_key):
 
 # Create new assembly
 class KitCreate(CreateView):
-    template_name = 'inventory/kit_form.html'
+    template_name = 'inventory/assembly/kit_form.html'
     model = Kit
 
     def get(self, request, *args, **kwargs):
@@ -902,7 +906,7 @@ class KitCreate(CreateView):
         context = {
             'form': KitForm(),
         }
-        return render(request, 'inventory/kit_form.html', context)
+        return render(request, 'inventory/assembly/kit_form.html', context)
 
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
@@ -977,14 +981,14 @@ def update_kit(request, kit_id):
                         instance.status = kit.kit_status
                         instance.save()
         return redirect(kit.get_absolute_url())
-    return render(request, 'inventory/kit_update.html', context)
+    return render(request, 'inventory/assembly/kit_update.html', context)
 
 
 # Display Kit List
 class KitList(ListView):
     model = Kit
     paginate_by = 10
-    template_name = 'inventory/kit_list.html'  # Template location
+    template_name = 'inventory/assembly/kit_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -1001,7 +1005,7 @@ def show_kit(request, primary_key):
                     kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
                     kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
     context = {'kit': kit, 'piece_instance':piece_instance}
-    return render(request, 'inventory/kit_detail.html', context)
+    return render(request, 'inventory/assembly/kit_detail.html', context)
 
 
 # Movement Management Section
@@ -1161,7 +1165,7 @@ def show_consumable_history(request, primary_key):
     consumable = Consumable.objects.get(pk=primary_key)
     history = consumable.history.all()
     context = {'history': history, 'consumable': consumable}
-    return render(request, 'inventory/consumable_history.html', context)
+    return render(request, 'inventory/consumable/consumable_history.html', context)
 
 
 # Display history of a specific Piece
@@ -1185,6 +1189,6 @@ def show_assembly_history(request, primary_key):
     assembly = Kit.objects.get(pk=primary_key)
     history = assembly.history.all()
     context = {'history': history, 'assembly': assembly}
-    return render(request, 'inventory/assembly_history.html', context)
+    return render(request, 'inventory/assembly/assembly_history.html', context)
 
 

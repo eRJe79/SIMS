@@ -26,12 +26,12 @@ urlpatterns = [
     path('search_assembly/', search_assembly_database, name='search-assembly-database'),
     path('search_general/', search_general_database, name='search-general-database'),
 
-    path('create_consumable/', ConsumableCreate.as_view(), name='consumable-create'),
-    path('consumable_detail/<primary_key>', show_consumable, name='consumable-detail'),
-    path('consumable_list', consumable_list, name='consumable-list'),
-    path('update_consumable/<consumable_id>', update_consumable, name='consumable-update'),
-    path('clone_consumable/<consumable_id>', clone_consumable, name='consumable-clone'),
-    path('consumable_history/<primary_key>', show_consumable_history, name='consumable-history'),
+    path('consumable/create_consumable/', ConsumableCreate.as_view(), name='consumable-create'),
+    path('consumable/consumable_detail/<primary_key>', show_consumable, name='consumable-detail'),
+    path('consumable/consumable_list', consumable_list, name='consumable-list'),
+    path('consumable/update_consumable/<consumable_id>', update_consumable, name='consumable-update'),
+    path('consumable/clone_consumable/<consumable_id>', clone_consumable, name='consumable-clone'),
+    path('consumable/consumable_history/<primary_key>', show_consumable_history, name='consumable-history'),
 
     path('piece_list/', PieceListView.as_view(), name='piece'),
     path('piece_detail/<primary_key>', show_piece, name='piece-detail'),
@@ -56,7 +56,7 @@ urlpatterns = [
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
     path('kit_update/<kit_id>', update_kit, name='kit-update'),
-    path('assembly_history/<primary_key>', show_assembly_history, name='assembly-history'),
+    path('assembly/assembly_history/<primary_key>', show_assembly_history, name='assembly-history'),
 
     path('general_list', show_instance_assembly_list, name="assembly-instance-list"),
 
