@@ -1,24 +1,16 @@
 import csv
 import datetime
 
-from django.db import transaction
-from django.http import Http404, HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.utils import timezone
-from simple_history.utils import update_change_reason
-from django.template import RequestContext
-from django.forms.models import modelformset_factory
 from django.contrib import messages
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.decorators import login_required
-from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
-from django.utils.translation import ugettext as _
+from django.views.generic import ListView,  CreateView
 from django.db.models import Q
 
 import pandas as pd
 
-from . import models
 from .models import (
     Consumable,
     Equivalence,
@@ -34,7 +26,6 @@ from .models import (
     Sixth_location,
     Seventh_location,
     Eighth_location,
-    Mptt,
     MovementExchange,
 )
 
@@ -339,10 +330,6 @@ def low_stock_record_csv(request):
                         item.status, item.date_created, item.owner, item.restriction])
     return response
 
-def tree(request):
-    tree_level = Mptt.objects.all()
-    context = {'tree_level': tree_level}
-    return render(request, 'inventory/tree.html', context)
 
 class ConsumableCreate(CreateView):
     template_name = 'inventory/create_consumable.html'

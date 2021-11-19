@@ -47,7 +47,6 @@ from .views import (
     load_sixth_location,
     load_seventh_location,
     load_eighth_location,
-    tree,
     movement_exchange,
     movement_detail,
     movement_list,
@@ -121,8 +120,6 @@ urlpatterns = [
     path('movement_detail/<primary_key>', movement_detail, name='movement-detail'),
     path('movement_list', movement_list, name="movement-list"),
     path('movement_revert/<movement_id>', movement_revert, name='movement_revert'),
-
-    path('tree', tree, name='tree'),
 
     path('ajax/load-item_1/', load_item_1, name='ajax_load_item_1'),  # <-- this one here
     path('ajax/load-item_2/', load_item_2, name='ajax_load_item_2'),  # <-- this one here

@@ -1,8 +1,7 @@
 import datetime
 
 from django import forms
-from django.conf import settings
-from django.forms import ModelForm, inlineformset_factory, CheckboxInput
+from django.forms import ModelForm, inlineformset_factory
 
 from .models import Piece, PieceInstance, Kit, MovementExchange, GroupAssembly, Equivalence, Consumable,\
     Second_location, Third_location, Fourth_location, Fifth_location, Sixth_location, Seventh_location, Eighth_location

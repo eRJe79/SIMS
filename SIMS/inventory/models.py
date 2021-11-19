@@ -1,18 +1,10 @@
 import datetime
 from django.db import models
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
 from simple_history.models import HistoricalRecords
 from datetime import date
-from mptt.models import MPTTModel
-from treebeard.mp_tree import MP_Node
-from treebeard.al_tree import AL_Node
-from treebeard.ns_tree import NS_Node
-from treewidget.fields import TreeForeignKey, TreeManyToManyField
 
 from django.urls import reverse
 
-# from qr_code.qrcode.utils import QRCodeOptions
 
 def user_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
@@ -570,20 +562,6 @@ class MovementExchange(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this kit."""
         return reverse('movement-detail', args=[str(self.id)])
-
-
-class Mptt(MPTTModel):
-    name = models.CharField(max_length=32)
-    parent = TreeForeignKey(
-        'self', blank=True, null=True, on_delete=models.CASCADE,
-        settings={'filtered': True}, help_text='filtered (exclude pk=1 from parent, see admin.py)')
-
-    def __str__(self):
-        return self.name
-
-    class MPTTMeta:
-        order_insertion_by = ['name']
-
 
 
 # Class describing the instance of pieces with their specific attributes and methods
