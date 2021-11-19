@@ -179,6 +179,7 @@ class Piece(models.Model):
         print(len(history))
         return myhistory
 
+
 # Used to create groups of Pieces that will be equivalent between them
 class Equivalence(models.Model):
     name = models.CharField(max_length=120, null=True, blank=True)
@@ -197,6 +198,7 @@ class Equivalence(models.Model):
     pieceeq_13 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_13',  null=True, blank=True)
     pieceeq_14 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_14',  null=True, blank=True)
     pieceeq_15 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_15',  null=True, blank=True)
+
     # This is a default return method to access Piece
     def __str__(self):
         """String for representing the Model object."""
@@ -429,6 +431,7 @@ class PieceInstance(models.Model):
         print(len(history))
         return myhistory
 
+
 # A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
     STATUS_CHOICE = (
@@ -457,6 +460,23 @@ class Kit(models.Model):
     )
     # Date where the assembly is created (set at creation and never updated then)
     date_created = models.DateField(auto_now_add=True)
+
+    # Added PN (link to pieces) for filtering purpose
+    pn_1 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_1', null=True, blank=True)
+    pn_2 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_2', null=True, blank=True)
+    pn_3 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_3', null=True, blank=True)
+    pn_4 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_4', null=True, blank=True)
+    pn_5 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_5', null=True, blank=True)
+    pn_6 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_6', null=True, blank=True)
+    pn_7 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_7', null=True, blank=True)
+    pn_8 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_8', null=True, blank=True)
+    pn_9 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_9', null=True, blank=True)
+    pn_10 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_10', null=True, blank=True)
+    pn_11 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_11', null=True, blank=True)
+    pn_12 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_12', null=True, blank=True)
+    pn_13 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_13', null=True, blank=True)
+    pn_14 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_14', null=True, blank=True)
+    pn_15 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_15', null=True, blank=True)
 
     piece_kit_1 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_1', null=True, blank=True)
     piece_kit_2 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_2', null=True, blank=True)
@@ -509,6 +529,7 @@ class Kit(models.Model):
              myhistory = (history[0], history[1], history[2])
         print(len(history))
         return myhistory
+
 
 class MovementExchange(models.Model):
     # Items exchanged is mandatory
