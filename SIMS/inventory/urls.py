@@ -39,7 +39,7 @@ from .views import (
     database_csv,
     load_item_1,
     load_item_2,
-    load_piece_kit_1,
+    load_piece_kit,
     load_second_location,
     load_third_location,
     load_fourth_location,
@@ -127,7 +127,7 @@ urlpatterns = [
     path('ajax/load-item_1/', load_item_1, name='ajax_load_item_1'),  # <-- this one here
     path('ajax/load-item_2/', load_item_2, name='ajax_load_item_2'),  # <-- this one here
 
-    path('ajax/load-piece_kit_1/', load_piece_kit_1, name='ajax_load_piece_kit_1'),  # <-- this one here
+    path('ajax/load-piece_kit/', load_piece_kit, name='ajax_load_piece_kit'),  # <-- this one here
 
     path('ajax/load-second_location/', load_second_location, name='ajax_load_second_location'),  # <-- this one here
     path('ajax/load-third_location/', load_third_location, name='ajax_load_third_location'),  # <-- this one here

@@ -70,7 +70,7 @@ def load_item_2(request):
     return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
 
 
-def load_piece_kit_1(request):
+def load_piece_kit(request):
     piece_id = request.GET.get('piece')
     items = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
     return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
