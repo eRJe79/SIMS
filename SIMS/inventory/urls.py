@@ -33,12 +33,12 @@ urlpatterns = [
     path('consumable/clone_consumable/<consumable_id>', clone_consumable, name='consumable-clone'),
     path('consumable/consumable_history/<primary_key>', show_consumable_history, name='consumable-history'),
 
-    path('piece_list/', PieceListView.as_view(), name='piece'),
-    path('piece_detail/<primary_key>', show_piece, name='piece-detail'),
-    path('inventory/create/', PieceCreate.as_view(), name='piece-create'),
-    path('update_piece/<piece_id>', update_piece, name='update-piece'),
-    path('clone_piece/<piece_id>', clone_piece, name='piece-clone'),
-    path('piece_history/<primary_key>', show_piece_history, name='piece-history'),
+    path('piece/piece_list/', PieceListView.as_view(), name='piece'),
+    path('piece/piece_detail/<primary_key>', show_piece, name='piece-detail'),
+    path('piece/create/', PieceCreate.as_view(), name='piece-create'),
+    path('piece/update_piece/<piece_id>', update_piece, name='update-piece'),
+    path('piece/clone_piece/<piece_id>', clone_piece, name='piece-clone'),
+    path('piece/piece_history/<primary_key>', show_piece_history, name='piece-history'),
 
 
     path('piece_instance_list', all_piece_instance, name="piece-instance-list"),

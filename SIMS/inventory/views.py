@@ -401,8 +401,9 @@ def clone_consumable(request, consumable_id):
     return render(request, 'inventory/consumable/clone_consumable.html', context)
 
 
+# Piece Creation
 class PieceCreate(CreateView):
-    template_name = 'inventory/create_piece.html'
+    template_name = 'inventory/piece/create_piece.html'
     model = Piece
     form_class = PieceForm
 
@@ -413,7 +414,7 @@ class PieceCreate(CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'inventory/create_piece.html', context)
+        return render(request, 'inventory/piece/create_piece.html', context)
 
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
@@ -450,7 +451,7 @@ class PieceCreate(CreateView):
 class PieceListView(ListView):
     model = Piece
     paginate_by = 10
-    template_name = 'inventory/piece_list.html'  # Template location
+    template_name = 'inventory/piece/piece_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -481,8 +482,38 @@ def show_piece(request, primary_key):
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
                'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
-    return render(request, 'inventory/piece_detail.html', context)
+    return render(request, 'inventory/piece/piece_detail.html', context)
 
+
+# Update a piece
+def update_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    piece.update_comment = ''
+    if request.method == "POST":
+        form = PieceForm(request.POST, request.FILES, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect(piece.get_absolute_url())
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form': form}
+    return render(request, 'inventory/piece/update_piece.html', context)
+
+
+# clone a piece
+def clone_piece(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    piece.pk=None
+    piece.update_comment = ''
+    if request.method == "POST":
+        form = PieceForm(request.POST, request.FILES, instance=piece)
+        if form.is_valid():
+            form.save()
+            return redirect(piece.get_absolute_url())
+    else:
+        form = PieceForm(instance=piece)
+    context = {'piece': piece, 'form': form}
+    return render(request, 'inventory/piece/clone_piece.html', context)
 
 class PieceInstanceCreate(CreateView):
     template_name = 'inventory/create_instance_piece.html'
@@ -539,9 +570,11 @@ class PieceInstanceCreate(CreateView):
         return self.render_to_response(
             self.get_context_data(form=form))
 
+
 def all_piece_instance(request):
     piece_instance_list = PieceInstance.objects.all().order_by('piece')
     return render(request, 'inventory/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
+
 
 # Display specific instance information
 def show_instance_form(request, primary_key):
@@ -575,37 +608,6 @@ def show_instance_assembly_list(request):
     print(mylist)
     context = {'mylist': mylist}
     return render(request, 'inventory/general_list.html', context)
-
-
-# Update a piece
-def update_piece(request, piece_id):
-    piece = Piece.objects.get(pk=piece_id)
-    piece.update_comment = ''
-    if request.method == "POST":
-        form = PieceForm(request.POST, request.FILES, instance=piece)
-        if form.is_valid():
-            form.save()
-            return redirect(piece.get_absolute_url())
-    else:
-        form = PieceForm(instance=piece)
-    context = {'piece': piece, 'form': form}
-    return render(request, 'inventory/update_piece.html', context)
-
-
-# clone a piece
-def clone_piece(request, piece_id):
-    piece = Piece.objects.get(pk=piece_id)
-    piece.pk=None
-    piece.update_comment = ''
-    if request.method == "POST":
-        form = PieceForm(request.POST, request.FILES, instance=piece)
-        if form.is_valid():
-            form.save()
-            return redirect(piece.get_absolute_url())
-    else:
-        form = PieceForm(instance=piece)
-    context = {'piece': piece, 'form': form}
-    return render(request, 'inventory/clone_piece.html', context)
 
 
 # Update an instance
@@ -1173,7 +1175,7 @@ def show_piece_history(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     history = piece.history.all()
     context = {'history': history, 'piece': piece}
-    return render(request, 'inventory/piece_history.html', context)
+    return render(request, 'inventory/piece/piece_history.html', context)
 
 
 # Display history of a specific Instance
