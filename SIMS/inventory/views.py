@@ -1123,14 +1123,14 @@ def create_equivalence(request):
     context = {
         'form': forms
     }
-    return render(request, 'inventory/create_equivalence.html', context)
+    return render(request, 'inventory/equivalence/create_equivalence.html', context)
 
 
 # Display a list of all the Pieces in the inventory
 class EquivalenceListView(ListView):
     model = Equivalence
     paginate_by = 10
-    template_name = 'inventory/equivalence_list.html'  # Template location
+    template_name = 'inventory/equivalence/equivalence_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -1143,7 +1143,7 @@ class EquivalenceListView(ListView):
 def equivalence_detail(request, primary_key):
     equivalence = Equivalence.objects.get(pk=primary_key)
     context = {'equivalence': equivalence}
-    return render(request, 'inventory/equivalence_detail.html', context)
+    return render(request, 'inventory/equivalence/equivalence_detail.html', context)
 
 
 # Update an instance
@@ -1157,7 +1157,7 @@ def update_equivalence(request, equivalence_id):
     else:
         form = EquivalenceForm(instance=equivalence)
     context = {'equivalence': equivalence, 'form': form}
-    return render(request, 'inventory/equivalence_update.html', context)
+    return render(request, 'inventory/equivalence/equivalence_update.html', context)
 
 
 # Display history of specific Consumable
