@@ -684,9 +684,10 @@ def search_consumable_database(request):
                                        | Q(provider_serialnumber__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_consumable.html', context)
+        return render(request, 'inventory/search/search_consumable.html', context)
     else:
-        return render(request, 'inventory/search_consumable.html', {})
+        return render(request, 'inventory/search/search_consumable.html', {})
+
 
 # Specific to piece
 def search_piece_database(request):
@@ -704,9 +705,10 @@ def search_piece_database(request):
                                        | Q(item_type__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search.html', context)
+        return render(request, 'inventory/search/search.html', context)
     else:
-        return render(request, 'inventory/search.html', {})
+        return render(request, 'inventory/search/search.html', {})
+
 
 # Specific to instances
 def search_instance_database(request):
@@ -731,9 +733,10 @@ def search_instance_database(request):
                                                    | Q(provider_serialnumber__contains=searched)
                                                    )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_instance.html', context)
+        return render(request, 'inventory/search/search_instance.html', context)
     else:
-        return render(request, 'inventory/search_instance.html', {})
+        return render(request, 'inventory/search/search_instance.html', {})
+
 
 # Specific to Assemblies
 # Specific to Group Assemblies
@@ -745,9 +748,10 @@ def search_groupassembly_database(request):
                                        | Q(update_comment__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_groupassembly.html', context)
+        return render(request, 'inventory/search/search_groupassembly.html', context)
     else:
-        return render(request, 'inventory/search_groupassembly.html', {})
+        return render(request, 'inventory/search/search_groupassembly.html', {})
+
 
 # Specific to Assemblies
 def search_assembly_database(request):
@@ -769,9 +773,10 @@ def search_assembly_database(request):
                                        | Q(kit_serialnumber__contains=searched)
                                        )
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_assembly.html', context)
+        return render(request, 'inventory/search/search_assembly.html', context)
     else:
-        return render(request, 'inventory/search_assembly.html', {})
+        return render(request, 'inventory/search/search_assembly.html', {})
+
 
 # Specific to General List
 def search_general_database(request):
@@ -825,9 +830,9 @@ def search_general_database(request):
                 results_assemblies.append(i)
             results = (results_assemblies + results_instance)
         context = {'searched': searched, 'results': results}
-        return render(request, 'inventory/search_general.html', context)
+        return render(request, 'inventory/search/search_general.html', context)
     else:
-        return render(request, 'inventory/search_general.html', {})
+        return render(request, 'inventory/search/search_general.html', {})
 
 
 # Assembly Management Section
@@ -1068,19 +1073,19 @@ def movement_exchange(request):
         # Save the movement
         obj.save()
         return redirect(obj.get_absolute_url())
-    return render(request, 'inventory/movement_choice.html', context)
+    return render(request, 'inventory/movement/movement_choice.html', context)
 
 
 def movement_detail(request, primary_key):
     movement = MovementExchange.objects.get(pk=primary_key)
     context = {'movement': movement}
-    return render(request, 'inventory/movement_detail.html', context)
+    return render(request, 'inventory/movement/movement_detail.html', context)
 
 
 def movement_list(request):
     movements = MovementExchange.objects.order_by('date_created')
     context = {'movements': movements}
-    return render(request, 'inventory/movement_list.html', context)
+    return render(request, 'inventory/movement/movement_list.html', context)
 
 
 def movement_revert(request, movement_id):
@@ -1113,7 +1118,7 @@ def movement_revert(request, movement_id):
     movement.save()
 
     context = {'movement': movement}
-    return render(request, 'inventory/movement_detail.html', context)
+    return render(request, 'inventory/movement/movement_detail.html', context)
 
 
 # Equivalence Management

@@ -19,12 +19,12 @@ from .views import (
 )
 
 urlpatterns = [
-    path('search_consumable/', search_consumable_database, name='search-consumable-database'),
-    path('search/', search_piece_database, name='search-piece-database'),
-    path('search_instance/', search_instance_database, name='search-instance-database'),
-    path('search_groupassembly/', search_groupassembly_database, name='search-groupassembly-database'),
-    path('search_assembly/', search_assembly_database, name='search-assembly-database'),
-    path('search_general/', search_general_database, name='search-general-database'),
+    path('search/search_consumable/', search_consumable_database, name='search-consumable-database'),
+    path('search/search/', search_piece_database, name='search-piece-database'),
+    path('search/search_instance/', search_instance_database, name='search-instance-database'),
+    path('search/search_groupassembly/', search_groupassembly_database, name='search-groupassembly-database'),
+    path('search/search_assembly/', search_assembly_database, name='search-assembly-database'),
+    path('search/search_general/', search_general_database, name='search-general-database'),
 
     path('consumable/create_consumable/', ConsumableCreate.as_view(), name='consumable-create'),
     path('consumable/consumable_detail/<primary_key>', show_consumable, name='consumable-detail'),
@@ -72,9 +72,9 @@ urlpatterns = [
     path('equivalence/equivalence_detail/<primary_key>', equivalence_detail, name='equivalence-detail'),
     path('equivalence/equivalence_update/<equivalence_id>', update_equivalence, name='equivalence-update'),
 
-    path('movement_choice/', movement_exchange, name='movement-choice'),
-    path('movement_detail/<primary_key>', movement_detail, name='movement-detail'),
-    path('movement_list', movement_list, name="movement-list"),
+    path('movement/movement_choice/', movement_exchange, name='movement-choice'),
+    path('movement/movement_detail/<primary_key>', movement_detail, name='movement-detail'),
+    path('movement/movement_list', movement_list, name="movement-list"),
     path('movement_revert/<movement_id>', movement_revert, name='movement_revert'),
 
     path('ajax/load-item_1/', load_item_1, name='ajax_load_item_1'),
