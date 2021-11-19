@@ -1039,6 +1039,11 @@ def movement_exchange(request):
         obj.old_eighth_location = obj.item_2.eighth_location
         obj.old_status = obj.item_2.status
         # Update location of the item being replaced with the item it replaces
+        # CHeck if replaced object is in Assembly
+        if obj.item_1.kit:
+            obj.item_2.kit = obj.item_1.kit
+            obj.item_1.kit = None
+
         obj.item_2.first_location = obj.item_1.first_location
         obj.item_2.second_location = obj.item_1.second_location
         obj.item_2.third_location = obj.item_1.third_location
@@ -1091,6 +1096,10 @@ def movement_list(request):
 def movement_revert(request, movement_id):
     movement = MovementExchange.objects.get(id=movement_id)
     print(movement.item_1.first_location )
+    # We check if the replaced item was in an assembly
+    if movement.item_2.kit:
+        movement.item_1.kit = movement.item_2.kit
+        movement.item_2.kit = None
     movement.item_1.first_location = movement.item_2.first_location
     movement.item_1.second_location = movement.item_2.second_location
     movement.item_1.third_location = movement.item_2.third_location
