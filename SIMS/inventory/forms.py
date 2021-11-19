@@ -262,7 +262,8 @@ class MovementForm(ModelForm):
             'item_2': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 2'}),
             'update_comment_item2': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment_item2'}),
         }
-       # We override the init method to have instance choices dependent on piece choices
+
+    # We override the init method to have instance choices dependent on piece choices
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['item_1'].queryset = PieceInstance.objects.none()
@@ -392,6 +393,7 @@ class KitForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Location Declaration
         self.fields['second_location'].queryset = Second_location.objects.none()
         self.fields['third_location'].queryset = Third_location.objects.none()
         self.fields['fourth_location'].queryset = Fourth_location.objects.none()
@@ -399,7 +401,24 @@ class KitForm(ModelForm):
         self.fields['sixth_location'].queryset = Sixth_location.objects.none()
         self.fields['seventh_location'].queryset = Seventh_location.objects.none()
         self.fields['eighth_location'].queryset = Eighth_location.objects.none()
+        # Filtering Declaration
+        self.fields['piece_kit_1'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_2'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_3'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_4'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_5'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_6'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_7'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_8'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_9'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_10'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_11'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_12'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_13'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_14'].queryset = PieceInstance.objects.none()
+        self.fields['piece_kit_15'].queryset = PieceInstance.objects.none()
 
+        # Location management
         if 'first_location' in self.data:
             try:
                 previous_loc_id = int(self.data.get('first_location'))
@@ -471,6 +490,17 @@ class KitForm(ModelForm):
         elif self.instance.pk and self.instance.seventh_location:
             self.fields['eighth_location'].queryset = self.instance.seventh_location.eighth_location_set.order_by(
                 'name')
+
+        # Filtering Management
+        if 'pn_1' in self.data:
+            try:
+                piece_id = int(self.data.get('pn_1'))
+                self.fields['piece_kit_1'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by(
+                    'serial_number')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.pn_1:
+            self.fields['piece_kit_1'].queryset = self.instance.pn_1.piece_kit_1.order_by('name')
 
 
 class ConsumableForm(forms.ModelForm):
