@@ -49,9 +49,9 @@ urlpatterns = [
     path('instance/clone_existing_piece/<instance_id>', clone_instance, name='instance-clone'),
     path('instance/instance_history/<primary_key>', show_instance_history, name='instance-history'),
 
-    path('create_groupassembly/', GroupAssemblyCreate.as_view(), name='groupassembly-create'),
-    path('groupassembly_list/', GroupAssemblyListView.as_view(), name='groupassembly-list'),
-    path('groupassembly_detail/<primary_key>', show_groupassembly, name='groupassembly-detail'),
+    path('group_assembly/create_groupassembly/', GroupAssemblyCreate.as_view(), name='groupassembly-create'),
+    path('group_assembly/groupassembly_list/', GroupAssemblyListView.as_view(), name='groupassembly-list'),
+    path('group_assembly/groupassembly_detail/<primary_key>', show_groupassembly, name='groupassembly-detail'),
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),

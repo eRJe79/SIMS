@@ -833,7 +833,7 @@ def search_general_database(request):
 # Assembly Management Section
 # Create Group Assembly
 class GroupAssemblyCreate(CreateView):
-    template_name = 'inventory/create_groupassembly.html'
+    template_name = 'inventory/group_assembly/create_groupassembly.html'
     model = GroupAssembly
     form_class = GroupAssemblyForm
 
@@ -844,7 +844,7 @@ class GroupAssemblyCreate(CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'inventory/create_groupassembly.html', context)
+        return render(request, 'inventory/group_assembly/create_groupassembly.html', context)
 
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
@@ -881,7 +881,7 @@ class GroupAssemblyCreate(CreateView):
 class GroupAssemblyListView(ListView):
     model = GroupAssembly
     paginate_by = 10
-    template_name = 'inventory/groupassembly_list.html'  # Template location
+    template_name = 'inventory/group_assembly/groupassembly_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
@@ -896,7 +896,7 @@ def show_groupassembly(request, primary_key):
     groupassembly = GroupAssembly.objects.get(pk=primary_key)
     kit = Kit.objects.all().order_by('name')
     context = {'groupassembly': groupassembly, 'kit': kit}
-    return render(request, 'inventory/groupassembly_detail.html', context)
+    return render(request, 'inventory/group_assembly/groupassembly_detail.html', context)
 
 
 # Create new assembly

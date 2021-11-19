@@ -424,7 +424,7 @@ class PieceInstance(models.Model):
         return myhistory
 
 
-# A kit (assembly) is an ensemble of instances (for example: a PC contains multiple instances such as RAM bars, HD, or CPU)
+# A kit (assembly) is an ensemble of instances (example a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
     STATUS_CHOICE = (
         ('In Use', 'In Use'),
