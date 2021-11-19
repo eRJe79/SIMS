@@ -41,13 +41,13 @@ urlpatterns = [
     path('piece/piece_history/<primary_key>', show_piece_history, name='piece-history'),
 
 
-    path('piece_instance_list', all_piece_instance, name="piece-instance-list"),
-    path('create_instance_piece/', PieceInstanceCreate.as_view(), name='piece-instance-create'),
-    path('piece_instance_detail/<primary_key>', show_instance_form, name='piece-instance-detail'),
-    path('delete_piece_instance/<instance_id>', delete_instance, name="delete-piece-instance"),
-    path('update_piece_instance/<instance_id>', update_instance, name='update-piece-instance'),
-    path('clone_existing_piece/<instance_id>', clone_instance, name='instance-clone'),
-    path('instance_history/<primary_key>', show_instance_history, name='instance-history'),
+    path('instance/piece_instance_list', all_piece_instance, name="piece-instance-list"),
+    path('instance/create_instance_piece/', PieceInstanceCreate.as_view(), name='piece-instance-create'),
+    path('instance/piece_instance_detail/<primary_key>', show_instance_form, name='piece-instance-detail'),
+    path('instance/delete_piece_instance/<instance_id>', delete_instance, name="delete-piece-instance"),
+    path('instance/update_piece_instance/<instance_id>', update_instance, name='update-piece-instance'),
+    path('instance/clone_existing_piece/<instance_id>', clone_instance, name='instance-clone'),
+    path('instance/instance_history/<primary_key>', show_instance_history, name='instance-history'),
 
     path('create_groupassembly/', GroupAssemblyCreate.as_view(), name='groupassembly-create'),
     path('groupassembly_list/', GroupAssemblyListView.as_view(), name='groupassembly-list'),

@@ -46,7 +46,7 @@
     <setting file="file://$PROJECT_DIR$/inventory/models.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SIMS/views.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SIMS/settings.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/templates/inventory/piece_instance_detail.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/inventory/instance/piece_instance_detail.html" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1tL8FfPk3UIE5XJUIyFu1hwMrCQ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -66,6 +66,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\instance" />
       <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\piece" />
       <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\equivalence" />
       <recent name="C:\Users\mathi\OneDrive\Documents\SourceTree\SIMS\SIMS\templates\inventory\consumable" />
