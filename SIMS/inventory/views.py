@@ -263,7 +263,7 @@ def movement_record_csv(request):
                         ])
         # Loop Through instance and output
         for item in history:
-            writer.writerow([item.history_date, item.reference_number,
+            writer.writerow([item.history_date.date() , item.reference_number,
                             item.piece_1, item.piece_1.cae_part_number, item.item_1.serial_number,
                             item.update_comment_item1,
                             item.piece_2, item.piece_2.cae_part_number, item.item_2.serial_number,
