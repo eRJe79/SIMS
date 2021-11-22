@@ -8,10 +8,9 @@
   <div class="card-body">
     <h5 class="card-title"> Assembly Name : {{ kit.name }}</h5>
     <p class="card-text">
-    <ul>
         <p><strong>Group Assembly:</strong> {{ kit.group_assembly }}</p>
         <p><strong>Description:</strong> {{ kit.description }}</p>
-        <a><strong>Part Number:</strong> <a href="{{ kit.group_assembly.get_absolute_url }}"> {{ kit.group_assembly.kit_partnumber }}</a></p>
+        <p><strong>Part Number:</strong> <a href="{{ kit.group_assembly.get_absolute_url }}"> {{ kit.group_assembly.kit_partnumber }}</a></p>
         <p><strong>Serial Number:</strong> {{ kit.kit_serialnumber }}</p>
         <p><strong>Status:</strong> {{ kit.kit_status }}</p>
 	  	<p><strong>Location: </strong>{% if kit.eighth_location %}

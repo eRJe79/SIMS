@@ -908,36 +908,22 @@ def show_groupassembly(request, primary_key):
 class KitCreate(CreateView):
     template_name = 'inventory/assembly/kit_form.html'
     model = Kit
-
-    def get(self, request, *args, **kwargs):
-        self.object = None
-        form = KitForm(request.POST)
-        context = {
-            'form': KitForm(),
-        }
-        return render(request, 'inventory/assembly/kit_form.html', context)
-
-    def post(self, request, *args, **kwargs):
-        # if our ajax is calling so we have to take action
-        # because this is not the form submission
-        self.object = None
-        form = KitForm(request.POST)
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+    form_class = KitForm
 
     def form_valid(self, form):
+        print("form valid")
         instances = PieceInstance.objects.all()
         kit = form.save(commit=False)
         kit.save()
         piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
                           kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
-                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14,
+                          kit.piece_kit_15]
+        print(piece_instance)
         for item in piece_instance:
             if item is not None:
                 for instance in instances:
-                    if instance == item:
+                    if instance.serial_number == item.serial_number:
                         instance.update_comment = kit.update_comment
                         instance.first_location = kit.first_location
                         instance.second_location = kit.second_location
@@ -950,10 +936,6 @@ class KitCreate(CreateView):
                         instance.status = kit.kit_status
                         instance.save()
         return redirect(kit.get_absolute_url())
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(form=form))
 
 
 # Update an assembly
@@ -1010,10 +992,11 @@ class KitList(ListView):
 # Display a specific Kit
 def show_kit(request, primary_key):
     kit = Kit.objects.get(pk=primary_key)
-    piece_instance=[kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+    piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
                     kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
                     kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
-    context = {'kit': kit, 'piece_instance':piece_instance}
+    print(piece_instance)
+    context = {'kit': kit, 'piece_instance': piece_instance}
     return render(request, 'inventory/assembly/kit_detail.html', context)
 
 
