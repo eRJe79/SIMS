@@ -10,9 +10,18 @@
   </ul>
 <br></br>
 <h4>Reporting section</h4>
-  <p><a class="nav-link" href="{% url 'database_csv' %}">Generate Database CSV File</a></p>
-  <p><a class="nav-link" href="{% url 'low_stock_record_csv' %}">Low Stock Report</a></p>
 <br>
+<form class="d-flex" method="POST" action="{%url 'database_csv' %}">
+  {% csrf_token %}
+      <button class="btn btn-outline-secondary" type="submit"> Generate Database CSV File </button>
+</form>
+</br>
+<br>
+<form class="d-flex" method="POST" action="{%url 'low_stock_record_csv' %}">
+  {% csrf_token %}
+      <button class="btn btn-outline-secondary" type="submit"> Low Stock Report </button>
+</form>
+</br>
 <h5>Shipped-Received Report</h5>
 <form class="d-flex" method="POST" action="{%url 'shipped_received_csv' %}">
   {% csrf_token %}
