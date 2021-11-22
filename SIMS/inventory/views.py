@@ -109,7 +109,6 @@ def database_csv(request):
     for i in Kit.objects.all():
         myassemblylist.append(i)
     mylist = (myinstancelist + myassemblylist)
-    print(mylist)
 
     # Add column headings to the csv file
     writer.writerow(['Piece/Assembly', 'Piece model', 'Manufacturer', 'Manufacturer Part Number', 'Manufacturer Serial Number',
@@ -554,13 +553,9 @@ class PieceInstanceCreate(CreateView):
 
     def form_valid(self, request, form):
         piece_instance = PieceInstance.objects.all()
-        print(piece_instance)
         self.object = form.save(commit=False)
-        print(piece_instance)
         for instance in piece_instance:
             if self.object.piece == instance.piece:
-                print(instance.serial_number)
-                print(self.object.serial_number)
                 if self.object.serial_number == instance.serial_number:
                     messages.success(request, 'An instance with this serial number already exist')
                     return self.render_to_response(self.get_context_data(form=form))
@@ -607,7 +602,6 @@ def show_instance_assembly_list(request):
         myconsumablelist.append(i)
     # We assemble one list under one for display purpose
     mylist = (myinstancelist + myassemblylist + myconsumablelist)
-    print(mylist)
     context = {'mylist': mylist}
     return render(request, 'inventory/general_list.html', context)
 
@@ -908,24 +902,7 @@ def show_groupassembly(request, primary_key):
 class KitCreate(CreateView):
     template_name = 'inventory/assembly/kit_form.html'
     model = Kit
-
-    def get(self, request, *args, **kwargs):
-        self.object = None
-        form = KitForm(request.POST)
-        context = {
-            'form': KitForm(),
-        }
-        return render(request, 'inventory/assembly/kit_form.html', context)
-
-    def post(self, request, *args, **kwargs):
-        # if our ajax is calling so we have to take action
-        # because this is not the form submission
-        self.object = None
-        form = KitForm(request.POST)
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+    form_class = KitForm
 
     def form_valid(self, form):
         instances = PieceInstance.objects.all()
@@ -933,11 +910,12 @@ class KitCreate(CreateView):
         kit.save()
         piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
                           kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
-                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14,
+                          kit.piece_kit_15]
         for item in piece_instance:
             if item is not None:
                 for instance in instances:
-                    if instance == item:
+                    if instance.serial_number == item.serial_number:
                         instance.update_comment = kit.update_comment
                         instance.first_location = kit.first_location
                         instance.second_location = kit.second_location
@@ -950,10 +928,6 @@ class KitCreate(CreateView):
                         instance.status = kit.kit_status
                         instance.save()
         return redirect(kit.get_absolute_url())
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(form=form))
 
 
 # Update an assembly
@@ -962,34 +936,36 @@ def update_kit(request, kit_id):
     kit.date_update = timezone.now()
     kit.update_comment = ''
     instances = PieceInstance.objects.all()
-    form = KitForm(request.POST or None, instance=kit)
+    if request.method == "POST":
+        form = KitForm(request.POST or None, instance=kit)
+        if form.is_valid():
+            parent = form.save(commit=False)
+            parent.save()
+            piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                              kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                              kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+            for item in piece_instance:
+                if item is not None:
+                    for instance in instances:
+                        if instance == item:
+                            instance.update_comment = kit.update_comment
+                            instance.first_location = kit.first_location
+                            instance.second_location = kit.second_location
+                            instance.third_location = kit.third_location
+                            instance.fourth_location = kit.fourth_location
+                            instance.fifth_location = kit.fifth_location
+                            instance.sixth_location = kit.sixth_location
+                            instance.seventh_location = kit.seventh_location
+                            instance.eighth_location = kit.eighth_location
+                            instance.status = kit.kit_status
+                            instance.save()
+            return redirect(kit.get_absolute_url())
+    else:
+        form = KitForm(instance=kit)
     context = {
         'kit': kit,
         'form': form,
     }
-    if form.is_valid():
-        parent = form.save(commit=False)
-        parent.save()
-        print(parent)
-        piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
-                          kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
-                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
-        for item in piece_instance:
-            if item is not None:
-                for instance in instances:
-                    if instance == item:
-                        instance.update_comment = kit.update_comment
-                        instance.first_location = kit.first_location
-                        instance.second_location = kit.second_location
-                        instance.third_location = kit.third_location
-                        instance.fourth_location = kit.fourth_location
-                        instance.fifth_location = kit.fifth_location
-                        instance.sixth_location = kit.sixth_location
-                        instance.seventh_location = kit.seventh_location
-                        instance.eighth_location = kit.eighth_location
-                        instance.status = kit.kit_status
-                        instance.save()
-        return redirect(kit.get_absolute_url())
     return render(request, 'inventory/assembly/kit_update.html', context)
 
 
@@ -1010,10 +986,10 @@ class KitList(ListView):
 # Display a specific Kit
 def show_kit(request, primary_key):
     kit = Kit.objects.get(pk=primary_key)
-    piece_instance=[kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+    piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
                     kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
                     kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
-    context = {'kit': kit, 'piece_instance':piece_instance}
+    context = {'kit': kit, 'piece_instance': piece_instance}
     return render(request, 'inventory/assembly/kit_detail.html', context)
 
 
@@ -1039,6 +1015,51 @@ def movement_exchange(request):
         obj.old_eighth_location = obj.item_2.eighth_location
         obj.old_status = obj.item_2.status
         # Update location of the item being replaced with the item it replaces
+        # Check if replaced object is in Assembly
+        try:
+            kit = Kit.objects.get(
+                Q(piece_kit_1=obj.item_1) | Q(piece_kit_2=obj.item_1) | Q(piece_kit_3=obj.item_1) | Q(
+                    piece_kit_4=obj.item_1)
+                | Q(piece_kit_5=obj.item_1) | Q(piece_kit_6=obj.item_1) | Q(piece_kit_7=obj.item_1) | Q(
+                    piece_kit_8=obj.item_1)
+                | Q(piece_kit_9=obj.item_1) | Q(piece_kit_10=obj.item_1) | Q(piece_kit_11=obj.item_1) | Q(
+                    piece_kit_12=obj.item_1)
+                | Q(piece_kit_13=obj.item_1) | Q(piece_kit_14=obj.item_1) | Q(piece_kit_15=obj.item_1))
+        except:
+            kit = None
+
+        if kit:
+            if kit.piece_kit_1 == obj.item_1:
+                kit.piece_kit_1 = obj.item_2
+            elif kit.piece_kit_2 == obj.item_1:
+                kit.piece_kit_2 = obj.item_2
+            elif kit.piece_kit_3 == obj.item_1:
+                kit.piece_kit_3 = obj.item_2
+            elif kit.piece_kit_4 == obj.item_1:
+                kit.piece_kit_4 = obj.item_2
+            elif kit.piece_kit_5 == obj.item_1:
+                kit.piece_kit_5 = obj.item_2
+            elif kit.piece_kit_6 == obj.item_1:
+                kit.piece_kit_6 = obj.item_2
+            elif kit.piece_kit_7 == obj.item_1:
+                kit.piece_kit_7 = obj.item_2
+            elif kit.piece_kit_8 == obj.item_1:
+                kit.piece_kit_8 = obj.item_2
+            elif kit.piece_kit_9 == obj.item_1:
+                kit.piece_kit_9 = obj.item_2
+            elif kit.piece_kit_10 == obj.item_1:
+                kit.piece_kit_10 = obj.item_2
+            elif kit.piece_kit_11 == obj.item_1:
+                kit.piece_kit_11 = obj.item_2
+            elif kit.piece_kit_12 == obj.item_1:
+                kit.piece_kit_12 = obj.item_2
+            elif kit.piece_kit_13 == obj.item_1:
+                kit.piece_kit_13 = obj.item_2
+            elif kit.piece_kit_14 == obj.item_1:
+                kit.piece_kit_14 = obj.item_2
+            elif kit.piece_kit_15 == obj.item_1:
+                kit.piece_kit_15 = obj.item_2
+
         obj.item_2.first_location = obj.item_1.first_location
         obj.item_2.second_location = obj.item_1.second_location
         obj.item_2.third_location = obj.item_1.third_location
@@ -1066,12 +1087,11 @@ def movement_exchange(request):
         obj.item_1.date_update = datetime.date.today()
         obj.item_2.date_update = datetime.date.today()
         # Save the objects
-        print('is_valid')
-        print(obj.item_1)
         obj.item_1.save()
         obj.item_2.save()
         # Save the movement
         obj.save()
+        kit.save()
         return redirect(obj.get_absolute_url())
     return render(request, 'inventory/movement/movement_choice.html', context)
 
@@ -1090,7 +1110,52 @@ def movement_list(request):
 
 def movement_revert(request, movement_id):
     movement = MovementExchange.objects.get(id=movement_id)
-    print(movement.item_1.first_location )
+    # We check if the replaced item was in an assembly
+    # Check if replaced object is in Assembly
+    try:
+        kit = Kit.objects.get(
+            Q(piece_kit_1=movement.item_2) | Q(piece_kit_2=movement.item_2) | Q(piece_kit_3=movement.item_2) | Q(
+                piece_kit_4=movement.item_2)
+            | Q(piece_kit_5=movement.item_2) | Q(piece_kit_6=movement.item_2) | Q(piece_kit_7=movement.item_2) | Q(
+                piece_kit_8=movement.item_2)
+            | Q(piece_kit_9=movement.item_2) | Q(piece_kit_10=movement.item_2) | Q(piece_kit_11=movement.item_2) | Q(
+                piece_kit_12=movement.item_2)
+            | Q(piece_kit_13=movement.item_2) | Q(piece_kit_14=movement.item_2) | Q(piece_kit_15=movement.item_2))
+    except:
+        kit = None
+
+    if kit:
+        if kit.piece_kit_1 == movement.item_2:
+            kit.piece_kit_1 = movement.item_1
+        elif kit.piece_kit_2 == movement.item_2:
+            kit.piece_kit_2 = movement.item_1
+        elif kit.piece_kit_3 == movement.item_2:
+            kit.piece_kit_3 = movement.item_1
+        elif kit.piece_kit_4 == movement.item_2:
+            kit.piece_kit_4 = movement.item_1
+        elif kit.piece_kit_5 == movement.item_2:
+            kit.piece_kit_5 = movement.item_1
+        elif kit.piece_kit_6 == movement.item_2:
+            kit.piece_kit_6 = movement.item_1
+        elif kit.piece_kit_7 == movement.item_2:
+            kit.piece_kit_7 = movement.item_1
+        elif kit.piece_kit_8 == movement.item_2:
+            kit.piece_kit_8 = movement.item_1
+        elif kit.piece_kit_9 == movement.item_2:
+            kit.piece_kit_9 = movement.item_1
+        elif kit.piece_kit_10 == movement.item_2:
+            kit.piece_kit_10 = movement.item_1
+        elif kit.piece_kit_11 == movement.item_2:
+            kit.piece_kit_11 = movement.item_1
+        elif kit.piece_kit_12 == movement.item_2:
+            kit.piece_kit_12 = movement.item_1
+        elif kit.piece_kit_13 == movement.item_2:
+            kit.piece_kit_13 = movement.item_1
+        elif kit.piece_kit_14 == movement.item_2:
+            kit.piece_kit_14 = movement.item_1
+        elif kit.piece_kit_15 == movement.item_2:
+            kit.piece_kit_15 = movement.item_1
+
     movement.item_1.first_location = movement.item_2.first_location
     movement.item_1.second_location = movement.item_2.second_location
     movement.item_1.third_location = movement.item_2.third_location
@@ -1102,7 +1167,6 @@ def movement_revert(request, movement_id):
     movement.item_1.status = movement.item_2.status
     movement.item_1.date_update = datetime.date.today()
     movement.item_1.save()
-    print(movement.item_1.first_location)
     movement.item_2.first_location = movement.old_first_location
     movement.item_2.second_location = movement.old_second_location
     movement.item_2.third_location = movement.old_third_location
@@ -1116,6 +1180,7 @@ def movement_revert(request, movement_id):
     movement.item_2.save()
     movement.revert_button = False
     movement.save()
+    kit.save()
 
     context = {'movement': movement}
     return render(request, 'inventory/movement/movement_detail.html', context)

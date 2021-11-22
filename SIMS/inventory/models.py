@@ -21,6 +21,7 @@ class First_location(models.Model):
     def __str__(self):
         return self.name
 
+
 class Second_location(models.Model):
     previous_loc = models.ForeignKey(First_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
@@ -30,6 +31,7 @@ class Second_location(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Third_location(models.Model):
     previous_loc = models.ForeignKey(Second_location, on_delete=models.CASCADE)
@@ -41,6 +43,7 @@ class Third_location(models.Model):
     def __str__(self):
         return self.name
 
+
 class Fourth_location(models.Model):
     previous_loc = models.ForeignKey(Third_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
@@ -50,6 +53,7 @@ class Fourth_location(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Fifth_location(models.Model):
     previous_loc = models.ForeignKey(Fourth_location, on_delete=models.CASCADE)
@@ -61,6 +65,7 @@ class Fifth_location(models.Model):
     def __str__(self):
         return self.name
 
+
 class Sixth_location(models.Model):
     previous_loc = models.ForeignKey(Fifth_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
@@ -71,6 +76,7 @@ class Sixth_location(models.Model):
     def __str__(self):
         return self.name
 
+
 class Seventh_location(models.Model):
     previous_loc = models.ForeignKey(Sixth_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
@@ -80,6 +86,7 @@ class Seventh_location(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Eighth_location(models.Model):
     previous_loc = models.ForeignKey(Seventh_location, on_delete=models.CASCADE)
@@ -454,21 +461,21 @@ class Kit(models.Model):
     date_created = models.DateField(auto_now_add=True)
 
     # Added PN (link to pieces) for filtering purpose
-    pn_1 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_1', null=True, blank=True)
-    pn_2 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_2', null=True, blank=True)
-    pn_3 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_3', null=True, blank=True)
-    pn_4 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_4', null=True, blank=True)
-    pn_5 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_5', null=True, blank=True)
-    pn_6 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_6', null=True, blank=True)
-    pn_7 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_7', null=True, blank=True)
-    pn_8 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_8', null=True, blank=True)
-    pn_9 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_9', null=True, blank=True)
-    pn_10 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_10', null=True, blank=True)
-    pn_11 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_11', null=True, blank=True)
-    pn_12 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_12', null=True, blank=True)
-    pn_13 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_13', null=True, blank=True)
-    pn_14 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_14', null=True, blank=True)
-    pn_15 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='piece_kit_15', null=True, blank=True)
+    pn_1 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_1', null=True, blank=True)
+    pn_2 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_2', null=True, blank=True)
+    pn_3 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_3', null=True, blank=True)
+    pn_4 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_4', null=True, blank=True)
+    pn_5 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_5', null=True, blank=True)
+    pn_6 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_6', null=True, blank=True)
+    pn_7 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_7', null=True, blank=True)
+    pn_8 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_8', null=True, blank=True)
+    pn_9 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_9', null=True, blank=True)
+    pn_10 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_10', null=True, blank=True)
+    pn_11 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_11', null=True, blank=True)
+    pn_12 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_12', null=True, blank=True)
+    pn_13 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_13', null=True, blank=True)
+    pn_14 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_14', null=True, blank=True)
+    pn_15 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pn_15', null=True, blank=True)
 
     piece_kit_1 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_1', null=True, blank=True)
     piece_kit_2 = models.ForeignKey(PieceInstance, on_delete=models.CASCADE, related_name='piece_kit_2', null=True, blank=True)
