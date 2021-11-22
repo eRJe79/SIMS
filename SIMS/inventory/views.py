@@ -109,7 +109,6 @@ def database_csv(request):
     for i in Kit.objects.all():
         myassemblylist.append(i)
     mylist = (myinstancelist + myassemblylist)
-    print(mylist)
 
     # Add column headings to the csv file
     writer.writerow(['Piece/Assembly', 'Piece model', 'Manufacturer', 'Manufacturer Part Number', 'Manufacturer Serial Number',
@@ -554,13 +553,9 @@ class PieceInstanceCreate(CreateView):
 
     def form_valid(self, request, form):
         piece_instance = PieceInstance.objects.all()
-        print(piece_instance)
         self.object = form.save(commit=False)
-        print(piece_instance)
         for instance in piece_instance:
             if self.object.piece == instance.piece:
-                print(instance.serial_number)
-                print(self.object.serial_number)
                 if self.object.serial_number == instance.serial_number:
                     messages.success(request, 'An instance with this serial number already exist')
                     return self.render_to_response(self.get_context_data(form=form))
@@ -607,7 +602,6 @@ def show_instance_assembly_list(request):
         myconsumablelist.append(i)
     # We assemble one list under one for display purpose
     mylist = (myinstancelist + myassemblylist + myconsumablelist)
-    print(mylist)
     context = {'mylist': mylist}
     return render(request, 'inventory/general_list.html', context)
 
@@ -911,7 +905,6 @@ class KitCreate(CreateView):
     form_class = KitForm
 
     def form_valid(self, form):
-        print("form valid")
         instances = PieceInstance.objects.all()
         kit = form.save(commit=False)
         kit.save()
@@ -919,7 +912,6 @@ class KitCreate(CreateView):
                           kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
                           kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14,
                           kit.piece_kit_15]
-        print(piece_instance)
         for item in piece_instance:
             if item is not None:
                 for instance in instances:
@@ -949,7 +941,6 @@ def update_kit(request, kit_id):
         if form.is_valid():
             parent = form.save(commit=False)
             parent.save()
-            print(parent)
             piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
                               kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
                               kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
@@ -998,7 +989,6 @@ def show_kit(request, primary_key):
     piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
                     kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
                     kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
-    print(piece_instance)
     context = {'kit': kit, 'piece_instance': piece_instance}
     return render(request, 'inventory/assembly/kit_detail.html', context)
 
@@ -1097,8 +1087,6 @@ def movement_exchange(request):
         obj.item_1.date_update = datetime.date.today()
         obj.item_2.date_update = datetime.date.today()
         # Save the objects
-        print('is_valid')
-        print(obj.item_1)
         obj.item_1.save()
         obj.item_2.save()
         # Save the movement
@@ -1122,7 +1110,6 @@ def movement_list(request):
 
 def movement_revert(request, movement_id):
     movement = MovementExchange.objects.get(id=movement_id)
-    print(movement.item_1.first_location )
     # We check if the replaced item was in an assembly
     # Check if replaced object is in Assembly
     try:
@@ -1180,7 +1167,6 @@ def movement_revert(request, movement_id):
     movement.item_1.status = movement.item_2.status
     movement.item_1.date_update = datetime.date.today()
     movement.item_1.save()
-    print(movement.item_1.first_location)
     movement.item_2.first_location = movement.old_first_location
     movement.item_2.second_location = movement.old_second_location
     movement.item_2.third_location = movement.old_third_location
