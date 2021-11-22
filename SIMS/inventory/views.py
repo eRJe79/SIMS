@@ -226,7 +226,7 @@ def reparation_record_csv(request):
 
         # Add column headings to the csv file
         writer.writerow(['Instance', 'CAE Part Number', 'CAE Serial Number', 'Documentation',
-                     'Description', 'Date Sent to Reparation'])
+                     'Description', 'Date in Repair'])
         # Loop Through instance and output
         for item in history:
             writer.writerow([item.piece, item.piece.cae_part_number, item.serial_number, item.piece.documentation,
