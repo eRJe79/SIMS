@@ -168,6 +168,7 @@ def database_csv(request):
                             item.date_calibration, item.date_end_of_life, item.date_guarantee])
     return response
 
+
 # Generate reports
 def shipped_received_csv(request):
     response = HttpResponse(content_type='text/csv')
@@ -200,6 +201,7 @@ def shipped_received_csv(request):
                          item.piece.documentation, item.piece.description, item.update_comment])
     return response
 
+
 def reparation_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=reparation_report.csv'
@@ -230,6 +232,7 @@ def reparation_record_csv(request):
             writer.writerow([item.piece, item.piece.cae_part_number, item.serial_number, item.piece.documentation,
                             item.piece.description, item.history_date.date()])
     return response
+
 
 def movement_record_csv(request):
     response = HttpResponse(content_type='text/csv')
@@ -267,6 +270,7 @@ def movement_record_csv(request):
                             item.update_comment_item2,
                             ])
     return response
+
 
 # Generate Low Stock record
 def low_stock_record_csv(request):
