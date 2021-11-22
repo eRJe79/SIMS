@@ -944,34 +944,37 @@ def update_kit(request, kit_id):
     kit.date_update = timezone.now()
     kit.update_comment = ''
     instances = PieceInstance.objects.all()
-    form = KitForm(request.POST or None, instance=kit)
+    if request.method == "POST":
+        form = KitForm(request.POST or None, instance=kit)
+        if form.is_valid():
+            parent = form.save(commit=False)
+            parent.save()
+            print(parent)
+            piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                              kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                              kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+            for item in piece_instance:
+                if item is not None:
+                    for instance in instances:
+                        if instance == item:
+                            instance.update_comment = kit.update_comment
+                            instance.first_location = kit.first_location
+                            instance.second_location = kit.second_location
+                            instance.third_location = kit.third_location
+                            instance.fourth_location = kit.fourth_location
+                            instance.fifth_location = kit.fifth_location
+                            instance.sixth_location = kit.sixth_location
+                            instance.seventh_location = kit.seventh_location
+                            instance.eighth_location = kit.eighth_location
+                            instance.status = kit.kit_status
+                            instance.save()
+            return redirect(kit.get_absolute_url())
+    else:
+        form = KitForm(instance=kit)
     context = {
         'kit': kit,
         'form': form,
     }
-    if form.is_valid():
-        parent = form.save(commit=False)
-        parent.save()
-        print(parent)
-        piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
-                          kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
-                          kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
-        for item in piece_instance:
-            if item is not None:
-                for instance in instances:
-                    if instance == item:
-                        instance.update_comment = kit.update_comment
-                        instance.first_location = kit.first_location
-                        instance.second_location = kit.second_location
-                        instance.third_location = kit.third_location
-                        instance.fourth_location = kit.fourth_location
-                        instance.fifth_location = kit.fifth_location
-                        instance.sixth_location = kit.sixth_location
-                        instance.seventh_location = kit.seventh_location
-                        instance.eighth_location = kit.eighth_location
-                        instance.status = kit.kit_status
-                        instance.save()
-        return redirect(kit.get_absolute_url())
     return render(request, 'inventory/assembly/kit_update.html', context)
 
 
