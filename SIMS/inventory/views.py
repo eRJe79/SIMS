@@ -1025,10 +1025,50 @@ def movement_exchange(request):
         obj.old_eighth_location = obj.item_2.eighth_location
         obj.old_status = obj.item_2.status
         # Update location of the item being replaced with the item it replaces
-        # CHeck if replaced object is in Assembly
-        if obj.item_1.kit:
-            obj.item_2.kit = obj.item_1.kit
-            obj.item_1.kit = None
+        # Check if replaced object is in Assembly
+        try:
+            kit = Kit.objects.get(
+                Q(piece_kit_1=obj.item_1) | Q(piece_kit_2=obj.item_1) | Q(piece_kit_3=obj.item_1) | Q(
+                    piece_kit_4=obj.item_1)
+                | Q(piece_kit_5=obj.item_1) | Q(piece_kit_6=obj.item_1) | Q(piece_kit_7=obj.item_1) | Q(
+                    piece_kit_8=obj.item_1)
+                | Q(piece_kit_9=obj.item_1) | Q(piece_kit_10=obj.item_1) | Q(piece_kit_11=obj.item_1) | Q(
+                    piece_kit_12=obj.item_1)
+                | Q(piece_kit_13=obj.item_1) | Q(piece_kit_14=obj.item_1) | Q(piece_kit_15=obj.item_1))
+        except:
+            kit = None
+
+        if kit:
+            if kit.piece_kit_1 == obj.item_1:
+                kit.piece_kit_1 = obj.item_2
+            elif kit.piece_kit_2 == obj.item_1:
+                kit.piece_kit_2 = obj.item_2
+            elif kit.piece_kit_3 == obj.item_1:
+                kit.piece_kit_3 = obj.item_2
+            elif kit.piece_kit_4 == obj.item_1:
+                kit.piece_kit_4 = obj.item_2
+            elif kit.piece_kit_5 == obj.item_1:
+                kit.piece_kit_5 = obj.item_2
+            elif kit.piece_kit_6 == obj.item_1:
+                kit.piece_kit_6 = obj.item_2
+            elif kit.piece_kit_7 == obj.item_1:
+                kit.piece_kit_7 = obj.item_2
+            elif kit.piece_kit_8 == obj.item_1:
+                kit.piece_kit_8 = obj.item_2
+            elif kit.piece_kit_9 == obj.item_1:
+                kit.piece_kit_9 = obj.item_2
+            elif kit.piece_kit_10 == obj.item_1:
+                kit.piece_kit_10 = obj.item_2
+            elif kit.piece_kit_11 == obj.item_1:
+                kit.piece_kit_11 = obj.item_2
+            elif kit.piece_kit_12 == obj.item_1:
+                kit.piece_kit_12 = obj.item_2
+            elif kit.piece_kit_13 == obj.item_1:
+                kit.piece_kit_13 = obj.item_2
+            elif kit.piece_kit_14 == obj.item_1:
+                kit.piece_kit_14 = obj.item_2
+            elif kit.piece_kit_15 == obj.item_1:
+                kit.piece_kit_15 = obj.item_2
 
         obj.item_2.first_location = obj.item_1.first_location
         obj.item_2.second_location = obj.item_1.second_location
@@ -1063,6 +1103,7 @@ def movement_exchange(request):
         obj.item_2.save()
         # Save the movement
         obj.save()
+        kit.save()
         return redirect(obj.get_absolute_url())
     return render(request, 'inventory/movement/movement_choice.html', context)
 
@@ -1083,9 +1124,51 @@ def movement_revert(request, movement_id):
     movement = MovementExchange.objects.get(id=movement_id)
     print(movement.item_1.first_location )
     # We check if the replaced item was in an assembly
-    if movement.item_2.kit:
-        movement.item_1.kit = movement.item_2.kit
-        movement.item_2.kit = None
+    # Check if replaced object is in Assembly
+    try:
+        kit = Kit.objects.get(
+            Q(piece_kit_1=movement.item_2) | Q(piece_kit_2=movement.item_2) | Q(piece_kit_3=movement.item_2) | Q(
+                piece_kit_4=movement.item_2)
+            | Q(piece_kit_5=movement.item_2) | Q(piece_kit_6=movement.item_2) | Q(piece_kit_7=movement.item_2) | Q(
+                piece_kit_8=movement.item_2)
+            | Q(piece_kit_9=movement.item_2) | Q(piece_kit_10=movement.item_2) | Q(piece_kit_11=movement.item_2) | Q(
+                piece_kit_12=movement.item_2)
+            | Q(piece_kit_13=movement.item_2) | Q(piece_kit_14=movement.item_2) | Q(piece_kit_15=movement.item_2))
+    except:
+        kit = None
+
+    if kit:
+        if kit.piece_kit_1 == movement.item_2:
+            kit.piece_kit_1 = movement.item_1
+        elif kit.piece_kit_2 == movement.item_2:
+            kit.piece_kit_2 = movement.item_1
+        elif kit.piece_kit_3 == movement.item_2:
+            kit.piece_kit_3 = movement.item_1
+        elif kit.piece_kit_4 == movement.item_2:
+            kit.piece_kit_4 = movement.item_1
+        elif kit.piece_kit_5 == movement.item_2:
+            kit.piece_kit_5 = movement.item_1
+        elif kit.piece_kit_6 == movement.item_2:
+            kit.piece_kit_6 = movement.item_1
+        elif kit.piece_kit_7 == movement.item_2:
+            kit.piece_kit_7 = movement.item_1
+        elif kit.piece_kit_8 == movement.item_2:
+            kit.piece_kit_8 = movement.item_1
+        elif kit.piece_kit_9 == movement.item_2:
+            kit.piece_kit_9 = movement.item_1
+        elif kit.piece_kit_10 == movement.item_2:
+            kit.piece_kit_10 = movement.item_1
+        elif kit.piece_kit_11 == movement.item_2:
+            kit.piece_kit_11 = movement.item_1
+        elif kit.piece_kit_12 == movement.item_2:
+            kit.piece_kit_12 = movement.item_1
+        elif kit.piece_kit_13 == movement.item_2:
+            kit.piece_kit_13 = movement.item_1
+        elif kit.piece_kit_14 == movement.item_2:
+            kit.piece_kit_14 = movement.item_1
+        elif kit.piece_kit_15 == movement.item_2:
+            kit.piece_kit_15 = movement.item_1
+
     movement.item_1.first_location = movement.item_2.first_location
     movement.item_1.second_location = movement.item_2.second_location
     movement.item_1.third_location = movement.item_2.third_location
@@ -1111,6 +1194,7 @@ def movement_revert(request, movement_id):
     movement.item_2.save()
     movement.revert_button = False
     movement.save()
+    kit.save()
 
     context = {'movement': movement}
     return render(request, 'inventory/movement/movement_detail.html', context)
