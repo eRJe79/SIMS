@@ -77,9 +77,12 @@ class PieceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
 
 @admin.register(PieceInstance)
 class PieceInstanceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
-    list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'owner', 'restriction', 'first_location',
-                    'second_location', 'third_location', 'fourth_location', 'fifth_location', 'sixth_location',
-                    'seventh_location', 'eighth_location', 'status', 'history')
+    list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
+                    'restriction', 'update_document', 'update_comment', 'date_update',
+                    'date_calibration', 'date_created', 'date_guarantee', 'date_end_of_life',
+                    'first_location', 'second_location', 'third_location', 'fourth_location', 'fifth_location',
+                    'sixth_location', 'seventh_location', 'eighth_location',
+                    'status', 'history')
 
 
 @admin.register(Kit)
