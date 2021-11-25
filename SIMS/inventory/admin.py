@@ -23,42 +23,42 @@ class PieceAdminInline(admin.TabularInline):
 
 
 @admin.register(First_location)
-class First_locationAdmin(SimpleHistoryAdmin):
+class First_locationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('name',)
 
 
 @admin.register(Second_location)
-class Second_LocationAdmin(SimpleHistoryAdmin):
+class Second_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Third_location)
-class Third_LocationAdmin(SimpleHistoryAdmin):
+class Third_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Fourth_location)
-class Fourth_locationAdmin(SimpleHistoryAdmin):
+class Fourth_locationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Fifth_location)
-class Fifth_LocationAdmin(SimpleHistoryAdmin):
+class Fifth_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Sixth_location)
-class Sixth_LocationAdmin(SimpleHistoryAdmin):
+class Sixth_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Seventh_location)
-class Feventh_LocationAdmin(SimpleHistoryAdmin):
+class Feventh_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Eighth_location)
-class Eighth_LocationAdmin(SimpleHistoryAdmin):
+class Eighth_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
@@ -75,7 +75,7 @@ class PieceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     inlines = [PieceInstanceInline]
 
 
-@admin.register(PieceInstance, ImportExportModelAdmin)
+@admin.register(PieceInstance)
 class PieceInstanceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
                     'restriction', 'update_document', 'update_comment', 'date_update',
@@ -98,7 +98,7 @@ class KitAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
 
 
 @admin.register(GroupAssembly)
-class GroupAssemblyAdmin(SimpleHistoryAdmin):
+class GroupAssemblyAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('name', 'kit_partnumber')
     inlines = [KitInline]
 
