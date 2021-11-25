@@ -75,7 +75,7 @@ class PieceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     inlines = [PieceInstanceInline]
 
 
-@admin.register(PieceInstance)
+@admin.register(PieceInstance, ImportExportModelAdmin)
 class PieceInstanceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
                     'restriction', 'update_document', 'update_comment', 'date_update',
@@ -86,7 +86,7 @@ class PieceInstanceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
 
 
 @admin.register(Kit)
-class KitAdmin(SimpleHistoryAdmin):
+class KitAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('name', 'kit_serialnumber', 'group_assembly', 'description', 'kit_serialnumber',
                     'manufacturer_serialnumber', 'provider_serialnumber', 'kit_status', 'pn_1', 'pn_2', 'pn_3', 'pn_4',
                     'pn_5', 'pn_6', 'pn_7', 'pn_8', 'pn_9', 'pn_10', 'pn_11', 'pn_12', 'pn_13', 'pn_14', 'pn_15',
