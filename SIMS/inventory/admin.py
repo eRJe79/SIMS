@@ -1,5 +1,6 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
+from import_export.admin import ImportExportModelAdmin
 
 from .models import (
     Piece, PieceInstance, Kit, GroupAssembly, MovementExchange, Equivalence,
@@ -68,14 +69,14 @@ class EquivalenceAdmin(admin.ModelAdmin):
 
 
 @admin.register(Piece)
-class PieceAdmin(SimpleHistoryAdmin):
+class PieceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('name', 'website', 'manufacturer', 'manufacturer_part_number', 'piece_model', 'description',
                     'documentation', 'item_type', 'item_characteristic',)
     inlines = [PieceInstanceInline]
 
 
 @admin.register(PieceInstance)
-class PieceInstanceAdmin(SimpleHistoryAdmin):
+class PieceInstanceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'owner', 'restriction', 'first_location',
                     'second_location', 'third_location', 'fourth_location', 'fifth_location', 'sixth_location',
                     'seventh_location', 'eighth_location', 'status', 'history')
@@ -102,3 +103,5 @@ class GroupAssemblyAdmin(SimpleHistoryAdmin):
 @admin.register(MovementExchange)
 class MovementExchangeAdmin(SimpleHistoryAdmin):
     list_display = ('piece_1', 'piece_2', 'item_1', 'item_2', 'reference_number')
+
+
