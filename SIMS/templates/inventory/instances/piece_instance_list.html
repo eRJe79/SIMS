@@ -1,0 +1,77 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	
+	<h1>Piece Instances</h1>
+	<br/>
+
+{% if piece_instance_list %}
+
+<form class="d-flex" method="POST"
+action="{%url 'search-instance-database' %}">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search"
+           placeholder="Search For Inventory Item" aria-label="Search" name="searched">
+    <button class="btn btn-outline-secondary" type="submit"> Search </button>
+</form>
+
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Name</th>
+	<th>CAE Serial Number</th>
+	<th>CAE Part Number</th>
+	<th>Manufacturer Serial number</th>
+	<th>OEM</th>
+	<th>OEM Serial Number</th>
+	<th>Calibration Document</th>
+	<th>Creation Date</th>
+	<th>Last update</th>
+	<th>Next Calibration</th>
+	<th>End of Life</th>
+	<th>Guarantee Expiration</th>
+	<th>Location</th>
+	<th>Status</th>
+	<th>Condition</th>
+	</tr>
+  </thead>
+    {% for piece_instance in piece_instance_list %}
+    <tr class="datarow">
+      <td><a href="{{ piece_instance.piece.get_absolute_url }}">{{ piece_instance.piece.name }}</a></td>
+      <td><a href="{{ piece_instance.get_absolute_url }}">{{ piece_instance.serial_number }}</a></td>
+      <td>{{ piece_instance.piece.cae_part_number }}</td>
+      <td>{{ piece_instance.manufacturer_serialnumber }}</td>
+      <td>{{ piece_instance.piece.provider }}</td>
+      <td>{{piece_instance.provider_serialnumber}}</td>
+      <td>{{piece_instance.calibration_document}}</td>
+      <td>{{piece_instance.date_created}}</td>
+      <td>{{piece_instance.date_update}}</td>
+	  <td>{{piece_instance.date_calibration}}</td>
+	  <td>{{piece_instance.date_end_of_life}}</td>
+	  <td>{{piece_instance.date_guarantee}}</td>
+	  {% if piece_instance.eighth_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}-{{piece_instance.sixth_location|default_if_none:""}}-{{piece_instance.seventh_location|default_if_none:""}}-{{piece_instance.eighth_location|default_if_none:""}}</td>
+	  {% elif piece_instance.seventh_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}-{{piece_instance.sixth_location|default_if_none:""}}-{{piece_instance.seventh_location|default_if_none:""}}</td>
+	  {% elif piece_instance.sixth_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}-{{piece_instance.sixth_location|default_if_none:""}}</td>
+	  {% elif piece_instance.fifth_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}-{{piece_instance.fifth_location|default_if_none:""}}</td>
+	  {% elif piece_instance.fourth_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}-{{piece_instance.fourth_location|default_if_none:""}}</td>
+	  {% elif piece_instance.third_location %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}-{{piece_instance.third_location|default_if_none:""}}</td>
+	  {% else %}
+	  	<td>{{piece_instance.first_location}}-{{piece_instance.second_location|default_if_none:""}}</td>
+	  {% endif %}
+      <td>{{ piece_instance.status }}</td>
+      <td>{{ piece_instance.condition }}</td>
+	  <td><a href="{% url 'update-piece-instance' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+      <td><a href="{% url 'instance-clone' piece_instance.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>There are no instance in the inventory.</p>
+  {% endif %}
+{% endblock %}
