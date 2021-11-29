@@ -572,6 +572,36 @@ class PieceInstanceCreate(CreateView):
             self.get_context_data(form=form))
 
 
+# Add instance from Piece page
+def add_instance(request, piece_id):
+    piece = Piece.objects.get(pk=piece_id)
+    if request.method == "POST":
+        if request.is_ajax():
+            cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
+            value = int(cp['wtd'])  # figure out if the process is addition or deletion
+            prefix = "instance_reverse"
+            cp[f'{prefix}-TOTAL_FORMS'] = int(
+                cp[f'{prefix}-TOTAL_FORMS']) + value
+            formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
+            # the new formsets again -> if the process is addition!
+            return render(request, 'inventory/formset.html', {'formset': formset})
+        form = PieceInstanceForm(request.POST, request.FILES, {'piece': piece})
+        if form.is_valid():
+            piece_instance = PieceInstance.objects.all()
+            object = form.save(commit=False)
+            for instance in piece_instance:
+                if object.piece == instance.piece:
+                    if object.serial_number == instance.serial_number:
+                        messages.success(request, 'An instance with this serial number already exist')
+                        return object.render_to_response(object.get_context_data(form=form))
+            object.save()
+            return redirect(object.get_absolute_url())
+    else:
+        form = PieceInstanceForm({'piece': piece})
+    context = {'form': form}
+    return render(request, 'inventory/instance/add_instance.html', context)
+
+
 def all_piece_instance(request):
     piece_instance_list = PieceInstance.objects.all().order_by('piece')
     return render(request, 'inventory/instance/piece_instance_list.html', {'piece_instance_list': piece_instance_list})

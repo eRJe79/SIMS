@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (
     ConsumableCreate, show_consumable, consumable_list, show_consumable_history, update_consumable, clone_consumable,
-    PieceListView, PieceCreate, show_piece, update_piece, clone_piece, show_piece_history,
+    PieceListView, PieceCreate, show_piece, update_piece, clone_piece, show_piece_history, add_instance,
     PieceInstanceCreate, show_instance_form, delete_instance, update_instance, clone_instance, all_piece_instance,
     show_instance_history,
     search_consumable_database, search_piece_database, search_instance_database, search_groupassembly_database,
@@ -39,6 +39,7 @@ urlpatterns = [
     path('piece/update_piece/<piece_id>', update_piece, name='update-piece'),
     path('piece/clone_piece/<piece_id>', clone_piece, name='piece-clone'),
     path('piece/piece_history/<primary_key>', show_piece_history, name='piece-history'),
+    path('instance/add_pieceinstance/<piece_id>', add_instance, name='add-instance'),
 
 
     path('instance/piece_instance_list', all_piece_instance, name="piece-instance-list"),
