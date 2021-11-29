@@ -1,5 +1,6 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
+from import_export.admin import ImportExportModelAdmin
 
 from .models import (
     Piece, PieceInstance, Kit, GroupAssembly, MovementExchange, Equivalence,
@@ -22,42 +23,42 @@ class PieceAdminInline(admin.TabularInline):
 
 
 @admin.register(First_location)
-class First_locationAdmin(SimpleHistoryAdmin):
+class First_locationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('name',)
 
 
 @admin.register(Second_location)
-class Second_LocationAdmin(SimpleHistoryAdmin):
+class Second_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Third_location)
-class Third_LocationAdmin(SimpleHistoryAdmin):
+class Third_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Fourth_location)
-class Fourth_locationAdmin(SimpleHistoryAdmin):
+class Fourth_locationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Fifth_location)
-class Fifth_LocationAdmin(SimpleHistoryAdmin):
+class Fifth_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Sixth_location)
-class Sixth_LocationAdmin(SimpleHistoryAdmin):
+class Sixth_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Seventh_location)
-class Feventh_LocationAdmin(SimpleHistoryAdmin):
+class Feventh_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
 @admin.register(Eighth_location)
-class Eighth_LocationAdmin(SimpleHistoryAdmin):
+class Eighth_LocationAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('previous_loc', 'name')
 
 
@@ -68,21 +69,24 @@ class EquivalenceAdmin(admin.ModelAdmin):
 
 
 @admin.register(Piece)
-class PieceAdmin(SimpleHistoryAdmin):
+class PieceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('name', 'website', 'manufacturer', 'manufacturer_part_number', 'piece_model', 'description',
                     'documentation', 'item_type', 'item_characteristic',)
     inlines = [PieceInstanceInline]
 
 
 @admin.register(PieceInstance)
-class PieceInstanceAdmin(SimpleHistoryAdmin):
-    list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'owner', 'restriction', 'first_location',
-                    'second_location', 'third_location', 'fourth_location', 'fifth_location', 'sixth_location',
-                    'seventh_location', 'eighth_location', 'status', 'history')
+class PieceInstanceAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
+    list_display = ('serial_number', 'piece', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
+                    'restriction', 'update_document', 'update_comment', 'date_update',
+                    'date_calibration', 'date_created', 'date_guarantee', 'date_end_of_life',
+                    'first_location', 'second_location', 'third_location', 'fourth_location', 'fifth_location',
+                    'sixth_location', 'seventh_location', 'eighth_location',
+                    'status', 'history')
 
 
 @admin.register(Kit)
-class KitAdmin(SimpleHistoryAdmin):
+class KitAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('name', 'kit_serialnumber', 'group_assembly', 'description', 'kit_serialnumber',
                     'manufacturer_serialnumber', 'provider_serialnumber', 'kit_status', 'pn_1', 'pn_2', 'pn_3', 'pn_4',
                     'pn_5', 'pn_6', 'pn_7', 'pn_8', 'pn_9', 'pn_10', 'pn_11', 'pn_12', 'pn_13', 'pn_14', 'pn_15',
@@ -94,7 +98,7 @@ class KitAdmin(SimpleHistoryAdmin):
 
 
 @admin.register(GroupAssembly)
-class GroupAssemblyAdmin(SimpleHistoryAdmin):
+class GroupAssemblyAdmin(SimpleHistoryAdmin, ImportExportModelAdmin):
     list_display = ('name', 'kit_partnumber')
     inlines = [KitInline]
 
@@ -102,3 +106,5 @@ class GroupAssemblyAdmin(SimpleHistoryAdmin):
 @admin.register(MovementExchange)
 class MovementExchangeAdmin(SimpleHistoryAdmin):
     list_display = ('piece_1', 'piece_2', 'item_1', 'item_2', 'reference_number')
+
+

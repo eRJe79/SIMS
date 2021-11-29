@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # My apps
     'extra_views',
     'qr_code',
+    'import_export',
     'inventory.apps.InventoryConfig',
     'users.apps.UsersConfig',
     'simple_history',
