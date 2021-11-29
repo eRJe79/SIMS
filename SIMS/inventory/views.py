@@ -599,7 +599,7 @@ def add_instance(request, piece_id):
     else:
         form = PieceInstanceForm({'piece': piece})
     context = {'form': form}
-    return render(request, 'inventory/instance/add_instance.html', context)
+    return render(request, 'inventory/instance/add_pieceinstance.html', context)
 
 
 def all_piece_instance(request):
