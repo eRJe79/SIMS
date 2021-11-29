@@ -521,7 +521,7 @@ def clone_piece(request, piece_id):
 
 # Instance creation
 class PieceInstanceCreate(CreateView):
-    template_name = 'inventory/instance/create_instance_piece.html'
+    template_name = 'inventory/instances/create_instance_piece.html'
     model = PieceInstance
     form_class = PieceInstanceForm
 
@@ -532,7 +532,7 @@ class PieceInstanceCreate(CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'inventory/instance/create_instance_piece.html', context)
+        return render(request, 'inventory/instances/create_instance_piece.html', context)
 
     def post(self, request, *args, **kwargs):
         # if our ajax is calling so we have to take action
@@ -599,12 +599,12 @@ def add_instance(request, piece_id):
     else:
         form = PieceInstanceForm({'piece': piece})
     context = {'form': form}
-    return render(request, 'inventory/instance/add_pieceinstance.html', context)
+    return render(request, 'inventory/instances/add_pieceinstance.html', context)
 
 
 def all_piece_instance(request):
     piece_instance_list = PieceInstance.objects.all().order_by('piece')
-    return render(request, 'inventory/instance/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
+    return render(request, 'inventory/instances/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
 
 
 # Display specific instance information
@@ -619,7 +619,7 @@ def show_instance_form(request, primary_key):
     except:
         kit = None
     context = {'piece_instance': piece_instance, 'kit': kit}
-    return render(request, 'inventory/instance/piece_instance_detail.html', context)
+    return render(request, 'inventory/instances/piece_instance_detail.html', context)
 
 
 # Display instances and assembly as list
@@ -653,7 +653,7 @@ def update_instance(request, instance_id):
     else:
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form': form}
-    return render(request, 'inventory/instance/update_piece_instance.html', context)
+    return render(request, 'inventory/instances/update_piece_instance.html', context)
 
 
 # clone an instance
@@ -669,7 +669,7 @@ def clone_instance(request, instance_id):
     else:
         form = PieceInstanceForm(instance=piece_instance)
     context = {'piece_instance': piece_instance, 'form': form}
-    return render(request, 'inventory/instance/clone_existing_piece.html', context)
+    return render(request, 'inventory/instances/clone_existing_piece.html', context)
 
 
 # Delete an instance
@@ -1289,7 +1289,7 @@ def show_instance_history(request, primary_key):
     piece_instance = PieceInstance.objects.get(pk=primary_key)
     history = piece_instance.history.all()
     context = {'history': history, 'piece_instance': piece_instance}
-    return render(request, 'inventory/instance/instance_history.html', context)
+    return render(request, 'inventory/instances/instance_history.html', context)
 
 
 # Display history of a specific Assembly
