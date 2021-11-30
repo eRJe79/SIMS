@@ -1251,7 +1251,11 @@ class EquivalenceListView(ListView):
 
 def equivalence_detail(request, primary_key):
     equivalence = Equivalence.objects.get(pk=primary_key)
-    context = {'equivalence': equivalence}
+    pieces = [equivalence.pieceeq_1, equivalence.pieceeq_2, equivalence.pieceeq_3, equivalence.pieceeq_4,
+              equivalence.pieceeq_5, equivalence.pieceeq_6, equivalence.pieceeq_7, equivalence.pieceeq_8,
+              equivalence.pieceeq_9, equivalence.pieceeq_10, equivalence.pieceeq_11, equivalence.pieceeq_12,
+              equivalence.pieceeq_13, equivalence.pieceeq_14, equivalence.pieceeq_15]
+    context = {'equivalence': equivalence, 'pieces': pieces}
     return render(request, 'inventory/equivalence/equivalence_detail.html', context)
 
 
