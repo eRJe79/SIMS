@@ -81,6 +81,8 @@
     <table class="table table-light table-striped">
 	    <thead>
 		<tr>
+		<td><p>Name</p></td>
+		<td><p>CAE Part Number</p></td>
 		<td><p>CAE Serial Number</p></td>
 		<td><p>Model</p></td>
 		<td><p>Location</p></td>
@@ -90,6 +92,8 @@
       {% for copy in piece_instance %}
 		{% if copy %}
       <tr class="datarow">
+        <td><a href="{{ copy.piece.get_absolute_url }}">{{ copy.piece.name }}</a></td>
+        <td>{{copy.piece.cae_part_number}}</td>
         <td><a href="{{ copy.get_absolute_url }}">{{ copy.serial_number }}</a></td>
         <td>{{copy.piece.piece_model}}</td>
 	    {% if copy.fifth_location %}
