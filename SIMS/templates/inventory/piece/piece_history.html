@@ -22,6 +22,7 @@
 			</thead>
 			{% for h in history %}
 			<tr class="datarow">
+				<td>{{ h.name }}</td>
 				<td>{{ h.get_history_type_display }}</td>
 				<td>{{ h.history_user }}</td>
 				<td>{{ h.history_date }}</td>
