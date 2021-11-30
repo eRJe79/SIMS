@@ -29,23 +29,21 @@
   {% if piece.website %}
   	<a href="{{ piece.website }}">{{ piece.website }}</a>
   {% endif %}
-  {% if piece_eq_list %}
+  {% if my_eq_list %}
 	  <p><strong>Pieces equivalent:</strong></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_1.get_absolute_url }}">{{  piece_eq_list.pieceeq_1.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_2.get_absolute_url }}">{{  piece_eq_list.pieceeq_2.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_3.get_absolute_url }}">{{  piece_eq_list.pieceeq_3.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_4.get_absolute_url }}">{{  piece_eq_list.pieceeq_4.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_5.get_absolute_url }}">{{  piece_eq_list.pieceeq_5.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_6.get_absolute_url }}">{{  piece_eq_list.pieceeq_6.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_7.get_absolute_url }}">{{  piece_eq_list.pieceeq_7.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_8.get_absolute_url }}">{{  piece_eq_list.pieceeq_8.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_9.get_absolute_url }}">{{  piece_eq_list.pieceeq_9.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_10.get_absolute_url }}">{{  piece_eq_list.pieceeq_10.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_11.get_absolute_url }}">{{  piece_eq_list.pieceeq_11.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_12.get_absolute_url }}">{{  piece_eq_list.pieceeq_12.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_13.get_absolute_url }}">{{  piece_eq_list.pieceeq_13.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_14.get_absolute_url }}">{{  piece_eq_list.pieceeq_14.name }}</a></p>
-	  		<p><a href="{{ piece_eq_list.pieceeq_15.get_absolute_url }}">{{  piece_eq_list.pieceeq_15.name }}</a></p>
+	    <table class="table table-light table-striped">
+    	<thead>
+        <tr>
+		<th>Name</th>
+		<th>CAE Part Number</th>
+		</tr>
+  		</thead>
+    	{% for piece in my_eq_list %}
+		<tr class="datarow">
+      	<td><a href="{{ piece.get_absolute_url }}">{{ piece.name }}</a></td>
+      	<td>{{ piece.cae_part_number }}</td>
+    	{% endfor %}
+	    </table>
   {% endif %}
   <p><strong>History:</strong></p>
 			<table class="table table-light table-striped">
