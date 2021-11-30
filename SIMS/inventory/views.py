@@ -475,17 +475,27 @@ def show_piece(request, primary_key):
     instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
     instance_in_reparation = PieceInstance.objects.filter(status='In Repair', piece=piece).count()
     # Equivalence management
-    try:
-        equivalences = Equivalence.objects.get(Q(pieceeq_1=piece) | Q(pieceeq_2=piece) | Q(pieceeq_3=piece)| Q(pieceeq_4=piece)
-                                       | Q(pieceeq_5=piece) | Q(pieceeq_6=piece) | Q(pieceeq_7=piece)| Q(pieceeq_8=piece)
-                                       | Q(pieceeq_9=piece) | Q(pieceeq_10=piece) | Q(pieceeq_11=piece)| Q(pieceeq_12=piece)
-                                       | Q(pieceeq_13=piece) | Q(pieceeq_14=piece) | Q(pieceeq_15=piece))
-    except:
-        equivalences = None
-    piece_eq_list = equivalences
+    equivalences = Equivalence.objects.all()
+    my_eq_list = []
+    # First we create a list of all the equivalences in which our piece is
+    for equivalence in equivalences:
+        piece_eq_list = [equivalence.pieceeq_1, equivalence.pieceeq_2, equivalence.pieceeq_3, equivalence.pieceeq_4,
+                         equivalence.pieceeq_5, equivalence.pieceeq_6, equivalence.pieceeq_7, equivalence.pieceeq_8,
+                         equivalence.pieceeq_9, equivalence.pieceeq_10, equivalence.pieceeq_11, equivalence.pieceeq_12,
+                         equivalence.pieceeq_13, equivalence.pieceeq_14, equivalence.pieceeq_15]
+        for piece_eq in piece_eq_list:
+            if piece_eq == piece:
+                for my_piece in piece_eq_list:
+                    # We make sure the equivalent piece is not our piece and not empty
+                    if my_piece is not None and my_piece != piece:
+                        my_eq_list.append(my_piece)
+    # my_eq_list contains all the pieces that are equivalent to our piece
+    # We now want to remove any duplicates therefore we are going to create a dictionary using the list items as keys.
+    # This will automatically remove any duplicates because dictionaries cannot have duplicates
+    my_eq_list = list(dict.fromkeys(my_eq_list))
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
-               'instance_in_reparation': instance_in_reparation, 'piece_eq_list': piece_eq_list}
+               'instance_in_reparation': instance_in_reparation, 'my_eq_list': my_eq_list}
     return render(request, 'inventory/piece/piece_detail.html', context)
 
 
@@ -1251,7 +1261,11 @@ class EquivalenceListView(ListView):
 
 def equivalence_detail(request, primary_key):
     equivalence = Equivalence.objects.get(pk=primary_key)
-    context = {'equivalence': equivalence}
+    pieces = [equivalence.pieceeq_1, equivalence.pieceeq_2, equivalence.pieceeq_3, equivalence.pieceeq_4,
+              equivalence.pieceeq_5, equivalence.pieceeq_6, equivalence.pieceeq_7, equivalence.pieceeq_8,
+              equivalence.pieceeq_9, equivalence.pieceeq_10, equivalence.pieceeq_11, equivalence.pieceeq_12,
+              equivalence.pieceeq_13, equivalence.pieceeq_14, equivalence.pieceeq_15]
+    context = {'equivalence': equivalence, 'pieces': pieces}
     return render(request, 'inventory/equivalence/equivalence_detail.html', context)
 
 

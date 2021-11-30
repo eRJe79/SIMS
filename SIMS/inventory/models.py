@@ -181,7 +181,7 @@ class Piece(models.Model):
 
 # Used to create groups of Pieces that will be equivalent between them
 class Equivalence(models.Model):
-    name = models.CharField(max_length=120, null=True, blank=True)
+    name = models.CharField(max_length=120, null=False, blank=False)
     pieceeq_1 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_1', null=True, blank=True)
     pieceeq_2 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_2',  null=True, blank=True)
     pieceeq_3 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_3',  null=True, blank=True)
