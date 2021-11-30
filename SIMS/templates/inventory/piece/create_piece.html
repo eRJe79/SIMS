@@ -1,6 +1,15 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <h1>Add New Piece</h1>
   <br/><br/>
 <form id="form_with_formset" action="#" method="post" enctype="multipart/form-data">
