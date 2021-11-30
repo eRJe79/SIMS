@@ -414,6 +414,12 @@ class PieceInstance(models.Model):
         for h in myhistory:
             if h.status == 'In Repair':
                 initial_time = h.history_date.date()
+                print(h.history_date.date())
+                if initial_time == date.today():
+                    amount_spent_in_r = datetime.timedelta(days=1)
+                else:
+                    amount_spent_in_r = date.today() - initial_time
+                    print(amount_spent_in_r)
             else:
                 amount_spent_in_r = h.history_date.date() - initial_time
         return amount_spent_in_r.days
