@@ -437,13 +437,19 @@ class PieceCreate(CreateView):
         form_class = self.get_form_class()
         form = PieceForm(request.POST, request.FILES)
         if form.is_valid():
-            return self.form_valid(form)
+            return self.form_valid(form, request)
         else:
             return self.form_invalid(form)
 
-    def form_valid(self, form):
-        self.object = form.save()
-        # instance_form.instance = self.object
+    def form_valid(self, form, request):
+        # We check no piece with same part number already exist
+        pieces = Piece.objects.all()
+        self.object = form.save(commit=False)
+        for piece in pieces:
+            if self.object.cae_part_number == piece.cae_part_number:
+                messages.success(request, 'An piece with this part number already exist')
+                return self.render_to_response(self.get_context_data(form=form))
+        self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
