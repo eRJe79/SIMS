@@ -218,9 +218,10 @@ def reparation_record_csv(request):
         for instance in instances:
             if instance.time_spent_in_r_instance():
                 myhistory = instance.history.all()
-                # We check that the hitory is between the start and end date
+                # We check that the history is between the start and end date
                 for h in myhistory:
-                    if start_date <= h.history_date.date() <= end_date:
+                    if start_date <= h.history_date.date() <= end_date and h.status == 'In Repair':
+                        print(h)
                         history.append(h)
         #list of all the history of the objects
 
