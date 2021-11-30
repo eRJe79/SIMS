@@ -447,7 +447,7 @@ class PieceCreate(CreateView):
         self.object = form.save(commit=False)
         for piece in pieces:
             if self.object.cae_part_number == piece.cae_part_number:
-                messages.success(request, 'An piece with this part number already exist')
+                messages.success(request, 'A piece with this part number already exist')
                 return self.render_to_response(self.get_context_data(form=form))
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
@@ -522,13 +522,20 @@ def update_piece(request, piece_id):
 
 # clone a piece
 def clone_piece(request, piece_id):
+    pieces = Piece.objects.all()
     piece = Piece.objects.get(pk=piece_id)
-    piece.pk=None
+    piece.pk = None
     piece.update_comment = ''
     if request.method == "POST":
         form = PieceForm(request.POST, request.FILES, instance=piece)
+        context = {'piece': piece, 'form': form}
         if form.is_valid():
-            form.save()
+            object = form.save(commit=False)
+            for mypiece in pieces:
+                if object.cae_part_number == mypiece.cae_part_number:
+                    messages.success(request, 'A piece with this part number already exist')
+                    return render(request, 'inventory/piece/clone_piece.html', context)
+            object.save()
             return redirect(piece.get_absolute_url())
     else:
         form = PieceForm(instance=piece)
@@ -603,6 +610,7 @@ def add_instance(request, piece_id):
             # the new formsets again -> if the process is addition!
             return render(request, 'inventory/formset.html', {'formset': formset})
         form = PieceInstanceForm(request.POST, request.FILES, {'piece': piece})
+        context = {'form': form}
         if form.is_valid():
             piece_instance = PieceInstance.objects.all()
             object = form.save(commit=False)
@@ -610,7 +618,7 @@ def add_instance(request, piece_id):
                 if object.piece == instance.piece:
                     if object.serial_number == instance.serial_number:
                         messages.success(request, 'An instance with this serial number already exist')
-                        return object.render_to_response(object.get_context_data(form=form))
+                        return render(request, 'inventory/instances/add_pieceinstance.html', context)
             object.save()
             return redirect(object.get_absolute_url())
     else:
