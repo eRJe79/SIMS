@@ -15,23 +15,21 @@
 				<thead>
     			<tr>
 				<th>Instance</th>
-    			<th>Type of update</th>
-				<th>User</th>
 				<th>Time</th>
+    			<th>Type of update</th>
     			<th>Update Comment</th>
-				<th>Update Document</th>
     			<th>Status</th>
 				<th>Location</th>
+				<th>Update Document</th>
+				<th>Update done by</th>
 				</tr>
 			</thead>
 			{% for h in history %}
 			<tr class="datarow">
 				<td>{{ piece_instance }}</td>
-				<td>{{ h.get_history_type_display }}</td>
-				<td>{{ h.history_user }}</td>
 				<td>{{ h.history_date }}</td>
+				<td>{{ h.get_history_type_display }}</td>
 				<td>{{ h.update_comment }} </td>
-				<td><a href="{{MEDIA_URL}}{{ h.update_document }}">{{ h.update_document }}</a></td>
 				<td>{{ h.status }}</td>
 				{% if h.eighth_location %}
 	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}-{{h.third_location|default_if_none:""}}-{{h.fourth_location|default_if_none:""}}-{{h.fifth_location|default_if_none:""}}-{{h.sixth_location|default_if_none:""}}-{{h.seventh_location|default_if_none:""}}-{{h.eighth_location|default_if_none:""}}</td>
@@ -48,6 +46,8 @@
 	  			{% else %}
 	  				<td>{{h.first_location}}-{{h.second_location|default_if_none:""}}</td>
 	  			{% endif %}
+				<td><a href="{{MEDIA_URL}}{{ h.update_document }}">{{ h.update_document }}</a></td>
+				<td>{{ h.history_user }}</td>
 			</tr>
 			{% endfor %}
 		</table>

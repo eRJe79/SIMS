@@ -17,9 +17,8 @@ action="{%url 'search-piece-database' %}">
     <tr>
 	<th>Name</th>
 	<th>CAE Part Number</th>
-	<th>Piece Model</th>
 	<th>Manufacturer</th>
-	<th>OEM</th>
+	<th>Manufacturer Part Number</th>
 	<th>OEM Part Number</th>
 	<th>Documentation</th>
 	<th>Type</th>
@@ -30,9 +29,8 @@ action="{%url 'search-piece-database' %}">
     <tr class="datarow">
       <td><a href="{{ piece.get_absolute_url }}">{{ piece.name }}</a></td>
       <td>{{ piece.cae_part_number }}</td>
-      <td>{{ piece.piece_model }}</td>
       <td>{{ piece.manufacturer }}</td>
-      <td>{{ piece.provider }}</td>
+      <td>{{ piece.manufacturer_part_number }}</td>
       <td>{{ piece.provider_part_number }}</td>
       <td><a href="{{MEDIA_URL}}{{ piece.documentation }}">{{ piece.documentation }}</a></td>
       <td>{{ piece.item_type }}</td>
