@@ -1134,6 +1134,7 @@ def movement_exchange(request):
                 kit.piece_kit_14 = obj.item_2
             elif kit.piece_kit_15 == obj.item_1:
                 kit.piece_kit_15 = obj.item_2
+            kit.save()
 
         obj.item_2.first_location = obj.item_1.first_location
         obj.item_2.second_location = obj.item_1.second_location
@@ -1166,7 +1167,6 @@ def movement_exchange(request):
         obj.item_2.save()
         # Save the movement
         obj.save()
-        kit.save()
         return redirect(obj.get_absolute_url())
     return render(request, 'inventory/movement/movement_choice.html', context)
 

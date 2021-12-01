@@ -275,7 +275,7 @@ class MovementForm(ModelForm):
         if 'piece_1' in self.data:
             try:
                 piece_id = int(self.data.get('piece_1'))
-                my_piece = Piece.objects.get(piece_id=piece_id)
+                my_piece = Piece.objects.get(id=piece_id)
                 myname = my_piece.name
                 self.fields['part_number_1'].queryset = Piece.objects.filter(name=myname).order_by('cae_part_number')
             except (ValueError, TypeError):
@@ -295,7 +295,7 @@ class MovementForm(ModelForm):
         if 'piece_2' in self.data:
             try:
                 piece_id = int(self.data.get('piece_2'))
-                my_piece = Piece.objects.get(piece_id=piece_id)
+                my_piece = Piece.objects.get(id=piece_id)
                 myname = my_piece.name
                 self.fields['part_number_2'].queryset = Piece.objects.filter(name=myname).order_by('cae_part_number')
             except (ValueError, TypeError):
