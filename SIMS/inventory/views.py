@@ -25,8 +25,16 @@ from .forms import (
 
 
 # Movement dependencies management
-def load_item_1(request):
+def load_pn_item_1(request):
     piece_id = request.GET.get('piece')
+    my_piece = Piece.objects.get(id=piece_id)
+    myname = my_piece.name
+    myitems = Piece.objects.filter(name=myname).order_by('cae_part_number')
+    return render(request, 'hr/part_number_dropdown_list_options.html', {'items': myitems})
+
+
+def load_item_1(request):
+    piece_id = request.GET.get('part_number_1')
     myitems = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
     # We don't want items that are in stock
     items = []

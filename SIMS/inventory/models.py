@@ -538,6 +538,8 @@ class Kit(models.Model):
 
 class MovementExchange(models.Model):
     # Items exchanged is mandatory
+    part_number_1 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='part_number_1', null=True, blank=False)
+    part_number_2 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='part_number_2', null=True, blank=False)
     piece_1 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='piece_1', null=True, blank=False)
     piece_2 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='piece_2', null=True, blank=False)
     item_1 = models.ForeignKey(PieceInstance, on_delete=models.SET_NULL, related_name='item_1', null=True, blank=False)
