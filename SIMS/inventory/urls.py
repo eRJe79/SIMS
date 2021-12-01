@@ -9,7 +9,7 @@ from .views import (
     search_assembly_database, search_general_database,  database_csv,
     GroupAssemblyCreate, GroupAssemblyListView, show_groupassembly,
     KitCreate, KitList, show_kit, update_kit, show_assembly_history,
-    load_item_1, load_pn_item_1, load_item_2, load_piece_kit,
+    load_item_1, load_pn_item_1, load_item_2, load_pn_item_2, load_piece_kit,
     load_second_location, load_third_location, load_fourth_location, load_fifth_location, load_sixth_location,
     load_seventh_location, load_eighth_location,
     movement_exchange, movement_detail, movement_list, movement_revert,
@@ -81,6 +81,7 @@ urlpatterns = [
     path('ajax/load-item_1/', load_item_1, name='ajax_load_item_1'),
     path('ajax/load-pn_item_1/', load_pn_item_1, name='ajax_load_pn_item_1'),
     path('ajax/load-item_2/', load_item_2, name='ajax_load_item_2'),
+    path('ajax/load-pn_item_2/', load_pn_item_2, name='ajax_load_pn_item_2'),
 
     path('ajax/load-piece_kit/', load_piece_kit, name='ajax_load_piece_kit'),
 

@@ -44,8 +44,16 @@ def load_item_1(request):
     return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
 
 
-def load_item_2(request):
+def load_pn_item_2(request):
     piece_id = request.GET.get('piece')
+    my_piece = Piece.objects.get(id=piece_id)
+    myname = my_piece.name
+    myitems = Piece.objects.filter(name=myname).order_by('cae_part_number')
+    return render(request, 'hr/part_number_dropdown_list_options.html', {'items': myitems})
+
+
+def load_item_2(request):
+    piece_id = request.GET.get('part_number_2')
     myitems = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
     items = myitems.filter(Q(status='In Stock') | Q(status = 'On Test'))
     return render(request, 'hr/item_dropdown_list_options.html', {'items': items})

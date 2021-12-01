@@ -7,6 +7,7 @@
 <form method="post"  id="form" data-item_1-url="{% url 'ajax_load_item_1' %}"
         data-item_pn_1-url="{% url 'ajax_load_pn_item_1' %}"
         data-item_2-url="{% url 'ajax_load_item_2' %}"
+        data-item_pn_2-url="{% url 'ajax_load_pn_item_2' %}"
         action="#" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
   <table class="table">
@@ -60,13 +61,31 @@
 
   <script>
     $("#id_piece_2").change(function () {
-      var url = $("#form").attr("data-item_2-url");  // get the url of the `load_item_2` view
+      var url = $("#form").attr("data-item_pn_2-url");  // get the url of the `load_pn_item_1` view
       var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item_1/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item_1` view function
+          $("#id_part_number_2").html(data);  // replace the contents of the item_2 input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_part_number_2").change(function () {
+      var url = $("#form").attr("data-item_2-url");  // get the url of the `load_item_2` view
+      var part_numberId = $(this).val();  // get the selected piece ID from the HTML input
 
       $.ajax({                       // initialize an AJAX request
         url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
         data: {
-          'piece': pieceId       // add the piece id to the GET parameters
+          'part_number_2': part_numberId       // add the piece id to the GET parameters
         },
         success: function (data) {   // `data` is the return of the `load_item_2` view function
           $("#id_item_2").html(data);  // replace the contents of the item_2 input with the data that came from the server

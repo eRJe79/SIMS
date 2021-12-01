@@ -268,11 +268,11 @@ class MovementForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['part_number_1'].queryset = Piece.objects.none()
+        self.fields['part_number_2'].queryset = Piece.objects.none()
         self.fields['item_1'].queryset = PieceInstance.objects.none()
         self.fields['item_2'].queryset = PieceInstance.objects.none()
 
         if 'piece_1' in self.data:
-            print('here?')
             try:
                 piece_id = int(self.data.get('piece_1'))
                 my_piece = Piece.objects.get(piece_id=piece_id)
@@ -295,11 +295,23 @@ class MovementForm(ModelForm):
         if 'piece_2' in self.data:
             try:
                 piece_id = int(self.data.get('piece_2'))
-                self.fields['item_2'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+                my_piece = Piece.objects.get(piece_id=piece_id)
+                myname = my_piece.name
+                self.fields['part_number_2'].queryset = Piece.objects.filter(name=myname).order_by('cae_part_number')
             except (ValueError, TypeError):
                 pass  # invalid input, ignore request
         elif self.instance.pk and self.instance.piece_2:
-            self.fields['item_2'].queryset = self.instance.piece_2.item_2.order_by('serial_number')
+            self.fields['part_number_2'].queryset = self.instance.piece_2.item_2.order_by('cae_part_number')
+
+        if 'part_number_2' in self.data:
+            try:
+                piece_id = int(self.data.get('part_number_2'))
+                self.fields['item_2'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by(
+                    'serial_number')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.part_number_2:
+            self.fields['item_2'].queryset = self.instance.piece_2.item_2.order_by('name')
 
 
 class GroupAssemblyForm(ModelForm):
