@@ -19,7 +19,9 @@
 		{% else %}
 			<p><strong>Assembly: </strong> {{ kit }}</p>
 		{% endif %}
-		<p><strong>Calibration document: </strong> <a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}">{{ piece_instance.calibration_document }}</a></p>
+		{% if piece_instance.calibration_document %}
+		<p><a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}"><strong>Calibration document</strong> </a></p>
+		{% endif %}
   		<p><strong>Provider: </strong> {{ piece_instance.piece.provider }}</p>
   		<p><strong>Provider Serial Number: </strong> {{ piece_instance.piece.manufacturer }}</p>
   		<p><strong>Manufacturer: </strong> {{ piece_instance.manufacturer_serialnumber }}</p>
