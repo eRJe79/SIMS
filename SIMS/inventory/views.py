@@ -1099,6 +1099,7 @@ def update_kit(request, kit_id):
 
 
 def clone_kit(request, kit_id):
+    assemblies = Kit.objects.all()
     kit = Kit.objects.get(pk=kit_id)
     kit.date_update = timezone.now()
     kit.update_comment = ''
@@ -1121,8 +1122,13 @@ def clone_kit(request, kit_id):
     if request.method == "POST":
         form = KitForm(request.POST or None, instance=kit)
         kit.pk = None
+        context = {'kit': kit, 'form': form}
         if form.is_valid():
             parent = form.save(commit=False)
+            for assembly in assemblies:
+                if parent.kit_serialnumber == assembly.kit_serialnumber:
+                    messages.success(request, 'An assembly with this serial number already exist')
+                    return render(request, 'inventory/assembly/kit_clone.html', context)
             parent.save()
             piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
                               kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
