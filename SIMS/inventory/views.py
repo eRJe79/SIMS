@@ -1367,6 +1367,7 @@ def movement_revert(request, movement_id):
             kit.piece_kit_14 = movement.item_1
         elif kit.piece_kit_15 == movement.item_2:
             kit.piece_kit_15 = movement.item_1
+        kit.save()
 
     movement.item_1.first_location = movement.item_2.first_location
     movement.item_1.second_location = movement.item_2.second_location
@@ -1392,7 +1393,6 @@ def movement_revert(request, movement_id):
     movement.item_2.save()
     movement.revert_button = False
     movement.save()
-    kit.save()
 
     context = {'movement': movement}
     return render(request, 'inventory/movement/movement_detail.html', context)
