@@ -26,7 +26,9 @@
   	      <a href="{{ consumable.website }}">{{ consumable.website }}</a>
         {% endif %}
   		<p><strong>Description: </strong> {{ consumable.description}}</p>
-        <p><strong>Documentation:</strong> <a href="{{MEDIA_URL}}{{ consumable.documentation }}">{{ consumable.documentation }}</a></p>
+  		{% if consumable.documentation %}
+  		<p><a href="{{MEDIA_URL}}{{ consumable.documentation }}"><strong>Documentation</strong> </a></p>
+  		{% endif %}
         <p><strong>Type:</strong> {{ consumable.item_type }}</p>
         <p><strong>Characteristic:</strong> {{ consumable.item_characteristic }}</p>
         {% if consumable.is_rspl %}

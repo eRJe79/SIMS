@@ -31,7 +31,11 @@
       <td>{{ result.manufacturer_serialnumber }}</td>
       <td>{{ result.piece.provider }}</td>
       <td>{{ result.provider_serialnumber }}</td>
-      <td>{{ result.piece.documentation }}</td>
+      {% if result.piece.documentation %}
+      <td><a href="{{MEDIA_URL}}{{ result.piece.documentation }}">File</a></td>
+      {% else %}
+      <td>No Documentation</td>
+      {% endif %}
       <td>{{ result.piece.item_type }}</td>
       <td>{{ result.piece.item_characteristic }}</td>
         {% if result.eighth_location %}
