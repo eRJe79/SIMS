@@ -753,13 +753,19 @@ def update_instance(request, instance_id):
 
 # clone an instance
 def clone_instance(request, instance_id):
+    instances = PieceInstance.objects.all()
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.update_comment = ''
     if request.method == "POST":
         form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
-        piece_instance.pk=None
+        piece_instance.pk = None
+        context = {'piece_instance': piece_instance, 'form': form}
         if form.is_valid():
-            form.save()
+            object = form.save(commit=False)
+            for instance in instances:
+                if object.serial_number == instance.serial_number:
+                    messages.success(request, 'An Instance with this part number already exist')
+                    return render(request, 'inventory/instances/clone_existing_piece.html', context)
             return redirect(piece_instance.get_absolute_url())
     else:
         form = PieceInstanceForm(instance=piece_instance)
