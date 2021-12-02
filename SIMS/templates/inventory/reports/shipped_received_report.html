@@ -7,6 +7,16 @@
   </div>
   <br/>
   {% if history %}
+<form class="d-flex" method="POST" action="{%url 'shipped_received_csv' %}">
+  {% csrf_token %}
+       <label for="sr_start_date">From: </label>
+	        <input type="date" name="sr_start_date" id="sr_start_date">
+       <label for="sr_end_date">To: </label>
+	        <input type="date" name="sr_end_date" id="sr_end_date">
+      <button class="btn btn-outline-secondary" type="submit"> Generate CSV Report </button>
+</form>
+<br>
+</br>
   <p>Here is the list of movements in chronological order: </p>
 <table class="table table-light table-striped">
   <thead>
@@ -39,6 +49,6 @@
     {% endfor %}
 </table>
   {% else %}
-    <p>No movements yet.</p>
+    <p>No report available.</p>
   {% endif %}
 {% endblock %}

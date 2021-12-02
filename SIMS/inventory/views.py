@@ -223,15 +223,13 @@ def shipped_received_csv(request):
     return response
 
 
-def reparation_record_csv(request):
+def reparation_record_csv(request, dates):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=reparation_report.csv'
     location = ''
     if request.method == "POST":
-        date1 = request.POST.get('rep_start_date')
-        date2 = request.POST.get('rep_end_date')
-        start_date = pd.to_datetime(date1).date()
-        end_date = pd.to_datetime(date2).date()
+        start_date = dates[0]
+        end_date = dates[1]
         # Create a csv writer
         writer = csv.writer(response)
         history = []
