@@ -22,7 +22,9 @@
   {% if piece.is_obsolete %}
   <p><strong>Piece is obsolete</strong></p>
   {% endif %}
-  <p><strong>Documentation:</strong> <a href="{{MEDIA_URL}}{{ piece.documentation }}">{{ piece.documentation }}</a></p>
+  {% if piece.documentation %}
+  <p><a href="{{MEDIA_URL}}{{ piece.documentation }}"><strong>Documentation</strong> </a></p>
+  {% endif %}
   <p><strong>Calibration Recurrence (days):</strong> {{piece.calibration_recurrence}}</p>
   <p><strong>Type:</strong> {{ piece.item_type }}</p>
   <p><strong>Characteristic:</strong> {{ piece.item_characteristic }}</p>
