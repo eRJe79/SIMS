@@ -1,0 +1,656 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	<style>
+		.form-piece_kit-group{
+			border-bottom: 1px solid black;
+		}
+		.hidden {
+			display: none
+		}
+	</style>
+
+	<h1>Update Assembly...</h1>
+	<form id="form" action="#" method="post"
+		  data-second_location-url="{% url 'ajax_load_second_location' %}"
+		  data-third_location-url="{% url 'ajax_load_third_location' %}"
+		  data-fourth_location-url="{% url 'ajax_load_fourth_location' %}"
+		  data-fifth_location-url="{% url 'ajax_load_fifth_location' %}"
+		  data-sixth_location-url="{% url 'ajax_load_sixth_location' %}"
+		  data-seventh_location-url="{% url 'ajax_load_seventh_location' %}"
+		  data-eighth_location-url="{% url 'ajax_load_eighth_location' %}"
+          data-piece_kit-url="{% url 'ajax_load_piece_kit' %}"
+		  enctype="multipart/form-data">
+		{% csrf_token %}
+		<h3>General Information</h3>
+    <div class="form-general-group">
+      <label for="group_assembly" class="control-label mb-1">Group Assembly</label>
+      {{ form.group_assembly }}
+    </div>
+    <div class="form-general-group">
+      <label for="name" class="control-label mb-1">Name</label>
+      {{ form.name }}
+    </div>
+    <div class="form-general-group">
+      <label for="description" class="control-label mb-1">Description</label>
+      {{ form.description }}
+    </div>
+    <div class="form-general-group">
+      <label for="kit_serialnumber" class="control-label mb-1">CAE Serial Number</label>
+      {{ form.kit_serialnumber }}
+    </div>
+    <div class="form-general-group">
+      <label for="update_comment" class="control-label mb-1">Comment</label>
+      {{ form.update_comment }}
+    </div>
+    <div class="form-general-group">
+      <label for="kit_status" class="control-label mb-1">Status</label>
+      {{ form.kit_status }}
+    </div>
+    <h3>Location management</h3>
+    <div class="form-general-group">
+      <label for="first_location" class="control-label mb-1">Level 1</label>
+      {{ form.first_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="second_location" class="control-label mb-1">Level 2</label>
+      {{ form.second_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="third_location" class="control-label mb-1">Level 3</label>
+      {{ form.third_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="fourth_location" class="control-label mb-1">Level 4</label>
+      {{ form.fourth_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="fifth_location" class="control-label mb-1">Level 5</label>
+      {{ form.fifth_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="sixth_location" class="control-label mb-1">Level 6</label>
+      {{ form.sixth_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="seventh_location" class="control-label mb-1">Level 7</label>
+      {{ form.seventh_location }}
+    </div>
+    <div class="form-general-group">
+      <label for="eighth_location" class="control-label mb-1">Level 8</label>
+      {{ form.eighth_location }}
+    </div>
+    <h3>Instance management</h3>
+    <div id="piece_kit-1" class="form-piece_kit-group">
+      <div id="pn-1">
+        <label for="pn_1" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_1 }}
+      </div>
+      <div>
+        <label for="piece_kit_1" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_1 }}
+      </div>
+    </div>
+    <div id="piece_kit-2" class="form-piece_kit-group">
+      <div id="pn-2">
+        <label for="pn_2" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_2 }}
+      </div>
+      <div>
+        <label for="piece_kit_2" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_2 }}
+      </div>
+    </div>
+    <div id="piece_kit-3" class="hidden">
+      <div id="pn-3" >
+        <label for="pn_3" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_3 }}
+      </div>
+      <div>
+        <label for="piece_kit_3" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_3 }}
+      </div>
+    </div>
+    <div id="piece_kit-4" class="hidden">
+      <div id="pn-4">
+        <label for="pn_4" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_4 }}
+      </div>
+      <div>
+        <label for="piece_kit_4" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_4 }}
+      </div>
+    </div>
+    <div id="piece_kit-5" class="hidden">
+      <div id="pn-5">
+        <label for="pn_5" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_5 }}
+      </div>
+      <div>
+        <label for="piece_kit_5" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_5 }}
+      </div>
+    </div>
+    <div id="piece_kit-6" class="hidden">
+      <div id="pn-6">
+        <label for="pn_6" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_6 }}
+      </div>
+      <div>
+        <label for="piece_kit_6" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_6 }}
+      </div>
+    </div>
+    <div id="piece_kit-7" class="hidden">
+      <div id="pn-7">
+        <label for="pn_7" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_7 }}
+      </div>
+      <div>
+        <label for="piece_kit_7" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_7 }}
+      </div>
+    </div>
+    <div id="piece_kit-8" class="hidden">
+      <div id="pn-8">
+        <label for="pn_8" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_8 }}
+      </div>
+      <div>
+        <label for="piece_kit_8" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_8 }}
+      </div>
+    </div>
+    <div id="piece_kit-9" class="hidden">
+      <div id="pn-9">
+        <label for="pn_9" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_9 }}
+      </div>
+      <div>
+        <label for="piece_kit_9" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_9 }}
+      </div>
+    </div>
+    <div id="piece_kit-10" class="hidden">
+      <div id="pn-10">
+        <label for="pn_10" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_10 }}
+      </div>
+      <div>
+        <label for="piece_kit_10" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_10 }}
+      </div>
+    </div>
+    <div id="piece_kit-11" class="hidden">
+      <div id="pn-11">
+        <label for="pn_11" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_11 }}
+      </div>
+      <div>
+        <label for="piece_kit_11" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_11 }}
+      </div>
+    </div>
+    <div id="piece_kit-12" class="hidden">
+      <div id="pn-12">
+        <label for="pn_12" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_12 }}
+      </div>
+      <div>
+        <label for="piece_kit_12" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_12 }}
+      </div>
+    </div>
+    <div id="piece_kit-13" class="hidden">
+      <div id="pn-13">
+        <label for="pn_13" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_13 }}
+      </div>
+      <div>
+        <label for="piece_kit_13" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_13 }}
+      </div>
+    </div>
+    <div id="piece_kit-14" class="hidden">
+      <div id="pn-14">
+        <label for="pn_14" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_14 }}
+      </div>
+      <div>
+        <label for="piece_kit_14" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_14 }}
+      </div>
+    </div>
+    <div id="piece_kit-15" class="hidden">
+      <div id="pn-15">
+        <label for="pn_15" class="control-label mb-1">Piece Filter</label>
+        {{ form.pn_1 }}
+      </div>
+      <div>
+        <label for="piece_kit_15" class="control-label mb-1">Choose Instance</label>
+        {{ form.piece_kit_15 }}
+      </div>
+    </div>
+    <div>
+      <button id="add-more" type="button"> Add more </button>
+      <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
+        <span id="submit-button-amount">Update Assembly</span>
+      </button>
+    </div>
+  </form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+	// To understand this section : https://www.youtube.com/watch?v=s3T-w2jhDHE&list=PLEsfXFp6DpzRMby_cSoWTFw8zaMdTEXgL&index=64
+	const addMoreBtn = document.getElementById("add-more")
+	const totalNewForms = document.getElementById("piece_kit-TOTAL_FORMS")
+	addMoreBtn.addEventListener('click', add_new_form)
+
+	function add_new_form(event) {
+		// we prevent java console from populating (adding traffic)
+		if (event) {
+			event.preventDefault()
+		}
+		const currentPieceinstanceForms = document.getElementsByClassName("form-piece_kit-group")
+		console.log(currentPieceinstanceForms)
+		let currentFormCount = currentPieceinstanceForms.length
+	    console.log(currentFormCount)
+		// we want the new form to appear after the last loaded form
+		const formCopyTarget = document.getElementById(`piece_kit-${currentFormCount+1}`)
+		console.log(formCopyTarget)
+		// now add new empty form element to our html form
+		formCopyTarget.setAttribute('class', 'form-piece_kit-group')
+	}
+  </script>
+
+<script>
+    $("#id_pn_1").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_1").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_2").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_2").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_3").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_3").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_4").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_4").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_5").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_5").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_6").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_6").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_7").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_7").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_8").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_8").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_9").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_9").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_10").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_10").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_11").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_11").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_12").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_12").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_13").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_13").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_14").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_14").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  <script>
+    $("#id_pn_15").change(function () {
+      var url = $("#form").attr("data-piece_kit-url");  // get the url of the `load_item` view
+      var pieceId = $(this).val();  // get the selected piece ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-item/)
+        data: {
+          'piece': pieceId       // add the piece id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_item` view function
+          $("#id_piece_kit_15").html(data);  // replace the contents of the item input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+<script>
+    $("#id_first_location").change(function () {
+      var url = $("#form").attr("data-second_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_second_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_second_location").change(function () {
+      var url = $("#form").attr("data-third_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_third_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_third_location").change(function () {
+      var url = $("#form").attr("data-fourth_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_fourth_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_fifth_location").change(function () {
+      var url = $("#form").attr("data-fourth_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_fifth_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_fifth_location").change(function () {
+      var url = $("#form").attr("data-sixth_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_sixth_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_sixth_location").change(function () {
+      var url = $("#form").attr("data-seventh_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_seventh_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_seventh_location").change(function () {
+      var url = $("#form").attr("data-eighth_location-url");  // get the url of the `load_second_location` view
+      var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-second_location/)
+        data: {
+          'previous_loc': previous_locId       // add the previous_loc id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_second_location` view function
+          $("#id_eighth_location").html(data);  // replace the contents of the second_location input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+{% endblock %}

@@ -8,7 +8,7 @@ from .views import (
     search_consumable_database, search_piece_database, search_instance_database, search_groupassembly_database,
     search_assembly_database, search_general_database,  database_csv,
     GroupAssemblyCreate, GroupAssemblyListView, show_groupassembly,
-    KitCreate, KitList, show_kit, update_kit, show_assembly_history,
+    KitCreate, KitList, show_kit, update_kit, clone_kit, show_assembly_history,
     load_item_1, load_item_2, load_piece_kit,
     load_second_location, load_third_location, load_fourth_location, load_fifth_location, load_sixth_location,
     load_seventh_location, load_eighth_location,
@@ -59,6 +59,7 @@ urlpatterns = [
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
+    path('kit_update/<kit_id>', clone_kit, name='kit-clone'),
     path('kit_update/<kit_id>', update_kit, name='kit-update'),
     path('assembly/assembly_history/<primary_key>', show_assembly_history, name='assembly-history'),
 
