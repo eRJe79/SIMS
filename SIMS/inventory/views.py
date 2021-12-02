@@ -1098,6 +1098,60 @@ def update_kit(request, kit_id):
     return render(request, 'inventory/assembly/kit_update.html', context)
 
 
+def clone_kit(request, kit_id):
+    kit = Kit.objects.get(pk=kit_id)
+    kit.date_update = timezone.now()
+    kit.update_comment = ''
+    kit.piece_kit_1 = None
+    kit.piece_kit_2 = None
+    kit.piece_kit_3 = None
+    kit.piece_kit_4 = None
+    kit.piece_kit_5 = None
+    kit.piece_kit_6 = None
+    kit.piece_kit_7 = None
+    kit.piece_kit_8 = None
+    kit.piece_kit_9 = None
+    kit.piece_kit_10 = None
+    kit.piece_kit_11 = None
+    kit.piece_kit_12 = None
+    kit.piece_kit_13 = None
+    kit.piece_kit_14 = None
+    kit.piece_kit_15 = None
+    instances = PieceInstance.objects.all()
+    if request.method == "POST":
+        form = KitForm(request.POST or None, instance=kit)
+        kit.pk = None
+        if form.is_valid():
+            parent = form.save(commit=False)
+            parent.save()
+            piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                              kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                              kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+            for item in piece_instance:
+                if item is not None:
+                    for instance in instances:
+                        if instance == item:
+                            instance.update_comment = kit.update_comment
+                            instance.first_location = kit.first_location
+                            instance.second_location = kit.second_location
+                            instance.third_location = kit.third_location
+                            instance.fourth_location = kit.fourth_location
+                            instance.fifth_location = kit.fifth_location
+                            instance.sixth_location = kit.sixth_location
+                            instance.seventh_location = kit.seventh_location
+                            instance.eighth_location = kit.eighth_location
+                            instance.status = kit.kit_status
+                            instance.save()
+            return redirect(kit.get_absolute_url())
+    else:
+        form = KitForm(instance=kit)
+    context = {
+        'kit': kit,
+        'form': form,
+    }
+    return render(request, 'inventory/assembly/kit_clone.html', context)
+
+
 # Display Kit List
 class KitList(ListView):
     model = Kit
