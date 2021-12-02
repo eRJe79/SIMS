@@ -170,6 +170,27 @@ def database_csv(request):
 
 
 # Generate reports
+# Shipped/Received
+def shipped_received_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('sr_start_date')
+        date2 = request.POST.get('sr_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        history = []
+        instances = PieceInstance.objects.all()
+
+        for instance in instances:
+            myhistory = instance.history.all()
+            for h in myhistory:
+                if start_date <= h.history_date.date() <= end_date:
+                    if h.status == 'Shipped' or h.status == 'Received':
+                        history.append(h)
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/shipped_received_report.html', context)
+
+
+
 def shipped_received_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'

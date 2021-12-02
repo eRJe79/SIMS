@@ -15,7 +15,7 @@ from .views import (
     movement_exchange, movement_detail, movement_list, movement_revert,
     show_instance_assembly_list,
     create_equivalence, EquivalenceListView, equivalence_detail, update_equivalence,
-    shipped_received_csv, movement_record_csv,  reparation_record_csv, low_stock_record_csv,
+    shipped_received_csv, shipped_received_display, movement_record_csv,  reparation_record_csv, low_stock_record_csv,
 )
 
 urlpatterns = [
@@ -63,6 +63,7 @@ urlpatterns = [
 
     # Reporting tool
     path('database_csv', database_csv, name='database_csv'),
+    path('reports/shipped_received_report/', shipped_received_display, name='shipped_received_display'),
     path('shipped_received_csv', shipped_received_csv, name='shipped_received_csv'),
     path('movement_record_csv', movement_record_csv, name='movement_record_csv'),
     path('reparation_record_csv', reparation_record_csv, name='reparation_record_csv'),

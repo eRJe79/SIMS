@@ -23,7 +23,7 @@
 </form>
 </br>
 <h5>Shipped-Received Report</h5>
-<form class="d-flex" method="POST" action="{%url 'shipped_received_csv' %}">
+<form class="d-flex" method="POST" action="{%url 'shipped_received_display' %}">
   {% csrf_token %}
        <label for="sr_start_date">From: </label>
 	        <input type="date" name="sr_start_date" id="sr_start_date">

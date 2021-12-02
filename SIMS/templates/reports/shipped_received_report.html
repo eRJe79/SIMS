@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+  <div class="card-header">
+  <h1> Shipped and Received Items between {{ start_date }} and {{ end_date }}</h1>
+  </div>
+  <br/>
+  {% if history %}
+  <p>Here is the list of movements in chronological order: </p>
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Date</th>
+	<th>Status</th>
+	<th>Piece/Assembly</th>
+	<th>CAE Part Number</th>
+	<th>CAE Serial Number</th>
+	<th>Documentation</th>
+	<th>Description</th>
+	<th>Comment</th>
+	</tr>
+  </thead>
+    {% for item in history %}
+    <tr class="datarow">
+      <td>{{ item.history_date }}</td>
+      <td>{{ item.status }}</td>
+      <td><a href="{{ item.piece.get_absolute_url }}">{{ item.piece }}</a></td>
+      <td>{{ item.piece.cae_part_number}}</td>
+      <td><a href="{{ item.get_absolute_url }}">{{ item.serial_number }}</a></td>
+      {% if item.piece.documentation %}
+        <td>{{ item.piece.documentation }}</td>
+      {% else %}
+        <td>No Documentation</td>
+      {% endif %}
+      <td>{{ item.piece.description }}</td>
+      <td>{{ item.update_comment }}</td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>No movements yet.</p>
+  {% endif %}
+{% endblock %}
