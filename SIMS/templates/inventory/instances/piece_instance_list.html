@@ -59,7 +59,11 @@ action="{%url 'search-instance-database' %}">
       <td>{{ piece_instance.status }}</td>
       <td>{{ piece_instance.condition }}</td>
 	  <td>{{piece_instance.date_calibration}}</td>
-      <td><a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}">{{ piece_instance.calibration_document }}</a></td>
+      {% if piece_instance.calibration_document  %}
+      <td><a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}">File</a></td>
+      {% else %}
+      <td>No Documentation</td>
+      {% endif %}
 	  <td>{{piece_instance.date_end_of_life}}</td>
 	  <td>{{piece_instance.date_guarantee}}</td>
       <td>{{piece_instance.date_created}}</td>

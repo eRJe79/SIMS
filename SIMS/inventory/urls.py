@@ -8,14 +8,17 @@ from .views import (
     search_consumable_database, search_piece_database, search_instance_database, search_groupassembly_database,
     search_assembly_database, search_general_database,  database_csv,
     GroupAssemblyCreate, GroupAssemblyListView, show_groupassembly,
-    KitCreate, KitList, show_kit, update_kit, show_assembly_history,
+    KitCreate, KitList, show_kit, update_kit, clone_kit, show_assembly_history,
     load_item_1, load_pn_item_1, load_item_2, load_pn_item_2, load_piece_kit,
     load_second_location, load_third_location, load_fourth_location, load_fifth_location, load_sixth_location,
     load_seventh_location, load_eighth_location,
     movement_exchange, movement_detail, movement_list, movement_revert,
     show_instance_assembly_list,
     create_equivalence, EquivalenceListView, equivalence_detail, update_equivalence,
-    shipped_received_csv, movement_record_csv,  reparation_record_csv, low_stock_record_csv,
+    shipped_received_csv, shipped_received_display,
+    movement_record_csv, movement_record_display,
+    reparation_record_csv, reparation_record_display,
+    low_stock_record_csv, low_stock_record_display,
 )
 
 urlpatterns = [
@@ -56,6 +59,7 @@ urlpatterns = [
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
+    path('kit_clone/<kit_id>', clone_kit, name='kit-clone'),
     path('kit_update/<kit_id>', update_kit, name='kit-update'),
     path('assembly/assembly_history/<primary_key>', show_assembly_history, name='assembly-history'),
 
@@ -63,9 +67,13 @@ urlpatterns = [
 
     # Reporting tool
     path('database_csv', database_csv, name='database_csv'),
+    path('reports/shipped_received_report/', shipped_received_display, name='shipped_received_display'),
     path('shipped_received_csv', shipped_received_csv, name='shipped_received_csv'),
+    path('reports/movement_record_report/', movement_record_display, name='movement_record_display'),
     path('movement_record_csv', movement_record_csv, name='movement_record_csv'),
+    path('reports/reparation_record_report/', reparation_record_display, name='reparation_record_display'),
     path('reparation_record_csv', reparation_record_csv, name='reparation_record_csv'),
+    path('reports/low_stock_record_report/', low_stock_record_display, name='low_stock_record_display'),
     path('low_stock_record_csv', low_stock_record_csv, name='low_stock_record_csv'),
 
     path('equivalence/create_equivalence/', create_equivalence, name='equivalence-create'),

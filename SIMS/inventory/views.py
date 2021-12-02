@@ -186,6 +186,26 @@ def database_csv(request):
 
 
 # Generate reports
+# Shipped/Received
+def shipped_received_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('sr_start_date')
+        date2 = request.POST.get('sr_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        history = []
+        instances = PieceInstance.objects.all()
+
+        for instance in instances:
+            myhistory = instance.history.all()
+            for h in myhistory:
+                if start_date <= h.history_date.date() <= end_date:
+                    if h.status == 'Shipped' or h.status == 'Received':
+                        history.append(h)
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/shipped_received_report.html', context)
+
+
 def shipped_received_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'
@@ -218,6 +238,27 @@ def shipped_received_csv(request):
     return response
 
 
+# Reparation
+def reparation_record_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('rep_start_date')
+        date2 = request.POST.get('rep_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        instances = PieceInstance.objects.all()
+        history = []
+        for instance in instances:
+            if instance.time_spent_in_r_instance():
+                myhistory = instance.history.all()
+                # We check that the history is between the start and end date
+                for h in myhistory:
+                    if start_date <= h.history_date.date() <= end_date and h.status == 'In Repair':
+                        h.history_date = h.history_date.date()
+                        history.append(h)
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/reparation_record_report.html', context)
+
+
 def reparation_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=reparation_report.csv'
@@ -237,7 +278,6 @@ def reparation_record_csv(request):
                 # We check that the history is between the start and end date
                 for h in myhistory:
                     if start_date <= h.history_date.date() <= end_date and h.status == 'In Repair':
-                        print(h)
                         history.append(h)
         #list of all the history of the objects
 
@@ -249,6 +289,26 @@ def reparation_record_csv(request):
             writer.writerow([item.piece, item.piece.cae_part_number, item.serial_number, item.piece.documentation,
                             item.piece.description, item.history_date.date()])
     return response
+
+
+# Movements
+def movement_record_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('mov_start_date')
+        date2 = request.POST.get('mov_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        history = []
+        movements = MovementExchange.objects.all()
+        for movement in movements:
+            myhistory = movement.history.all()
+            for h in myhistory:
+                if start_date <= h.history_date.date() <= end_date:
+                    h.history_date = h.history_date.date()
+                    history.append(h)
+        # list of all the history of the objects
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/movement_record_report.html', context)
 
 
 def movement_record_csv(request):
@@ -276,7 +336,7 @@ def movement_record_csv(request):
         # Add column headings to the csv file
         writer.writerow(['Date', 'Reference Number',
                         'Piece Exchanged', 'PE CAE Part Number', 'PE CAE Serial Number', 'PE Comment',
-                        'Replacing Piece', 'PE CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
+                        'Replacing Piece', 'RP CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
                         ])
         # Loop Through instance and output
         for item in history:
@@ -290,6 +350,16 @@ def movement_record_csv(request):
 
 
 # Generate Low Stock record
+def low_stock_record_display(request):
+    myconsumablelist = []
+    for item in Consumable.objects.all():
+        if item.is_low_stock():
+            myconsumablelist.append(item)
+        # list of all the history of the objects
+        context = {'myconsumablelist': myconsumablelist}
+    return render(request, 'inventory/reports/low_stock_record_report.html', context)
+
+
 def low_stock_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=low_stock_database.csv'
@@ -699,13 +769,19 @@ def update_instance(request, instance_id):
 
 # clone an instance
 def clone_instance(request, instance_id):
+    instances = PieceInstance.objects.all()
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.update_comment = ''
     if request.method == "POST":
         form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
-        piece_instance.pk=None
+        piece_instance.pk = None
+        context = {'piece_instance': piece_instance, 'form': form}
         if form.is_valid():
-            form.save()
+            object = form.save(commit=False)
+            for instance in instances:
+                if object.serial_number == instance.serial_number:
+                    messages.success(request, 'An Instance with this part number already exist')
+                    return render(request, 'inventory/instances/clone_existing_piece.html', context)
             return redirect(piece_instance.get_absolute_url())
     else:
         form = PieceInstanceForm(instance=piece_instance)
@@ -1042,6 +1118,66 @@ def update_kit(request, kit_id):
         'form': form,
     }
     return render(request, 'inventory/assembly/kit_update.html', context)
+
+
+def clone_kit(request, kit_id):
+    assemblies = Kit.objects.all()
+    kit = Kit.objects.get(pk=kit_id)
+    kit.date_update = timezone.now()
+    kit.update_comment = ''
+    kit.piece_kit_1 = None
+    kit.piece_kit_2 = None
+    kit.piece_kit_3 = None
+    kit.piece_kit_4 = None
+    kit.piece_kit_5 = None
+    kit.piece_kit_6 = None
+    kit.piece_kit_7 = None
+    kit.piece_kit_8 = None
+    kit.piece_kit_9 = None
+    kit.piece_kit_10 = None
+    kit.piece_kit_11 = None
+    kit.piece_kit_12 = None
+    kit.piece_kit_13 = None
+    kit.piece_kit_14 = None
+    kit.piece_kit_15 = None
+    instances = PieceInstance.objects.all()
+    if request.method == "POST":
+        form = KitForm(request.POST or None, instance=kit)
+        kit.pk = None
+        context = {'kit': kit, 'form': form}
+        if form.is_valid():
+            parent = form.save(commit=False)
+            for assembly in assemblies:
+                if parent.kit_serialnumber == assembly.kit_serialnumber:
+                    messages.success(request, 'An assembly with this serial number already exist')
+                    return render(request, 'inventory/assembly/kit_clone.html', context)
+            parent.save()
+            piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
+                              kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
+                              kit.piece_kit_11, kit.piece_kit_12, kit.piece_kit_13, kit.piece_kit_14, kit.piece_kit_15]
+            for item in piece_instance:
+                if item is not None:
+                    for instance in instances:
+                        if instance == item:
+                            instance.update_comment = kit.update_comment
+                            instance.first_location = kit.first_location
+                            instance.second_location = kit.second_location
+                            instance.third_location = kit.third_location
+                            instance.fourth_location = kit.fourth_location
+                            instance.fifth_location = kit.fifth_location
+                            instance.sixth_location = kit.sixth_location
+                            instance.seventh_location = kit.seventh_location
+                            instance.eighth_location = kit.eighth_location
+                            instance.status = kit.kit_status
+                            instance.save()
+            return redirect(kit.get_absolute_url())
+    else:
+        form = KitForm(instance=kit)
+    context = {
+        'kit': kit,
+        'form': form,
+    }
+    return render(request, 'inventory/assembly/kit_clone.html', context)
 
 
 # Display Kit List
