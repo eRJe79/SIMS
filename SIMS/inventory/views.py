@@ -170,6 +170,26 @@ def database_csv(request):
 
 
 # Generate reports
+# Shipped/Received
+def shipped_received_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('sr_start_date')
+        date2 = request.POST.get('sr_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        history = []
+        instances = PieceInstance.objects.all()
+
+        for instance in instances:
+            myhistory = instance.history.all()
+            for h in myhistory:
+                if start_date <= h.history_date.date() <= end_date:
+                    if h.status == 'Shipped' or h.status == 'Received':
+                        history.append(h)
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/shipped_received_report.html', context)
+
+
 def shipped_received_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'
@@ -202,6 +222,27 @@ def shipped_received_csv(request):
     return response
 
 
+# Reparation
+def reparation_record_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('rep_start_date')
+        date2 = request.POST.get('rep_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        instances = PieceInstance.objects.all()
+        history = []
+        for instance in instances:
+            if instance.time_spent_in_r_instance():
+                myhistory = instance.history.all()
+                # We check that the history is between the start and end date
+                for h in myhistory:
+                    if start_date <= h.history_date.date() <= end_date and h.status == 'In Repair':
+                        h.history_date = h.history_date.date()
+                        history.append(h)
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/reparation_record_report.html', context)
+
+
 def reparation_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=reparation_report.csv'
@@ -221,7 +262,6 @@ def reparation_record_csv(request):
                 # We check that the history is between the start and end date
                 for h in myhistory:
                     if start_date <= h.history_date.date() <= end_date and h.status == 'In Repair':
-                        print(h)
                         history.append(h)
         #list of all the history of the objects
 
@@ -233,6 +273,26 @@ def reparation_record_csv(request):
             writer.writerow([item.piece, item.piece.cae_part_number, item.serial_number, item.piece.documentation,
                             item.piece.description, item.history_date.date()])
     return response
+
+
+# Movements
+def movement_record_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('mov_start_date')
+        date2 = request.POST.get('mov_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        history = []
+        movements = MovementExchange.objects.all()
+        for movement in movements:
+            myhistory = movement.history.all()
+            for h in myhistory:
+                if start_date <= h.history_date.date() <= end_date:
+                    h.history_date = h.history_date.date()
+                    history.append(h)
+        # list of all the history of the objects
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/movement_record_report.html', context)
 
 
 def movement_record_csv(request):
@@ -260,7 +320,7 @@ def movement_record_csv(request):
         # Add column headings to the csv file
         writer.writerow(['Date', 'Reference Number',
                         'Piece Exchanged', 'PE CAE Part Number', 'PE CAE Serial Number', 'PE Comment',
-                        'Replacing Piece', 'PE CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
+                        'Replacing Piece', 'RP CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
                         ])
         # Loop Through instance and output
         for item in history:
@@ -274,6 +334,16 @@ def movement_record_csv(request):
 
 
 # Generate Low Stock record
+def low_stock_record_display(request):
+    myconsumablelist = []
+    for item in Consumable.objects.all():
+        if item.is_low_stock():
+            myconsumablelist.append(item)
+        # list of all the history of the objects
+        context = {'myconsumablelist': myconsumablelist}
+    return render(request, 'inventory/reports/low_stock_record_report.html', context)
+
+
 def low_stock_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=low_stock_database.csv'
@@ -1118,6 +1188,7 @@ def movement_exchange(request):
                 kit.piece_kit_14 = obj.item_2
             elif kit.piece_kit_15 == obj.item_1:
                 kit.piece_kit_15 = obj.item_2
+            kit.save()
 
         obj.item_2.first_location = obj.item_1.first_location
         obj.item_2.second_location = obj.item_1.second_location
@@ -1150,7 +1221,6 @@ def movement_exchange(request):
         obj.item_2.save()
         # Save the movement
         obj.save()
-        kit.save()
         return redirect(obj.get_absolute_url())
     return render(request, 'inventory/movement/movement_choice.html', context)
 
