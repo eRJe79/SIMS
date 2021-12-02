@@ -34,7 +34,7 @@
 </br>
 <br>
 <h5>Reparation Report</h5>
-<form class="d-flex" method="POST" action="{%url 'reparation_record_csv' %}">
+<form class="d-flex" method="POST" action="{%url 'reparation_record_display' %}">
   {% csrf_token %}
        <label for="rep_start_date">From: </label>
 	        <input type="date" name="rep_start_date" id="rep_start_date">

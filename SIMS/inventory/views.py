@@ -190,7 +190,6 @@ def shipped_received_display(request):
     return render(request, 'inventory/reports/shipped_received_report.html', context)
 
 
-
 def shipped_received_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'
@@ -223,13 +222,36 @@ def shipped_received_csv(request):
     return response
 
 
-def reparation_record_csv(request, dates):
+# Reparation
+def reparation_record_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('rep_start_date')
+        date2 = request.POST.get('rep_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        instances = PieceInstance.objects.all()
+        history = []
+        for instance in instances:
+            if instance.time_spent_in_r_instance():
+                myhistory = instance.history.all()
+                # We check that the history is between the start and end date
+                for h in myhistory:
+                    if start_date <= h.history_date.date() <= end_date and h.status == 'In Repair':
+                        h.history_date = h.history_date.date()
+                        history.append(h)
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/reparation_record_report.html', context)
+
+
+def reparation_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=reparation_report.csv'
     location = ''
     if request.method == "POST":
-        start_date = dates[0]
-        end_date = dates[1]
+        date1 = request.POST.get('rep_start_date')
+        date2 = request.POST.get('rep_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
         # Create a csv writer
         writer = csv.writer(response)
         history = []
@@ -240,7 +262,6 @@ def reparation_record_csv(request, dates):
                 # We check that the history is between the start and end date
                 for h in myhistory:
                     if start_date <= h.history_date.date() <= end_date and h.status == 'In Repair':
-                        print(h)
                         history.append(h)
         #list of all the history of the objects
 

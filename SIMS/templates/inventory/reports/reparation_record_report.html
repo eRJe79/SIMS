@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+  <div class="card-header">
+  <h1> Items in Reparation between {{ start_date }} and {{ end_date }}</h1>
+  </div>
+  <br/>
+  {% if history %}
+<form class="d-flex" method="POST" action="{%url 'reparation_record_csv' %}">
+  {% csrf_token %}
+       <label for="rep_start_date">From: </label>
+	        <input type="date" name="rep_start_date" id="rep_start_date">
+       <label for="rep_end_date">To: </label>
+	        <input type="date" name="rep_end_date" id="rep_end_date">
+      <button class="btn btn-outline-secondary" type="submit"> Generate CSV Report </button>
+</form>
+<br>
+</br>
+  <p>Here is the list of movements in chronological order: </p>
+<table class="table table-light table-striped">
+  <thead>
+    <tr>
+	<th>Instance Name</th>
+	<th>CAE Part Number</th>
+	<th>CAE Serial Number</th>
+	<th>Documentation</th>
+	<th>Description</th>
+	<th>Date in Repair</th>
+	</tr>
+  </thead>
+    {% for item in history %}
+    <tr class="datarow">
+      <td>{{ item.piece}}</td>
+      <td><a href="{{ item.piece.get_absolute_url }}">{{ item.cae_part_number }}</a></td>
+      <td><a href="{{ item.get_absolute_url }}">{{ item.serial_number }}</a></td>
+      {% if item.piece.documentation %}
+        <td>{{ item.piece.documentation }}</td>
+      {% else %}
+        <td>No Documentation</td>
+      {% endif %}
+      <td>{{ item.piece.description }}</td>
+      <td>{{ item.history_date }}</td>
+    </tr>
+    {% endfor %}
+</table>
+  {% else %}
+    <p>No report available.</p>
+  {% endif %}
+{% endblock %}
