@@ -773,8 +773,8 @@ def clone_instance(request, instance_id):
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.update_comment = ''
     if request.method == "POST":
-        form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
         piece_instance.pk = None
+        form = PieceInstanceForm(request.POST, request.FILES, instance=piece_instance)
         context = {'piece_instance': piece_instance, 'form': form}
         if form.is_valid():
             object = form.save(commit=False)
@@ -782,6 +782,7 @@ def clone_instance(request, instance_id):
                 if object.serial_number == instance.serial_number:
                     messages.success(request, 'An Instance with this part number already exist')
                     return render(request, 'inventory/instances/clone_existing_piece.html', context)
+            object.save()
             return redirect(piece_instance.get_absolute_url())
     else:
         form = PieceInstanceForm(instance=piece_instance)
@@ -1366,6 +1367,7 @@ def movement_revert(request, movement_id):
             kit.piece_kit_14 = movement.item_1
         elif kit.piece_kit_15 == movement.item_2:
             kit.piece_kit_15 = movement.item_1
+        kit.save()
 
     movement.item_1.first_location = movement.item_2.first_location
     movement.item_1.second_location = movement.item_2.second_location
@@ -1391,7 +1393,6 @@ def movement_revert(request, movement_id):
     movement.item_2.save()
     movement.revert_button = False
     movement.save()
-    kit.save()
 
     context = {'movement': movement}
     return render(request, 'inventory/movement/movement_detail.html', context)
