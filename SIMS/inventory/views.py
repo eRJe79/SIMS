@@ -334,6 +334,16 @@ def movement_record_csv(request):
 
 
 # Generate Low Stock record
+def low_stock_record_display(request):
+    myconsumablelist = []
+    for item in Consumable.objects.all():
+        if item.is_low_stock():
+            myconsumablelist.append(item)
+        # list of all the history of the objects
+        context = {'myconsumablelist': myconsumablelist}
+    return render(request, 'inventory/reports/low_stock_record_report.html', context)
+
+
 def low_stock_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=low_stock_database.csv'

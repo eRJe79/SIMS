@@ -17,7 +17,7 @@
 </form>
 </br>
 <br>
-<form class="d-flex" method="POST" action="{%url 'low_stock_record_csv' %}">
+<form class="d-flex" method="POST" action="{%url 'low_stock_record_display' %}">
   {% csrf_token %}
       <button class="btn btn-outline-secondary" type="submit"> Low Stock Report </button>
 </form>

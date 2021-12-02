@@ -18,7 +18,7 @@ from .views import (
     shipped_received_csv, shipped_received_display,
     movement_record_csv, movement_record_display,
     reparation_record_csv, reparation_record_display,
-    low_stock_record_csv,
+    low_stock_record_csv, low_stock_record_display,
 )
 
 urlpatterns = [
@@ -72,6 +72,7 @@ urlpatterns = [
     path('movement_record_csv', movement_record_csv, name='movement_record_csv'),
     path('reports/reparation_record_report/', reparation_record_display, name='reparation_record_display'),
     path('reparation_record_csv', reparation_record_csv, name='reparation_record_csv'),
+    path('reports/low_stock_record_report/', low_stock_record_display, name='low_stock_record_display'),
     path('low_stock_record_csv', low_stock_record_csv, name='low_stock_record_csv'),
 
     path('equivalence/create_equivalence/', create_equivalence, name='equivalence-create'),
