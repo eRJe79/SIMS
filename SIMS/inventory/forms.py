@@ -238,24 +238,28 @@ class EquivalenceForm(ModelForm):
 class MovementForm(ModelForm):
     class Meta:
         model = MovementExchange
-        fields = ['reference_number', 'piece_1', 'item_1', 'update_comment_item1', 'piece_2', 'item_2',
-                  'update_comment_item2']
+        fields = ['reference_number', 'piece_1', 'part_number_1', 'item_1', 'update_comment_item1', 'piece_2',
+                  'part_number_2', 'item_2', 'update_comment_item2']
         labels = {
             'reference_number': 'Reference Number',
-            'piece_1': 'Piece filter',
+            'piece_1': 'Piece Name filter',
+            'part_number_1': 'Piece PN filter',
             'item_1': 'OUT',
             'update_comment_item1': 'Reason for item being replaced',
-            'piece_2': 'Piece filter',
+            'piece_2': 'Piece Name filter',
+            'part_number_2': 'Piece PN filter',
             'item_2': 'IN',
             'update_comment_item2': 'Reason for item replacing',
         }
         widgets = {
             'reference_number': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Enter the Reference Number'}),
-            'piece_1': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Item 1 piece filter'}),
+            'piece_1': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Item 1 Name piece filter'}),
+            'part_number_1': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Item 1 PN piece filter'}),
             'item_1': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 1'}),
             'update_comment_item1': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment_item1'}),
-            'piece_2': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Item 2 piece filter'}),
+            'piece_2': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Item 2 Name piece filter'}),
+            'part_number_2': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Item 1 PN piece filter'}),
             'item_2': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Item 2'}),
             'update_comment_item2': forms.TextInput(attrs={'class': 'form-control', 'id': 'update_comment_item2'}),
         }
@@ -263,26 +267,51 @@ class MovementForm(ModelForm):
     # We override the init method to have instance choices dependent on piece choices
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['part_number_1'].queryset = Piece.objects.none()
+        self.fields['part_number_2'].queryset = Piece.objects.none()
         self.fields['item_1'].queryset = PieceInstance.objects.none()
         self.fields['item_2'].queryset = PieceInstance.objects.none()
 
         if 'piece_1' in self.data:
             try:
                 piece_id = int(self.data.get('piece_1'))
-                self.fields['item_1'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+                my_piece = Piece.objects.get(id=piece_id)
+                myname = my_piece.name
+                self.fields['part_number_1'].queryset = Piece.objects.filter(name=myname).order_by('cae_part_number')
             except (ValueError, TypeError):
                 pass #invalid input, ignore request
         elif self.instance.pk and self.instance.piece_1:
+            self.fields['part_number_1'].queryset = self.instance.piece_1.item_1.order_by('cae_part_number')
+
+        if 'part_number_1' in self.data:
+            try:
+                piece_id = int(self.data.get('part_number_1'))
+                self.fields['item_1'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+            except (ValueError, TypeError):
+                pass #invalid input, ignore request
+        elif self.instance.pk and self.instance.part_number_1:
             self.fields['item_1'].queryset = self.instance.piece_1.item_1.order_by('name')
 
         if 'piece_2' in self.data:
             try:
                 piece_id = int(self.data.get('piece_2'))
-                self.fields['item_2'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
+                my_piece = Piece.objects.get(id=piece_id)
+                myname = my_piece.name
+                self.fields['part_number_2'].queryset = Piece.objects.filter(name=myname).order_by('cae_part_number')
             except (ValueError, TypeError):
                 pass  # invalid input, ignore request
         elif self.instance.pk and self.instance.piece_2:
-            self.fields['item_2'].queryset = self.instance.piece_2.item_2.order_by('serial_number')
+            self.fields['part_number_2'].queryset = self.instance.piece_2.item_2.order_by('cae_part_number')
+
+        if 'part_number_2' in self.data:
+            try:
+                piece_id = int(self.data.get('part_number_2'))
+                self.fields['item_2'].queryset = PieceInstance.objects.filter(piece_id=piece_id).order_by(
+                    'serial_number')
+            except (ValueError, TypeError):
+                pass  # invalid input, ignore request
+        elif self.instance.pk and self.instance.part_number_2:
+            self.fields['item_2'].queryset = self.instance.piece_2.item_2.order_by('name')
 
 
 class GroupAssemblyForm(ModelForm):
