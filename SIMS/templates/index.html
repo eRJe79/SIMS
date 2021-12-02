@@ -45,7 +45,7 @@
 </br>
 <br>
 <h5>Movement Report</h5>
-<form class="d-flex" method="POST" action="{%url 'movement_record_csv' %}">
+<form class="d-flex" method="POST" action="{%url 'movement_record_display' %}">
   {% csrf_token %}
        <label for="mov_start_date">From: </label>
 	        <input type="date" name="mov_start_date" id="mov_start_date">

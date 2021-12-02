@@ -17,7 +17,6 @@
 </form>
 <br>
 </br>
-  <p>Here is the list of movements in chronological order: </p>
 <table class="table table-light table-striped">
   <thead>
     <tr>
@@ -32,7 +31,7 @@
     {% for item in history %}
     <tr class="datarow">
       <td>{{ item.piece}}</td>
-      <td><a href="{{ item.piece.get_absolute_url }}">{{ item.cae_part_number }}</a></td>
+      <td><a href="{{ item.piece.get_absolute_url }}">{{ item.piece.cae_part_number }}</a></td>
       <td><a href="{{ item.get_absolute_url }}">{{ item.serial_number }}</a></td>
       {% if item.piece.documentation %}
         <td>{{ item.piece.documentation }}</td>

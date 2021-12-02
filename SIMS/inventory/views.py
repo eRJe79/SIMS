@@ -275,6 +275,26 @@ def reparation_record_csv(request):
     return response
 
 
+# Movements
+def movement_record_display(request):
+    if request.method == "POST":
+        date1 = request.POST.get('mov_start_date')
+        date2 = request.POST.get('mov_end_date')
+        start_date = pd.to_datetime(date1).date()
+        end_date = pd.to_datetime(date2).date()
+        history = []
+        movements = MovementExchange.objects.all()
+        for movement in movements:
+            myhistory = movement.history.all()
+            for h in myhistory:
+                if start_date <= h.history_date.date() <= end_date:
+                    h.history_date = h.history_date.date()
+                    history.append(h)
+        # list of all the history of the objects
+        context = {'history': history, 'start_date': start_date, 'end_date': end_date}
+    return render(request, 'inventory/reports/movement_record_report.html', context)
+
+
 def movement_record_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=movement_report.csv'
@@ -300,7 +320,7 @@ def movement_record_csv(request):
         # Add column headings to the csv file
         writer.writerow(['Date', 'Reference Number',
                         'Piece Exchanged', 'PE CAE Part Number', 'PE CAE Serial Number', 'PE Comment',
-                        'Replacing Piece', 'PE CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
+                        'Replacing Piece', 'RP CAE Part Number', 'RP CAE Serial Number', 'RP Comment',
                         ])
         # Loop Through instance and output
         for item in history:
