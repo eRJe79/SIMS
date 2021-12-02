@@ -1,6 +1,15 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 	<style>
 		.form-piece_kit-group{
 			border-bottom: 1px solid black;
@@ -10,7 +19,7 @@
 		}
 	</style>
 
-	<h1>Update Assembly...</h1>
+	<h1>Clone Assembly...</h1>
 	<form id="form" action="#" method="post"
 		  data-second_location-url="{% url 'ajax_load_second_location' %}"
 		  data-third_location-url="{% url 'ajax_load_third_location' %}"
@@ -234,7 +243,7 @@
     <div>
       <button id="add-more" type="button"> Add more </button>
       <button id="submit-button" type="submit" class="btn btn-lg btn-info btn-block">
-        <span id="submit-button-amount">Update Assembly</span>
+        <span id="submit-button-amount">Clone Assembly</span>
       </button>
     </div>
   </form>

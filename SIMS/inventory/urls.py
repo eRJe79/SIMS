@@ -59,7 +59,7 @@ urlpatterns = [
     path('kit_form/', KitCreate.as_view(), name='kit-create'),
     path('kit_list/', KitList.as_view(), name='kit-list'),
     path('kit_detail/<primary_key>', show_kit, name='kit-detail'),
-    path('kit_update/<kit_id>', clone_kit, name='kit-clone'),
+    path('kit_clone/<kit_id>', clone_kit, name='kit-clone'),
     path('kit_update/<kit_id>', update_kit, name='kit-update'),
     path('assembly/assembly_history/<primary_key>', show_assembly_history, name='assembly-history'),
 
