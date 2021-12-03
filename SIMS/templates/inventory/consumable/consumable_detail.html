@@ -1,6 +1,25 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+<style>
+	.topright {
+  		position: absolute;
+  		top: 50px;
+  		right: 16px;
+  		font-size: 18px;
+	}
+	img {
+  		width: 20%;
+  		height: auto;
+	}
+	.center {
+  		display: block;
+  		margin-left: auto;
+  		margin-right: auto;
+  		width: 50%;
+	}
+</style>
+
 	{% csrf_token %}
 	<div class="card">
   	<div class="card-header">
@@ -18,7 +37,8 @@
   		<p><strong>OEM Part Number: </strong> {{ consumable.provider_part_number }}</p>
   		<p><strong>OEM Serial Number: </strong> {{ consumable.provider_serialnumber}}</p>
   		{% if consumable.image %}
-  			<p><img src="{{ consumable.image.url}}" alt="connect" style="max-height:300px" align="right"></p>
+  			<p><img src="{{ consumable.image.url}}" alt="connect" class="topright"
+			onclick="enlargeImg()" id="img1"></p>
   		{% endif %}
   		<p><strong>Quantity available: </strong> {{ consumable.quantity }}</p>
   		<p><strong>Recommended stock: </strong> {{ consumable.low_stock_value }}</p>
@@ -53,6 +73,9 @@
   		<p><strong>Condition:</strong> {{ consumable.condition }}</p>
   		<p><strong>Owner:</strong> {{ consumable.owner }}</p>
   		<p><strong>Restriction:</strong> {{ consumable.restriction }}</p>
+		{% if consumable.image %}
+		<button onclick="resetImg()">Reset Picture Size</button>
+		{% endif %}
   		<p><strong>History:</strong></p>
 			<table class="table table-light table-striped">
 				<thead>
@@ -97,4 +120,25 @@
     <td><a href="{% url 'consumable-clone' consumable.id %}" class="btn btn-outline-secondary btn-sm">Clone</a></td>
   	</div>
 	</div>
+
+<!-- script to set display picture -->
+    <script>
+      // Get the img object using its Id
+      img = document.getElementById("img1");
+      // Function to increase image size
+      function enlargeImg() {
+		img.setAttribute('class', 'center')
+        // Set image size to 1.5 times original
+        img.style.transform = "scale(1.5)";
+        // Animation effect
+        img.style.transition = "transform 0.25s ease";
+      }
+      // Function to reset image size
+      function resetImg() {
+        // Set image size to original
+        img.style.transform = "scale(1)";
+        img.style.transition = "transform 0.25s ease";
+		img.setAttribute('class', 'topright')
+      }
+    </script>
 {% endblock %}
