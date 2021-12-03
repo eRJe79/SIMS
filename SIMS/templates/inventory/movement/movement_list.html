@@ -2,7 +2,12 @@
 
 {% block content %}
   <h1>Movement List</h1>
-  <br/>
+    <br>
+    <br/>
+	<td><a href="{% url 'movement-choice' %}" class="btn btn-outline-secondary btn-sm">
+        <strong> Add Movement </strong></a></td>
+    <br>
+    <br/>
   {% if movements %}
   <p>Here is the list of movements ordered by chronological order.</p>
 <table class="table table-light table-striped">
