@@ -67,7 +67,9 @@
         {% endif %}</p>
   		<p><strong>Status:</strong> {{ piece_instance.status }}</p>
   		<p><strong>Condition:</strong> {{ piece_instance.condition }}</p>
+  		{% if piece_instance.piece.image %}
 		<button onclick="resetImg()">Reset Picture Size</button>
+		{% endif %}
 		<br></br>
   		<p><strong>History:</strong></p>
 			<table class="table table-light table-striped">
@@ -116,7 +118,7 @@
   	</div>
 	</div>
 
-<!-- script to set display property -->
+<!-- script to set display picture -->
     <script>
       // Get the img object using its Id
       img = document.getElementById("img1");
