@@ -233,7 +233,7 @@
     <div id="piece_kit-15" class="hidden">
       <div id="pn-15">
         <label for="pn_15" class="control-label mb-1">Piece Filter</label>
-        {{ form.pn_1 }}
+        {{ form.pn_15 }}
       </div>
       <div>
         <label for="piece_kit_15" class="control-label mb-1">Choose Instance</label>
@@ -594,8 +594,8 @@
     });
   </script>
   <script>
-    $("#id_fifth_location").change(function () {
-      var url = $("#form").attr("data-fourth_location-url");  // get the url of the `load_second_location` view
+    $("#id_fourth_location").change(function () {
+      var url = $("#form").attr("data-fifth_location-url");  // get the url of the `load_second_location` view
       var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
 
       $.ajax({                       // initialize an AJAX request
