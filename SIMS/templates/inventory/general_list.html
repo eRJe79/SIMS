@@ -31,7 +31,7 @@ action="{%url 'search-general-database' %}">
             <td><a href="{{ item.group_assembly.get_absolute_url }}">{{ item.group_assembly }}</a></td>
             <td>{{ item.group_assembly.kit_partnumber }} {{ item.piece.cae_part_number }} </td>
             <td>{{ item.kit_serialnumber }}</td>
-            <td>{{ item.status }}</td>
+            <td>{{ item.kit_status }}</td>
             {% if item.eighth_location %}
 	  	        <td>{{item.first_location}}-{{item.second_location|default_if_none:""}}-{{item.third_location|default_if_none:""}}-{{item.fourth_location|default_if_none:""}}-{{item.fifth_location|default_if_none:""}}-{{item.sixth_location|default_if_none:""}}-{{item.seventh_location|default_if_none:""}}-{{item.eighth_location|default_if_none:""}}</td>
 	        {% elif item.seventh_location %}
