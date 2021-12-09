@@ -99,8 +99,8 @@
     });
   </script>
   <script>
-    $("#id_fifth_location").change(function () {
-      var url = $("#form").attr("data-fourth_location-url");  // get the url of the `load_second_location` view
+    $("#id_fourth_location").change(function () {
+      var url = $("#form").attr("data-fifth_location-url");  // get the url of the `load_second_location` view
       var previous_locId = $(this).val();  // get the selected previous_loc ID from the HTML input
 
       $.ajax({                       // initialize an AJAX request
