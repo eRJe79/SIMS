@@ -928,11 +928,17 @@ def search_assembly_database(request):
 def search_general_database(request):
     if request.method == "POST":
         searched = request.POST['searched']
+        results_rspl = []
         results_instance = []
         results_assemblies = []
+        results_consumable = []
         if searched == 'RSPL' or searched == 'rspl':
             for i in PieceInstance.objects.filter(is_rspl=True):
-                results_instance.append(i)
+                print(i)
+                results_rspl.append(i)
+            for i in Consumable.objects.filter(is_rspl=True):
+                print(i)
+                results_rspl.append(i)
         else:
             for i in PieceInstance.objects.filter(Q(first_location__name__contains=searched)
                                                    | Q(second_location__name__contains=searched)
@@ -974,7 +980,34 @@ def search_general_database(request):
                                                     | Q(kit_serialnumber__contains=searched)
                                                     ):
                 results_assemblies.append(i)
-            results = (results_assemblies + results_instance)
+            for i in Consumable.objects.filter(Q(name__contains=searched)
+                                                    | Q(piece_model__contains=searched)
+                                                    | Q(cae_part_number__contains=searched)
+                                                    | Q(serial_number__contains=searched)
+                                                    | Q(manufacturer__contains=searched)
+                                                    | Q(manufacturer_part_number__contains=searched)
+                                                    | Q(manufacturer_serialnumber__contains=searched)
+                                                    | Q(provider__contains=searched)
+                                                    | Q(provider_part_number__contains=searched)
+                                                    | Q(provider_serialnumber__contains=searched)
+                                                    | Q(item_type__contains=searched)
+                                                    | Q(item_characteristic__contains=searched)
+                                                    | Q(update_comment__contains=searched)
+                                                    | Q(status__contains=searched)
+                                                    | Q(condition__contains=searched)
+                                                    | Q(restriction__contains=searched)
+                                                    | Q(first_location__name__contains=searched)
+                                                    | Q(second_location__name__contains=searched)
+                                                    | Q(third_location__name__contains=searched)
+                                                    | Q(fourth_location__name__contains=searched)
+                                                    | Q(fifth_location__name__contains=searched)
+                                                    | Q(sixth_location__name__contains=searched)
+                                                    | Q(seventh_location__name__contains=searched)
+                                                    | Q(eighth_location__name__contains=searched)
+                                                    | Q(owner__contains=searched)
+                                                    ):
+                results_consumable.append(i)
+        results = (results_consumable + results_assemblies + results_instance + results_rspl)
         context = {'searched': searched, 'results': results}
         return render(request, 'inventory/search/search_general.html', context)
     else:
