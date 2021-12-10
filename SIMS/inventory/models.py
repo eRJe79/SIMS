@@ -163,9 +163,6 @@ class Piece(models.Model):
         """Returns the calibration reccurence days this piece."""
         return self.calibration_recurrence
 
-    def add_piece_equivalent(self, attr):
-        setattr(self, 'piece_equivalent', attr)
-
     def get_history(self):
         history = self.history.all()
         # we get only the three last history iterations
