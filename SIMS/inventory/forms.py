@@ -6,6 +6,9 @@ from .models import Piece, PieceInstance, Kit, MovementExchange, GroupAssembly, 
 
 
 class PieceForm(forms.ModelForm):
+    """
+    Logical structure of Piece model
+    """
     class Meta:
         model = Piece
         fields = [ 'name', 'cae_part_number', 'manufacturer', 'provider', 'manufacturer_part_number', 'provider_part_number',
@@ -59,6 +62,9 @@ class PieceForm(forms.ModelForm):
 
 
 class PieceInstanceForm(forms.ModelForm):
+    """
+    Logical structure of PieceInstance model
+    """
     class Meta:
         model = PieceInstance
         fields = ['piece', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
@@ -118,6 +124,9 @@ class PieceInstanceForm(forms.ModelForm):
 
         # We override the init method to have location choices dependent on each other
     def __init__(self, *args, **kwargs):
+        """
+        Overide of the init method to establish hierarchal links between locations
+        """
         super().__init__(*args, **kwargs)
         self.fields['second_location'].queryset = Second_location.objects.none()
         self.fields['third_location'].queryset = Third_location.objects.none()
@@ -192,6 +201,9 @@ class PieceInstanceForm(forms.ModelForm):
 
 
 class EquivalenceForm(ModelForm):
+    """
+    Logical structure of Equivalence model
+    """
     class Meta:
         model = Equivalence
         fields = ['name', 'pieceeq_1', 'pieceeq_2', 'pieceeq_3', 'pieceeq_4', 'pieceeq_5', 'pieceeq_6',
@@ -236,6 +248,9 @@ class EquivalenceForm(ModelForm):
 
 
 class MovementForm(ModelForm):
+    """
+    Logical structure of Movement model
+    """
     class Meta:
         model = MovementExchange
         fields = ['reference_number', 'piece_1', 'part_number_1', 'item_1', 'update_comment_item1', 'piece_2',
@@ -266,6 +281,11 @@ class MovementForm(ModelForm):
 
     # We override the init method to have instance choices dependent on piece choices
     def __init__(self, *args, **kwargs):
+        """
+        Overide of the init method to establish hierarchical links between part_number_x and item_x
+        piece_x is used to filter Pieces through their name to narrow available part numbers
+        part_number_x is used to select the Piece where we want to pick our Piece Instance
+        """
         super().__init__(*args, **kwargs)
         self.fields['part_number_1'].queryset = Piece.objects.none()
         self.fields['part_number_2'].queryset = Piece.objects.none()
@@ -315,6 +335,9 @@ class MovementForm(ModelForm):
 
 
 class GroupAssemblyForm(ModelForm):
+    """
+    Logical structure of Group Assembly model
+    """
     class Meta:
         model = GroupAssembly
         fields = ['name', 'kit_partnumber', 'update_comment']
@@ -331,6 +354,9 @@ class GroupAssemblyForm(ModelForm):
 
 
 class KitForm(ModelForm):
+    """
+    Logical structure of Kit model
+    """
     class Meta:
         model = Kit
         fields = ['group_assembly', 'name', 'description', 'kit_serialnumber', 'update_comment', 'kit_status', 'first_location',
@@ -418,6 +444,9 @@ class KitForm(ModelForm):
         # We override the init method to have location choices dependent on each other
 
     def __init__(self, *args, **kwargs):
+        """
+        Overide of the init method to establish hierarchical links between locations
+        """
         super().__init__(*args, **kwargs)
         # Location Declaration
         self.fields['second_location'].queryset = Second_location.objects.none()
@@ -503,6 +532,9 @@ class KitForm(ModelForm):
 
 
 class ConsumableForm(forms.ModelForm):
+    """
+    Logical structure of Consumable model
+    """
     class Meta:
         model = Consumable
         fields = ['name', 'cae_part_number', 'serial_number', 'manufacturer', 'manufacturer_part_number',
@@ -581,6 +613,9 @@ class ConsumableForm(forms.ModelForm):
 
         # We override the init method to have location choices dependent on each other
     def __init__(self, *args, **kwargs):
+        """
+        Overide of the init method to establish hierarchical links between locations
+        """
         super().__init__(*args, **kwargs)
         self.fields['second_location'].queryset = Second_location.objects.none()
         self.fields['third_location'].queryset = Third_location.objects.none()
