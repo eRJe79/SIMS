@@ -26,6 +26,10 @@ from .forms import (
 
 # Movement dependencies management
 def load_pn_item_1(request):
+    """
+    Method used in Movement creation to get Piece list filtered by cae_part_number
+    :rtype: list
+    """
     piece_id = request.GET.get('piece')
     my_piece = Piece.objects.get(id=piece_id)
     myname = my_piece.name
@@ -34,6 +38,10 @@ def load_pn_item_1(request):
 
 
 def load_item_1(request):
+    """
+    Method used in Movement creation to get Piece Instance list filtered by serial_number
+    :rtype: list
+    """
     piece_id = request.GET.get('part_number_1')
     myitems = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
     # We don't want items that are in stock
@@ -45,6 +53,10 @@ def load_item_1(request):
 
 
 def load_pn_item_2(request):
+    """
+    Method used in Movement creation to get Piece list filtered by cae_part_number
+    :rtype: list
+    """
     piece_id = request.GET.get('piece')
     my_piece = Piece.objects.get(id=piece_id)
     myname = my_piece.name
@@ -53,6 +65,10 @@ def load_pn_item_2(request):
 
 
 def load_item_2(request):
+    """
+    Method used in Movement creation to get Piece Instance list filtered by serial_number
+    :rtype: list
+    """
     piece_id = request.GET.get('part_number_2')
     myitems = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
     items = myitems.filter(Q(status='In Stock') | Q(status = 'On Test'))
@@ -60,6 +76,10 @@ def load_item_2(request):
 
 
 def load_piece_kit(request):
+    """
+    Method used in Assembly creation/update/clone to get Piece Instance list filtered by serial_number
+    :rtype: list
+    """
     piece_id = request.GET.get('piece')
     items = PieceInstance.objects.filter(piece_id=piece_id).order_by('serial_number')
     return render(request, 'hr/item_dropdown_list_options.html', {'items': items})
@@ -67,42 +87,70 @@ def load_piece_kit(request):
 
 # Location dependencies management
 def load_second_location(request):
+    """
+    Method used in Location Management to get second location based on first location choice
+    :rtype: list
+    """
     first_loc_id = request.GET.get('previous_loc')
     second_loc = Second_location.objects.filter(previous_loc_id=first_loc_id).order_by('name')
     return render(request, 'hr/second_loc_dropdown_list_options.html', {'second_loc': second_loc})
 
 
 def load_third_location(request):
+    """
+    Method used in Location Management to get third location based on second location choice
+    :rtype: list
+    """
     second_loc_id = request.GET.get('previous_loc')
     third_loc = Third_location.objects.filter(previous_loc_id=second_loc_id).order_by('name')
     return render(request, 'hr/third_loc_dropdown_list_options.html', {'third_loc': third_loc})
 
 
 def load_fourth_location(request):
+    """
+    Method used in Location Management to get fourth location based on third location choice
+    :rtype: list
+    """
     third_loc_id = request.GET.get('previous_loc')
     fourth_loc = Fourth_location.objects.filter(previous_loc_id=third_loc_id).order_by('name')
     return render(request, 'hr/fourth_loc_dropdown_list_options.html', {'fourth_loc': fourth_loc})
 
 
 def load_fifth_location(request):
+    """
+    Method used in Location Management to get fifth location based on fourth location choice
+    :rtype: list
+    """
     fourth_loc_id = request.GET.get('previous_loc')
     fifth_loc = Fifth_location.objects.filter(previous_loc_id=fourth_loc_id).order_by('name')
     return render(request, 'hr/fifth_loc_dropdown_list_options.html', {'fifth_loc': fifth_loc})
 
 
 def load_sixth_location(request):
+    """
+    Method used in Location Management to get sixth location based on fifth location choice
+    :rtype: list
+    """
     fifth_loc_id = request.GET.get('previous_loc')
     sixth_loc = Sixth_location.objects.filter(previous_loc_id=fifth_loc_id).order_by('name')
     return render(request, 'hr/sixth_loc_dropdown_list_options.html', {'sixth_loc': sixth_loc})
 
 
 def load_seventh_location(request):
+    """
+    Method used in Location Management to get seventh location based on sixth location choice
+    :rtype: list
+    """
     sixth_loc_id = request.GET.get('previous_loc')
     seventh_loc = Seventh_location.objects.filter(previous_loc_id=sixth_loc_id).order_by('name')
     return render(request, 'hr/seventh_loc_dropdown_list_options.html', {'seventh_loc': seventh_loc})
 
 
 def load_eighth_location(request):
+    """
+    Method used in Location Management to get eighth location based on seventh location choice
+    :rtype: list
+    """
     seventh_loc_id = request.GET.get('previous_loc')
     eighth_loc = Eighth_location.objects.filter(previous_loc_id=seventh_loc_id).order_by('name')
     return render(request, 'hr/eighth_loc_dropdown_list_options.html', {'eighth_loc': eighth_loc})
@@ -111,6 +159,11 @@ def load_eighth_location(request):
 # Export database to csv
 # Generate CSV File Instance List
 def database_csv(request):
+    """
+    Method used in Report Management to get the list of registered items (Consumable + Assemblies + Piece Instances)
+    on csv format
+    :rtype: list
+    """
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=database.csv'
     location = ''
@@ -188,6 +241,11 @@ def database_csv(request):
 # Generate reports
 # Shipped/Received
 def shipped_received_display(request):
+    """
+    Method used in Report Management to get the list of Piece instance that have been 'Shipped' or 'Received' between
+    two specific dates
+    :rtype: list
+    """
     if request.method == "POST":
         date1 = request.POST.get('sr_start_date')
         date2 = request.POST.get('sr_end_date')
@@ -207,6 +265,11 @@ def shipped_received_display(request):
 
 
 def shipped_received_csv(request):
+    """
+    Method used in Report Management to get the list of Piece instance that have been 'Shipped' or 'Received' between
+    two specific dates on csv format
+    :rtype: list
+    """
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=shipped_received.csv'
     location = ''
@@ -240,6 +303,11 @@ def shipped_received_csv(request):
 
 # Reparation
 def reparation_record_display(request):
+    """
+    Method used in Report Management to get the list of Piece instance that have been 'in Repair' between two specific
+    dates
+    :rtype: list
+    """
     if request.method == "POST":
         date1 = request.POST.get('rep_start_date')
         date2 = request.POST.get('rep_end_date')
@@ -260,6 +328,11 @@ def reparation_record_display(request):
 
 
 def reparation_record_csv(request):
+    """
+    Method used in Report Management to get the list of Piece instance that have been 'in Repair' between two specific
+    dates on csv format
+    :rtype: list
+    """
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=reparation_report.csv'
     location = ''
@@ -293,6 +366,10 @@ def reparation_record_csv(request):
 
 # Movements
 def movement_record_display(request):
+    """
+    Method used in Report Management to get the list of Movements between two specific dates
+    :rtype: list
+    """
     if request.method == "POST":
         date1 = request.POST.get('mov_start_date')
         date2 = request.POST.get('mov_end_date')
@@ -312,6 +389,10 @@ def movement_record_display(request):
 
 
 def movement_record_csv(request):
+    """
+    Method used in Report Management to get the list of Movements between two specific dates on csv format
+    :rtype: list
+    """
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=movement_report.csv'
     location = ''
@@ -351,6 +432,10 @@ def movement_record_csv(request):
 
 # Generate Low Stock record
 def low_stock_record_display(request):
+    """
+    Method used in Report Management to get the list of items in Low Stock
+    :rtype: list
+    """
     myconsumablelist = []
     for item in Consumable.objects.all():
         if item.is_low_stock():
@@ -361,6 +446,10 @@ def low_stock_record_display(request):
 
 
 def low_stock_record_csv(request):
+    """
+    Method used in Report Management to get the list of items in Low Stock on csv format
+    :rtype: list
+    """
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=low_stock_database.csv'
     location = ''
@@ -404,11 +493,18 @@ def low_stock_record_csv(request):
 
 
 class ConsumableCreate(CreateView):
+    """
+    View to display ConsumableForm
+    """
     template_name = 'inventory/consumable/create_consumable.html'
     model = Consumable
     form_class = ConsumableForm
 
     def get(self, request, *args, **kwargs):
+        """
+        A dictionary-like object containing all given HTTP GET parameters
+        :rtype: ConsumableForm
+        """
         self.object = None
         form_class = self.get_form_class()
         form = ConsumableForm()
@@ -418,18 +514,11 @@ class ConsumableCreate(CreateView):
         return render(request, 'inventory/consumable/create_consumable.html', context)
 
     def post(self, request, *args, **kwargs):
-        # # if our ajax is calling so we have to take action
-        # # because this is not the form submission
-        # if request.is_ajax():
-        #     cp = request.POST.copy()  # because we couldn't change fields values directly in request.POST
-        #     value = int(cp['wtd'])  # figure out if the process is addition or deletion
-        #     prefix = "instance_reverse"
-        #     cp[f'{prefix}-TOTAL_FORMS'] = int(
-        #         cp[f'{prefix}-TOTAL_FORMS']) + value
-        #     formset = PieceInstancePieceFormSet(cp)  # catch any data which were in the previous formsets and deliver to-
-        #     # the new formsets again -> if the process is addition!
-        #     return render(request, 'inventory/formset.html', {'formset': formset})
-
+        """
+        A dictionary-like object containing all given HTTP POST parameters,
+        providing that the request contains form data
+        :rtype: ConsumableForm
+        """
         self.object = None
         form_class = self.get_form_class()
         form = ConsumableForm(request.POST, request.FILES)
@@ -439,29 +528,49 @@ class ConsumableCreate(CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
+        """
+        Overide of form_valid method
+        :rtype: ConsumableForm
+        """
         self.object = form.save()
         # instance_form.instance = self.object
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
+        """
+        Overide of form_invalid method
+        :rtype: ConsumableForm
+        """
         return self.render_to_response(
             self.get_context_data(form=form))
 
 
 # Display specific consumable
 def show_consumable(request, primary_key):
+    """
+    Function to display Consumable detail
+    :rtype: Consumable
+    """
     consumable = Consumable.objects.get(pk=primary_key)
     context = {'consumable': consumable}
     return render(request, 'inventory/consumable/consumable_detail.html', context)
 
 
 def consumable_list(request):
+    """
+    Function to get all Consumables ordered by name
+    :rtype: list
+    """
     consumable_list = Consumable.objects.all().order_by('name')
     return render(request, 'inventory/consumable/consumable_list.html', {'consumable_list': consumable_list})
 
 
 # Update a consumable
 def update_consumable(request, consumable_id):
+    """
+    Function to update Consumable
+    :rtype: ConsumableForm, Consumable
+    """
     consumable = Consumable.objects.get(pk=consumable_id)
     consumable.update_comment = ''
     if request.method == "POST":
@@ -477,6 +586,10 @@ def update_consumable(request, consumable_id):
 
 # clone a consumable
 def clone_consumable(request, consumable_id):
+    """
+    Function to clone Consumable
+    :rtype: ConsumableForm, Consumable
+    """
     consumable = Consumable.objects.get(pk=consumable_id)
     consumable.pk=None
     consumable.update_comment = ''
@@ -493,11 +606,18 @@ def clone_consumable(request, consumable_id):
 
 # Piece Creation
 class PieceCreate(CreateView):
+    """
+    View to display PieceForm
+    """
     template_name = 'inventory/piece/create_piece.html'
     model = Piece
     form_class = PieceForm
 
     def get(self, request, *args, **kwargs):
+        """
+        A dictionary-like object containing all given HTTP GET parameters
+        :rtype: PieceForm
+        """
         self.object = None
         form_class = self.get_form_class()
         form = PieceForm()
@@ -507,6 +627,11 @@ class PieceCreate(CreateView):
         return render(request, 'inventory/piece/create_piece.html', context)
 
     def post(self, request, *args, **kwargs):
+        """
+        A dictionary-like object containing all given HTTP POST parameters,
+        providing that the request contains form data
+        :rtype: PieceForm
+        """
         # if our ajax is calling so we have to take action
         # because this is not the form submission
         if request.is_ajax():
@@ -528,28 +653,45 @@ class PieceCreate(CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form, request):
+        """
+        Overide of form_valid method
+        :rtype: PieceForm
+        """
         # We check no piece with same part number already exist
         pieces = Piece.objects.all()
         self.object = form.save(commit=False)
         for piece in pieces:
+            # Protection in case a Piece with given part number already exist
             if self.object.cae_part_number == piece.cae_part_number:
+                # We populate message and return the form with the message display to inform User
                 messages.success(request, 'A piece with this part number already exist')
                 return self.render_to_response(self.get_context_data(form=form))
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
+        """
+        Overide of form_invalid method
+        :rtype: PieceForm
+        """
         return self.render_to_response(
             self.get_context_data(form=form))
 
 
 # Display a list of all the Pieces in the inventory
 class PieceListView(ListView):
+    """
+    List of Pieces
+    """
     model = Piece
     paginate_by = 10
     template_name = 'inventory/piece/piece_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
+        """
+        Returns context data for displaying the list of objects.
+        :rtype: list
+        """
         # Call the base implementation first to get the context
         context = super(PieceListView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
@@ -559,6 +701,10 @@ class PieceListView(ListView):
 
 # Display a specific Piece
 def show_piece(request, primary_key):
+    """
+    Function to display Piece detail, its Equivalences and PieceInstances that are part of it
+    :rtype: Piece, Equivalence, PieceInstance
+    """
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
     # Instance management
@@ -593,6 +739,10 @@ def show_piece(request, primary_key):
 
 # Update a piece
 def update_piece(request, piece_id):
+    """
+    Function to update Piece
+    :rtype: PieceForm, Piece
+    """
     piece = Piece.objects.get(pk=piece_id)
     piece.update_comment = ''
     if request.method == "POST":
@@ -608,6 +758,10 @@ def update_piece(request, piece_id):
 
 # clone a piece
 def clone_piece(request, piece_id):
+    """
+    Function to clone Piece
+    :rtype: PieceForm, Piece
+    """
     pieces = Piece.objects.all()
     piece = Piece.objects.get(pk=piece_id)
     piece.pk = None
@@ -631,11 +785,18 @@ def clone_piece(request, piece_id):
 
 # Instance creation
 class PieceInstanceCreate(CreateView):
+    """
+    View to display PieceInstanceForm
+    """
     template_name = 'inventory/instances/create_instance_piece.html'
     model = PieceInstance
     form_class = PieceInstanceForm
 
     def get(self, request, *args, **kwargs):
+        """
+        A dictionary-like object containing all given HTTP GET parameters
+        :rtype: PieceInstanceForm
+        """
         self.object = None
         form_class = self.get_form_class()
         form = PieceInstanceForm()
@@ -645,6 +806,11 @@ class PieceInstanceCreate(CreateView):
         return render(request, 'inventory/instances/create_instance_piece.html', context)
 
     def post(self, request, *args, **kwargs):
+        """
+        A dictionary-like object containing all given HTTP POST parameters,
+        providing that the request contains form data
+        :rtype: PieceInstanceForm
+        """
         # if our ajax is calling so we have to take action
         # because this is not the form submission
         if request.is_ajax():
@@ -666,6 +832,10 @@ class PieceInstanceCreate(CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, request, form):
+        """
+        Overide of form_valid method
+        :rtype: PieceInstanceForm
+        """
         piece_instance = PieceInstance.objects.all()
         self.object = form.save(commit=False)
         for instance in piece_instance:
@@ -678,12 +848,20 @@ class PieceInstanceCreate(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
+        """
+        Overide of form_invalid method
+        :rtype: PieceInstanceForm
+        """
         return self.render_to_response(
             self.get_context_data(form=form))
 
 
 # Add instance from Piece page
 def add_instance(request, piece_id):
+    """
+    Function to add Piece Instance directly from Piece detail page
+    :rtype: PieceInstanceForm
+    """
     piece = Piece.objects.get(pk=piece_id)
     if request.method == "POST":
         if request.is_ajax():
@@ -714,12 +892,20 @@ def add_instance(request, piece_id):
 
 
 def all_piece_instance(request):
+    """
+    Function to get all PieceInstances
+    :rtype: list
+    """
     piece_instance_list = PieceInstance.objects.all().order_by('piece')
     return render(request, 'inventory/instances/piece_instance_list.html', {'piece_instance_list': piece_instance_list})
 
 
 # Display specific instance information
 def show_instance_form(request, primary_key):
+    """
+    Function to display PieceInstance detail and its Kit if it is part of one
+    :rtype: PieceInstance, Kit
+    """
     piece_instance = PieceInstance.objects.get(pk=primary_key)
     try:
         kit = Kit.objects.get(
@@ -735,6 +921,10 @@ def show_instance_form(request, primary_key):
 
 # Display instances and assembly as list
 def show_instance_assembly_list(request):
+    """
+    Function to get all PieceInstances and Assemblies
+    :rtype: list
+    """
     # We create 2 lists to regroup objects from pieceInstance and Kit
     myinstancelist=[]
     myassemblylist=[]
@@ -753,6 +943,10 @@ def show_instance_assembly_list(request):
 
 # Update an instance
 def update_instance(request, instance_id):
+    """
+    Function to update PieceInstance
+    :rtype: PieceInstanceForm, PieceInstance
+    """
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.date_update = datetime.date.today()
     piece_instance.update_comment = ''
@@ -769,6 +963,10 @@ def update_instance(request, instance_id):
 
 # clone an instance
 def clone_instance(request, instance_id):
+    """
+    Function to clone PieceInstance
+    :rtype: PieceInstanceForm, PieceInstance
+    """
     instances = PieceInstance.objects.all()
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.update_comment = ''
@@ -792,14 +990,21 @@ def clone_instance(request, instance_id):
 
 # Delete an instance
 def delete_instance(request, instance_id):
+    """
+    Function to delete PieceInstance
+    """
     piece_instance = PieceInstance.objects.get(pk=instance_id)
     piece_instance.delete()
-    return redirect('piece-detail')
+    return redirect('piece-list')
 
 
 # Search feature
 # Specific to Consumable
 def search_consumable_database(request):
+    """
+    Function to retrieve Consumables which have attributes fitting the searched term from the html page
+    :rtype: list
+    """
     if request.method == "POST":
         searched = request.POST['searched']
         if searched == 'RSPL' or searched == 'rspl':
@@ -837,6 +1042,10 @@ def search_consumable_database(request):
 
 # Specific to piece
 def search_piece_database(request):
+    """
+    Function to retrieve Pieces which have attributes fitting the searched term from the html page
+    :rtype: list
+    """
     if request.method == "POST":
         searched = request.POST['searched']
         if searched == 'obsolete':
@@ -858,6 +1067,10 @@ def search_piece_database(request):
 
 # Specific to instances
 def search_instance_database(request):
+    """
+    Function to retrieve PieceInstances which have attributes fitting the searched term from the html page
+    :rtype: list
+    """
     if request.method == "POST":
         searched = request.POST['searched']
         if searched == 'RSPL' or searched == 'rspl':
@@ -887,6 +1100,10 @@ def search_instance_database(request):
 # Specific to Assemblies
 # Specific to Group Assemblies
 def search_groupassembly_database(request):
+    """
+    Function to retrieve GroupAssemblies which have attributes fitting the searched term from the html page
+    :rtype: list
+    """
     if request.method == "POST":
         searched = request.POST['searched']
         results = GroupAssembly.objects.filter(Q(name__contains=searched)
@@ -901,6 +1118,10 @@ def search_groupassembly_database(request):
 
 # Specific to Assemblies
 def search_assembly_database(request):
+    """
+    Function to retrieve Assemblies which have attributes fitting the searched term from the html page
+    :rtype: list
+    """
     if request.method == "POST":
         searched = request.POST['searched']
         results = Kit.objects.filter(Q(group_assembly__name__contains=searched)
@@ -926,6 +1147,11 @@ def search_assembly_database(request):
 
 # Specific to General List
 def search_general_database(request):
+    """
+    Function to retrieve PiecesInstances, Consumables and Assemblies which have attributes fitting the searched term
+    from the html page
+    :rtype: list
+    """
     if request.method == "POST":
         searched = request.POST['searched']
         results_rspl = []
@@ -1017,11 +1243,18 @@ def search_general_database(request):
 # Assembly Management Section
 # Create Group Assembly
 class GroupAssemblyCreate(CreateView):
+    """
+    View to display GroupAssemblyForm
+    """
     template_name = 'inventory/group_assembly/create_groupassembly.html'
     model = GroupAssembly
     form_class = GroupAssemblyForm
 
     def get(self, request, *args, **kwargs):
+        """
+        A dictionary-like object containing all given HTTP GET parameters
+        :rtype: GroupAssemblyForm
+        """
         self.object = None
         form_class = self.get_form_class()
         form = GroupAssemblyForm()
@@ -1031,6 +1264,11 @@ class GroupAssemblyCreate(CreateView):
         return render(request, 'inventory/group_assembly/create_groupassembly.html', context)
 
     def post(self, request, *args, **kwargs):
+        """
+        A dictionary-like object containing all given HTTP POST parameters,
+        providing that the request contains form data
+        :rtype: GroupAssemblyForm
+        """
         # if our ajax is calling so we have to take action
         # because this is not the form submission
         if request.is_ajax():
@@ -1052,22 +1290,37 @@ class GroupAssemblyCreate(CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
+        """
+        Overide of form_valid method
+        :rtype: GroupAssemblyForm
+        """
         self.object = form.save()
         # instance_form.instance = self.object
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
+        """
+        Overide of form_invalid method
+        :rtype: GroupAssemblyForm
+        """
         return self.render_to_response(
             self.get_context_data(form=form))
 
 
 # Display a list of all the Pieces in the inventory
 class GroupAssemblyListView(ListView):
+    """
+    List of GroupAssemblies
+    """
     model = GroupAssembly
     paginate_by = 10
     template_name = 'inventory/group_assembly/groupassembly_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
+        """
+        Returns context data for displaying the list of objects.
+        :rtype: list
+        """
         # Call the base implementation first to get the context
         context = super(GroupAssemblyListView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
@@ -1077,6 +1330,10 @@ class GroupAssemblyListView(ListView):
 
 # Display a specific Group Assembly
 def show_groupassembly(request, primary_key):
+    """
+    Function to display GroupAssembly detail and Kits that are part of it
+    :rtype: GroupAssembly, Kit
+    """
     groupassembly = GroupAssembly.objects.get(pk=primary_key)
     kit = Kit.objects.all().order_by('name')
     context = {'groupassembly': groupassembly, 'kit': kit}
@@ -1085,11 +1342,18 @@ def show_groupassembly(request, primary_key):
 
 # Create new assembly
 class KitCreate(CreateView):
+    """
+    View to display KitForm
+    """
     template_name = 'inventory/assembly/kit_form.html'
     model = Kit
     form_class = KitForm
 
     def form_valid(self, form):
+        """
+        Overide of form_valid method
+        :rtype: KitForm
+        """
         instances = PieceInstance.objects.all()
         kit = form.save(commit=False)
         kit.save()
@@ -1117,6 +1381,10 @@ class KitCreate(CreateView):
 
 # Update an assembly
 def update_kit(request, kit_id):
+    """
+    Function to update Kit
+    :rtype: KitForm, Kit
+    """
     kit = Kit.objects.get(pk=kit_id)
     kit.date_update = timezone.now()
     kit.update_comment = ''
@@ -1155,6 +1423,10 @@ def update_kit(request, kit_id):
 
 
 def clone_kit(request, kit_id):
+    """
+    Function to clone Kit
+    :rtype: KitForm, Kit
+    """
     assemblies = Kit.objects.all()
     kit = Kit.objects.get(pk=kit_id)
     kit.date_update = timezone.now()
@@ -1216,11 +1488,18 @@ def clone_kit(request, kit_id):
 
 # Display Kit List
 class KitList(ListView):
+    """
+    List of Kits
+    """
     model = Kit
     paginate_by = 10
     template_name = 'inventory/assembly/kit_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
+        """
+        Returns context data for displaying the list of objects.
+        :rtype: list
+        """
         # Call the base implementation first to get the context
         context = super(KitList, self).get_context_data(**kwargs)
         # Create any data and add it to the context
@@ -1230,6 +1509,10 @@ class KitList(ListView):
 
 # Display a specific Kit
 def show_kit(request, primary_key):
+    """
+    Function to display Kit detail and the PieceInstances it contains
+    :rtype: Kit, PieceInstance
+    """
     kit = Kit.objects.get(pk=primary_key)
     piece_instance = [kit.piece_kit_1, kit.piece_kit_2, kit.piece_kit_3, kit.piece_kit_4, kit.piece_kit_5,
                     kit.piece_kit_6, kit.piece_kit_7, kit.piece_kit_8, kit.piece_kit_9, kit.piece_kit_10,
@@ -1241,6 +1524,10 @@ def show_kit(request, primary_key):
 # Movement Management Section
 
 def movement_exchange(request):
+    """
+    Function to display MovementForm
+    :rtype: MovementForm
+    """
     form = MovementForm(request.POST or None)
     # items = PieceInstance.objects.all().order_by('serial_number')
     context = {
@@ -1342,18 +1629,30 @@ def movement_exchange(request):
 
 
 def movement_detail(request, primary_key):
+    """
+    Function to display Movement detail
+    :rtype: MovementExchange
+    """
     movement = MovementExchange.objects.get(pk=primary_key)
     context = {'movement': movement}
     return render(request, 'inventory/movement/movement_detail.html', context)
 
 
 def movement_list(request):
+    """
+    Returns the list of MovementExchanges
+    :rtype: list
+    """
     movements = MovementExchange.objects.order_by('date_created')
     context = {'movements': movements}
     return render(request, 'inventory/movement/movement_list.html', context)
 
 
 def movement_revert(request, movement_id):
+    """
+    Function to revert a MovementExchange
+    :rtype: MovementExchange
+    """
     movement = MovementExchange.objects.get(id=movement_id)
     # We check if the replaced item was in an assembly
     # Check if replaced object is in Assembly
@@ -1433,6 +1732,10 @@ def movement_revert(request, movement_id):
 
 # Equivalence Management
 def create_equivalence(request):
+    """
+    Function to display EquivalenceForm
+    :rtype: EquivalenceForm
+    """
     forms = EquivalenceForm()
     if request.method == 'POST':
         forms = EquivalenceForm(request.POST)
@@ -1447,11 +1750,18 @@ def create_equivalence(request):
 
 # Display a list of all the Pieces in the inventory
 class EquivalenceListView(ListView):
+    """
+    List of Equivalences
+    """
     model = Equivalence
     paginate_by = 10
     template_name = 'inventory/equivalence/equivalence_list.html'  # Template location
 
     def get_context_data(self, **kwargs):
+        """
+        Returns context data for displaying the list of objects.
+        :rtype: list
+        """
         # Call the base implementation first to get the context
         context = super(EquivalenceListView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
@@ -1460,6 +1770,10 @@ class EquivalenceListView(ListView):
 
 
 def equivalence_detail(request, primary_key):
+    """
+    Function to display Equivalence detail and the Pieces it is about
+    :rtype: Equivalence, Piece
+    """
     equivalence = Equivalence.objects.get(pk=primary_key)
     pieces = [equivalence.pieceeq_1, equivalence.pieceeq_2, equivalence.pieceeq_3, equivalence.pieceeq_4,
               equivalence.pieceeq_5, equivalence.pieceeq_6, equivalence.pieceeq_7, equivalence.pieceeq_8,
@@ -1471,6 +1785,10 @@ def equivalence_detail(request, primary_key):
 
 # Update an instance
 def update_equivalence(request, equivalence_id):
+    """
+    Function to update Equivalence
+    :rtype: MovementForm, MovementExchange
+    """
     equivalence = Equivalence.objects.get(pk=equivalence_id)
     if request.method == "POST":
         form = EquivalenceForm(request.POST, instance=equivalence)
@@ -1485,6 +1803,10 @@ def update_equivalence(request, equivalence_id):
 
 # Display history of specific Consumable
 def show_consumable_history(request, primary_key):
+    """
+    Function to display Consumable full history
+    :rtype: list, Consumable
+    """
     consumable = Consumable.objects.get(pk=primary_key)
     history = consumable.history.all()
     context = {'history': history, 'consumable': consumable}
@@ -1493,6 +1815,10 @@ def show_consumable_history(request, primary_key):
 
 # Display history of a specific Piece
 def show_piece_history(request, primary_key):
+    """
+    Function to display Piece full history
+    :rtype: list, Piece
+    """
     piece = Piece.objects.get(pk=primary_key)
     history = piece.history.all()
     context = {'history': history, 'piece': piece}
@@ -1501,6 +1827,10 @@ def show_piece_history(request, primary_key):
 
 # Display history of a specific Instance
 def show_instance_history(request, primary_key):
+    """
+    Function to display PieceInstance full history
+    :rtype: list, PieceInstance
+    """
     piece_instance = PieceInstance.objects.get(pk=primary_key)
     history = piece_instance.history.all()
     context = {'history': history, 'piece_instance': piece_instance}
@@ -1509,6 +1839,10 @@ def show_instance_history(request, primary_key):
 
 # Display history of a specific Assembly
 def show_assembly_history(request, primary_key):
+    """
+    Function to display Assembly full history
+    :rtype: list, Assembly
+    """
     assembly = Kit.objects.get(pk=primary_key)
     history = assembly.history.all()
     context = {'history': history, 'assembly': assembly}
