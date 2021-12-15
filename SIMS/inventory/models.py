@@ -534,7 +534,13 @@ class PieceInstance(models.Model):
         :rtype: BooleanField
         """
         calibration_is_due = False
-        if(self.next_calibration):
+        if(self.date_calibration):
+            due_days = self.date_calibration - date.today()
+            if due_days < datetime.timedelta(days=10):
+                calibration_is_due = True
+            else:
+                calibration_is_due = False
+        elif(self.next_calibration):
             due_days = self.next_calibration - date.today()
             if due_days < datetime.timedelta(days=10):
                 calibration_is_due = True

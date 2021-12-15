@@ -47,7 +47,11 @@
   		<p><strong>Manufacturer: </strong> {{ piece_instance.manufacturer_serialnumber }}</p>
   		<p><strong>Manufacturer Serial Number: </strong> {{ piece_instance.manufacturer_serialnumber }}</p>
   		<p><strong>Date Created: </strong> {{ piece_instance.date_created }}</p>
-  		<p><strong>Next Calibration: </strong> {{ piece_instance.next_calibration }}</p>
+		{% if piece_instance.date_calibration %}
+  			<p><strong>Next Calibration: </strong> {{ piece_instance.date_calibration }}</p>
+		{% else %}
+  			<p><strong>Next Calibration: </strong> {{ piece_instance.next_calibration }}</p>
+		{% endif %}
   		<p><strong>End of Life: </strong> {{ piece_instance.date_end_of_life }}</p>
   		<p><strong>Time spent in reparation: </strong> {{ piece_instance.time_spent_in_r_instance }} days</p>
         <p><strong>Location: </strong>{% if piece_instance.eighth_location %}
