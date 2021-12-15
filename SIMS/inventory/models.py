@@ -627,6 +627,10 @@ class Kit(models.Model):
         ('In Stock', 'In Stock'),
         ('Installed', 'Installed'),
         ('On Test', 'On Test'),
+        ('In Repair', 'In Repair'),
+        ('Received', 'Received'),
+        ('Shipped', 'Shipped'),
+        ('Missing', 'Missing'),
         ('Waiting', 'Waiting'),
     )
     group_assembly = models.ForeignKey(GroupAssembly, on_delete=models.CASCADE, null=True, blank=False)
