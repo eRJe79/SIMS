@@ -1188,6 +1188,7 @@ def search_general_database(request):
                                                    | Q(piece__provider__contains=searched)
                                                    | Q(piece__item_type__contains=searched)
                                                    | Q(piece__item_characteristic__contains=searched)
+                                                   | Q(piece__name__contains=searched)
                                                    ):
                 results_instance.append(i)
             for i in Kit.objects.filter(Q(group_assembly__name__contains=searched)
