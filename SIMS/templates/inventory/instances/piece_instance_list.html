@@ -26,6 +26,7 @@ action="{%url 'search-instance-database' %}">
 	<th>Location</th>
 	<th>Status</th>
 	<th>Condition</th>
+	<th>Is RSPL</th>
 	<th>Next Calibration</th>
 	<th>Calibration Document</th>
 	<th>End of Life</th>
@@ -58,6 +59,11 @@ action="{%url 'search-instance-database' %}">
 	  {% endif %}
       <td>{{ piece_instance.status }}</td>
       <td>{{ piece_instance.condition }}</td>
+	  {% if piece_instance.is_rspl %}
+      	<td>Yes</td>
+      {% else %}
+      	<td>No</td>
+      {% endif %}
 	  <td>{{piece_instance.date_calibration}}</td>
       {% if piece_instance.calibration_document  %}
       <td><a href="{{MEDIA_URL}}{{ piece_instance.calibration_document }}">File</a></td>
