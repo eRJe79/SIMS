@@ -1,42 +1,46 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+<style>
+	.topright {
+  		position: relative;
+  		top: 50px;
+  		right: 16px;
+  		font-size: 18px;
+	}
+	img {
+  		width: 20%;
+  		height: auto;
+	}
+	.center {
+  		display: block;
+  		margin-left: auto;
+  		margin-right: auto;
+  		width: 50%;
+	}
+	.card_instance {
+		top: 500px;
+	}
+</style>
+
+{% block groupassembly %}
 <div class="card">
   <div class="card-header">
     Group Assembly Detail
   </div>
   <div class="card-body">
     <h5 class="card-title"> Name : {{ groupassembly.name }}</h5>
-    <p class="card-text">
-    	<ul>
   <p><strong>Part Number:</strong> {{groupassembly.kit_partnumber}}</p>
-  <p><strong>History:</strong></p>
-			<table class="table table-light table-striped">
-				<thead>
-    			<tr>
-				<th>Group Assembly</th>
-    			<th>Type of update</th>
-				<th>User</th>
-				<th>Time</th>
-				<th>Comment</th>
-				</tr>
-			</thead>
-			{% for h in groupassembly.get_history %}
-			<tr class="datarow">
-				<td>{{ groupassembly }}</td>
-				<td>{{ h.get_history_type_display }}</td>
-				<td>{{ h.history_user }}</td>
-				<td>{{ h.history_date }}</td>
-				<td>{{ h.update_comment }}</td>
-			</tr>
-			{% endfor %}
-		</table>
-	</ul>
-    </p>
+  {% if groupassembly.image %}
+  <button onclick="resetImg()">Reset Picture Size</button>
+  <p><img src="{{ groupassembly.image.url}}" alt="connect" class="topright"
+			onclick="enlargeImg()" id="img1"></p>
+  {% endif %}
   </div>
 </div>
+{% endblock %}
 
-<div class="card-2">
+<div class="card">
   <div class="card-header">
     Available Assemblies
   </div>
@@ -78,4 +82,25 @@
 	</table>
     {% endif %}
 </div>
+
+<!-- script to set display picture -->
+    <script>
+      // Get the img object using its Id
+      img = document.getElementById("img1");
+      // Function to increase image size
+      function enlargeImg() {
+		img.setAttribute('class', 'center')
+        // Set image size to 1.5 times original
+        img.style.transform = "scale(1.5)";
+        // Animation effect
+        img.style.transition = "transform 0.25s ease";
+      }
+      // Function to reset image size
+      function resetImg() {
+        // Set image size to original
+        img.style.transform = "scale(1)";
+        img.style.transition = "transform 0.25s ease";
+		img.setAttribute('class', 'topright')
+      }
+    </script>
 {% endblock %}

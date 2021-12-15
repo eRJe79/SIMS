@@ -1,6 +1,25 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+<style>
+	.topright {
+  		position: absolute;
+  		top: 50px;
+  		right: 16px;
+  		font-size: 18px;
+	}
+	img {
+  		width: 20%;
+  		height: auto;
+	}
+	.center {
+  		display: block;
+  		margin-left: auto;
+  		margin-right: auto;
+  		width: 50%;
+	}
+</style>
+
 <div class="card">
   <div class="card-header">
     Assembly Detail
@@ -10,6 +29,10 @@
     <p class="card-text">
         <p><strong>Group Assembly:</strong> {{ kit.group_assembly }}</p>
         <p><strong>Description:</strong> {{ kit.description }}</p>
+	  	{% if kit.group_assembly.image %}
+  			<p><img src="{{ kit.group_assembly.image.url}}" alt="connect" class="topright"
+			onclick="enlargeImg()" id="img1"></p>
+  		{% endif %}
         <p><strong>Part Number:</strong> <a href="{{ kit.group_assembly.get_absolute_url }}"> {{ kit.group_assembly.kit_partnumber }}</a></p>
         <p><strong>Serial Number:</strong> {{ kit.kit_serialnumber }}</p>
         <p><strong>Status:</strong> {{ kit.kit_status }}</p>
@@ -28,6 +51,10 @@
         		{% else %}
             <td>{{kit.first_location}}-{{kit.second_location|default_if_none:""}}</td>
         		{% endif %}</p>
+	    {% if kit.group_assembly.image %}
+			<button onclick="resetImg()">Reset Picture Size</button>
+		{% endif %}
+		<br></br>
 		<p><strong>History:</strong></p>
 			<table class="table table-light table-striped">
 				<thead>
@@ -115,4 +142,25 @@
 	</table>
     {% endif %}
 </div>
+
+<!-- script to set display picture -->
+    <script>
+      // Get the img object using its Id
+      img = document.getElementById("img1");
+      // Function to increase image size
+      function enlargeImg() {
+		img.setAttribute('class', 'center')
+        // Set image size to 1.5 times original
+        img.style.transform = "scale(1.5)";
+        // Animation effect
+        img.style.transition = "transform 0.25s ease";
+      }
+      // Function to reset image size
+      function resetImg() {
+        // Set image size to original
+        img.style.transform = "scale(1)";
+        img.style.transition = "transform 0.25s ease";
+		img.setAttribute('class', 'topright')
+      }
+    </script>
 {% endblock %}

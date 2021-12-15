@@ -309,6 +309,7 @@ class GroupAssembly(models.Model):
     Model representing a group of Assemblies
     :param name, kit_partnumber, manufacturer, manufacturer_part_number, provider, provider_part_number: Charfield
     :param date_created: DateField
+    :param image: ImageField
     :param update_comment: TextField
     :param history: HistoricalRecord()
     """
@@ -321,6 +322,7 @@ class GroupAssembly(models.Model):
     provider_part_number = models.CharField(max_length=200, null=True, blank=True)
     # Date where the GA is created (set at creation and never updated then)
     date_created = models.DateField(auto_now_add=True)
+    image = models.ImageField(upload_to='images', null=True, blank=True)
 
     update_comment = models.TextField(default='No comment', max_length=1000, blank=True, null=True)
     # History log
