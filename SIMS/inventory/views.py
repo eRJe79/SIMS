@@ -259,6 +259,7 @@ def shipped_received_display(request):
             for h in myhistory:
                 if start_date <= h.history_date.date() <= end_date:
                     if h.status == 'Shipped' or h.status == 'Received':
+                        h.history_date = h.history_date.date()
                         history.append(h)
         context = {'history': history, 'start_date': start_date, 'end_date': end_date}
     return render(request, 'inventory/reports/shipped_received_report.html', context)
@@ -288,6 +289,7 @@ def shipped_received_csv(request):
             for h in myhistory:
                 if start_date <= h.history_date.date() <= end_date:
                     if h.status == 'Shipped' or h.status == 'Received':
+                        h.history_date = h.history_date.date()
                         history.append(h)
         #list of all the history of the objects
 
