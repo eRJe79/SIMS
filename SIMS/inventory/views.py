@@ -1283,7 +1283,7 @@ class GroupAssemblyCreate(CreateView):
 
         self.object = None
         form_class = self.get_form_class()
-        form = GroupAssemblyForm(request.POST)
+        form = GroupAssemblyForm(request.POST, request.FILES)
         if form.is_valid():
             return self.form_valid(form)
         else:

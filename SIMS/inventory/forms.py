@@ -340,7 +340,7 @@ class GroupAssemblyForm(ModelForm):
     """
     class Meta:
         model = GroupAssembly
-        fields = ['name', 'kit_partnumber', 'update_comment']
+        fields = ['name', 'kit_partnumber', 'image', 'update_comment']
         labels = {
             'name': 'Name',
             'kit_partnumber': 'Kit Part Number',
