@@ -13,16 +13,29 @@ def user_image_path(instance, filename):
 
 # Defining Location as Classes to have a better object manipulation
 class First_location(models.Model):
+    """
+    Model representing the first level of location
+    :param name: Charfield
+    """
     name = models.CharField(max_length=30, default='Cazaux')
 
     class Meta:
         verbose_name_plural = "1. First Location"
 
     def __str__(self):
+        """
+        Method to access Location
+        :rtype: CharField
+        """
         return self.name
 
 
 class Second_location(models.Model):
+    """
+    Model representing the second level of location
+    :param name: Charfield
+    :param previous_loc: ForeignKey
+    """
     previous_loc = models.ForeignKey(First_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
@@ -30,10 +43,19 @@ class Second_location(models.Model):
         verbose_name_plural = "2. Second Location"
 
     def __str__(self):
+        """
+        Method to access Location
+        :rtype: CharField
+        """
         return self.name
 
 
 class Third_location(models.Model):
+    """
+    Model representing the third level of location
+    :param name: Charfield
+    :param previous_loc: ForeignKey
+    """
     previous_loc = models.ForeignKey(Second_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
@@ -41,10 +63,19 @@ class Third_location(models.Model):
         verbose_name_plural = "3. Third Location"
 
     def __str__(self):
+        """
+        Method to access Location
+        :rtype: CharField
+        """
         return self.name
 
 
 class Fourth_location(models.Model):
+    """
+    Model representing the fourth level of location
+    :param name: Charfield
+    :param previous_loc: ForeignKey
+    """
     previous_loc = models.ForeignKey(Third_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
@@ -52,10 +83,19 @@ class Fourth_location(models.Model):
         verbose_name_plural = "4. Fourth Location"
 
     def __str__(self):
+        """
+        Method to access Location
+        :rtype: CharField
+        """
         return self.name
 
 
 class Fifth_location(models.Model):
+    """
+    Model representing the fifth level of location
+    :param name: Charfield
+    :param previous_loc: ForeignKey
+    """
     previous_loc = models.ForeignKey(Fourth_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
@@ -63,10 +103,19 @@ class Fifth_location(models.Model):
         verbose_name_plural = "5. Fifth Location"
 
     def __str__(self):
+        """
+        Method to access Location
+        :rtype: CharField
+        """
         return self.name
 
 
 class Sixth_location(models.Model):
+    """
+    Model representing the sixth level of location
+    :param name: Charfield
+    :param previous_loc: ForeignKey
+    """
     previous_loc = models.ForeignKey(Fifth_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
@@ -74,10 +123,19 @@ class Sixth_location(models.Model):
         verbose_name_plural = "6. Sixth Location"
 
     def __str__(self):
+        """
+        Method to access Location
+        :rtype: CharField
+        """
         return self.name
 
 
 class Seventh_location(models.Model):
+    """
+    Model representing the seventh level of location
+    :param name: Charfield
+    :param previous_loc: ForeignKey
+    """
     previous_loc = models.ForeignKey(Sixth_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
@@ -85,10 +143,19 @@ class Seventh_location(models.Model):
         verbose_name_plural = "7. Seventh Location"
 
     def __str__(self):
+        """
+        Method to access Location
+        :rtype: CharField
+        """
         return self.name
 
 
 class Eighth_location(models.Model):
+    """
+    Model representing the eighth level of location
+    :param name: Charfield
+    :param previous_loc: ForeignKey
+    """
     previous_loc = models.ForeignKey(Seventh_location, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
 
@@ -96,13 +163,28 @@ class Eighth_location(models.Model):
         verbose_name_plural = "8. Eighth Location"
 
     def __str__(self):
+        """
+        Method to access Location
+        :rtype: CharField
+        """
         return self.name
 
 
 # Class describing main categories with their specific attribute and pieces
 # Example of category : a 500GB Seagate Hard Drive and a 1TB Seagate Hard Drive are 2 different categories
 class Piece(models.Model):
-    """Model representing a generic piece"""
+    """
+    Model representing a Piece
+    :param name, manufacturer, manufacturer_part_number, provider, provider_part_number, cae_part_number, piece_model,
+     item_type, item_characteristic : Charfield
+    :param description, update_comment: TextField
+    :param is_obsolete: BooleanField
+    :param website: URLField
+    :param documentation: FileField
+    :param image: ImageField
+    :param calibration_recurrence: IntegerField
+    :param history: HistoricalRecord()
+    """
 
     # Choices for the item type
     TYPE_CHOICE = (
@@ -163,10 +245,11 @@ class Piece(models.Model):
         """Returns the calibration reccurence days this piece."""
         return self.calibration_recurrence
 
-    def add_piece_equivalent(self, attr):
-        setattr(self, 'piece_equivalent', attr)
-
     def get_history(self):
+        """
+        Retrieve the three last history input of the object
+        :rtype: list
+        """
         history = self.history.all()
         # we get only the three last history iterations
         if len(history) == 1:
@@ -181,6 +264,12 @@ class Piece(models.Model):
 
 # Used to create groups of Pieces that will be equivalent between them
 class Equivalence(models.Model):
+    """
+    Model representing an Equivalence between several Pieces
+    :param name: Charfield
+    :param pieceeq_1, pieceeq_2, pieceeq_3, pieceeq_4, pieceeq_5, pieceeq_6, pieceeq_7, pieceeq_8, pieceeq_9,
+     pieceeq_10, pieceeq_11, pieceeq_12, pieceeq_13, pieceeq_14, pieceeq_15: ForeignKey
+    """
     name = models.CharField(max_length=120, null=False, blank=False)
     pieceeq_1 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_1', null=True, blank=True)
     pieceeq_2 = models.ForeignKey(Piece, on_delete=models.CASCADE, related_name='pieceeq_2',  null=True, blank=True)
@@ -200,16 +289,29 @@ class Equivalence(models.Model):
 
     # This is a default return method to access Piece
     def __str__(self):
-        """String for representing the Model object."""
+        """
+        Method to access Equivalence
+        :rtype: CharField
+        """
         return self.name
 
     # This method is used  to have link directed to the equivalence detail
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this piece."""
+        """
+        Method to return specific Equivalence
+        :rtype: url
+        """
         return reverse('equivalence-detail', args=[str(self.id)])
 
 
 class GroupAssembly(models.Model):
+    """
+    Model representing a group of Assemblies
+    :param name, kit_partnumber, manufacturer, manufacturer_part_number, provider, provider_part_number: Charfield
+    :param date_created: DateField
+    :param update_comment: TextField
+    :param history: HistoricalRecord()
+    """
     name = models.CharField(max_length=250, blank=False, null=False)
     # Part number is mandatory
     kit_partnumber = models.CharField(max_length=250, blank=False, null=False)
@@ -226,17 +328,32 @@ class GroupAssembly(models.Model):
 
     # Default method to access the Kit
     def __str__(self):
+        """
+        Method to access Group Assembly
+        :rtype: CharField
+        """
         return self.name
 
     # This method is used is some templates to have link directed to the kit detail
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this kit."""
+        """
+        Method to return specific Group Assembly
+        :rtype: url
+        """
         return reverse('groupassembly-detail', args=[str(self.id)])
 
     def get_kit_children(self):
+        """
+        Return the list of Assemblies registered in the Group Assembly
+        :rtype: list
+        """
         return self.kit_set.all()
 
     def get_history(self):
+        """
+        Retrieve the three last history input of the object
+        :rtype: list
+        """
         history = self.history.all()
         # we get only the three last history iterations
         if len(history) == 1:
@@ -251,7 +368,18 @@ class GroupAssembly(models.Model):
 
 # Class describing the instance of pieces with their specific attributes and methods
 class PieceInstance(models.Model):
-    """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
+    """
+    Model representing an Instance of a Piece with their specific attributes and methods
+    :param manufacturer_serialnumber, serial_number, provider_serialnumber, status, condition, restriction,
+     owner : Charfield
+    :param description, update_comment: TextField
+    :param is_rspl: BooleanField
+    :param date_created: DateField
+    :param first_location, second_location, third_location, fourth_location, fifth_location, sixth_location,
+    seventh_location, eighth_location, piece, : ForeignKey
+    :param date_created, date_update, date_calibration, date_end_of_life, date_guarantee: DateField
+    :param history: HistoricalRecord()
+    """
 
     # Choices for the item owner
     OWNER_CHOICE = (
@@ -358,15 +486,28 @@ class PieceInstance(models.Model):
 
     # Default method to access the PieceInstance
     def __str__(self):
+        """
+        Method to access Instance
+        :rtype: CharField
+        """
         return self.serial_number
 
-    # This method is used is some templates to have link directed to the piece instance detail
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this piece instance."""
+        """
+        Method to return specific Instance
+        :rtype: url
+        """
         return reverse('piece-instance-detail', args=[str(self.id)])
 
     @property
     def next_calibration(self):
+        """
+        Method to calculate and return next calibration date
+        We calculate the number of days the Instance has been used
+        We substract this value to the number of calibration recurrence in days
+        We add the result to the actual date, giving us the next calibration date
+        :rtype: DateField
+        """
         mytemp = date.today() - self.date_created
         if (self.piece.calibration_recurrence):
             days = datetime.timedelta(days=self.piece.calibration_recurrence) - mytemp
@@ -376,10 +517,20 @@ class PieceInstance(models.Model):
             pass
 
     def calibration_days(self):
+        """
+        Method used to return the number of days until calibration date
+        :rtype: DateTimeField
+        """
         delta = self.next_calibration - date.today()
         return delta.days
 
     def is_calibration_due(self):
+        """
+        Method to check if the calibration is due
+        We need this value to check if the calibration is overdue (if the number is lower than 10, then we display the
+        coming calibration on the Dashboard)
+        :rtype: BooleanField
+        """
         calibration_is_due = False
         if(self.next_calibration):
             due_days = self.next_calibration - date.today()
@@ -390,6 +541,10 @@ class PieceInstance(models.Model):
         return calibration_is_due
 
     def is_in_reparation(self):
+        """
+        Method to check if the Instance is in reparation (we just verify status value)
+        :rtype: BooleanField
+        """
         if self.status == 'In Repair':
             reparation = True
         else:
@@ -397,6 +552,10 @@ class PieceInstance(models.Model):
         return reparation
 
     def is_in_waiting(self):
+        """
+        Method to check if the Instance is in the Waiting Zone (we just verify first_location value)
+        :rtype: BooleanField
+        """
         if (self.first_location and self.first_location.name == 'Waiting'):
             waiting = True
         else:
@@ -404,6 +563,14 @@ class PieceInstance(models.Model):
         return waiting
 
     def time_spent_in_r_instance(self):
+        """
+        Method to calculate the number of days in total the Instance has spent in Reparation
+        We loop through history
+        The first time we are In Repair, we establish initial_time which the history date minus the date_created
+        When the Instance stops being in Repair, we add the calculated time to amount_spent_in_r
+        Repeat until loop is done
+        :rtype: DateTimeField
+        """
         history = self.history.all()
         initial_time = self.date_created
         amount_spent_in_r = 0
@@ -414,17 +581,19 @@ class PieceInstance(models.Model):
         for h in myhistory:
             if h.status == 'In Repair':
                 initial_time = h.history_date.date()
-                print(h.history_date.date())
                 if initial_time == date.today():
                     amount_spent_in_r = datetime.timedelta(days=1)
                 else:
                     amount_spent_in_r = date.today() - initial_time
-                    print(amount_spent_in_r)
             else:
                 amount_spent_in_r = h.history_date.date() - initial_time
         return amount_spent_in_r.days
 
     def get_history(self):
+        """
+        Retrieve the three last history input of the object
+        :rtype: list
+        """
         history = self.history.all()
         # we get only the three last history iterations
         if len(history) == 1:
@@ -437,8 +606,20 @@ class PieceInstance(models.Model):
         return myhistory
 
 
-# A kit (assembly) is an ensemble of instances (example a PC contains multiple instances such as RAM bars, HD, or CPU)
 class Kit(models.Model):
+    """
+    Model representing kit (assembly) is an ensemble of instances
+    (example a PC contains multiple instances such as RAM bars, HD, or CPU)
+    :param name, kit_serialnumber, manufacturer_serialnumber, provider_serialnumber, kit_status : Charfield
+    :param description, update_comment: TextField
+    :param date_created: DateField
+    :param first_location, second_location, third_location, fourth_location, fifth_location, sixth_location,
+    seventh_location, eighth_location, pn_1, pn_2, pn_3, pn_4, pn_5, pn_6, pn_7, pn_8, pn_9, pn_10, pn_11, pn_12, pn_13,
+     pn_14, pn_15, piece_kit_1, piece_kit_2, piece_kit_3, piece_kit_4, piece_kit_5, piece_kit_6, piece_kit_7,
+     piece_kit_8, piece_kit_9, piece_kit_10, piece_kit_11, piece_kit_12, piece_kit_13, piece_kit_14, piece_kit_15
+    : ForeignKey
+    :param history: HistoricalRecord()
+    """
     STATUS_CHOICE = (
         ('In Use', 'In Use'),
         ('In Stock', 'In Stock'),
@@ -513,6 +694,10 @@ class Kit(models.Model):
     history = HistoricalRecords()
     # Default method to access the Kit
     def __str__(self):
+        """
+        Default method to access Movement
+        :rtype: char
+        """
         return self.name
 
     # This method is used is some templates to have link directed to the kit detail
@@ -520,10 +705,11 @@ class Kit(models.Model):
         """Returns the url to access a detail record for this kit."""
         return reverse('kit-detail', args=[str(self.id)])
 
-    def get_pieceinstance_children(self):
-        return self.pieceinstance_set.all()
-
     def get_history(self):
+        """
+        Retrieve the three last history input of the object
+        :rtype: list
+        """
         history = self.history.all()
         # we get only the three last history iterations
         if len(history) == 1:
@@ -537,6 +723,16 @@ class Kit(models.Model):
 
 
 class MovementExchange(models.Model):
+    """
+    Model representing a movement between two Piece Instance objects
+    :param part_number_1, part_number_2, piece_1, piece_2, item_1, item_2, old_first_location, old_second_location,
+    old_third_location, old_fourth_location, old_fifth_location, old_sixth_location, old_seventh_location,
+    old_eighth_location: ForeignKey
+    :param old_status, reference_number: Charfield
+    :param revert_button: BooleanFIeld
+    :param update_comment_item1, update_comment_item2: TextField
+    :param history: HistoricalRecord()
+    """
     # Items exchanged is mandatory
     part_number_1 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='part_number_1', null=True, blank=False)
     part_number_2 = models.ForeignKey(Piece, on_delete=models.SET_NULL, related_name='part_number_2', null=True, blank=False)
@@ -571,18 +767,38 @@ class MovementExchange(models.Model):
 
     # Default method to access the Kit
     def __str__(self):
+        """
+        Default method to access Movement
+        :rtype: char
+        """
         return self.reference_number
 
     # This method is used is some templates to have link directed to the kit detail
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this kit."""
+        """
+        Default method to access specific Movement
+        :rtype: url
+        """
         return reverse('movement-detail', args=[str(self.id)])
 
 
-# Class describing the instance of pieces with their specific attributes and methods
 class Consumable(models.Model):
-    """Model representing a specific piece of a part (i.e. that can be moved from the inventory)."""
-
+    """
+    Model representing a piece that can be used on a daily basis.
+    :param name, piece_model, cae_part_number, serial_number, manufacturer, manufacturer_part_number,
+    manufacturer_serialnumber, provider, provider_part_number, provider_serialnumber, item_type, item_characteristic,
+    status, condition, restriction, owner: Charfield
+    :param website: URLField
+    :param description, documentation, update_comment: TextField
+    :param is_rspl: boolean
+    :param documentation, update_document: FileField
+    :param uploaded_at: DateTimeField
+    :param quantity, low_stock_value: BigInteger
+    :param date_created, date_update: DateField
+    :param first_location, second_location, third_location, fourth_location, fifth_location, sixth_location,
+    seventh_location, eighth_location: ForeignKey
+    :param history: HistoricalRecord()
+    """
     # Choices for the item owner
     OWNER_CHOICE = (
         ('CAE', 'CAE'),
@@ -716,23 +932,33 @@ class Consumable(models.Model):
     # History log
     history = HistoricalRecords()
 
-    # Default method to access the PieceInstance
     def __str__(self):
+        """
+        Default method to access Consumable
+        :rtype: char
+        """
         return self.name
 
     # This method is used is some templates to have link directed to the piece instance detail
     def get_absolute_url(self):
-        """Returns the url to access a detail record for this piece instance."""
         return reverse('consumable-detail', args=[str(self.id)])
 
-    # We check if we have less consumables than the recommended stock
     def is_low_stock(self):
+        """
+        Takes the actual Consumable quantity and checks if it is lower than advised quantity
+        Returns Boolean based on result
+        :rtype: bool
+        """
         if self.quantity <= self.low_stock_value:
             return True
         else:
             return False
 
     def get_history(self):
+        """
+        Retrieve the three last history input of the object
+        :rtype: list
+        """
         history = self.history.all()
         # we get only the three last history iterations
         if len(history) == 1:
