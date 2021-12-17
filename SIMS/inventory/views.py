@@ -710,6 +710,7 @@ def show_piece(request, primary_key):
     piece = Piece.objects.get(pk=primary_key)
     piece_instance = PieceInstance.objects.all().order_by('status')
     # Instance management
+    instance_in_use = PieceInstance.objects.filter(status='In Use', piece=piece).count()
     instance_installed = PieceInstance.objects.filter(status='Installed', piece=piece).count()
     instance_in_stock = PieceInstance.objects.filter(status='In Stock', piece=piece).count()
     instance_discarded = PieceInstance.objects.filter(status='Discarded', piece=piece).count()
@@ -735,7 +736,8 @@ def show_piece(request, primary_key):
     my_eq_list = list(dict.fromkeys(my_eq_list))
     context = {'piece': piece, 'piece_instance': piece_instance, 'instance_installed': instance_installed,
                'instance_in_stock': instance_in_stock, 'instance_discarded': instance_discarded,
-               'instance_in_reparation': instance_in_reparation, 'my_eq_list': my_eq_list}
+               'instance_in_reparation': instance_in_reparation, 'instance_in_use': instance_in_use,
+               'my_eq_list': my_eq_list}
     return render(request, 'inventory/piece/piece_detail.html', context)
 
 
