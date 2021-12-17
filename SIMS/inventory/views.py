@@ -259,6 +259,7 @@ def shipped_received_display(request):
             for h in myhistory:
                 if start_date <= h.history_date.date() <= end_date:
                     if h.status == 'Shipped' or h.status == 'Received':
+                        h.history_date = h.history_date.date()
                         history.append(h)
         context = {'history': history, 'start_date': start_date, 'end_date': end_date}
     return render(request, 'inventory/reports/shipped_received_report.html', context)
@@ -288,6 +289,7 @@ def shipped_received_csv(request):
             for h in myhistory:
                 if start_date <= h.history_date.date() <= end_date:
                     if h.status == 'Shipped' or h.status == 'Received':
+                        h.history_date = h.history_date.date()
                         history.append(h)
         #list of all the history of the objects
 
@@ -529,7 +531,7 @@ class ConsumableCreate(CreateView):
 
     def form_valid(self, form):
         """
-        Overide of form_valid method
+        Override of form_valid method
         :rtype: ConsumableForm
         """
         self.object = form.save()
@@ -538,7 +540,7 @@ class ConsumableCreate(CreateView):
 
     def form_invalid(self, form):
         """
-        Overide of form_invalid method
+        Override of form_invalid method
         :rtype: ConsumableForm
         """
         return self.render_to_response(
@@ -654,7 +656,7 @@ class PieceCreate(CreateView):
 
     def form_valid(self, form, request):
         """
-        Overide of form_valid method
+        Override of form_valid method
         :rtype: PieceForm
         """
         # We check no piece with same part number already exist
@@ -671,7 +673,7 @@ class PieceCreate(CreateView):
 
     def form_invalid(self, form):
         """
-        Overide of form_invalid method
+        Override of form_invalid method
         :rtype: PieceForm
         """
         return self.render_to_response(
@@ -825,7 +827,6 @@ class PieceInstanceCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = PieceInstanceForm(request.POST, request.FILES)
-        files = request.FILES.getlist('update_document')
         if form.is_valid():
             return self.form_valid(request, form)
         else:
@@ -833,7 +834,7 @@ class PieceInstanceCreate(CreateView):
 
     def form_valid(self, request, form):
         """
-        Overide of form_valid method
+        Override of form_valid method
         :rtype: PieceInstanceForm
         """
         piece_instance = PieceInstance.objects.all()
@@ -849,9 +850,10 @@ class PieceInstanceCreate(CreateView):
 
     def form_invalid(self, form):
         """
-        Overide of form_invalid method
+        Override of form_invalid method
         :rtype: PieceInstanceForm
         """
+        print('invalid')
         return self.render_to_response(
             self.get_context_data(form=form))
 
@@ -1292,7 +1294,7 @@ class GroupAssemblyCreate(CreateView):
 
     def form_valid(self, form):
         """
-        Overide of form_valid method
+        Override of form_valid method
         :rtype: GroupAssemblyForm
         """
         self.object = form.save()
@@ -1301,7 +1303,7 @@ class GroupAssemblyCreate(CreateView):
 
     def form_invalid(self, form):
         """
-        Overide of form_invalid method
+        Override of form_invalid method
         :rtype: GroupAssemblyForm
         """
         return self.render_to_response(
@@ -1352,7 +1354,7 @@ class KitCreate(CreateView):
 
     def form_valid(self, form):
         """
-        Overide of form_valid method
+        Override of form_valid method
         :rtype: KitForm
         """
         instances = PieceInstance.objects.all()
