@@ -422,7 +422,6 @@ class PieceInstance(models.Model):
 
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
     piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=True)
-    piece_name = models.CharField(max_length=120, blank=True, null=False)
     # Manufacturer and S/N
     manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
     # Instance specific serial number, setting blank=True as it might not be required

@@ -802,9 +802,8 @@ class PieceInstanceCreate(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = PieceInstanceForm()
-        pieces = Piece.objects.all()
         context = {
-            'form': form, 'pieces': pieces,
+            'form': form,
         }
         return render(request, 'inventory/instances/create_instance_piece.html', context)
 
