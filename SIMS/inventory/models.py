@@ -235,6 +235,11 @@ class Piece(models.Model):
         """String for representing the Model object."""
         return self.name
 
+    # This is a return method to access Piece PN
+    def get_pn(self):
+        """CHarfield for representing the Model PN."""
+        return self.cae_part_number
+
     # This method is used is some templates to have link directed to the piece detail
     def get_absolute_url(self):
         """Returns the url to access a detail record for this piece."""
@@ -416,7 +421,8 @@ class PieceInstance(models.Model):
     )
 
     # Foreign Key used because instance can only have one piece, but pieces can have multiple instances
-    piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=False)
+    piece = models.ForeignKey('Piece', on_delete=models.CASCADE, null=True, blank=True)
+    piece_name = models.CharField(max_length=120, blank=True, null=False)
     # Manufacturer and S/N
     manufacturer_serialnumber = models.CharField(max_length=120, blank=True, null=True)
     # Instance specific serial number, setting blank=True as it might not be required

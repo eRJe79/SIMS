@@ -61,10 +61,16 @@ class PieceForm(forms.ModelForm):
         }
 
 
+class PieceChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.get_pn()
+
+
 class PieceInstanceForm(forms.ModelForm):
     """
     Logical structure of PieceInstance model
     """
+
     class Meta:
         model = PieceInstance
         fields = ['piece', 'serial_number', 'manufacturer_serialnumber', 'provider_serialnumber', 'owner',
@@ -73,7 +79,7 @@ class PieceInstanceForm(forms.ModelForm):
                   'fourth_location', 'fifth_location', 'sixth_location', 'seventh_location', 'eighth_location',
                   'status', 'condition']
         labels = {
-            'piece': 'Piece',
+            'piece': 'Piece PN',
             'serial_number': 'CAE Serial Number',
             'manufacturer_serialnumber': 'Manufacturer Serial Number',
             'provider_serialnumber': 'OEM Serial Number',
@@ -98,7 +104,7 @@ class PieceInstanceForm(forms.ModelForm):
             'condition': 'Condition'
         }
         widgets = {
-            'piece': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Choose Piece'}),
+            'piece': forms.Select(attrs={'class': 'form-select'}),
             'serial_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the CAE Serial Number'}),
             'provider_serialnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the piece serial number'}),
             'owner': forms.Select(attrs={'class': 'form-select', 'id': 'owner'}),
@@ -125,9 +131,10 @@ class PieceInstanceForm(forms.ModelForm):
         # We override the init method to have location choices dependent on each other
     def __init__(self, *args, **kwargs):
         """
-        Overide of the init method to establish hierarchal links between locations
+        Override of the init method to establish hierarchical links between locations
         """
         super().__init__(*args, **kwargs)
+        self.fields['piece'] = PieceChoiceField(queryset=Piece.objects.all())
         self.fields['second_location'].queryset = Second_location.objects.none()
         self.fields['third_location'].queryset = Third_location.objects.none()
         self.fields['fourth_location'].queryset = Fourth_location.objects.none()
@@ -135,6 +142,8 @@ class PieceInstanceForm(forms.ModelForm):
         self.fields['sixth_location'].queryset = Sixth_location.objects.none()
         self.fields['seventh_location'].queryset = Seventh_location.objects.none()
         self.fields['eighth_location'].queryset = Eighth_location.objects.none()
+
+
 
         if 'first_location' in self.data:
             try:
@@ -282,7 +291,7 @@ class MovementForm(ModelForm):
     # We override the init method to have instance choices dependent on piece choices
     def __init__(self, *args, **kwargs):
         """
-        Overide of the init method to establish hierarchical links between part_number_x and item_x
+        Override of the init method to establish hierarchical links between part_number_x and item_x
         piece_x is used to filter Pieces through their name to narrow available part numbers
         part_number_x is used to select the Piece where we want to pick our Piece Instance
         """
@@ -445,7 +454,7 @@ class KitForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         """
-        Overide of the init method to establish hierarchical links between locations
+        Override of the init method to establish hierarchical links between locations
         """
         super().__init__(*args, **kwargs)
         # Location Declaration
@@ -614,7 +623,7 @@ class ConsumableForm(forms.ModelForm):
         # We override the init method to have location choices dependent on each other
     def __init__(self, *args, **kwargs):
         """
-        Overide of the init method to establish hierarchical links between locations
+        Override of the init method to establish hierarchical links between locations
         """
         super().__init__(*args, **kwargs)
         self.fields['second_location'].queryset = Second_location.objects.none()
