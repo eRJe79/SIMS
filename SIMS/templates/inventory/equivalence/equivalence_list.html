@@ -9,11 +9,41 @@
   <thead>
     <tr>
 	<th>Name</th>
+	<th>Piece 1</th>
+	<th>Piece 2</th>
+	<th>Piece 3</th>
+	<th>Piece 4</th>
+	<th>Piece 5</th>
+	<th>Piece 6</th>
+	<th>Piece 7</th>
+	<th>Piece 8</th>
+	<th>Piece 9</th>
+	<th>Piece 10</th>
+	<th>Piece 11</th>
+	<th>Piece 12</th>
+	<th>Piece 13</th>
+	<th>Piece 14</th>
+	<th>Piece 15</th>
 	</tr>
   </thead>
     {% for eq in equivalence %}
     <tr class="datarow">
       <td><a href="{{ eq.get_absolute_url }}">{{ eq.name }}</a></td>
+      <td>{{ eq.pieceeq_1 }}</td>
+      <td>{{ eq.pieceeq_2 }}</td>
+      <td>{{ eq.pieceeq_3 }}</td>
+      <td>{{ eq.pieceeq_4 }}</td>
+      <td>{{ eq.pieceeq_5 }}</td>
+      <td>{{ eq.pieceeq_6 }}</td>
+      <td>{{ eq.pieceeq_7 }}</td>
+      <td>{{ eq.pieceeq_8 }}</td>
+      <td>{{ eq.pieceeq_9 }}</td>
+      <td>{{ eq.pieceeq_10 }}</td>
+      <td>{{ eq.pieceeq_11 }}</td>
+      <td>{{ eq.pieceeq_12 }}</td>
+      <td>{{ eq.pieceeq_13 }}</td>
+      <td>{{ eq.pieceeq_14 }}</td>
+      <td>{{ eq.pieceeq_15 }}</td>
     </tr>
     {% endfor %}
 </table>
