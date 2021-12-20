@@ -712,7 +712,7 @@ class Kit(models.Model):
     # Default method to access the Kit
     def __str__(self):
         """
-        Default method to access Movement
+        Default method to access Kit
         :rtype: char
         """
         return self.name

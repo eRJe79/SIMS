@@ -15,16 +15,20 @@
     <tr>
 	<th>Reference Number</th>
 	<th>Date</th>
-	<th>Removed Instance</th>
-	<th>Mounted Instance</th>
+	<th>Removed Instance SN</th>
+	<th>Removed Instance PN</th>
+	<th>Mounted Instance SN</th>
+	<th>Mounted Instance PN</th>
 	</tr>
   </thead>
     {% for movement in movements %}
     <tr class="datarow">
       <td><a href="{{ movement.get_absolute_url }}">{{ movement.reference_number }}</a></td>
       <td>{{ movement.date_created }}</td>
-      <td>{{ movement.item_1 }}</td>
-      <td>{{ movement.item_2 }}</td>
+      <td><a href="{{ movement.item_1.get_absolute_url }}">{{ movement.item_1 }}</a></td>
+      <td>{{ movement.piece_1.cae_part_number }}</td>
+      <td><a href="{{ movement.item_2.get_absolute_url }}">{{ movement.item_2 }}</a></td>
+      <td>{{ movement.piece_2.cae_part_number }}</td>
     </tr>
     {% endfor %}
 </table>
