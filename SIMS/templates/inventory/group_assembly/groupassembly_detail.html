@@ -36,6 +36,7 @@
   <p><img src="{{ groupassembly.image.url}}" alt="connect" class="topright"
 			onclick="enlargeImg()" id="img1"></p>
   {% endif %}
+  <td><a href="{% url 'groupassembly-update' groupassembly.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
   </div>
 </div>
 {% endblock %}

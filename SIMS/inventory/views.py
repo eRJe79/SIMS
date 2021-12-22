@@ -1345,6 +1345,25 @@ def show_groupassembly(request, primary_key):
     return render(request, 'inventory/group_assembly/groupassembly_detail.html', context)
 
 
+# Update a consumable
+def update_group_assembly(request, group_assembly_id):
+    """
+    Function to update Consumable
+    :rtype: ConsumableForm, Consumable
+    """
+    group_assembly = GroupAssembly.objects.get(pk=group_assembly_id)
+    group_assembly.update_comment = ''
+    if request.method == "POST":
+        form = GroupAssemblyForm(request.POST, request.FILES, instance=group_assembly)
+        if form.is_valid():
+            form.save()
+            return redirect(group_assembly.get_absolute_url())
+    else:
+        form = GroupAssemblyForm(instance=group_assembly)
+    context = {'group_assembly': group_assembly, 'form': form}
+    return render(request, 'inventory/group_assembly/update_group_assembly.html', context)
+
+
 # Create new assembly
 class KitCreate(CreateView):
     """
