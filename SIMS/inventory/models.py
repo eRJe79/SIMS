@@ -325,6 +325,7 @@ class GroupAssembly(models.Model):
     manufacturer_part_number = models.CharField(max_length=200, null=True, blank=True)
     provider = models.CharField(max_length=120, null=True, blank=True)
     provider_part_number = models.CharField(max_length=200, null=True, blank=True)
+    documentation = models.FileField(upload_to='documents/documentation/', blank=True, null=True)
     # Date where the GA is created (set at creation and never updated then)
     date_created = models.DateField(auto_now_add=True)
     image = models.ImageField(upload_to='images', null=True, blank=True)

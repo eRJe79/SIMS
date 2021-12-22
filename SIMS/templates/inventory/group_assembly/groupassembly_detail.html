@@ -3,7 +3,7 @@
 {% block content %}
 <style>
 	.topright {
-  		position: relative;
+  		position: absolute;
   		top: 50px;
   		right: 16px;
   		font-size: 18px;
@@ -19,28 +19,59 @@
   		width: 50%;
 	}
 	.card_instance {
-		top: 500px;
+  		position: relative;
+  		top: 500px;
 	}
 </style>
 
-{% block groupassembly %}
 <div class="card">
   <div class="card-header">
     Group Assembly Detail
   </div>
   <div class="card-body">
+    <p class="card-text">
     <h5 class="card-title"> Name : {{ groupassembly.name }}</h5>
+    	<ul>
   <p><strong>Part Number:</strong> {{groupassembly.kit_partnumber}}</p>
+  <p><strong>Manufacturer:</strong> {{groupassembly.manufacturer}}</p>
+  <p><strong>Manufacturer Part Number:</strong> {{groupassembly.manufacturer_part_number}}</p>
+  <p><strong>Provider:</strong> {{groupassembly.provider}}</p>
+  <p><strong>Provider Part Number:</strong> {{groupassembly.provider_part_number}}</p>
+  {% if groupassembly.documentation %}
+  <p><a href="{{MEDIA_URL}}{{ groupassembly.documentation }}"><strong>Documentation</strong> </a></p>
+  {% endif %}
   {% if groupassembly.image %}
-  <button onclick="resetImg()">Reset Picture Size</button>
+  <button class="btn btn-outline-secondary btn-sm" onclick="resetImg()">Reset Picture Size</button>
   <p><img src="{{ groupassembly.image.url}}" alt="connect" class="topright"
 			onclick="enlargeImg()" id="img1"></p>
   {% endif %}
+	    <p><strong>History:</strong></p>
+			<table class="table table-light table-striped">
+				<thead>
+    			<tr>
+				<th>Group Assembly</th>
+    			<th>Type of update</th>
+				<th>User</th>
+				<th>Time</th>
+				</tr>
+			</thead>
+			{% for h in groupassembly.get_history %}
+			<tr class="datarow">
+				<td>{{ h.name }}</td>
+				<td>{{ h.get_history_type_display }}</td>
+				<td>{{ h.history_user }}</td>
+				<td>{{ h.history_date }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</ul>
+    </p>
+  <td><a href="{% url 'groupassembly-update' groupassembly.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+  <td><a href="{% url 'groupassembly-history' groupassembly.id %}" class="btn btn-outline-secondary btn-sm">Full History</a>
   </div>
 </div>
-{% endblock %}
 
-<div class="card">
+<div class="card-2">
   <div class="card-header">
     Available Assemblies
   </div>
