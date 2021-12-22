@@ -349,15 +349,17 @@ class GroupAssemblyForm(ModelForm):
     """
     class Meta:
         model = GroupAssembly
-        fields = ['name', 'kit_partnumber', 'image', 'update_comment']
+        fields = ['name', 'kit_partnumber', 'documentation', 'image', 'update_comment']
         labels = {
             'name': 'Name',
-            'kit_partnumber': 'Kit Part Number',
+            'kit_partnumber': 'Group Assembly Part Number',
+            'documentation': 'Documentation',
             'update_comment': 'Update Comment',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the Group Assembly Name'}),
             'kit_partnumber': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Group Assembly Part Number'}),
+            'documentation': forms.ClearableFileInput(attrs={'multiple': True, 'id': 'documentation'}),
             'update_comment': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Update Comment'}),
         }
 

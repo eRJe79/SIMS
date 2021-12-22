@@ -31,12 +31,15 @@
   <div class="card-body">
     <h5 class="card-title"> Name : {{ groupassembly.name }}</h5>
   <p><strong>Part Number:</strong> {{groupassembly.kit_partnumber}}</p>
+  {% if groupassembly.documentation %}
+  <p><a href="{{MEDIA_URL}}{{ groupassembly.documentation }}"><strong>Documentation</strong> </a></p>
+  <td><a href="{% url 'groupassembly-update' groupassembly.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+  {% endif %}
   {% if groupassembly.image %}
-  <button onclick="resetImg()">Reset Picture Size</button>
+  <button class="btn btn-outline-secondary btn-sm" onclick="resetImg()">Reset Picture Size</button>
   <p><img src="{{ groupassembly.image.url}}" alt="connect" class="topright"
 			onclick="enlargeImg()" id="img1"></p>
   {% endif %}
-  <td><a href="{% url 'groupassembly-update' groupassembly.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
   </div>
 </div>
 {% endblock %}

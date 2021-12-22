@@ -1345,11 +1345,11 @@ def show_groupassembly(request, primary_key):
     return render(request, 'inventory/group_assembly/groupassembly_detail.html', context)
 
 
-# Update a consumable
+# Update a GroupAssembly
 def update_group_assembly(request, group_assembly_id):
     """
-    Function to update Consumable
-    :rtype: ConsumableForm, Consumable
+    Function to update GroupAssembly
+    :rtype: GroupAssemblyForm, GroupAssembly
     """
     group_assembly = GroupAssembly.objects.get(pk=group_assembly_id)
     group_assembly.update_comment = ''
