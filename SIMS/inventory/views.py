@@ -1364,6 +1364,18 @@ def update_group_assembly(request, group_assembly_id):
     return render(request, 'inventory/group_assembly/update_group_assembly.html', context)
 
 
+# Display history of a specific GroupAssembly
+def show_groupassembly_history(request, primary_key):
+    """
+    Function to display GroupAssembly full history
+    :rtype: list, GroupAssembly
+    """
+    group_assembly = GroupAssembly.objects.get(pk=primary_key)
+    history = group_assembly.history.all()
+    context = {'history': history, 'group_assembly': group_assembly}
+    return render(request, 'inventory/group_assembly/group_assembly_history.html', context)
+
+
 # Create new assembly
 class KitCreate(CreateView):
     """
